@@ -23,6 +23,9 @@
     <Filter Include="1. Resources\DeviceMemory">
       <UniqueIdentifier>{f8e3d7f4-da3f-4582-a3ce-5c1147ec9418}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. Resources\Buffer">
+      <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Instance.cpp">
@@ -41,6 +44,9 @@
     <ClCompile Include="DeviceMemory.cpp">
       <Filter>1. Resources\DeviceMemory</Filter>
     </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>1. Resources\Buffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Instance.h">
@@ -55,11 +61,14 @@
     <ClInclude Include="CommandBuffer.h">
       <Filter>0. Context\3. CommandBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>1. Resources</Filter>
+    </ClInclude>
     <ClInclude Include="DeviceMemory.h">
       <Filter>1. Resources\DeviceMemory</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>1. Resources</Filter>
+    <ClInclude Include="Buffer.h">
+      <Filter>1. Resources\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

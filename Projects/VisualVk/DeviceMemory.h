@@ -25,9 +25,13 @@ namespace Vk
 
 	public:
 
+		//!	@brief	If device memory is empty.
+		VkBool32 IsEmpty() const { return m_hMemory == VK_NULL_HANDLE; }
 
 		//!	@brief	Return size of device memory.
 		VkDeviceSize Bytes() const { return m_Bytes; }
+
+		void Free() noexcept;
 
 	private:
 

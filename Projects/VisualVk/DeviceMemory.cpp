@@ -14,6 +14,12 @@ DeviceMemory::DeviceMemory() : m_Bytes(0), m_hMemory(VK_NULL_HANDLE)
 }
 
 
+void DeviceMemory::Free() noexcept
+{
+
+}
+
+
 DeviceMemory::~DeviceMemory()
 {
 
