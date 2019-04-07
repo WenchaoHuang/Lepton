@@ -53,6 +53,8 @@ Instance * Instance::GetCurrent()
 		pExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 
 	pLayers.push_back("VK_LAYER_LUNARG_standard_validation");
+
+	Instance::GetLayerProperties();
 #endif
 
 	VkApplicationInfo					AppInfo = {};

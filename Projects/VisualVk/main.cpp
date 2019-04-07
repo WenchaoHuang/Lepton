@@ -1,17 +1,15 @@
 
-
 #include "Instance.h"
-
-using namespace Vk;
+#include "LogicalDevice.h"
+#include "PhysicalDevice.h"
 
 int main()
 {
-  
-	Instance * pInstance = Instance::GetCurrent();
+	Vk::Instance * pInstance = Vk::Instance::GetCurrent();
 
-	pInstance->GetExtensionProperties();
+	Vk::PhysicalDevice * pPhysicalDevice = pInstance->GetPhysicalDevices()[0];
+
+	Vk::LogicalDevice * pLogicalDevice = pPhysicalDevice->CreateLogicalDevice();
 	
-	Instance::Destroy();
-
-    return 0;
+	Vk::Instance::Destroy();
 }
