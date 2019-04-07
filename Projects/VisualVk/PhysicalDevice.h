@@ -34,6 +34,9 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Create logical device that has queues on all queue family.
+		LogicalDevice * CreateLogicalDevice();
+
 		//!	@brief	If device extension is available.
 		VkBool32 IsExtensionAvailable(std::string TargetName) const;
 
@@ -55,11 +58,8 @@ namespace Vk
 		//!	@brief	If present surface is supported by specify queue family.
 		VkBool32 IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t QueueFamilyIndex) const;
 
-		//!	@brief	Create logical device that has queues on all queue family.
-		LogicalDevice * CreateLogicalDevice(VkPhysicalDeviceFeatures EnableFeatures = { 0 });
-
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t nMemoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const;
+		uint32_t GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const;
 
 		//!	@brief	Find queue family that supported presentation, and return the queue family index.
 		uint32_t GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const;

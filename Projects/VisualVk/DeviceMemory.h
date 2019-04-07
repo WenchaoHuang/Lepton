@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include <vulkan/vulkan_core.h>
+#include "Resource.h"
 
 namespace Vk
 {
@@ -14,7 +14,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan device memory object.
 	 */
-	class DeviceMemory
+	class DeviceMemory : private Resource
 	{
 
 	public:

@@ -26,7 +26,7 @@ PhysicalDevice::PhysicalDevice(VkPhysicalDevice hDevice) : m_hPhysicalDevice(hDe
 }
 
 
-LogicalDevice * PhysicalDevice::CreateLogicalDevice(VkPhysicalDeviceFeatures EnableFeatures)
+LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 {
 	std::vector<VkDeviceQueueCreateInfo> QueueCreateInfos(m_QueueFamilyProperties.size());
 
@@ -59,7 +59,7 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice(VkPhysicalDeviceFeatures Ena
 	DeviceCreateInfo.ppEnabledLayerNames		= nullptr;
 	DeviceCreateInfo.enabledExtensionCount		= (uint32_t)pExtensions.size();
 	DeviceCreateInfo.ppEnabledExtensionNames	= pExtensions.data();
-	DeviceCreateInfo.pEnabledFeatures			= &EnableFeatures;
+	DeviceCreateInfo.pEnabledFeatures			= &m_Features;
 
 	VkDevice hDevice = VK_NULL_HANDLE;
 

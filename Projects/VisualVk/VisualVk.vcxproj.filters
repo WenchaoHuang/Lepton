@@ -58,5 +58,8 @@
     <ClInclude Include="DeviceMemory.h">
       <Filter>1. Resources\DeviceMemory</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>1. Resources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
