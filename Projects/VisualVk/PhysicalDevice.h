@@ -7,6 +7,8 @@
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
+#define VK_INVALID_INDEX			UINT_MAX
+
 namespace Vk
 {
 	class LogicalDevice;

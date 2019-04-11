@@ -11,43 +11,32 @@ namespace Vk
 	****************************    Buffer    ****************************
 	*********************************************************************/
 
-	class Buffer
+	/**
+	 *	@brief	Vulkan buffer object.
+	 */
+	class Buffer : private Resource
 	{
 
 	public:
 
-
-
-
-	public:
-
-
-		VkBool32 IsEmpty() const { return m_Memory.IsEmpty(); }
-
-	private:
-
-		VkBuffer			m_hBuffer;
-
-		DeviceMemory		m_Memory;
-
-		VkDeviceSize		m_Bytes;
-	};
-
-	/*********************************************************************
-	****************************    Array    *****************************
-	*********************************************************************/
-
-	template<typename Type> class Array
-	{
+		Buffer();
+		
+		~Buffer();
 
 	public:
 
+		VkResult Create();
 
+		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
+
+		VkDeviceSize Bytes() const { return m_Bytes; }
 
 	private:
 
-		size_t		m_Size;
+		VkBuffer		m_hBuffer;
 
-		Buffer		m_Buffer;
+		DeviceMemory	m_Memory;
+
+		VkDeviceSize	m_Bytes;
 	};
 }

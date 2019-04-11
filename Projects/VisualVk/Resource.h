@@ -3,7 +3,10 @@
 *************************************************************************/
 #pragma once
 
-#include <vulkan/vulkan_core.h>
+#include "Instance.h"
+#include "LogicalDevice.h"
+#include "CommandBuffer.h"
+#include "PhysicalDevice.h"
 
 namespace Vk
 {
@@ -11,6 +14,9 @@ namespace Vk
 	***************************    Resource    ***************************
 	*********************************************************************/
 
+	/**
+	 *	@brief	Vulkan resource object.
+	 */
 	class Resource
 	{
 
@@ -24,9 +30,26 @@ namespace Vk
 
 	public:
 
+		void SetupDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice);
 
+	protected:
 
-	private:
+		static Instance * sm_pInstance;
 
+		static LogicalDevice * sm_pDevice;
+
+		static PhysicalDevice *	sm_pPhyDevice;
+
+		static CommandQueue * sm_pComputeQueue;
+
+		static CommandQueue * sm_pGraphicsQueue;
+
+		static CommandQueue * sm_pTransferQueue;
+
+		static CommandPool * sm_pComputeCmdPool;
+
+		static CommandPool * sm_pGraphicsCmdPool;
+
+		static CommandPool * sm_pTransferCmdPool;
 	};
 }

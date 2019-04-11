@@ -20,11 +20,14 @@
     <Filter Include="1. Resources">
       <UniqueIdentifier>{c26a652c-6aa1-40cc-a967-552bef9f4a57}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\DeviceMemory">
-      <UniqueIdentifier>{f8e3d7f4-da3f-4582-a3ce-5c1147ec9418}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Resources\Buffer">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\0. Resource">
+      <UniqueIdentifier>{4255f242-e26e-4d97-9d9a-d6a02c76deeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\1. Memory">
+      <UniqueIdentifier>{f8e3d7f4-da3f-4582-a3ce-5c1147ec9418}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,10 +45,13 @@
       <Filter>0. Context\3. CommandBuffer</Filter>
     </ClCompile>
     <ClCompile Include="DeviceMemory.cpp">
-      <Filter>1. Resources\DeviceMemory</Filter>
+      <Filter>1. Resources\1. Memory</Filter>
     </ClCompile>
     <ClCompile Include="Buffer.cpp">
       <Filter>1. Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>1. Resources\0. Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,14 +67,15 @@
     <ClInclude Include="CommandBuffer.h">
       <Filter>0. Context\3. CommandBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>1. Resources</Filter>
-    </ClInclude>
     <ClInclude Include="DeviceMemory.h">
-      <Filter>1. Resources\DeviceMemory</Filter>
+      <Filter>1. Resources\1. Memory</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>1. Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="Resource.h">
+      <Filter>1. Resources\0. Resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
