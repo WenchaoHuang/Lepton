@@ -14,7 +14,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan device memory object.
 	 */
-	class DeviceMemory : private Resource
+	class VKAPI DeviceMemory : private Resource
 	{
 
 	public:
@@ -26,6 +26,9 @@ namespace Vk
 		~DeviceMemory();
 
 	public:
+
+		//!	@brief	Convert to handle.
+		operator VkDeviceMemory() { return m_hMemory; }
 
 		//!	@brief	Allocate memory.
 		VkResult Allocate(VkMemoryRequirements Requirements, VkMemoryPropertyFlags ePropertyFlags);

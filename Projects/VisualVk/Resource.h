@@ -17,7 +17,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan resource object.
 	 */
-	class Resource
+	class VKAPI Resource
 	{
 
 	protected:
@@ -30,7 +30,7 @@ namespace Vk
 
 	public:
 
-		void SetupDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice);
+		static void SetupDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice);
 
 	protected:
 

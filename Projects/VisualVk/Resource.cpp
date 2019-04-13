@@ -28,5 +28,9 @@ CommandPool * Resource::sm_pTransferCmdPool = nullptr;
 *************************************************************************/
 void Resource::SetupDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice)
 {
+	sm_pInstance = Instance::GetCurrent();
 
+	sm_pPhyDevice = pPhysicalDevice;
+
+	sm_pDevice = pLogicalDevice;
 }

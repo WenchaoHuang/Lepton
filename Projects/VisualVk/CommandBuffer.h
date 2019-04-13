@@ -4,7 +4,7 @@
 #pragma once
 
 #include <set>
-#include <vulkan/vulkan_core.h>
+#include "Common.h"
 
 namespace Vk
 {
@@ -18,7 +18,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan command queue object.
 	 */
-	class CommandQueue
+	class VKAPI CommandQueue
 	{
 
 	private:
@@ -76,7 +76,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan command pool object.
 	 */
-	class CommandPool
+	class VKAPI CommandPool
 	{
 
 	private:
@@ -118,7 +118,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan command buffer object.
 	 */
-	class CommandBuffer
+	class VKAPI CommandBuffer
 	{
 
 	private:

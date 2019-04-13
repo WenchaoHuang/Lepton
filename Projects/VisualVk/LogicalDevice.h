@@ -3,8 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include <vector>
-#include <vulkan/vulkan_core.h>
+#include "Common.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////
 																						\
@@ -31,7 +30,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan logical device object.
 	 */
-	class LogicalDevice
+	class VKAPI LogicalDevice
 	{
 
 	private:
@@ -200,24 +199,19 @@ namespace Vk
 		*************************    Pipeline    *************************
 		*****************************************************************/
 
-		//!	@brief	Create graphics pipelines.
-		VkResult CreateGraphicsPipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount,
-										 const VkGraphicsPipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
-		{
-			return vkCreateGraphicsPipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);
-		}
-
+		//!	@brief	Destroy a pipeline object.
+		void DestroyPipeline(VkPipeline hPipeline) { vkDestroyPipeline(m_hDevice, hPipeline, nullptr); }
+		
 		//!	@brief	Create compute pipelines.
-		VkResult CreateComputePipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount,
-										const VkComputePipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
+		VkResult CreateComputePipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount, const VkComputePipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
 		{
 			return vkCreateComputePipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);
 		}
 
-		//!	@brief	Destroy a pipeline object.
-		void DestroyPipeline(VkPipeline hPipeline)
+		//!	@brief	Create graphics pipelines.
+		VkResult CreateGraphicsPipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount, const VkGraphicsPipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
 		{
-			vkDestroyPipeline(m_hDevice, hPipeline, nullptr);
+			return vkCreateGraphicsPipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);
 		}
 
 	private:
@@ -227,3 +221,5 @@ namespace Vk
 		const std::vector<CommandQueue*>	m_pCommandQueues;
 	};
 }
+
+#undef VK_DEVICE_OBJECT_CREATE_AND_DESTROY_FUNCTION

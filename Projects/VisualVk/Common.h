@@ -1,11 +1,33 @@
 /*************************************************************************
-**************************    VisualVk_Debug    **************************
+**************************    VisualVk_Common    *************************
 *************************************************************************/
 #pragma once
 
 #include <string>
+#include <vector>
 #include <vulkan/vulkan_core.h>
 
+#if defined(_WINDLL)
+	#define VK_DLL_EXPORT		//__declspec(dllexport)
+	#define VK_DLL_IMPORT		//__declspec(dllimport)
+#else
+	#define VK_DLL_EXPORT
+	#define VK_DLL_IMPORT
+#endif
+
+#if defined(VKAPI_BUILD)
+	#define	VKAPI				VK_DLL_EXPORT
+#else
+	#define	VKAPI				VK_DLL_IMPORT
+#endif
+
+#define VK_INVALID_INDEX		UINT_MAX
+
+#pragma warning(disable: 4251)
+
+/*************************************************************************
+**************************    VisualVk_Common    *************************
+*************************************************************************/
 namespace Vk
 {
 	inline std::string to_string(VkResult eResult)
