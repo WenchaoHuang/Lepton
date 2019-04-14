@@ -166,9 +166,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicalDevice.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Samplers.cpp" />
     <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
@@ -180,9 +182,11 @@
     <ClInclude Include="LogicalDevice.h" />
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Samplers.h" />
     <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

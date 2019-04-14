@@ -23,8 +23,13 @@ int main()
 	Vk::Image1DArray		image1DArray;
 	Vk::Image2DArray		image2DArray;
 
-	image2D.CreateColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
-	image2D.CreateDepthAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
+	VkResult res;
+	res = image2D.CreateDepthAttachment16(100, 20);
+	res = image2D.CreateDepthAttachment32(100, 20);
+	res = image2D.CreateDepthStencilAttachment(100, 200);
+	res = image2D.CreateColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 200);
+//	image2D.CreateColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
+//	image2D.CreateDepthAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
 
 	Vk::Instance::Destroy();
 }

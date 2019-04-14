@@ -44,6 +44,9 @@
     <Filter Include="1. Resources\6. Samplers">
       <UniqueIdentifier>{125532ec-071f-4ecb-a43d-5f61396f1648}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Window">
+      <UniqueIdentifier>{ccd1a57b-3ac3-4408-a346-0f1109f3556b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Instance.cpp">
@@ -80,6 +83,12 @@
     <ClCompile Include="Textures.cpp">
       <Filter>1. Resources\5. Textures</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>2. Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Samplers.cpp">
+      <Filter>1. Resources\6. Samplers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Instance.h">
@@ -115,6 +124,12 @@
     </ClInclude>
     <ClInclude Include="Textures.h">
       <Filter>1. Resources\5. Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>2. Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Samplers.h">
+      <Filter>1. Resources\6. Samplers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

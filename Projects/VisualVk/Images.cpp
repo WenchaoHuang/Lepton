@@ -128,7 +128,7 @@ VkResult Image<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> void Image<eImageType, eViewType>::Release()
+template<VkImageType eImageType, VkImageViewType eViewType> void Image<eImageType, eViewType>::Release() noexcept
 {
 	m_DeviceMemory.Free();
 
