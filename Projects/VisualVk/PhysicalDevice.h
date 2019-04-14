@@ -6,8 +6,6 @@
 #include <set>
 #include "Common.h"
 
-#define VK_INVALID_INDEX			UINT_MAX
-
 namespace Vk
 {
 	class LogicalDevice;

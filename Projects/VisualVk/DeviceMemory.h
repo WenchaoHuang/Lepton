@@ -42,9 +42,6 @@ namespace Vk
 		//!	@brief	Flush memory.
 		VkResult Flush(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
-		//!	@brief	Check if memory handle is valid.
-		VkBool32 IsEmpty() const { return m_hMemory != VK_NULL_HANDLE; }
-
 		//!	@brief	Return size of device memory.
 		VkDeviceSize Bytes() const { return m_Bytes; }
 

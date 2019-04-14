@@ -17,6 +17,8 @@ Buffer::Buffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
 
 VkResult Buffer::Create(VkDeviceSize SizeBytes)
 {
+	if (SizeBytes == m_Bytes)			return VK_SUCCESS;
+
 	VkBufferCreateInfo					CreateInfo = {};
 	CreateInfo.sType					= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	CreateInfo.pNext					= nullptr;
@@ -118,6 +120,25 @@ VkResult Buffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize S
 	if (eResult == VK_SUCCESS)
 	{
 		memcpy(pHostData, pDevData, (size_t)SizeBytes);
+
+		m_Memory.Unmap();
+	}
+
+	return eResult;
+}
+
+
+VkResult Buffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+{
+	void * pDevData = nullptr;
+
+	if (OffsetBytes + SizeBytes > m_Bytes)		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+
+	VkResult eResult = m_Memory.Map(&pDevData, OffsetBytes, SizeBytes);
+
+	if (eResult == VK_SUCCESS)
+	{
+		memset((void*)((size_t)pDevData + OffsetBytes), 0, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}

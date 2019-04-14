@@ -34,7 +34,7 @@ namespace Vk
 		VkDeviceSize Bytes() const { return m_Bytes; }
 
 		//!	@brief	If buffer handle is valid.
-		VkBool32 IsValid() const { return m_hBuffer != VK_NULL_HANDLE; }
+		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
 
 		//!	@brief	Memory copy from device to device.
 		VkResult CopyFrom(const Buffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes);
@@ -45,14 +45,8 @@ namespace Vk
 		//!	@brief	Memory copy from device to host.
 		VkResult Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
-		void * GetMappedPointer()
-		{
-			void * pDevData = nullptr;
-
-			m_Memory.Map(&pDevData, 0, m_Bytes);
-
-			return pDevData;
-		}
+		//!	@brief	Filling data with 0.
+		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 		//!	@brief	Resize buffer.
 		VkResult Create(VkDeviceSize SizeBytes);
@@ -67,5 +61,55 @@ namespace Vk
 		DeviceMemory		m_Memory;
 
 		VkDeviceSize		m_Bytes;
+	};
+
+	/*********************************************************************
+	****************************    Array    *****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Template for Vulkan buffer object.
+	 */
+	template<typename Type> class VKAPI Array
+	{
+
+	public:
+
+		//!	@brief	Resize array.
+		VkResult Resize(VkDeviceSize Count)
+		{
+			return m_Buffer.Create(Count * sizeof(Type));
+		}
+
+		//!	@brief	Memory copy from device to host.
+		VkResult Read(Type * pHostData, VkDeviceSize Offset, VkDeviceSize Count)
+		{
+			return m_Buffer.Read(pHostData, Offset * sizeof(Type), Count * sizeof(Type));
+		}
+
+		//!	@brief	Memory copy from host to device.
+		VkResult Write(const void * pHostData, VkDeviceSize Offset, VkDeviceSize Count)
+		{
+			return m_Buffer.Write(pHostData, Offset * sizeof(Type), Count * sizeof(Type));
+		}
+
+		//!	@brief	Filling data with 0.
+		VkResult SetZero(VkDeviceSize Offset, VkDeviceSize Count)
+		{
+			return m_Buffer.SetZero(Offset * sizeof(Type), Count * sizeof(Type));
+		}
+
+		//!	@brief	Return count of elements.
+		VkDeviceSize Size() const { return m_Buffer.Bytes() / sizeof(Type); }
+
+		//!	@brief	If array is empty.
+		VkBool32 IsEmpty() const { return m_Buffer.IsEmpty(); }
+
+		//!	@brief	Erase all.
+		void Clear() noexcept { m_Buffer.Release(); }
+
+	private:
+
+		Buffer		m_Buffer;
 	};
 }

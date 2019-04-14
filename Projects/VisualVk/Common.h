@@ -8,8 +8,8 @@
 #include <vulkan/vulkan_core.h>
 
 #if defined(_WINDLL)
-	#define VK_DLL_EXPORT		//__declspec(dllexport)
-	#define VK_DLL_IMPORT		//__declspec(dllimport)
+	#define VK_DLL_EXPORT		__declspec(dllexport)
+	#define VK_DLL_IMPORT		__declspec(dllimport)
 #else
 	#define VK_DLL_EXPORT
 	#define VK_DLL_IMPORT

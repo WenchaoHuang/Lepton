@@ -170,28 +170,28 @@ namespace Vk
 		void CmdEndRenderPass() { vkCmdEndRenderPass(m_hCommandBuffer); }
 
 		//!	@brief	Copy data between buffer regions.
-		void CmdCopyBuffer(VkBuffer hDstBuffer, VkBuffer hSrcBuffer, uint32_t nRegionCount, const VkBufferCopy * pRegions)
+		void CmdCopyBuffer(VkBuffer hDstBuffer, VkBuffer hSrcBuffer, uint32_t RegionCount, const VkBufferCopy * pRegions)
 		{
-			vkCmdCopyBuffer(m_hCommandBuffer, hSrcBuffer, hDstBuffer, nRegionCount, pRegions);
+			vkCmdCopyBuffer(m_hCommandBuffer, hSrcBuffer, hDstBuffer, RegionCount, pRegions);
 		}
 
 		//!	@brief	Insert a memory dependency.
 		void CmdPipelineBarrier(VkPipelineStageFlags SrcStageMask,
 								VkPipelineStageFlags DstStageMask, VkDependencyFlags DependencyFlags,
-								uint32_t nMemoryBarrierCount, const VkMemoryBarrier * pMemoryBarriers,
-								uint32_t nBufferMemoryBarrierCount, const VkBufferMemoryBarrier * pBufferMemoryBarriers,
-								uint32_t nImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
+								uint32_t MemoryBarrierCount, const VkMemoryBarrier * pMemoryBarriers,
+								uint32_t BufferMemoryBarrierCount, const VkBufferMemoryBarrier * pBufferMemoryBarriers,
+								uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
 		{
 			vkCmdPipelineBarrier(m_hCommandBuffer, SrcStageMask, DstStageMask, DependencyFlags,
-								 nMemoryBarrierCount, pMemoryBarriers, nBufferMemoryBarrierCount, pBufferMemoryBarriers,
-								 nImageMemoryBarrierCount, pImageMemoryBarriers);
+								 MemoryBarrierCount, pMemoryBarriers, BufferMemoryBarrierCount, pBufferMemoryBarriers,
+								 ImageMemoryBarrierCount, pImageMemoryBarriers);
 		}
 
 		//!	@brief	Clear regions of a color image.
 		void CmdClearColorImage(VkImage hImage, VkImageLayout hImageLayout, const VkClearColorValue * pColor,
-								uint32_t nRangeCount, const VkImageSubresourceRange * pRanges)
+								uint32_t RangeCount, const VkImageSubresourceRange * pRanges)
 		{
-			vkCmdClearColorImage(m_hCommandBuffer, hImage, hImageLayout, pColor, nRangeCount, pRanges);
+			vkCmdClearColorImage(m_hCommandBuffer, hImage, hImageLayout, pColor, RangeCount, pRanges);
 		}
 
 		//!	@brief	Begin a new render pass.
@@ -207,49 +207,49 @@ namespace Vk
 		}
 
 		//!	@brief	Draw primitives.
-		void CmdDraw(uint32_t nVertexCount, uint32_t nInstanceCount, uint32_t nFirstVertex, uint32_t nFirstInstance)
+		void CmdDraw(uint32_t VertexCount, uint32_t InstanceCount, uint32_t FirstVertex, uint32_t FirstInstance)
 		{
-			vkCmdDraw(m_hCommandBuffer, nVertexCount, nInstanceCount, nFirstVertex, nFirstInstance);
+			vkCmdDraw(m_hCommandBuffer, VertexCount, InstanceCount, FirstVertex, FirstInstance);
 		}
 
 		//!	@brief	Set the viewport on a command buffer.
-		void CmdSetViewport(uint32_t nFirstViewport, uint32_t nViewportCount, const VkViewport * pViewports)
+		void CmdSetViewport(uint32_t FirstViewport, uint32_t ViewportCount, const VkViewport * pViewports)
 		{
-			vkCmdSetViewport(m_hCommandBuffer, nFirstViewport, nViewportCount, pViewports);
+			vkCmdSetViewport(m_hCommandBuffer, FirstViewport, ViewportCount, pViewports);
 		}
 
 		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
-		void CmdSetScissor(uint32_t nFirstScissor, uint32_t nScissorCount, const VkRect2D * pScissors)
+		void CmdSetScissor(uint32_t FirstScissor, uint32_t ScissorCount, const VkRect2D * pScissors)
 		{
-			vkCmdSetScissor(m_hCommandBuffer, nFirstScissor, nScissorCount, pScissors);
+			vkCmdSetScissor(m_hCommandBuffer, FirstScissor, ScissorCount, pScissors);
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
 		void CmdBindDescriptorSets(VkPipelineBindPoint ePipelineBindPoint,
-								   VkPipelineLayout hLayout, uint32_t nFirstSet,
-								   uint32_t nDescriptorSetCount, const VkDescriptorSet * pDescriptorSets,
-								   uint32_t nDynamicOffsetCount, const uint32_t * pDynamicOffsets)
+								   VkPipelineLayout hLayout, uint32_t FirstSet,
+								   uint32_t DescriptorSetCount, const VkDescriptorSet * pDescriptorSets,
+								   uint32_t DynamicOffsetCount, const uint32_t * pDynamicOffsets)
 		{
-			vkCmdBindDescriptorSets(m_hCommandBuffer, ePipelineBindPoint, hLayout, nFirstSet,
-									nDescriptorSetCount, pDescriptorSets, nDynamicOffsetCount, pDynamicOffsets);
+			vkCmdBindDescriptorSets(m_hCommandBuffer, ePipelineBindPoint, hLayout, FirstSet,
+									DescriptorSetCount, pDescriptorSets, DynamicOffsetCount, pDynamicOffsets);
 		}
 
 		//!	@brief	Bind vertex buffers to a command buffer.
-		void CmdBindVertexBuffers(uint32_t nFirstBinding, uint32_t nBindingCount, const VkBuffer * pBuffers, const VkDeviceSize * pOffsets)
+		void CmdBindVertexBuffers(uint32_t FirstBinding, uint32_t BindingCount, const VkBuffer * pBuffers, const VkDeviceSize * pOffsets)
 		{
-			vkCmdBindVertexBuffers(m_hCommandBuffer, nFirstBinding, nBindingCount, pBuffers, pOffsets);
+			vkCmdBindVertexBuffers(m_hCommandBuffer, FirstBinding, BindingCount, pBuffers, pOffsets);
 		}
 
 		//!	@brief	Bind an index buffer to a command buffer.
-		void CmdBindIndexBuffer(VkBuffer hBuffer, VkIndexType eIndexType, VkDeviceSize nOffset)
+		void CmdBindIndexBuffer(VkBuffer hBuffer, VkIndexType eIndexType, VkDeviceSize Offset)
 		{
-			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, nOffset, eIndexType);
+			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, eIndexType);
 		}
 
 		//!	@brief	Issue an indexed draw into a command buffer.
-		void CmdDrawIndexed(uint32_t nIndexCount, uint32_t nInstanceCount, uint32_t nFirstIndex, int32_t nVertexOffset, uint32_t nFirstInstance)
+		void CmdDrawIndexed(uint32_t IndexCount, uint32_t InstanceCount, uint32_t FirstIndex, int32_t VertexOffset, uint32_t FirstInstance)
 		{
-			vkCmdDrawIndexed(m_hCommandBuffer, nIndexCount, nInstanceCount, nFirstIndex, nVertexOffset, nFirstInstance);
+			vkCmdDrawIndexed(m_hCommandBuffer, IndexCount, InstanceCount, FirstIndex, VertexOffset, FirstInstance);
 		}
 
 	private:

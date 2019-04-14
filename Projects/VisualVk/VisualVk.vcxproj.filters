@@ -32,6 +32,15 @@
     <Filter Include="1. Resources\3. Buffer">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. Resources\4. Images">
+      <UniqueIdentifier>{d97cc3bb-3b72-44ae-8387-cfd83ec20e1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\5. Textures">
+      <UniqueIdentifier>{f72bbd1a-504e-4921-b73c-3371e11decd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\6. Swapchain">
+      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Instance.cpp">
@@ -59,6 +68,15 @@
       <Filter>1. Resources\3. Buffer</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Swapchain.cpp">
+      <Filter>1. Resources\6. Swapchain</Filter>
+    </ClCompile>
+    <ClCompile Include="Images.cpp">
+      <Filter>1. Resources\4. Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>1. Resources\5. Textures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Instance.h">
@@ -86,5 +104,14 @@
       <Filter>1. Resources\3. Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Swapchain.h">
+      <Filter>1. Resources\6. Swapchain</Filter>
+    </ClInclude>
+    <ClInclude Include="Images.h">
+      <Filter>1. Resources\4. Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>1. Resources\5. Textures</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
