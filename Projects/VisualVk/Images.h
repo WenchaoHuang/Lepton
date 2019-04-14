@@ -53,6 +53,9 @@ namespace Vk
 		//!	@brief	Return count of samples.
 		VkSampleCountFlagBits GetSampleCount() const { return m_eSampleCount; }
 
+		//!	@brief	Release image.
+		void Release();
+
 	protected:
 
 		//!	@brief	Create new image object.
@@ -156,6 +159,34 @@ namespace Vk
 			if (eResult == VK_SUCCESS)
 			{
 				eResult = Image::CreateView(eAspectMask);
+			}
+
+			return eResult;
+		}
+
+		//!	@brief	Create a new color attachment object.
+		VkResult CreateColorAttachment(VkFormat eFormat, uint32_t Width, uint32_t Height,
+									   uint32_t MipLevels, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		{
+			VkResult eResult = Image::Create(eFormat, { Width, Height, 1 }, MipLevels, 1, eSamples, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT);
+
+			if (eResult == VK_SUCCESS)
+			{
+				eResult = Image::CreateView(VK_IMAGE_ASPECT_COLOR_BIT);
+			}
+
+			return eResult;
+		}
+
+		//!	@brief	Create a new depth attachment object.
+		VkResult CreateDepthAttachment(VkFormat eFormat, uint32_t Width, uint32_t Height,
+									   uint32_t MipLevels, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		{
+			VkResult eResult = Image::Create(eFormat, { Width, Height, 1 }, MipLevels, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+
+			if (eResult == VK_SUCCESS)
+			{
+				eResult = Image::CreateView(VK_IMAGE_ASPECT_DEPTH_BIT);
 			}
 
 			return eResult;

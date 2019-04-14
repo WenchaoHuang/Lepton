@@ -23,5 +23,8 @@ int main()
 	Vk::Image1DArray		image1DArray;
 	Vk::Image2DArray		image2DArray;
 
+	image2D.CreateColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
+	image2D.CreateDepthAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
+
 	Vk::Instance::Destroy();
 }

@@ -128,9 +128,27 @@ VkResult Image<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> Image<eImageType, eViewType>::~Image()
+template<VkImageType eImageType, VkImageViewType eViewType> void Image<eImageType, eViewType>::Release()
 {
-	sm_pDevice->DestroyImageView(m_hImageView);
+	m_DeviceMemory.Free();
 
 	sm_pDevice->DestroyImage(m_hImage);
+
+	sm_pDevice->DestroyImageView(m_hImageView);
+
+	m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
+
+	m_eFormat = VK_FORMAT_UNDEFINED;
+
+	m_Extent3D = { 0, 0, 0 };
+
+	m_ArrayLayers = 0;
+
+	m_MipLevels = 0;
+}
+
+
+template<VkImageType eImageType, VkImageViewType eViewType> Image<eImageType, eViewType>::~Image()
+{
+	this->Release();
 }

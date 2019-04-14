@@ -38,8 +38,11 @@
     <Filter Include="1. Resources\5. Textures">
       <UniqueIdentifier>{f72bbd1a-504e-4921-b73c-3371e11decd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\6. Swapchain">
+    <Filter Include="1. Resources\7. Swapchain">
       <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\6. Samplers">
+      <UniqueIdentifier>{125532ec-071f-4ecb-a43d-5f61396f1648}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +72,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Swapchain.cpp">
-      <Filter>1. Resources\6. Swapchain</Filter>
+      <Filter>1. Resources\7. Swapchain</Filter>
     </ClCompile>
     <ClCompile Include="Images.cpp">
       <Filter>1. Resources\4. Images</Filter>
@@ -105,7 +108,7 @@
     </ClInclude>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Swapchain.h">
-      <Filter>1. Resources\6. Swapchain</Filter>
+      <Filter>1. Resources\7. Swapchain</Filter>
     </ClInclude>
     <ClInclude Include="Images.h">
       <Filter>1. Resources\4. Images</Filter>
