@@ -69,11 +69,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 		{
 			sm_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
 
-			sm_pDevice->DestroyImageView(m_hImageView);
-
 			sm_pDevice->DestroyImage(m_hImage);
-
-			m_hImageView = VK_NULL_HANDLE;
 
 			m_ArrayLayers = ArrayLayers;
 
@@ -141,6 +137,10 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 	m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
 
 	m_eFormat = VK_FORMAT_UNDEFINED;
+
+	m_hImageView = VK_NULL_HANDLE;
+
+	m_hImage = VK_NULL_HANDLE;
 
 	m_Extent3D = { 0, 0, 0 };
 
