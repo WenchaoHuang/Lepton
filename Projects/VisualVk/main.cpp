@@ -30,6 +30,7 @@ int main()
 	res = image2D.CreateColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 200);
 //	image2D.CreateColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
 //	image2D.CreateDepthAttachment(VK_FORMAT_R8G8B8A8_UNORM, 100, 10, 1);
+	image2D.Release();
 
 	Vk::Instance::Destroy();
 }

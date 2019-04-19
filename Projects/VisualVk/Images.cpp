@@ -5,18 +5,18 @@
 
 using namespace Vk;
 
-template class Image<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D>;
-template class Image<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D>;
-template class Image<VK_IMAGE_TYPE_3D, VK_IMAGE_VIEW_TYPE_3D>;
-template class Image<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE>;
-template class Image<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D_ARRAY>;
-template class Image<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D_ARRAY>;
-template class Image<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
+template class BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D>;
+template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D>;
+template class BaseImage<VK_IMAGE_TYPE_3D, VK_IMAGE_VIEW_TYPE_3D>;
+template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE>;
+template class BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D_ARRAY>;
+template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D_ARRAY>;
+template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 
 /*************************************************************************
-******************************    Image    *******************************
+****************************    BaseImage    *****************************
 *************************************************************************/
-template<VkImageType eImageType, VkImageViewType eViewType> Image<eImageType, eViewType>::Image()
+template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
 	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(VK_FORMAT_UNDEFINED), m_eSampleCount(VK_SAMPLE_COUNT_1_BIT)
 {
 	m_MipLevels = 0;	m_ArrayLayers = 0;		m_Extent3D = { 0, 0, 0 };
@@ -24,13 +24,13 @@ template<VkImageType eImageType, VkImageViewType eViewType> Image<eImageType, eV
 
 
 template<VkImageType eImageType, VkImageViewType eViewType>
-VkResult Image<eImageType, eViewType>::Create(VkFormat eFormat,
-											  VkExtent3D Extent,
-											  uint32_t MipLevels,
-											  uint32_t ArrayLayers,
-											  VkSampleCountFlagBits eSamples,
-											  VkImageUsageFlags eUsage,
-											  VkImageCreateFlags eCreateFlags)
+VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
+												  VkExtent3D Extent,
+												  uint32_t MipLevels,
+												  uint32_t ArrayLayers,
+												  VkSampleCountFlagBits eSamples,
+												  VkImageUsageFlags eUsage,
+												  VkImageCreateFlags eCreateFlags)
 {
 	VkImageCreateInfo					CreateInfo = {};
 	CreateInfo.sType					= VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -69,6 +69,8 @@ VkResult Image<eImageType, eViewType>::Create(VkFormat eFormat,
 		{
 			sm_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
 
+			sm_pDevice->DestroyImageView(m_hImageView);
+
 			sm_pDevice->DestroyImage(m_hImage);
 
 			m_hImageView = VK_NULL_HANDLE;
@@ -92,7 +94,7 @@ VkResult Image<eImageType, eViewType>::Create(VkFormat eFormat,
 
 
 template<VkImageType eImageType, VkImageViewType eViewType>
-VkResult Image<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask)
+VkResult BaseImage<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask)
 {
 	if (m_hImage == VK_NULL_HANDLE)				return VK_INCOMPLETE;
 
@@ -128,7 +130,7 @@ VkResult Image<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> void Image<eImageType, eViewType>::Release() noexcept
+template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImageType, eViewType>::Release() noexcept
 {
 	m_DeviceMemory.Free();
 
@@ -148,7 +150,7 @@ template<VkImageType eImageType, VkImageViewType eViewType> void Image<eImageTyp
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> Image<eImageType, eViewType>::~Image()
+template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::~BaseImage()
 {
 	this->Release();
 }
