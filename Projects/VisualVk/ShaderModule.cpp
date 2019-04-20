@@ -1,0 +1,67 @@
+/*************************************************************************
+**********************    VisualVk_ShaderModule    ***********************
+*************************************************************************/
+#include "ShaderModule.h"
+#include <fstream>
+
+using namespace Vk;
+
+/*************************************************************************
+***************************    ShaderModule    ***************************
+*************************************************************************/
+ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShaderModule)
+{
+
+}
+
+
+std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
+{
+	std::ifstream Stream(pFileName, std::ios::ate | std::ios::binary);
+
+	std::vector<char> BinaryCode;
+
+	if (Stream.is_open() && Stream.good())
+	{
+		BinaryCode.resize((size_t)Stream.tellg());
+
+		Stream.seekg(0);
+
+		Stream.read(BinaryCode.data(), BinaryCode.size());
+
+		Stream.close();
+	}
+
+	return BinaryCode;
+}
+
+
+std::shared_ptr<ShaderModule> ShaderModule::Create(const char * pFileName)
+{
+	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName));
+}
+
+
+std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode)
+{
+	if (BinaryCode.empty())			return nullptr;
+	
+	VkShaderModuleCreateInfo		CreateInfo = {};
+	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+	CreateInfo.pNext				= nullptr;
+	CreateInfo.flags				= 0;
+	CreateInfo.codeSize				= BinaryCode.size();
+	CreateInfo.pCode				= (uint32_t*)BinaryCode.data();
+
+	VkShaderModule hShaderModule = VK_NULL_HANDLE;
+
+	sm_pDevice->CreateShaderModule(&CreateInfo, &hShaderModule);
+
+	return std::make_shared<ShaderModule>(hShaderModule);
+}
+
+
+ShaderModule::~ShaderModule() noexcept
+{
+	sm_pDevice->DestroyShaderModule(m_hShaderModule);
+}

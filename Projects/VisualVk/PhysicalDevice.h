@@ -4,7 +4,10 @@
 #pragma once
 
 #include <set>
-#include "Common.h"
+#include <vector>
+#include <vulkan/vulkan_core.h>
+
+#define VK_INVALID_INDEX			UINT32_MAX
 
 namespace Vk
 {
@@ -17,7 +20,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan physical device object.
 	 */
-	class VKAPI PhysicalDevice
+	class PhysicalDevice
 	{
 
 	private:

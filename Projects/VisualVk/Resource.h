@@ -17,7 +17,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan resource object.
 	 */
-	class VKAPI Resource
+	class Resource
 	{
 
 	protected:

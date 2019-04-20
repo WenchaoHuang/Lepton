@@ -32,20 +32,29 @@
     <Filter Include="1. Resources\3. Buffer">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Window">
+      <UniqueIdentifier>{ccd1a57b-3ac3-4408-a346-0f1109f3556b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="1. Resources\4. Images">
       <UniqueIdentifier>{d97cc3bb-3b72-44ae-8387-cfd83ec20e1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. Resources\5. Textures">
       <UniqueIdentifier>{f72bbd1a-504e-4921-b73c-3371e11decd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\7. Swapchain">
-      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Resources\6. Samplers">
+    <Filter Include="1. Resources\7. Samplers">
       <UniqueIdentifier>{125532ec-071f-4ecb-a43d-5f61396f1648}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Window">
-      <UniqueIdentifier>{ccd1a57b-3ac3-4408-a346-0f1109f3556b}</UniqueIdentifier>
+    <Filter Include="1. Resources\6. Pipelines">
+      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\8. Swapchain">
+      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\9. Framebuffer">
+      <UniqueIdentifier>{56b8a199-e8d0-40d9-bfe6-b5e03fe6eebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\10. ShaderModule">
+      <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +82,8 @@
     <ClCompile Include="Buffer.cpp">
       <Filter>1. Resources\3. Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Swapchain.cpp">
-      <Filter>1. Resources\7. Swapchain</Filter>
+      <Filter>1. Resources\8. Swapchain</Filter>
     </ClCompile>
     <ClCompile Include="Images.cpp">
       <Filter>1. Resources\4. Images</Filter>
@@ -87,7 +95,16 @@
       <Filter>2. Window</Filter>
     </ClCompile>
     <ClCompile Include="Samplers.cpp">
-      <Filter>1. Resources\6. Samplers</Filter>
+      <Filter>1. Resources\7. Samplers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderModule.cpp">
+      <Filter>1. Resources\10. ShaderModule</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipelines.cpp">
+      <Filter>1. Resources\6. Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>1. Resources\9. Framebuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,18 +123,14 @@
     <ClInclude Include="Resource.h">
       <Filter>1. Resources\0. Resource</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceMemory.h">
-      <Filter>1. Resources\1. Memory</Filter>
-    </ClInclude>
     <ClInclude Include="Signals.h">
       <Filter>1. Resources\2. Signals</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>1. Resources\3. Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h" />
     <ClInclude Include="Swapchain.h">
-      <Filter>1. Resources\7. Swapchain</Filter>
+      <Filter>1. Resources\8. Swapchain</Filter>
     </ClInclude>
     <ClInclude Include="Images.h">
       <Filter>1. Resources\4. Images</Filter>
@@ -129,7 +142,19 @@
       <Filter>2. Window</Filter>
     </ClInclude>
     <ClInclude Include="Samplers.h">
-      <Filter>1. Resources\6. Samplers</Filter>
+      <Filter>1. Resources\7. Samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderModule.h">
+      <Filter>1. Resources\10. ShaderModule</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipelines.h">
+      <Filter>1. Resources\6. Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>1. Resources\9. Framebuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceMemory.h">
+      <Filter>1. Resources\1. Memory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

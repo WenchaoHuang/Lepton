@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Common.h"
+#include <vector>
 #include <vulkan/vulkan.h>
 
 #undef	CreateSemaphore
@@ -20,7 +20,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan instance object (singleton).
 	 */
-	class VKAPI Instance
+	class Instance
 	{
 
 	private:

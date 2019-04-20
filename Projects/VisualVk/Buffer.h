@@ -14,7 +14,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan buffer object.
 	 */
-	class VKAPI Buffer : private Resource
+	class Buffer : private Resource
 	{
 
 	public:
@@ -70,7 +70,7 @@ namespace Vk
 	/**
 	 *	@brief	Template for Vulkan buffer object.
 	 */
-	template<typename Type> class VKAPI Array
+	template<typename Type> class Array
 	{
 
 	public:

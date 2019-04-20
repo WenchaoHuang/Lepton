@@ -162,7 +162,7 @@ uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPro
 		MemoryTypeBits >>= 1;
 	}
 
-	return UINT32_MAX;
+	return VK_INVALID_INDEX;
 }
 
 
@@ -176,7 +176,7 @@ uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
 		}
 	}
 
-	return UINT32_MAX;
+	return VK_INVALID_INDEX;
 }
 
 
@@ -190,7 +190,7 @@ uint32_t PhysicalDevice::GetGraphicsQueueFamilyIndex() const
 		}
 	}
 
-	return UINT32_MAX;
+	return VK_INVALID_INDEX;
 }
 
 
@@ -215,7 +215,7 @@ uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 		}
 	}
 
-	return UINT32_MAX;
+	return VK_INVALID_INDEX;
 }
 
 
@@ -240,7 +240,7 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 		}
 	}
 
-	return UINT32_MAX;
+	return VK_INVALID_INDEX;
 }
 
 

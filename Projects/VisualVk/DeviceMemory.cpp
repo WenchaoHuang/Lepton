@@ -34,7 +34,7 @@ VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, VkMemoryPrope
 	{
 		sm_pDevice->FreeMemory(m_hMemory);
 
-		m_Bytes = AllocateInfo.allocationSize;
+		m_Bytes = Requirements.size;
 
 		m_hMemory = hMemory;
 	}
@@ -129,5 +129,5 @@ void DeviceMemory::Free() noexcept
 
 DeviceMemory::~DeviceMemory()
 {
-	sm_pDevice->FreeMemory(m_hMemory);
+	this->Free();
 }

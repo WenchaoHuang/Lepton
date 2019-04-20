@@ -16,7 +16,7 @@ namespace Vk
 	 */
 	template<VkImageType eImageType, VkImageViewType eViewType>
 
-	class VKAPI BaseImage : private Resource
+	class BaseImage : private Resource
 	{
 
 	protected:
@@ -91,7 +91,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan image 1D object.
 	 */
-	class VKAPI Image1D : public BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D>
+	class Image1D : public BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D>
 	{
 
 	public:
@@ -112,7 +112,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan image 1D array object.
 	 */
-	class VKAPI Image1DArray : public BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D_ARRAY>
+	class Image1DArray : public BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D_ARRAY>
 	{
 
 	public:
@@ -133,14 +133,14 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan image 2D object.
 	 */
-	class VKAPI Image2D : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D>
+	class Image2D : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D>
 	{
 
 	public:
 
 		//!	@brief	Create new image 2D object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels,
-					   VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
+						VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Width, Height, 1 }, MipLevels, 1, eSamples, eUsage);
 
@@ -187,7 +187,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan image 2D object.
 	 */
-	class VKAPI Image2DArray : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D_ARRAY>
+	class Image2DArray : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D_ARRAY>
 	{
 
 	public:
@@ -209,7 +209,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan image cube object.
 	 */
-	class VKAPI ImageCube : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE>
+	class ImageCube : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE>
 	{
 
 	public:
@@ -232,7 +232,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan image 3D object.
 	 */
-	class VKAPI Image3D : public BaseImage<VK_IMAGE_TYPE_3D, VK_IMAGE_VIEW_TYPE_3D>
+	class Image3D : public BaseImage<VK_IMAGE_TYPE_3D, VK_IMAGE_VIEW_TYPE_3D>
 	{
 
 	public:

@@ -16,7 +16,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan fence object.
 	 */
-	class VKAPI Fence : private Resource
+	class Fence : private Resource
 	{
 
 	public:
@@ -59,7 +59,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan semaphore object.
 	 */
-	class VKAPI Semaphore : private Resource
+	class Semaphore : private Resource
 	{
 
 	public:
@@ -90,7 +90,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan event object.
 	 */
-	class VKAPI Event : private Resource
+	class Event : private Resource
 	{
 
 	public:
@@ -120,6 +120,6 @@ namespace Vk
 
 	private:
 
-		VkEvent			m_hEvent;
+		VkEvent		m_hEvent;
 	};
 }

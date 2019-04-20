@@ -14,7 +14,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan device memory object.
 	 */
-	class VKAPI DeviceMemory : private Resource
+	class DeviceMemory : private Resource
 	{
 
 	public:

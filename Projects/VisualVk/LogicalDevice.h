@@ -3,7 +3,8 @@
 *************************************************************************/
 #pragma once
 
-#include "Common.h"
+#include <vector>
+#include <vulkan/vulkan_core.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////
 																						\
@@ -30,7 +31,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan logical device object.
 	 */
-	class VKAPI LogicalDevice
+	class LogicalDevice
 	{
 
 	private:
@@ -63,7 +64,7 @@ namespace Vk
 	public:
 
 		/*****************************************************************
-		**********************    Create_Destroy    **********************
+		*********************    Create & Destroy    *********************
 		*****************************************************************/
 
 		VK_DEVICE_OBJECT_CREATE_AND_DESTROY_FUNCTION(Fence)
