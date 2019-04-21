@@ -6,22 +6,29 @@
 
 using namespace Vk;
 
+template ShaderModule<VK_SHADER_STAGE_VERTEX_BIT>;
+template ShaderModule<VK_SHADER_STAGE_COMPUTE_BIT>;
+template ShaderModule<VK_SHADER_STAGE_GEOMETRY_BIT>;
+template ShaderModule<VK_SHADER_STAGE_FRAGMENT_BIT>;
+template ShaderModule<VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT>;
+template ShaderModule<VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT>;
+
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShaderModule)
+template<VkShaderStageFlagBits eStage> ShaderModule<eStage>::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShaderModule)
 {
 	m_ShaderStageCreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	m_ShaderStageCreateInfo.pNext					= nullptr;
 	m_ShaderStageCreateInfo.flags					= 0;
-	m_ShaderStageCreateInfo.stage					= ;
+	m_ShaderStageCreateInfo.stage					= eStage;
 	m_ShaderStageCreateInfo.module					= m_hShaderModule;
 	m_ShaderStageCreateInfo.pName					= "main";
 	m_ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
 }
 
 
-std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
+template<VkShaderStageFlagBits eStage> std::vector<char> ShaderModule<eStage>::ReadBinary(const char * pFileName)
 {
 	std::ifstream Stream(pFileName, std::ios::ate | std::ios::binary);
 
@@ -42,13 +49,13 @@ std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const char * pFileName, VkShaderStageFlagBits eStage)
+template<VkShaderStageFlagBits eStage> std::shared_ptr<ShaderModule<eStage>> ShaderModule<eStage>::Create(const char * pFileName)
 {
-	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName), eStage);
+	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName));
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode, VkShaderStageFlagBits eStage)
+template<VkShaderStageFlagBits eStage> std::shared_ptr<ShaderModule<eStage>> ShaderModule<eStage>::Create(const std::vector<char> & BinaryCode)
 {
 	if (BinaryCode.empty())			return nullptr;
 	
@@ -67,7 +74,7 @@ std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & Bin
 }
 
 
-ShaderModule::~ShaderModule() noexcept
+template<VkShaderStageFlagBits eStage> ShaderModule<eStage>::~ShaderModule() noexcept
 {
 	sm_pDevice->DestroyShaderModule(m_hShaderModule);
 }

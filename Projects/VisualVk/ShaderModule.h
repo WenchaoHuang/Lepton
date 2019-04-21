@@ -8,14 +8,14 @@
 
 namespace Vk
 {
-//	template<VkShaderStageFlagBits eStage> class ShaderModule;
+	template<VkShaderStageFlagBits eStage> class ShaderModule;
 
-//	using VertexShader = ShaderModule<VK_SHADER_STAGE_VERTEX_BIT>;
-//	using ComputeShader = ShaderModule<VK_SHADER_STAGE_COMPUTE_BIT>;
-//	using FragmentShader = std::shared_ptr<ShaderModule<VK_SHADER_STAGE_FRAGMENT_BIT>>;
-//	using GeometryShader = std::shared_ptr<ShaderModule<VK_SHADER_STAGE_GEOMETRY_BIT>>;
-//	using TessControlShader = std::shared_ptr<ShaderModule<VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT>>;
-//	using TessEvaluationShader = std::shared_ptr<ShaderModule<VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT>>;
+	using VertexShader = ShaderModule<VK_SHADER_STAGE_VERTEX_BIT>;
+	using ComputeShader = ShaderModule<VK_SHADER_STAGE_COMPUTE_BIT>;
+	using GeometryShader = ShaderModule<VK_SHADER_STAGE_GEOMETRY_BIT>;
+	using FragmentShader = ShaderModule<VK_SHADER_STAGE_FRAGMENT_BIT>;
+	using TessControlShader = ShaderModule<VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT>;
+	using TessEvaluationShader = ShaderModule<VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT>;
 
 	/*********************************************************************
 	*************************    ShaderModule    *************************
@@ -24,7 +24,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan shader module object.
 	 */
-	class ShaderModule : private Resource
+	template<VkShaderStageFlagBits eStage> class ShaderModule : private Resource
 	{
 
 	public:
@@ -37,17 +37,14 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to handle.
-		operator VkShaderModule() { return m_hShaderModule; }
-
 		//!	@brief	Read binary file.
 		static std::vector<char> ReadBinary(const char * pFileName);
 
 		//!	@brief	Create shader module.
-		static std::shared_ptr<ShaderModule> Create(const char * pFileName, VkShaderStageFlagBits eStage);
+		static std::shared_ptr<ShaderModule> Create(const char * pFileName);
 
 		//!	@brief	Create shader module.
-		static std::shared_ptr<ShaderModule> Create(const std::vector<char> & BinaryCode, VkShaderStageFlagBits eStage);
+		static std::shared_ptr<ShaderModule> Create(const std::vector<char> & BinaryCode);
 
 		//!	@brief	If shader handle is valid.
 		VkBool32 IsValid() const { return m_hShaderModule != VK_NULL_HANDLE; }

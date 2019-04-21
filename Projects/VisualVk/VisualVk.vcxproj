@@ -167,7 +167,6 @@
     <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="Samplers.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
@@ -184,7 +183,6 @@
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="Samplers.h" />
     <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />
