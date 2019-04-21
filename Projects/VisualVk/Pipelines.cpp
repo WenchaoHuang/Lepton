@@ -39,6 +39,36 @@ VkResult GraphicsPipeline::Refresh()
 }
 
 
+void GraphicsPipeline::Release() noexcept
+{
+
+}
+
+
+GraphicsPipeline::~GraphicsPipeline()
+{
+	this->Release();
+}
+
+
 /*************************************************************************
 *************************    ComputePipeline    **************************
 *************************************************************************/
+ComputePipeline::ComputePipeline() : m_hPipeline(VK_NULL_HANDLE)
+{
+
+}
+
+
+void ComputePipeline::Release() noexcept
+{
+	sm_pDevice->DestroyPipeline(m_hPipeline);
+
+	m_hPipeline = VK_NULL_HANDLE;
+}
+
+
+ComputePipeline::~ComputePipeline()
+{
+	this->Release();
+}

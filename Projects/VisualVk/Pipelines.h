@@ -21,9 +21,13 @@ namespace Vk
 
 		GraphicsPipeline();
 
+		~GraphicsPipeline();
+
 	public:
 
 		VkResult Refresh();
+
+		void Release() noexcept;
 
 	private:
 
@@ -52,9 +56,18 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Create compute pipeline object.
+		ComputePipeline();
+
+		//!	@brief	Destroy compute pipeline object.
+		~ComputePipeline();
+
+	public:
+
+		void Release() noexcept;
 
 	private:
 
-		VkPipeline			m_hPipeline;
+		VkPipeline		m_hPipeline;
 	};
 }

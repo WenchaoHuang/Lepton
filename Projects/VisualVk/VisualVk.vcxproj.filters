@@ -32,9 +32,6 @@
     <Filter Include="1. Resources\3. Buffer">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Window">
-      <UniqueIdentifier>{ccd1a57b-3ac3-4408-a346-0f1109f3556b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Resources\4. Images">
       <UniqueIdentifier>{d97cc3bb-3b72-44ae-8387-cfd83ec20e1a}</UniqueIdentifier>
     </Filter>
@@ -91,9 +88,6 @@
     <ClCompile Include="Textures.cpp">
       <Filter>1. Resources\5. Textures</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>2. Window</Filter>
-    </ClCompile>
     <ClCompile Include="Samplers.cpp">
       <Filter>1. Resources\7. Samplers</Filter>
     </ClCompile>
@@ -137,9 +131,6 @@
     </ClInclude>
     <ClInclude Include="Textures.h">
       <Filter>1. Resources\5. Textures</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>2. Window</Filter>
     </ClInclude>
     <ClInclude Include="Samplers.h">
       <Filter>1. Resources\7. Samplers</Filter>

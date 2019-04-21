@@ -11,7 +11,13 @@ using namespace Vk;
 *************************************************************************/
 ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShaderModule)
 {
-
+	m_ShaderStageCreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	m_ShaderStageCreateInfo.pNext					= nullptr;
+	m_ShaderStageCreateInfo.flags					= 0;
+	m_ShaderStageCreateInfo.stage					= ;
+	m_ShaderStageCreateInfo.module					= m_hShaderModule;
+	m_ShaderStageCreateInfo.pName					= "main";
+	m_ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
 }
 
 
@@ -36,13 +42,13 @@ std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const char * pFileName)
+std::shared_ptr<ShaderModule> ShaderModule::Create(const char * pFileName, VkShaderStageFlagBits eStage)
 {
-	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName));
+	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName), eStage);
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode)
+std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode, VkShaderStageFlagBits eStage)
 {
 	if (BinaryCode.empty())			return nullptr;
 	
