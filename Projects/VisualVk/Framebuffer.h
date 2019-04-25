@@ -41,7 +41,6 @@ namespace Vk
 		static std::shared_ptr<RenderPass> Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
 												  const std::vector<VkSubpassDescription> & SubpassDescriptions,
 												  const std::vector<VkSubpassDependency> & SubpassDependencies);
-
 	private:
 
 		const VkRenderPass		m_hRenderPass;

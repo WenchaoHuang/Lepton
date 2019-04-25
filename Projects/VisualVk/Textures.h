@@ -11,17 +11,24 @@ namespace Vk
 	*************************    BaseTexture    **************************
 	*********************************************************************/
 
-	class BaseTexture
+	class BaseTexture : private Resource
 	{
 
 	public:
 
+		BaseTexture();
+
+		~BaseTexture();
+
+	public:
+
+		void Release() noexcept;
 
 	protected:
 
 		VkSampler			m_hSampler;
 
-		VkImageLayout		m_hImageLayout;
+		VkImageLayout		m_eImageLayout;
 	};
 
 	/*********************************************************************
@@ -31,6 +38,12 @@ namespace Vk
 	class Texture1D : public BaseTexture
 	{
 
+	public:
+
+
+	private:
+
+
 	};
 
 	/*********************************************************************
@@ -39,6 +52,8 @@ namespace Vk
 
 	class Texture1DArray : public BaseTexture
 	{
+
+	public:
 
 	};
 

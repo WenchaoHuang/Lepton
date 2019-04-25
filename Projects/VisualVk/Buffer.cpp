@@ -48,7 +48,7 @@ VkResult Buffer::Create(VkDeviceSize SizeBytes)
 		else
 		{
 			sm_pDevice->BindBufferMemory(hNewBuffer, m_Memory, 0);
-
+			
 			sm_pDevice->DestroyBuffer(m_hBuffer);
 
 			m_hBuffer = hNewBuffer;
