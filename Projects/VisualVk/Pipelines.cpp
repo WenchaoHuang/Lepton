@@ -39,6 +39,20 @@ VkResult GraphicsPipeline::Refresh()
 }
 
 
+VkResult GraphicsPipeline::SetPrimitiveTopology(VkPrimitiveTopology eTopology)
+{
+	if (m_InputAssemblyState.topology == eTopology)		return VK_SUCCESS;
+
+	VkPipelineInputAssemblyStateCreateInfo InputAssemblyState = m_InputAssemblyState;
+
+	InputAssemblyState.topology = eTopology;
+
+	//!	TODO
+
+	return VK_SUCCESS;
+}
+
+
 void GraphicsPipeline::Release() noexcept
 {
 

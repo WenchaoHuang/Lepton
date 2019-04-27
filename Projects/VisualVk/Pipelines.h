@@ -29,6 +29,8 @@ namespace Vk
 
 		void Release() noexcept;
 
+		VkResult SetPrimitiveTopology(VkPrimitiveTopology eTopology);
+
 	private:
 
 		VkPipeline									m_hPipeline;
