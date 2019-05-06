@@ -14,9 +14,9 @@ RenderPass::RenderPass(VkRenderPass hRenderPass) : m_hRenderPass(hRenderPass)
 }
 
 
-std::shared_ptr<RenderPass> RenderPass::CreateSwapchainRenderPass(VkFormat eColorFormat,
-																  VkFormat eDepthStencilFormat,
-																  VkSampleCountFlagBits eSamples)
+std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat,
+														   VkFormat eDepthStencilFormat,
+														   VkSampleCountFlagBits eSamples)
 {
 	std::vector<VkAttachmentDescription>			AttachmentDescriptions(2);
 	std::vector<VkSubpassDescription>				SubpassDescriptions(1);

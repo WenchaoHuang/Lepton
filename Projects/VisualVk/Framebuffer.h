@@ -34,9 +34,10 @@ namespace Vk
 		//!	@brief	If render pass handle is valid.
 		VkBool32 IsValid() const { return m_hRenderPass != VK_NULL_HANDLE; }
 
-		static std::shared_ptr<RenderPass> CreateSwapchainRenderPass(VkFormat eColorFormat,
-																	 VkFormat eDepthStencilFormat,
-																	 VkSampleCountFlagBits eSamples);
+		//!	@brief	Create a common render pass object for swapchain.
+		static std::shared_ptr<RenderPass> CreateForSwapchain(VkFormat eColorFormat,
+															  VkFormat eDepthStencilFormat,
+															  VkSampleCountFlagBits eSamples);
 		//!	@brief	Create a render pass object.
 		static std::shared_ptr<RenderPass> Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
 												  const std::vector<VkSubpassDescription> & SubpassDescriptions,

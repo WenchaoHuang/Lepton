@@ -3,7 +3,8 @@
 *************************************************************************/
 #pragma once
 
-#include "Resource.h"
+#include "Images.h"
+#include "Framebuffer.h"
 
 namespace Vk
 {
@@ -53,6 +54,10 @@ namespace Vk
 
 	private:
 
+		VkResult UpdateFramebuffers();
+
+	private:
+
 		uint32_t							m_ImageIndex;
 
 		VkSwapchainKHR						m_hSwapchain;
@@ -63,13 +68,19 @@ namespace Vk
 
 		std::vector<VkSurfaceFormatKHR>		m_SurfaceFormats;
 
+		std::shared_ptr<Vk::RenderPass>		m_spRenderPass;
+
 		std::vector<VkPresentModeKHR>		m_PresentModes;
+
+		std::vector<Vk::Framebuffer>		m_Frmebuffers;
 
 		std::vector<VkImageView>			m_hImageViews;
 
 		VkSwapchainCreateInfoKHR			m_CreateInfo;
 
 		std::vector<VkImage>				m_hImages;
+
+		Vk::Image2D							m_DepthBuffer;
 
 		const VkSurfaceKHR					m_hSurface;
 	};

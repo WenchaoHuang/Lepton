@@ -34,9 +34,7 @@ Swapchain::Swapchain(VkSurfaceKHR hSurface) : m_hSwapchain(VK_NULL_HANDLE), m_pP
 
 VkResult Swapchain::UpdateSwapchain(VkBool32 bVsync)
 {
-	VkSurfaceCapabilitiesKHR SurfaceCapabilities = {};
-
-	SurfaceCapabilities = sm_pPhyDevice->GetSurfaceCapabilities(m_hSurface);
+	VkSurfaceCapabilitiesKHR			SurfaceCapabilities = sm_pPhyDevice->GetSurfaceCapabilities(m_hSurface);
 
 	m_CreateInfo.sType					= VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
 	m_CreateInfo.pNext					= nullptr;
@@ -93,9 +91,29 @@ VkResult Swapchain::UpdateSwapchain(VkBool32 bVsync)
 
 			sm_pDevice->CreateImageView(&CreateInfo, &m_hImageViews[i]);
 		}
+
+		this->UpdateFramebuffers();
 	}
 
 	return eResult;
+}
+
+
+VkResult Swapchain::UpdateFramebuffers()
+{
+	m_Frmebuffers.resize(m_hImages.size());
+
+	m_DepthBuffer.CreateDepthStencilAttachment(m_CreateInfo.imageExtent.width, m_CreateInfo.imageExtent.height);
+
+	if (m_spRenderPass == nullptr)
+		m_spRenderPass = Vk::RenderPass::CreateForSwapchain(m_CreateInfo.imageFormat, m_DepthBuffer.GetFormat(), m_DepthBuffer.GetSampleCount());
+	
+	for (size_t i = 0; i < m_Frmebuffers.size(); i++)
+	{
+		std::vector<VkImageView> Attachments;
+
+		m_Frmebuffers[i].Create(m_spRenderPass, Attachments, m_CreateInfo.imageExtent);
+	}
 }
 
 
