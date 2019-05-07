@@ -133,11 +133,11 @@ namespace Vk
 
 	public:
 
-		void SetWaitSignalSemaphores(uint32_t nSignalSemaphoreCount,
+		void SetWaitSignalSemaphores(uint32_t SignalSemaphoreCount,
 									 const VkSemaphore * pSignalSemaphores,
 									 const VkPipelineStageFlags * pWaitDstStageMask);
 
-		void SetSignalSemaphores(uint32_t nSignalSemaphoreCount, const VkSemaphore * pSignalSemaphores);
+		void SetSignalSemaphores(uint32_t SignalSemaphoreCount, const VkSemaphore * pSignalSemaphores);
 
 	public:
 

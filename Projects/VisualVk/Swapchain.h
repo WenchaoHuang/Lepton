@@ -3,8 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Images.h"
-#include "Framebuffer.h"
+#include "Resource.h"
 
 namespace Vk
 {
@@ -29,7 +28,10 @@ namespace Vk
 	public:
 
 		//!	@brief	Reconstruct swapchain.
-		VkResult UpdateSwapchain(VkBool32 bVsync);
+		VkResult Reconstruct(VkBool32 bVsync);
+
+		//!	@brief	Queue an image for presentation.
+		VkResult Present(VkSemaphore hWaitSemaphore);
 
 		//!	@brief	If swapchain handle is valid.
 		VkBool32 IsValid() const { return m_hSwapchain != VK_NULL_HANDLE; }
@@ -49,12 +51,7 @@ namespace Vk
 		//!	@brief	Return extent of swapchain images.
 		VkExtent2D GetImageExtent() const { return m_CreateInfo.imageExtent; }
 
-		//!	@brief	Queue an image for presentation.
-		VkResult Present(const VkSemaphore * pWaitSemaphore = nullptr);
-
-	private:
-
-		VkResult UpdateFramebuffers();
+		CommandQueue * GetPresentQueue() { return m_pPresentQueue; }
 
 	private:
 
@@ -68,19 +65,13 @@ namespace Vk
 
 		std::vector<VkSurfaceFormatKHR>		m_SurfaceFormats;
 
-		std::shared_ptr<Vk::RenderPass>		m_spRenderPass;
-
 		std::vector<VkPresentModeKHR>		m_PresentModes;
-
-		std::vector<Vk::Framebuffer>		m_Frmebuffers;
 
 		std::vector<VkImageView>			m_hImageViews;
 
 		VkSwapchainCreateInfoKHR			m_CreateInfo;
 
 		std::vector<VkImage>				m_hImages;
-
-		Vk::Image2D							m_DepthBuffer;
 
 		const VkSurfaceKHR					m_hSurface;
 	};

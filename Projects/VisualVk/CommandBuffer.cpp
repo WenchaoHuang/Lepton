@@ -140,19 +140,18 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 }
 
 
-void CommandBuffer::SetWaitSignalSemaphores(uint32_t nSignalSemaphoreCount,
+void CommandBuffer::SetWaitSignalSemaphores(uint32_t SignalSemaphoreCount,
 											const VkSemaphore * pSignalSemaphores,
 											const VkPipelineStageFlags * pWaitDstStageMask)
 {
-	m_SubmitInfo.waitSemaphoreCount		= nSignalSemaphoreCount;
+	m_SubmitInfo.waitSemaphoreCount		= SignalSemaphoreCount;
 	m_SubmitInfo.pWaitSemaphores		= pSignalSemaphores;
 	m_SubmitInfo.pWaitDstStageMask		= pWaitDstStageMask;
 }
 
 
-void CommandBuffer::SetSignalSemaphores(uint32_t nSignalSemaphoreCount,
-										 const VkSemaphore * pSignalSemaphores)
+void CommandBuffer::SetSignalSemaphores(uint32_t SignalSemaphoreCount, const VkSemaphore * pSignalSemaphores)
 {
-	m_SubmitInfo.signalSemaphoreCount	= nSignalSemaphoreCount;
+	m_SubmitInfo.signalSemaphoreCount	= SignalSemaphoreCount;
 	m_SubmitInfo.pSignalSemaphores		= pSignalSemaphores;
 }

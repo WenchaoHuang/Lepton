@@ -32,10 +32,8 @@ Swapchain::Swapchain(VkSurfaceKHR hSurface) : m_hSwapchain(VK_NULL_HANDLE), m_pP
 }
 
 
-VkResult Swapchain::UpdateSwapchain(VkBool32 bVsync)
+VkResult Swapchain::Reconstruct(VkBool32 bVsync)
 {
-	VkSurfaceCapabilitiesKHR			SurfaceCapabilities = sm_pPhyDevice->GetSurfaceCapabilities(m_hSurface);
-
 	m_CreateInfo.sType					= VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
 	m_CreateInfo.pNext					= nullptr;
 	m_CreateInfo.flags					= 0;
@@ -43,7 +41,7 @@ VkResult Swapchain::UpdateSwapchain(VkBool32 bVsync)
 	m_CreateInfo.minImageCount			= bVsync ? 2 : 3;
 	m_CreateInfo.imageFormat			= VK_FORMAT_B8G8R8A8_UNORM;
 	m_CreateInfo.imageColorSpace		= VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-	m_CreateInfo.imageExtent			= SurfaceCapabilities.currentExtent;
+	m_CreateInfo.imageExtent			= sm_pPhyDevice->GetSurfaceCapabilities(m_hSurface).currentExtent;
 	m_CreateInfo.imageArrayLayers		= 1;
 	m_CreateInfo.imageUsage				= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 	m_CreateInfo.imageSharingMode		= VK_SHARING_MODE_EXCLUSIVE;
@@ -91,29 +89,9 @@ VkResult Swapchain::UpdateSwapchain(VkBool32 bVsync)
 
 			sm_pDevice->CreateImageView(&CreateInfo, &m_hImageViews[i]);
 		}
-
-		this->UpdateFramebuffers();
 	}
 
 	return eResult;
-}
-
-
-VkResult Swapchain::UpdateFramebuffers()
-{
-	m_Frmebuffers.resize(m_hImages.size());
-
-	m_DepthBuffer.CreateDepthStencilAttachment(m_CreateInfo.imageExtent.width, m_CreateInfo.imageExtent.height);
-
-	if (m_spRenderPass == nullptr)
-		m_spRenderPass = Vk::RenderPass::CreateForSwapchain(m_CreateInfo.imageFormat, m_DepthBuffer.GetFormat(), m_DepthBuffer.GetSampleCount());
-	
-	for (size_t i = 0; i < m_Frmebuffers.size(); i++)
-	{
-		std::vector<VkImageView> Attachments;
-
-		m_Frmebuffers[i].Create(m_spRenderPass, Attachments, m_CreateInfo.imageExtent);
-	}
 }
 
 
@@ -125,11 +103,11 @@ uint32_t Swapchain::AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence)
 }
 
 
-VkResult Swapchain::Present(const VkSemaphore * pWaitSemaphore)
+VkResult Swapchain::Present(VkSemaphore hWaitSemaphore)
 {
-	m_PresentInfo.waitSemaphoreCount = uint32_t(pWaitSemaphore != nullptr);
+	m_PresentInfo.waitSemaphoreCount = uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
 
-	m_PresentInfo.pWaitSemaphores = pWaitSemaphore;
+	m_PresentInfo.pWaitSemaphores = &hWaitSemaphore;
 
 	return m_pPresentQueue->Present(&m_PresentInfo);
 }
