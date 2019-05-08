@@ -42,16 +42,19 @@ namespace Vk
 		//!	@brief	Return swapchain images.
 		const std::vector<VkImage> & GetImages() const { return m_hImages; }
 
+		//!	@brief	Return extent of swapchain images.
+		VkExtent2D GetImageExtent() const { return m_CreateInfo.imageExtent; }
+
 		//!	@brief	Return swapchain image views.
 		const std::vector<VkImageView> & GetImageViews() const { return m_hImageViews; }
 
 		//!	@brief	Retrieve the index of the next available presentable image.
-		uint32_t AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE);
+		uint32_t AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		{
+			sm_pDevice->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
 
-		//!	@brief	Return extent of swapchain images.
-		VkExtent2D GetImageExtent() const { return m_CreateInfo.imageExtent; }
-
-		CommandQueue * GetPresentQueue() { return m_pPresentQueue; }
+			return m_ImageIndex;
+		}
 
 	private:
 

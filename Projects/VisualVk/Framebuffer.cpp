@@ -15,15 +15,14 @@ RenderPass::RenderPass(VkRenderPass hRenderPass) : m_hRenderPass(hRenderPass)
 
 
 std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat,
-														   VkFormat eDepthStencilFormat,
-														   VkSampleCountFlagBits eSamples)
+														   VkFormat eDepthStencilFormat)
 {
 	std::vector<VkAttachmentDescription>			AttachmentDescriptions(2);
 	std::vector<VkSubpassDescription>				SubpassDescriptions(1);
 	std::vector<VkSubpassDependency>				SubpassDependencies;
 
 	AttachmentDescriptions[0].format				= eColorFormat;
-	AttachmentDescriptions[0].samples				= eSamples;
+	AttachmentDescriptions[0].samples				= VK_SAMPLE_COUNT_1_BIT;
 	AttachmentDescriptions[0].loadOp				= VK_ATTACHMENT_LOAD_OP_CLEAR;
 	AttachmentDescriptions[0].storeOp				= VK_ATTACHMENT_STORE_OP_STORE;
 	AttachmentDescriptions[0].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
@@ -33,7 +32,7 @@ std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat
 	AttachmentDescriptions[0].flags					= 0;
 
 	AttachmentDescriptions[1].format				= eDepthStencilFormat;
-	AttachmentDescriptions[1].samples				= eSamples;
+	AttachmentDescriptions[1].samples				= VK_SAMPLE_COUNT_1_BIT;
 	AttachmentDescriptions[1].loadOp				= VK_ATTACHMENT_LOAD_OP_CLEAR;
 	AttachmentDescriptions[1].storeOp				= VK_ATTACHMENT_STORE_OP_DONT_CARE;
 	AttachmentDescriptions[1].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;

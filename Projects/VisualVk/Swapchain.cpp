@@ -95,14 +95,6 @@ VkResult Swapchain::Reconstruct(VkBool32 bVsync)
 }
 
 
-uint32_t Swapchain::AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence)
-{
-	sm_pDevice->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
-
-	return m_ImageIndex;
-}
-
-
 VkResult Swapchain::Present(VkSemaphore hWaitSemaphore)
 {
 	m_PresentInfo.waitSemaphoreCount = uint32_t(hWaitSemaphore != VK_NULL_HANDLE);

@@ -33,6 +33,8 @@ namespace Vk
 
 	private:
 
+		VkRect2D									m_Scissor;
+		VkViewport									m_Viewport;
 		VkPipeline									m_hPipeline;
 		VkGraphicsPipelineCreateInfo				m_CreateInfo;
 		VkPipelineDynamicStateCreateInfo			m_DynamicState;

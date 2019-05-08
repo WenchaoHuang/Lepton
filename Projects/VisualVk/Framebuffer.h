@@ -36,8 +36,7 @@ namespace Vk
 
 		//!	@brief	Create a common render pass object for swapchain.
 		static std::shared_ptr<RenderPass> CreateForSwapchain(VkFormat eColorFormat,
-															  VkFormat eDepthStencilFormat,
-															  VkSampleCountFlagBits eSamples);
+															  VkFormat eDepthStencilFormat);
 		//!	@brief	Create a render pass object.
 		static std::shared_ptr<RenderPass> Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
 												  const std::vector<VkSubpassDescription> & SubpassDescriptions,
