@@ -56,6 +56,8 @@ namespace Vk
 			return m_ImageIndex;
 		}
 
+		CommandQueue * GetPresentQueue() { return m_pPresentQueue; }
+
 	private:
 
 		uint32_t							m_ImageIndex;

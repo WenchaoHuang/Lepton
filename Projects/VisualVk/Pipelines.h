@@ -7,6 +7,18 @@
 
 namespace Vk
 {
+
+	struct PipelineViewportState : private VkPipelineViewportStateCreateInfo
+	{
+		operator VkPipelineViewportStateCreateInfo() { return *this; }
+
+		VkRect2D	Scissor;	VkViewport	Viewport;
+
+		PipelineViewportState();
+	};
+
+
+
 	/*********************************************************************
 	***********************    GraphicsPipeline    ***********************
 	*********************************************************************/

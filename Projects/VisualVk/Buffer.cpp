@@ -69,11 +69,11 @@ VkResult Buffer::CopyFrom(const Buffer * pSrcBuffer, VkDeviceSize SrcOffset, VkD
 
 		VkBufferCopy BufferCopy = { SrcOffset, DstOffset, SizeBytes };
 
-		pCommandBuffer->Begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		pCommandBuffer->BeginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 
 		pCommandBuffer->CmdCopyBuffer(m_hBuffer, pSrcBuffer->m_hBuffer, 1, &BufferCopy);
 
-		pCommandBuffer->End();
+		pCommandBuffer->EndRecord();
 
 		Fence TempFence;
 

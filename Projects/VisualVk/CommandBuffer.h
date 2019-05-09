@@ -133,35 +133,42 @@ namespace Vk
 
 	public:
 
-		void SetWaitSignalSemaphores(uint32_t SignalSemaphoreCount,
-									 const VkSemaphore * pSignalSemaphores,
-									 const VkPipelineStageFlags * pWaitDstStageMask);
-
-		void SetSignalSemaphores(uint32_t SignalSemaphoreCount, const VkSemaphore * pSignalSemaphores);
-
-	public:
-
 		//!	@brief	Finish recording command buffer.
-		VkResult End() { return vkEndCommandBuffer(m_hCommandBuffer); }
-
-		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		VkResult Submit(VkFence hFence = VK_NULL_HANDLE)
-		{
-			return vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence);
-		}
-
-		//!	@brief	Reset command buffer to the initial state.
-		VkResult Reset(VkCommandBufferResetFlags eResetFlags = 0)
-		{
-			return vkResetCommandBuffer(m_hCommandBuffer, eResetFlags);
-		}
+		VkResult EndRecord() { return vkEndCommandBuffer(m_hCommandBuffer); }
 
 		//!	@brief	Start recording command buffer.
-		VkResult Begin(VkCommandBufferUsageFlags eUsageFlags = 0)
+		VkResult BeginRecord(VkCommandBufferUsageFlags eUsageFlags = 0)
 		{
 			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, eUsageFlags, nullptr };
 
 			return vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo);
+		}
+
+		//!	@brief	Reset command buffer to the initial state.
+		VkResult Reset(VkCommandBufferResetFlags eResetFlags = 0) { return vkResetCommandBuffer(m_hCommandBuffer, eResetFlags); }
+
+		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
+		VkResult Submit(VkSemaphore hWaitSemaphore, VkPipelineStageFlags eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		{
+			m_SubmitInfo.signalSemaphoreCount	= uint32_t(hSignalSemaphore != VK_NULL_HANDLE);
+			m_SubmitInfo.waitSemaphoreCount		= uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
+			m_SubmitInfo.pWaitDstStageMask		= &eWaitDstStageMask;
+			m_SubmitInfo.pSignalSemaphores		= &hSignalSemaphore;
+			m_SubmitInfo.pWaitSemaphores		= &hWaitSemaphore;
+
+			return vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence);
+		}
+
+		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
+		VkResult Submit(VkFence hFence = VK_NULL_HANDLE)
+		{
+			m_SubmitInfo.signalSemaphoreCount	= 0;
+			m_SubmitInfo.waitSemaphoreCount		= 0;
+			m_SubmitInfo.pWaitDstStageMask		= nullptr;
+			m_SubmitInfo.pSignalSemaphores		= nullptr;
+			m_SubmitInfo.pWaitSemaphores		= nullptr;
+
+			return vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence);
 		}
 
 	public:

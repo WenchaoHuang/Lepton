@@ -8,15 +8,6 @@
 
 namespace Vk
 {
-	template<VkShaderStageFlagBits eStage> class ShaderModule;
-
-	using VertexShader = ShaderModule<VK_SHADER_STAGE_VERTEX_BIT>;
-	using ComputeShader = ShaderModule<VK_SHADER_STAGE_COMPUTE_BIT>;
-	using GeometryShader = ShaderModule<VK_SHADER_STAGE_GEOMETRY_BIT>;
-	using FragmentShader = ShaderModule<VK_SHADER_STAGE_FRAGMENT_BIT>;
-	using TessControlShader = ShaderModule<VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT>;
-	using TessEvaluationShader = ShaderModule<VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT>;
-
 	/*********************************************************************
 	*************************    ShaderModule    *************************
 	*********************************************************************/
@@ -24,7 +15,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan shader module object.
 	 */
-	template<VkShaderStageFlagBits eStage> class ShaderModule : private Resource
+	class ShaderModule : private Resource
 	{
 
 	public:
@@ -54,5 +45,11 @@ namespace Vk
 		const VkShaderModule				m_hShaderModule;
 
 		VkPipelineShaderStageCreateInfo		m_ShaderStageCreateInfo;
+	};
+
+
+	template<VkShaderStageFlagBits eShaderStage> class Shader : public ShaderModule
+	{
+
 	};
 }

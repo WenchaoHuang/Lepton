@@ -75,6 +75,9 @@ namespace Vk
 		//!	@brief	Convert to handle.
 		operator VkSemaphore() { return m_hSemaphore; }
 
+		//!	@brief	Convert to pointer.
+		operator const VkSemaphore*() const { return &m_hSemaphore; }
+
 		//!	@brief	If semaphore handle is valid.
 		VkBool32 IsValid() const { return m_hSemaphore != VK_NULL_HANDLE; }
 

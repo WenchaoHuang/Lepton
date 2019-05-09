@@ -5,6 +5,29 @@
 
 using namespace Vk;
 
+PipelineViewportState::PipelineViewportState()
+{
+	VkPipelineViewportStateCreateInfo::sType			= VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+	VkPipelineViewportStateCreateInfo::pNext			= nullptr;
+	VkPipelineViewportStateCreateInfo::flags			= 0;
+	VkPipelineViewportStateCreateInfo::viewportCount	= 1;
+	VkPipelineViewportStateCreateInfo::pViewports		= &Viewport;
+	VkPipelineViewportStateCreateInfo::scissorCount		= 1;
+	VkPipelineViewportStateCreateInfo::pScissors		= &Scissor;
+
+	Viewport.x			= 0.0f;
+	Viewport.y			= 0.0f;
+	Viewport.width		= 0.0f;
+	Viewport.height		= 0.0f;
+	Viewport.minDepth	= 0.0f;
+	Viewport.maxDepth	= 0.0f;
+
+	Scissor.offset.x		= 0;
+	Scissor.offset.y		= 0;
+	Scissor.extent.width	= 0;
+	Scissor.extent.height	= 0;
+}
+
 /*************************************************************************
 *************************    GraphicsPipeline    *************************
 *************************************************************************/
