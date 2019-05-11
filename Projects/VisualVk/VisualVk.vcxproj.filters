@@ -38,9 +38,6 @@
     <Filter Include="1. Resources\5. Textures">
       <UniqueIdentifier>{f72bbd1a-504e-4921-b73c-3371e11decd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\6. Pipelines">
-      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Resources\7. Swapchain">
       <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
     </Filter>
@@ -49,6 +46,9 @@
     </Filter>
     <Filter Include="1. Resources\9. ShaderModule">
       <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\6. Pipeline">
+      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,11 +88,11 @@
     <ClCompile Include="ShaderModule.cpp">
       <Filter>1. Resources\9. ShaderModule</Filter>
     </ClCompile>
-    <ClCompile Include="Pipelines.cpp">
-      <Filter>1. Resources\6. Pipelines</Filter>
-    </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
       <Filter>1. Resources\8. Framebuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipelines.cpp">
+      <Filter>1. Resources\6. Pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,14 +129,14 @@
     <ClInclude Include="ShaderModule.h">
       <Filter>1. Resources\9. ShaderModule</Filter>
     </ClInclude>
-    <ClInclude Include="Pipelines.h">
-      <Filter>1. Resources\6. Pipelines</Filter>
-    </ClInclude>
     <ClInclude Include="Framebuffer.h">
       <Filter>1. Resources\8. Framebuffer</Filter>
     </ClInclude>
     <ClInclude Include="DeviceMemory.h">
       <Filter>1. Resources\1. Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipelines.h">
+      <Filter>1. Resources\6. Pipeline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

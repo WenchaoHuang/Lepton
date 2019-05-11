@@ -164,8 +164,8 @@
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="LogicalDevice.cpp" />
     <ClCompile Include="PhysicalDevice.cpp" />
-    <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Signals.cpp" />
@@ -176,12 +176,12 @@
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="CommandBuffer.h" />
     <ClInclude Include="DeviceMemory.h" />
-    <ClInclude Include="Pipelines.h" />
     <ClInclude Include="Images.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="LogicalDevice.h" />
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="Pipelines.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />

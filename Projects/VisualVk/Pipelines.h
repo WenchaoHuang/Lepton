@@ -3,21 +3,253 @@
 *************************************************************************/
 #pragma once
 
-#include "Resource.h"
+#include "Framebuffer.h"
 
 namespace Vk
 {
+	/*********************************************************************
+	*********************    DescriptorSetLayout    **********************
+	*********************************************************************/
 
-	struct PipelineViewportState : private VkPipelineViewportStateCreateInfo
+	class DescriptorSetLayout : private Resource
 	{
-		operator VkPipelineViewportStateCreateInfo() { return *this; }
 
-		VkRect2D	Scissor;	VkViewport	Viewport;
+	public:
 
-		PipelineViewportState();
+		DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE);
+
+		~DescriptorSetLayout() noexcept;
+
+	public:
+
+		operator VkDescriptorSetLayout() { return m_hDescriptorSetLayout; }
+
+		VkBool32 IsValid() const { return m_hDescriptorSetLayout != VK_NULL_HANDLE; }
+
+		static std::shared_ptr<DescriptorSetLayout> Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings);
+
+	private:
+
+		const VkDescriptorSetLayout						m_hDescriptorSetLayout;
+
+		std::vector<VkDescriptorSetLayoutBinding>		m_DescriptorSetLayoutBindings;
 	};
 
 
+	/*********************************************************************
+	************************    PipelineLayout    ************************
+	*********************************************************************/
+
+	class PipelineLayout : private Resource
+	{
+
+	public:
+
+		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE);
+
+		~PipelineLayout() noexcept;
+
+	public:
+
+		operator VkPipelineLayout() { return m_hPipelineLayout; }
+
+		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
+
+		static std::shared_ptr<PipelineLayout> Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts,
+													  const std::vector<VkPushConstantRange> & PushConstantRanges);
+
+		static std::shared_ptr<PipelineLayout> Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts);
+
+		static std::shared_ptr<PipelineLayout> Create(const std::vector<VkPushConstantRange> & PushConstantRanges);
+
+		static std::shared_ptr<PipelineLayout> Create();
+
+	private:
+
+		const VkPipelineLayout									m_hPipelineLayout;
+
+		std::vector<VkPushConstantRange>						m_PushConstantRanges;
+
+		std::vector<std::shared_ptr<DescriptorSetLayout>>		m_DescriptorSetLayouts;
+	};
+
+	/*********************************************************************
+	******************    GraphicsPipelineCreateInfo    ******************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Creating information of Vulkan graphics pipeline.
+	 */
+	struct GraphicsPipelineCreateInfo : private VkGraphicsPipelineCreateInfo
+	{
+		operator const VkGraphicsPipelineCreateInfo*();
+
+		GraphicsPipelineCreateInfo();
+
+	private:
+
+		/*****************************************************************
+		******************    DynamicStateCreateInfo    ******************
+		*****************************************************************/
+
+		struct DynamicStateCreateInfo : private VkPipelineDynamicStateCreateInfo, public std::vector<VkDynamicState>
+		{
+			operator const VkPipelineDynamicStateCreateInfo*();
+
+			DynamicStateCreateInfo();
+		};
+
+		/*****************************************************************
+		***************    RasterizationStateCreateInfo    ***************
+		*****************************************************************/
+
+		struct RasterizationStateCreateInfo : private VkPipelineRasterizationStateCreateInfo
+		{
+			operator const VkPipelineRasterizationStateCreateInfo*() { return this; }
+
+			using VkPipelineRasterizationStateCreateInfo::rasterizerDiscardEnable;
+			using VkPipelineRasterizationStateCreateInfo::depthBiasConstantFactor;
+			using VkPipelineRasterizationStateCreateInfo::depthBiasSlopeFactor;
+			using VkPipelineRasterizationStateCreateInfo::depthClampEnable;
+			using VkPipelineRasterizationStateCreateInfo::depthBiasEnable;
+			using VkPipelineRasterizationStateCreateInfo::depthBiasClamp;
+			using VkPipelineRasterizationStateCreateInfo::polygonMode;
+			using VkPipelineRasterizationStateCreateInfo::frontFace;
+			using VkPipelineRasterizationStateCreateInfo::lineWidth;
+			using VkPipelineRasterizationStateCreateInfo::cullMode;
+
+			RasterizationStateCreateInfo();
+		};
+
+		/*****************************************************************
+		***************    InputAssemblyStateCreateInfo    ***************
+		*****************************************************************/
+
+		struct InputAssemblyStateCreateInfo : private VkPipelineInputAssemblyStateCreateInfo
+		{
+			operator const VkPipelineInputAssemblyStateCreateInfo*() { return this; }
+
+			using VkPipelineInputAssemblyStateCreateInfo::primitiveRestartEnable;
+			using VkPipelineInputAssemblyStateCreateInfo::topology;
+
+			InputAssemblyStateCreateInfo();
+		};
+
+		/*****************************************************************
+		***************    TessellationStateCreateInfo    ****************
+		*****************************************************************/
+
+		struct TessellationStateCreateInfo : private VkPipelineTessellationStateCreateInfo
+		{
+			operator const VkPipelineTessellationStateCreateInfo*() { return this; }
+
+			using VkPipelineTessellationStateCreateInfo::patchControlPoints;
+
+			TessellationStateCreateInfo();
+		};
+
+		/*****************************************************************
+		***************    DepthStencilStateCreateInfo    ****************
+		*****************************************************************/
+
+		struct DepthStencilStateCreateInfo : private VkPipelineDepthStencilStateCreateInfo
+		{
+			operator const VkPipelineDepthStencilStateCreateInfo*() { return this; }
+
+			using VkPipelineDepthStencilStateCreateInfo::depthBoundsTestEnable;
+			using VkPipelineDepthStencilStateCreateInfo::stencilTestEnable;
+			using VkPipelineDepthStencilStateCreateInfo::depthWriteEnable;
+			using VkPipelineDepthStencilStateCreateInfo::depthTestEnable;
+			using VkPipelineDepthStencilStateCreateInfo::depthCompareOp;
+			using VkPipelineDepthStencilStateCreateInfo::minDepthBounds;
+			using VkPipelineDepthStencilStateCreateInfo::maxDepthBounds;
+			using VkPipelineDepthStencilStateCreateInfo::front;
+			using VkPipelineDepthStencilStateCreateInfo::back;
+
+			DepthStencilStateCreateInfo();
+		};
+
+		/*****************************************************************
+		****************    MultisampleStateCreateInfo    ****************
+		*****************************************************************/
+
+		struct MultisampleStateCreateInfo : private VkPipelineMultisampleStateCreateInfo
+		{
+			operator const VkPipelineMultisampleStateCreateInfo*() { return this; }
+
+			using VkPipelineMultisampleStateCreateInfo::alphaToCoverageEnable;
+			using VkPipelineMultisampleStateCreateInfo::rasterizationSamples;
+			using VkPipelineMultisampleStateCreateInfo::sampleShadingEnable;
+			using VkPipelineMultisampleStateCreateInfo::minSampleShading;
+			using VkPipelineMultisampleStateCreateInfo::alphaToOneEnable;
+
+			MultisampleStateCreateInfo();
+		};
+
+		/*****************************************************************
+		****************    VertexInputStateCreateInfo    ****************
+		*****************************************************************/
+
+		struct VertexInputStateCreateInfo : private VkPipelineVertexInputStateCreateInfo
+		{
+			operator const VkPipelineVertexInputStateCreateInfo*();
+
+			std::vector<VkVertexInputAttributeDescription>		attributeDescriptions;
+			std::vector<VkVertexInputBindingDescription>		bindingDescriptions;
+
+			VertexInputStateCreateInfo();
+		};
+
+		/*****************************************************************
+		****************    ColorBlendAttachmentState    *****************
+		*****************************************************************/
+
+		struct ColorBlendAttachmentState : public VkPipelineColorBlendAttachmentState
+		{
+			ColorBlendAttachmentState();
+		};
+
+		struct ColorBlendStateCreateInfo : private VkPipelineColorBlendStateCreateInfo
+		{
+			operator const VkPipelineColorBlendStateCreateInfo*();
+
+			using VkPipelineColorBlendStateCreateInfo::blendConstants;
+			using VkPipelineColorBlendStateCreateInfo::logicOpEnable;
+			using VkPipelineColorBlendStateCreateInfo::logicOp;
+
+			std::vector<ColorBlendAttachmentState>		attachments;
+
+			ColorBlendStateCreateInfo();
+		};
+
+		/*****************************************************************
+		*****************    ViewportStateCreateInfo    ******************
+		*****************************************************************/
+
+		struct ViewportStateCreateInfo : private VkPipelineViewportStateCreateInfo
+		{
+			operator const VkPipelineViewportStateCreateInfo*();
+
+			std::vector<VkViewport>		Viewports;
+			std::vector<VkRect2D>		Scissors;
+
+			ViewportStateCreateInfo();
+		};
+
+	public:
+
+		DynamicStateCreateInfo				DynamicStates;
+		ViewportStateCreateInfo				ViewportState;
+		ColorBlendStateCreateInfo			ColorBlendState;
+		VertexInputStateCreateInfo			VertexInputState;
+		MultisampleStateCreateInfo			MultisampleState;
+		DepthStencilStateCreateInfo			DepthStencilState;
+		TessellationStateCreateInfo			TessellationState;
+		InputAssemblyStateCreateInfo		InputAssemblyState;
+		RasterizationStateCreateInfo		RasterizationState;
+		std::shared_ptr<PipelineLayout>		spPipelineLayout;
+		std::shared_ptr<RenderPass>			spRenderPass;
+	};
 
 	/*********************************************************************
 	***********************    GraphicsPipeline    ***********************
@@ -37,53 +269,14 @@ namespace Vk
 
 	public:
 
-		VkResult Refresh();
+		VkResult Create(GraphicsPipelineCreateInfo & CreateInfo, std::shared_ptr<RenderPass> spRenderPass);
 
 		void Release() noexcept;
-
-		VkResult SetPrimitiveTopology(VkPrimitiveTopology eTopology);
-
+		
 	private:
 
-		VkRect2D									m_Scissor;
-		VkViewport									m_Viewport;
-		VkPipeline									m_hPipeline;
-		VkGraphicsPipelineCreateInfo				m_CreateInfo;
-		VkPipelineDynamicStateCreateInfo			m_DynamicState;
-		VkPipelineViewportStateCreateInfo			m_ViewportState;
-		VkPipelineColorBlendStateCreateInfo			m_ColorBlendState;
-		VkPipelineVertexInputStateCreateInfo		m_VertexInputState;
-		VkPipelineMultisampleStateCreateInfo		m_MultisampleState;
-		VkPipelineDepthStencilStateCreateInfo		m_DepthStencilState;
-		VkPipelineTessellationStateCreateInfo		m_TessellationState;
-		VkPipelineInputAssemblyStateCreateInfo		m_InputAssemblyState;
-		VkPipelineRasterizationStateCreateInfo		m_RasterizationState;
-	};
+		VkPipeline						m_hPipeline;
 
-	/*********************************************************************
-	***********************    ComputePipeline    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Vulkan compute pipeline object.
-	 */
-	class ComputePipeline : private Resource
-	{
-
-	public:
-
-		//!	@brief	Create compute pipeline object.
-		ComputePipeline();
-
-		//!	@brief	Destroy compute pipeline object.
-		~ComputePipeline();
-
-	public:
-
-		void Release() noexcept;
-
-	private:
-
-		VkPipeline		m_hPipeline;
+		GraphicsPipelineCreateInfo		m_CreateInfo;
 	};
 }
