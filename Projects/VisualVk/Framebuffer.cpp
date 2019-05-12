@@ -121,7 +121,7 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 
 	if (eResult == VK_SUCCESS)
 	{
-		sm_pDevice->DestroyFramebuffer(m_hFramebuffer);
+		this->Release();
 
 		m_hFramebuffer = hFramebuffer;
 
@@ -138,15 +138,18 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 
 void Framebuffer::Release() noexcept
 {
-	sm_pDevice->DestroyFramebuffer(m_hFramebuffer);
+	if (m_hFramebuffer != VK_NULL_HANDLE)
+	{
+		sm_pDevice->DestroyFramebuffer(m_hFramebuffer);
 
-	m_hFramebuffer = VK_NULL_HANDLE;
+		m_hFramebuffer = VK_NULL_HANDLE;
 
-	m_spRenderPass = nullptr;
+		m_spRenderPass = nullptr;
 
-	m_Attachments.clear();
+		m_Attachments.clear();
 
-	m_Extent2D = { 0, 0 };
+		m_Extent2D = { 0, 0 };
+	}
 }
 
 

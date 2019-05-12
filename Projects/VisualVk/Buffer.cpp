@@ -47,9 +47,9 @@ VkResult Buffer::Create(VkDeviceSize SizeBytes)
 		}
 		else
 		{
+			this->Release();
+
 			sm_pDevice->BindBufferMemory(hNewBuffer, m_Memory, 0);
-			
-			sm_pDevice->DestroyBuffer(m_hBuffer);
 
 			m_hBuffer = hNewBuffer;
 
@@ -149,13 +149,16 @@ VkResult Buffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 
 void Buffer::Release() noexcept
 {
-	m_Memory.Free();
+	if (m_hBuffer != VK_NULL_HANDLE)
+	{
+		sm_pDevice->DestroyBuffer(m_hBuffer);
 
-	sm_pDevice->DestroyBuffer(m_hBuffer);
+		m_hBuffer = VK_NULL_HANDLE;
 
-	m_hBuffer = VK_NULL_HANDLE;
+		m_Memory.Free();
 
-	m_Bytes = 0;
+		m_Bytes = 0;
+	}
 }
 
 

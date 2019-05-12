@@ -129,7 +129,7 @@ namespace Vk
 		CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer);
 
 		//!	@brief	Destroy command buffer object.
-		~CommandBuffer() noexcept {}
+		~CommandBuffer() noexcept;
 
 	public:
 

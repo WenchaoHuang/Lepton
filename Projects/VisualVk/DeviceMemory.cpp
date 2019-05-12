@@ -32,7 +32,7 @@ VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, VkMemoryPrope
 
 	if (eResult == VK_SUCCESS)
 	{
-		sm_pDevice->FreeMemory(m_hMemory);
+		this->Free();
 
 		m_Bytes = Requirements.size;
 
@@ -119,11 +119,14 @@ void DeviceMemory::Unmap() noexcept
 
 void DeviceMemory::Free() noexcept
 {
-	sm_pDevice->FreeMemory(m_hMemory);
+	if (m_hMemory != VK_NULL_HANDLE)
+	{
+		sm_pDevice->FreeMemory(m_hMemory);
 
-	m_hMemory = VK_NULL_HANDLE;
+		m_hMemory = VK_NULL_HANDLE;
 
-	m_Bytes = 0;
+		m_Bytes = 0;
+	}
 }
 
 

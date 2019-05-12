@@ -138,3 +138,9 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 	m_SubmitInfo.signalSemaphoreCount	= 0;
 	m_SubmitInfo.pSignalSemaphores		= nullptr;
 }
+
+
+CommandBuffer::~CommandBuffer() noexcept
+{
+
+}

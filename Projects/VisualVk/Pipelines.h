@@ -3,39 +3,11 @@
 *************************************************************************/
 #pragma once
 
+#include "Descriptor.h"
 #include "Framebuffer.h"
 
 namespace Vk
 {
-	/*********************************************************************
-	*********************    DescriptorSetLayout    **********************
-	*********************************************************************/
-
-	class DescriptorSetLayout : private Resource
-	{
-
-	public:
-
-		DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE);
-
-		~DescriptorSetLayout() noexcept;
-
-	public:
-
-		operator VkDescriptorSetLayout() { return m_hDescriptorSetLayout; }
-
-		VkBool32 IsValid() const { return m_hDescriptorSetLayout != VK_NULL_HANDLE; }
-
-		static std::shared_ptr<DescriptorSetLayout> Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings);
-
-	private:
-
-		const VkDescriptorSetLayout						m_hDescriptorSetLayout;
-
-		std::vector<VkDescriptorSetLayoutBinding>		m_DescriptorSetLayoutBindings;
-	};
-
-
 	/*********************************************************************
 	************************    PipelineLayout    ************************
 	*********************************************************************/

@@ -215,6 +215,35 @@ namespace Vk
 			return vkCreateGraphicsPipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);
 		}
 
+		/*****************************************************************
+		**********************    DescriptorSet    ***********************
+		*****************************************************************/
+
+		//!	@brief	Resets a descriptor pool object, which will return all descriptor sets allocated from a given pool to the pool.
+		VkResult ResetDescriptorPool(VkDescriptorPool hDescriptorPool, VkDescriptorPoolResetFlags eFlags)
+		{
+			return vkResetDescriptorPool(m_hDevice, hDescriptorPool, eFlags);
+		}
+
+		//!	@brief	Allocate one or more descriptor sets.
+		VkResult AllocateDescriptorSets(const VkDescriptorSetAllocateInfo * pAllocateInfo, VkDescriptorSet * pDescriptorSets)
+		{
+			return vkAllocateDescriptorSets(m_hDevice, pAllocateInfo, pDescriptorSets);
+		}
+
+		//!	@brief	Free one or more descriptor sets.
+		VkResult FreeDescriptorSets(VkDescriptorPool hDescriptorPool, uint32_t DescriptorSetCount, const VkDescriptorSet * pDescriptorSets)
+		{
+			return vkFreeDescriptorSets(m_hDevice, hDescriptorPool, DescriptorSetCount, pDescriptorSets);
+		}
+
+		//!	@brief	Update the contents of a descriptor set object.
+		void UpdateDescriptorSets(uint32_t DescriptorWriteCount, const VkWriteDescriptorSet * pDescriptorWrites,
+								  uint32_t DescriptorCopyCount, const VkCopyDescriptorSet * pDescriptorCopies)
+		{
+			vkUpdateDescriptorSets(m_hDevice, DescriptorWriteCount, pDescriptorWrites, DescriptorCopyCount, pDescriptorCopies);
+		}
+
 	private:
 
 		const VkDevice						m_hDevice;

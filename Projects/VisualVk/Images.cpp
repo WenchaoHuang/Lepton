@@ -67,9 +67,9 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 		}
 		else
 		{
-			sm_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
+			this->Release();
 
-			sm_pDevice->DestroyImage(m_hImage);
+			sm_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
 
 			m_ArrayLayers = ArrayLayers;
 
@@ -128,25 +128,28 @@ VkResult BaseImage<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspect
 
 template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImageType, eViewType>::Release() noexcept
 {
-	m_DeviceMemory.Free();
+	if (m_hImage != VK_NULL_HANDLE)
+	{
+		m_DeviceMemory.Free();
 
-	sm_pDevice->DestroyImage(m_hImage);
+		sm_pDevice->DestroyImage(m_hImage);
 
-	sm_pDevice->DestroyImageView(m_hImageView);
+		sm_pDevice->DestroyImageView(m_hImageView);
 
-	m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
+		m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
 
-	m_eFormat = VK_FORMAT_UNDEFINED;
+		m_eFormat = VK_FORMAT_UNDEFINED;
 
-	m_hImageView = VK_NULL_HANDLE;
+		m_hImageView = VK_NULL_HANDLE;
 
-	m_hImage = VK_NULL_HANDLE;
+		m_hImage = VK_NULL_HANDLE;
 
-	m_Extent3D = { 0, 0, 0 };
+		m_Extent3D = { 0, 0, 0 };
 
-	m_ArrayLayers = 0;
+		m_ArrayLayers = 0;
 
-	m_MipLevels = 0;
+		m_MipLevels = 0;
+	}
 }
 
 

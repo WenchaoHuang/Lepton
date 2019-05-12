@@ -255,45 +255,6 @@ GraphicsPipelineCreateInfo::ViewportStateCreateInfo::operator const VkPipelineVi
 
 
 /*************************************************************************
-***********************    DescriptorSetLayout    ************************
-*************************************************************************/
-DescriptorSetLayout::DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout) : m_hDescriptorSetLayout(hDescriptorSetLayout)
-{
-
-}
-
-
-std::shared_ptr<DescriptorSetLayout> DescriptorSetLayout::Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings)
-{
-	VkDescriptorSetLayoutCreateInfo		CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.bindingCount				= (uint32_t)Bindings.size();
-	CreateInfo.pBindings				= Bindings.data();
-
-	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
-
-	sm_pDevice->CreateDescriptorSetLayout(&CreateInfo, &hDescriptorSetLayout);
-
-	std::shared_ptr<DescriptorSetLayout> spDescriptorSetLayout = std::make_shared<DescriptorSetLayout>(hDescriptorSetLayout);
-	
-	if (spDescriptorSetLayout->IsValid())
-	{
-		spDescriptorSetLayout->m_DescriptorSetLayoutBindings = Bindings;
-	}
-
-	return spDescriptorSetLayout;
-}
-
-
-DescriptorSetLayout::~DescriptorSetLayout() noexcept
-{
-	sm_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
-}
-
-
-/*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
 PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout) : m_hPipelineLayout(hPipelineLayout)
@@ -339,7 +300,6 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<std::sh
 
 	return spPipelineLayout;
 }
-
 
 
 std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts)
