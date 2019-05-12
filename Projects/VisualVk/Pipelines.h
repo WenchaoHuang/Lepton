@@ -17,7 +17,7 @@ namespace Vk
 
 	public:
 
-		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE);
+		PipelineLayout();
 
 		~PipelineLayout() noexcept;
 
@@ -27,22 +27,18 @@ namespace Vk
 
 		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
 
-		static std::shared_ptr<PipelineLayout> Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts,
-													  const std::vector<VkPushConstantRange> & PushConstantRanges);
+		VkResult Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts = std::vector<VkDescriptorSetLayout>(),
+						const std::vector<VkPushConstantRange> & PushConstantRanges = std::vector<VkPushConstantRange>());
 
-		static std::shared_ptr<PipelineLayout> Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts);
-
-		static std::shared_ptr<PipelineLayout> Create(const std::vector<VkPushConstantRange> & PushConstantRanges);
-
-		static std::shared_ptr<PipelineLayout> Create();
+		void Release() noexcept;
 
 	private:
 
-		const VkPipelineLayout									m_hPipelineLayout;
+		VkPipelineLayout						m_hPipelineLayout;
 
-		std::vector<VkPushConstantRange>						m_PushConstantRanges;
+		std::vector<VkPushConstantRange>		m_PushConstantRanges;
 
-		std::vector<std::shared_ptr<DescriptorSetLayout>>		m_DescriptorSetLayouts;
+		std::vector<VkDescriptorSetLayout>		m_DescriptorSetLayouts;
 	};
 
 	/*********************************************************************

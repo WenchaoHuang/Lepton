@@ -69,7 +69,7 @@ namespace Vk
 		//!	@brief	Convert to handle.
 		operator VkFramebuffer() { return m_hFramebuffer; }
 
-		//!	@brief	Create new frame buffer object.
+		//!	@brief	Create a new frame buffer object.
 		VkResult Create(std::shared_ptr<RenderPass> spRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
 		//!	@brief	Return shared pointer to render pass object.

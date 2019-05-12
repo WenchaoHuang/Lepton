@@ -58,11 +58,11 @@ namespace Vk
 
 	protected:
 
-		//!	@brief	Create new image object.
+		//!	@brief	Create a new image object.
 		VkResult Create(VkFormat eFormat, VkExtent3D Extent3D,uint32_t MipLevels, uint32_t ArrayLayers,
 						VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageCreateFlags eCreateFlags = 0);
 
-		//!	@brief	Create new image view object.
+		//!	@brief	Create a new image view object.
 		VkResult CreateView(VkImageAspectFlags eAspectMask);
 
 	private:
@@ -96,7 +96,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create new image 1D object.
+		//!	@brief	Create a new image 1D object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t MipLevels, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, 1, VK_SAMPLE_COUNT_1_BIT, eUsage);
@@ -117,7 +117,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create new image 1D array object.
+		//!	@brief	Create a new image 1D array object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t MipLevels, uint32_t ArrayLayers, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, ArrayLayers, VK_SAMPLE_COUNT_1_BIT, eUsage);
@@ -138,7 +138,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create new image 2D object.
+		//!	@brief	Create a new image 2D object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels,
 						VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
@@ -192,7 +192,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create new image 2D object.
+		//!	@brief	Create a new image 2D object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels, uint32_t ArrayLayers,
 					   VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
@@ -214,7 +214,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create new image cube object.
+		//!	@brief	Create a new image cube object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels,
 						VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
@@ -237,7 +237,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create new image 3D object.
+		//!	@brief	Create a new image 3D object.
 		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t Depth,
 					   uint32_t MipLevels, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{

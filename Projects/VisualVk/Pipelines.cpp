@@ -257,80 +257,61 @@ GraphicsPipelineCreateInfo::ViewportStateCreateInfo::operator const VkPipelineVi
 /*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
-PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout) : m_hPipelineLayout(hPipelineLayout)
+PipelineLayout::PipelineLayout() : m_hPipelineLayout(VK_NULL_HANDLE)
 {
 
 }
 
 
-std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts,
-													   const std::vector<VkPushConstantRange> & PushConstantRanges)
+VkResult PipelineLayout::Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts,
+								const std::vector<VkPushConstantRange> & PushConstantRanges)
 {
-	std::vector<VkDescriptorSetLayout>	SetLayouts;
-
-	for (size_t i = 0; i < DescriptorSetLayouts.size(); i++)
-	{
-		if ((DescriptorSetLayouts[i] != nullptr) && DescriptorSetLayouts[i]->IsValid())
-		{
-			SetLayouts.push_back(*DescriptorSetLayouts[i]);
-		}
-	}
-
 	VkPipelineLayoutCreateInfo			CreateInfo = {};
 	CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 	CreateInfo.pNext					= nullptr;
 	CreateInfo.flags					= 0;
-	CreateInfo.setLayoutCount			= (uint32_t)SetLayouts.size();
-	CreateInfo.pSetLayouts				= SetLayouts.data();
+	CreateInfo.setLayoutCount			= (uint32_t)DescriptorSetLayouts.size();
+	CreateInfo.pSetLayouts				= DescriptorSetLayouts.data();
 	CreateInfo.pushConstantRangeCount	= (uint32_t)PushConstantRanges.size();
 	CreateInfo.pPushConstantRanges		= PushConstantRanges.data();
 
 	VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
 
-	sm_pDevice->CreatePipelineLayout(&CreateInfo, &hPipelineLayout);
+	VkResult eResult = sm_pDevice->CreatePipelineLayout(&CreateInfo, &hPipelineLayout);
 
-	std::shared_ptr<PipelineLayout> spPipelineLayout = std::make_shared<PipelineLayout>(hPipelineLayout);
-
-	if (spPipelineLayout->IsValid())
+	if (eResult == VK_SUCCESS)
 	{
-		spPipelineLayout->m_DescriptorSetLayouts = DescriptorSetLayouts;
+		this->Release();
 
-		spPipelineLayout->m_PushConstantRanges = PushConstantRanges;
+		m_DescriptorSetLayouts = DescriptorSetLayouts;
+
+		m_PushConstantRanges = PushConstantRanges;
+
+		m_hPipelineLayout = hPipelineLayout;
 	}
 
-	return spPipelineLayout;
+	return eResult;
 }
 
 
-std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<std::shared_ptr<DescriptorSetLayout>> & DescriptorSetLayouts)
+void PipelineLayout::Release() noexcept
 {
-	std::vector<VkPushConstantRange> PushConstantRanges;
-	
-	return PipelineLayout::Create(DescriptorSetLayouts, PushConstantRanges);
-}
+	if (m_hPipelineLayout != VK_NULL_HANDLE)
+	{
+		sm_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
 
+		m_hPipelineLayout = VK_NULL_HANDLE;
 
-std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<VkPushConstantRange> & PushConstantRanges)
-{
-	std::vector<std::shared_ptr<DescriptorSetLayout>> DescriptorSetLayouts;
-	
-	return PipelineLayout::Create(DescriptorSetLayouts, PushConstantRanges);
-}
+		m_DescriptorSetLayouts.clear();
 
-
-std::shared_ptr<PipelineLayout> PipelineLayout::Create()
-{
-	std::vector<VkPushConstantRange> PushConstantRanges;
-
-	std::vector<std::shared_ptr<DescriptorSetLayout>> DescriptorSetLayouts;
-
-	return PipelineLayout::Create(DescriptorSetLayouts, PushConstantRanges);
+		m_PushConstantRanges.clear();
+	}
 }
 
 
 PipelineLayout::~PipelineLayout() noexcept
 {
-	sm_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
+	this->Release();
 }
 
 

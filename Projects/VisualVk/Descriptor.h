@@ -3,7 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include <set>
 #include "Resource.h"
 
 namespace Vk
@@ -33,7 +32,7 @@ namespace Vk
 		//!	@brief	Free descriptor set.
 		VkResult FreeDescriptorSet(DescriptorSet * pDescriptorSet);
 
-		//!	@brief	Creates a descriptor pool object.
+		//!	@brief	Creates a new descriptor pool object.
 		VkResult Create(const std::vector<VkDescriptorPoolSize> & PoolSizes, uint32_t MaxSets);
 
 		//!	@brief	Allocate descriptor set.
@@ -73,7 +72,6 @@ namespace Vk
 
 
 
-
 	private:
 
 		const VkDescriptorSet		m_hDescriptorSet;
@@ -99,12 +97,16 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Convert to handle.
 		operator VkDescriptorSetLayout() { return m_hDescriptorSetLayout; }
 
-		VkResult Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings);
+		//!	@brief	Create a new descriptor set layout object.
+		VkResult Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings = std::vector<VkDescriptorSetLayoutBinding>());
 
+		//!	@brief	Is descriptor set layout handle is valid.
 		VkBool32 IsValid() const { return m_hDescriptorSetLayout != VK_NULL_HANDLE; }
 
+		//!	@brief	Destroy descriptor set layout object.
 		void Release() noexcept;
 
 	private:

@@ -38,9 +38,6 @@
     <Filter Include="1. Resources\5. Textures">
       <UniqueIdentifier>{f72bbd1a-504e-4921-b73c-3371e11decd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\6. Pipeline">
-      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Resources\10. ShaderModule">
       <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     </Filter>
     <Filter Include="1. Resources\7. Descriptor">
       <UniqueIdentifier>{9905aed2-c2ce-4997-a80c-538ce9149818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\6. Pipelines">
+      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +95,7 @@
       <Filter>1. Resources\9. Framebuffer</Filter>
     </ClCompile>
     <ClCompile Include="Pipelines.cpp">
-      <Filter>1. Resources\6. Pipeline</Filter>
+      <Filter>1. Resources\6. Pipelines</Filter>
     </ClCompile>
     <ClCompile Include="Descriptor.cpp">
       <Filter>1. Resources\7. Descriptor</Filter>
@@ -139,7 +139,7 @@
       <Filter>1. Resources\1. Memory</Filter>
     </ClInclude>
     <ClInclude Include="Pipelines.h">
-      <Filter>1. Resources\6. Pipeline</Filter>
+      <Filter>1. Resources\6. Pipelines</Filter>
     </ClInclude>
     <ClInclude Include="CommandBuffer.h">
       <Filter>0. Context\3. CommandBuffer</Filter>
