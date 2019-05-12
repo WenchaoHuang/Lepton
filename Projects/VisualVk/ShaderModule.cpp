@@ -9,15 +9,33 @@ using namespace Vk;
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShaderModule)
+ShaderModule::ShaderModule() : m_hShaderModule(VK_NULL_HANDLE)
 {
-	m_ShaderStageCreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	m_ShaderStageCreateInfo.pNext					= nullptr;
-	m_ShaderStageCreateInfo.flags					= 0;
-//	m_ShaderStageCreateInfo.stage					= eStage;
-	m_ShaderStageCreateInfo.module					= m_hShaderModule;
-	m_ShaderStageCreateInfo.pName					= "main";
-	m_ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
+
+}
+
+
+VkResult ShaderModule::Create(const std::vector<char> & BinaryCode)
+{
+	VkShaderModuleCreateInfo	CreateInfo = {};
+	CreateInfo.sType			= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+	CreateInfo.pNext			= nullptr;
+	CreateInfo.flags			= 0;
+	CreateInfo.codeSize			= BinaryCode.size();
+	CreateInfo.pCode			= (uint32_t*)BinaryCode.data();
+
+	VkShaderModule hShaderModule = VK_NULL_HANDLE;
+
+	VkResult eResult = sm_pDevice->CreateShaderModule(&CreateInfo, &hShaderModule);
+
+	if (eResult == VK_SUCCESS)
+	{
+		this->Release();
+
+		m_hShaderModule = hShaderModule;
+	}
+
+	return eResult;
 }
 
 
@@ -42,32 +60,37 @@ std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const char * pFileName)
+VkResult ShaderModule::Create(const char * pFileName)
 {
-	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName));
+	return this->Create(ShaderModule::ReadBinary(pFileName));
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode)
+void ShaderModule::Release() noexcept
 {
-	if (BinaryCode.empty())			return nullptr;
-	
-	VkShaderModuleCreateInfo		CreateInfo = {};
-	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= 0;
-	CreateInfo.codeSize				= BinaryCode.size();
-	CreateInfo.pCode				= (uint32_t*)BinaryCode.data();
+	if (m_hShaderModule != VK_NULL_HANDLE)
+	{
+		sm_pDevice->DestroyShaderModule(m_hShaderModule);
 
-	VkShaderModule hShaderModule = VK_NULL_HANDLE;
-
-	sm_pDevice->CreateShaderModule(&CreateInfo, &hShaderModule);
-
-	return std::make_shared<ShaderModule>(hShaderModule);
+		m_hShaderModule = VK_NULL_HANDLE;
+	}
 }
 
 
-ShaderModule::~ShaderModule() noexcept
+ShaderModule::~ShaderModule()
 {
-	sm_pDevice->DestroyShaderModule(m_hShaderModule);
+	this->Release();
+}
+
+
+/*************************************************************************
+***********************    PipelineShaderStages    ***********************
+*************************************************************************/
+VkPipelineShaderStageCreateInfo * PipelineShaderStages::GetStages()
+{
+	m_ShaderStageCreateInfos.clear();
+
+
+
+	return nullptr;
 }

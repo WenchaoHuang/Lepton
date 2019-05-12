@@ -5,6 +5,7 @@
 
 #include "Descriptor.h"
 #include "Framebuffer.h"
+#include "ShaderModule.h"
 
 namespace Vk
 {
@@ -206,6 +207,7 @@ namespace Vk
 
 	public:
 
+	//	PipelineShaderStages				ShaderStages;
 		DynamicStateCreateInfo				DynamicStates;
 		ViewportStateCreateInfo				ViewportState;
 		ColorBlendStateCreateInfo			ColorBlendState;
