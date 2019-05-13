@@ -4,8 +4,8 @@
 #pragma once
 
 #include "Descriptor.h"
+#include "ShaderStage.h"
 #include "Framebuffer.h"
-#include "ShaderModule.h"
 
 namespace Vk
 {
@@ -243,10 +243,29 @@ namespace Vk
 
 		void Release() noexcept;
 		
+
+
 	private:
 
 		VkPipeline						m_hPipeline;
 
 		GraphicsPipelineCreateInfo		m_CreateInfo;
+	};
+
+	/*********************************************************************
+	***********************    ComputePipeline    ************************
+	*********************************************************************/
+
+	class ComputePipeline : private Resource
+	{
+
+	public:
+
+
+		
+
+	private:
+
+		VkPipeline			m_hPipeline;
 	};
 }

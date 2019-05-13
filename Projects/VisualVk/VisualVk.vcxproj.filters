@@ -38,9 +38,6 @@
     <Filter Include="1. Resources\5. Textures">
       <UniqueIdentifier>{f72bbd1a-504e-4921-b73c-3371e11decd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\10. ShaderModule">
-      <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Resources\8. Swapchain">
       <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,12 @@
     </Filter>
     <Filter Include="1. Resources\6. Pipelines">
       <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\10. ShaderStage">
+      <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\Shaders">
+      <UniqueIdentifier>{38014d5b-8d75-4576-970f-6398d2198ae9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,9 +91,6 @@
     <ClCompile Include="Textures.cpp">
       <Filter>1. Resources\5. Textures</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderModule.cpp">
-      <Filter>1. Resources\10. ShaderModule</Filter>
-    </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
       <Filter>1. Resources\9. Framebuffer</Filter>
     </ClCompile>
@@ -99,6 +99,12 @@
     </ClCompile>
     <ClCompile Include="Descriptor.cpp">
       <Filter>1. Resources\7. Descriptor</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderStage.cpp">
+      <Filter>1. Resources\10. ShaderStage</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderModule.cpp">
+      <Filter>1. Resources\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +135,6 @@
     <ClInclude Include="Textures.h">
       <Filter>1. Resources\5. Textures</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderModule.h">
-      <Filter>1. Resources\10. ShaderModule</Filter>
-    </ClInclude>
     <ClInclude Include="Framebuffer.h">
       <Filter>1. Resources\9. Framebuffer</Filter>
     </ClInclude>
@@ -146,6 +149,12 @@
     </ClInclude>
     <ClInclude Include="Descriptor.h">
       <Filter>1. Resources\7. Descriptor</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderStage.h">
+      <Filter>1. Resources\10. ShaderStage</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderModule.h">
+      <Filter>1. Resources\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
