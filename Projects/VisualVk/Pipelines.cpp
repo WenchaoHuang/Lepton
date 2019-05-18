@@ -34,17 +34,25 @@ GraphicsPipelineCreateInfo::GraphicsPipelineCreateInfo() : spRenderPass(nullptr)
 
 GraphicsPipelineCreateInfo::operator const VkGraphicsPipelineCreateInfo*()
 {
-	VkGraphicsPipelineCreateInfo::stageCount			= 0;
-	VkGraphicsPipelineCreateInfo::pStages				= nullptr;
+	VkGraphicsPipelineCreateInfo::sType					= VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+	VkGraphicsPipelineCreateInfo::pNext					= nullptr;
+	VkGraphicsPipelineCreateInfo::flags					= 0;
+	VkGraphicsPipelineCreateInfo::stageCount			= ShaderStages.GetStageCount();
+	VkGraphicsPipelineCreateInfo::pStages				= ShaderStages.GetStages();
 	VkGraphicsPipelineCreateInfo::pVertexInputState		= VertexInputState;
-	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= InputAssemblyState;
 	VkGraphicsPipelineCreateInfo::pTessellationState	= TessellationState;
-	VkGraphicsPipelineCreateInfo::pViewportState		= ViewportState;
+	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= InputAssemblyState;
 	VkGraphicsPipelineCreateInfo::pRasterizationState	= RasterizationState;
-	VkGraphicsPipelineCreateInfo::pMultisampleState		= MultisampleState;
 	VkGraphicsPipelineCreateInfo::pDepthStencilState	= DepthStencilState;
+	VkGraphicsPipelineCreateInfo::pMultisampleState		= MultisampleState;
 	VkGraphicsPipelineCreateInfo::pColorBlendState		= ColorBlendState;
+	VkGraphicsPipelineCreateInfo::pViewportState		= ViewportState;
 	VkGraphicsPipelineCreateInfo::pDynamicState			= DynamicStates;
+	VkGraphicsPipelineCreateInfo::renderPass			= (spRenderPass == nullptr) ? VK_NULL_HANDLE : spRenderPass->GetHandle();
+	VkGraphicsPipelineCreateInfo::layout				= (spPipelineLayout == nullptr) ? VK_NULL_HANDLE : spPipelineLayout->GetHandle();
+	VkGraphicsPipelineCreateInfo::subpass				= 0;
+	VkGraphicsPipelineCreateInfo::basePipelineHandle	= VK_NULL_HANDLE;
+	VkGraphicsPipelineCreateInfo::basePipelineIndex		= 0;
 
 	return (VkGraphicsPipelineCreateInfo*)this;
 }
@@ -257,14 +265,14 @@ GraphicsPipelineCreateInfo::ViewportStateCreateInfo::operator const VkPipelineVi
 /*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
-PipelineLayout::PipelineLayout() : m_hPipelineLayout(VK_NULL_HANDLE)
+PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout) : m_hPipelineLayout(hPipelineLayout)
 {
 
 }
 
 
-VkResult PipelineLayout::Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts,
-								const std::vector<VkPushConstantRange> & PushConstantRanges)
+std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts,
+													   const std::vector<VkPushConstantRange> & PushConstantRanges)
 {
 	VkPipelineLayoutCreateInfo			CreateInfo = {};
 	CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -277,41 +285,24 @@ VkResult PipelineLayout::Create(const std::vector<VkDescriptorSetLayout> & Descr
 
 	VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
 
-	VkResult eResult = sm_pDevice->CreatePipelineLayout(&CreateInfo, &hPipelineLayout);
+	sm_pDevice->CreatePipelineLayout(&CreateInfo, &hPipelineLayout);
 
-	if (eResult == VK_SUCCESS)
+	std::shared_ptr<PipelineLayout> spPipelineLayout = std::make_shared<PipelineLayout>(hPipelineLayout);
+
+	if (spPipelineLayout->IsValid())
 	{
-		this->Release();
+		spPipelineLayout->m_DescriptorSetLayouts = DescriptorSetLayouts;
 
-		m_DescriptorSetLayouts = DescriptorSetLayouts;
-
-		m_PushConstantRanges = PushConstantRanges;
-
-		m_hPipelineLayout = hPipelineLayout;
+		spPipelineLayout->m_PushConstantRanges = PushConstantRanges;
 	}
 
-	return eResult;
-}
-
-
-void PipelineLayout::Release() noexcept
-{
-	if (m_hPipelineLayout != VK_NULL_HANDLE)
-	{
-		sm_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
-
-		m_hPipelineLayout = VK_NULL_HANDLE;
-
-		m_DescriptorSetLayouts.clear();
-
-		m_PushConstantRanges.clear();
-	}
+	return spPipelineLayout;
 }
 
 
 PipelineLayout::~PipelineLayout() noexcept
 {
-	this->Release();
+	sm_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
 }
 
 
@@ -324,7 +315,7 @@ GraphicsPipeline::GraphicsPipeline() : m_hPipeline(VK_NULL_HANDLE)
 }
 
 
-VkResult GraphicsPipeline::Create(GraphicsPipelineCreateInfo & CreateInfo, std::shared_ptr<RenderPass> spRenderPass)
+VkResult GraphicsPipeline::Create(GraphicsPipelineCreateInfo & CreateInfo)
 {
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 

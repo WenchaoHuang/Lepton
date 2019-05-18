@@ -169,7 +169,6 @@
     <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
-    <ClCompile Include="ShaderStage.cpp" />
     <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Textures.cpp" />
@@ -187,7 +186,6 @@
     <ClInclude Include="Pipelines.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShaderModule.h" />
-    <ClInclude Include="ShaderStage.h" />
     <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />
     <ClInclude Include="Textures.h" />

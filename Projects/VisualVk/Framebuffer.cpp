@@ -14,12 +14,43 @@ RenderPass::RenderPass(VkRenderPass hRenderPass) : m_hRenderPass(hRenderPass)
 }
 
 
+std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat)
+{
+	std::vector<VkAttachmentDescription>			AttachmentDescriptions(1);
+	std::vector<VkSubpassDescription>				SubpassDescriptions(1);
+
+	AttachmentDescriptions[0].format				= eColorFormat;
+	AttachmentDescriptions[0].samples				= VK_SAMPLE_COUNT_1_BIT;
+	AttachmentDescriptions[0].loadOp				= VK_ATTACHMENT_LOAD_OP_CLEAR;
+	AttachmentDescriptions[0].storeOp				= VK_ATTACHMENT_STORE_OP_STORE;
+	AttachmentDescriptions[0].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	AttachmentDescriptions[0].stencilStoreOp		= VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	AttachmentDescriptions[0].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
+	AttachmentDescriptions[0].finalLayout			= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+	AttachmentDescriptions[0].flags					= 0;
+
+	VkAttachmentReference ColorReference			= { 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
+
+	SubpassDescriptions[0].pipelineBindPoint		= VK_PIPELINE_BIND_POINT_GRAPHICS;
+	SubpassDescriptions[0].flags					= 0;
+	SubpassDescriptions[0].inputAttachmentCount		= 0;
+	SubpassDescriptions[0].pInputAttachments		= nullptr;
+	SubpassDescriptions[0].colorAttachmentCount		= 1;
+	SubpassDescriptions[0].pColorAttachments		= &ColorReference;
+	SubpassDescriptions[0].pResolveAttachments		= nullptr;
+	SubpassDescriptions[0].pDepthStencilAttachment	= nullptr;
+	SubpassDescriptions[0].preserveAttachmentCount	= 0;
+	SubpassDescriptions[0].pPreserveAttachments		= nullptr;
+
+	return RenderPass::Create(AttachmentDescriptions, SubpassDescriptions);
+}
+
+
 std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat,
 														   VkFormat eDepthStencilFormat)
 {
 	std::vector<VkAttachmentDescription>			AttachmentDescriptions(2);
 	std::vector<VkSubpassDescription>				SubpassDescriptions(1);
-	std::vector<VkSubpassDependency>				SubpassDependencies;
 
 	AttachmentDescriptions[0].format				= eColorFormat;
 	AttachmentDescriptions[0].samples				= VK_SAMPLE_COUNT_1_BIT;
@@ -55,7 +86,7 @@ std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat
 	SubpassDescriptions[0].preserveAttachmentCount	= 0;
 	SubpassDescriptions[0].pPreserveAttachments		= nullptr;
 
-	return RenderPass::Create(AttachmentDescriptions, SubpassDescriptions, SubpassDependencies);
+	return RenderPass::Create(AttachmentDescriptions, SubpassDescriptions);
 }
 
 
@@ -78,7 +109,18 @@ std::shared_ptr<RenderPass> RenderPass::Create(const std::vector<VkAttachmentDes
 
 	sm_pDevice->CreateRenderPass(&CreateInfo, &hRenderPass);
 
-	return std::make_shared<RenderPass>(hRenderPass);
+	std::shared_ptr<RenderPass> spRenderPass = std::make_shared<RenderPass>(hRenderPass);
+
+	if (spRenderPass->IsValid())
+	{
+		spRenderPass->m_AttachmentDescriptions = AttachmentDescriptions;
+
+		spRenderPass->m_SubpassDescriptions = SubpassDescriptions;
+
+		spRenderPass->m_SubpassDependencies = SubpassDependencies;
+	}
+
+	return spRenderPass;
 }
 
 
@@ -108,7 +150,7 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 	CreateInfo.sType			= VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 	CreateInfo.pNext			= nullptr;
 	CreateInfo.flags			= 0;
-	CreateInfo.renderPass		= *spRenderPass;
+	CreateInfo.renderPass		= spRenderPass->GetHandle();
 	CreateInfo.attachmentCount	= (uint32_t)Attachments.size();
 	CreateInfo.pAttachments		= Attachments.data();
 	CreateInfo.width			= Extent2D.width;
@@ -133,6 +175,12 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 	}
 
 	return eResult;
+}
+
+
+VkResult Framebuffer::Update(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D)
+{
+	return this->Create(m_spRenderPass, Attachments, Extent2D);
 }
 
 

@@ -17,7 +17,8 @@ Buffer::Buffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
 
 VkResult Buffer::Create(VkDeviceSize SizeBytes)
 {
-	if (SizeBytes == m_Bytes)			return VK_SUCCESS;
+	if (SizeBytes == 0)					return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+	else if (SizeBytes == m_Bytes)		return VK_SUCCESS;
 
 	VkBufferCreateInfo					CreateInfo = {};
 	CreateInfo.sType					= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -100,7 +101,7 @@ VkResult Buffer::Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDevic
 
 	if (eResult == VK_SUCCESS)
 	{
-		memcpy(pDevData, pHostData, (size_t)SizeBytes);
+		std::memcpy(pDevData, pHostData, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}
@@ -119,7 +120,7 @@ VkResult Buffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize S
 
 	if (eResult == VK_SUCCESS)
 	{
-		memcpy(pHostData, pDevData, (size_t)SizeBytes);
+		std::memcpy(pHostData, pDevData, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}
@@ -138,7 +139,7 @@ VkResult Buffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 
 	if (eResult == VK_SUCCESS)
 	{
-		memset((void*)((size_t)pDevData + OffsetBytes), 0, (size_t)SizeBytes);
+		std::memset((void*)((size_t)pDevData + OffsetBytes), 0, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}
@@ -164,5 +165,5 @@ void Buffer::Release() noexcept
 
 Buffer::~Buffer()
 {
-	sm_pDevice->DestroyBuffer(m_hBuffer);
+	this->Release();
 }

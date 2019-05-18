@@ -50,11 +50,8 @@
     <Filter Include="1. Resources\6. Pipelines">
       <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\10. ShaderStage">
+    <Filter Include="1. Resources\10. ShaderModule">
       <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Resources\Shaders">
-      <UniqueIdentifier>{38014d5b-8d75-4576-970f-6398d2198ae9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,11 +97,8 @@
     <ClCompile Include="Descriptor.cpp">
       <Filter>1. Resources\7. Descriptor</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderStage.cpp">
-      <Filter>1. Resources\10. ShaderStage</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderModule.cpp">
-      <Filter>1. Resources\Shaders</Filter>
+      <Filter>1. Resources\10. ShaderModule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,11 +144,8 @@
     <ClInclude Include="Descriptor.h">
       <Filter>1. Resources\7. Descriptor</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderStage.h">
-      <Filter>1. Resources\10. ShaderStage</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderModule.h">
-      <Filter>1. Resources\Shaders</Filter>
+      <Filter>1. Resources\10. ShaderModule</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -29,8 +29,8 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to handle.
-		operator VkFence() { return m_hFence; }
+		//!	@brief	Convert to Vulkan handle.
+		operator VkFence() const { return m_hFence; }
 
 		//!	@brief	If fence handle is valid.
 		VkBool32 IsValid() const { return m_hFence != VK_NULL_HANDLE; }
@@ -72,11 +72,8 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to handle.
-		operator VkSemaphore() { return m_hSemaphore; }
-
-		//!	@brief	Convert to pointer.
-		operator const VkSemaphore*() const { return &m_hSemaphore; }
+		//!	@brief	Convert to Vulkan handle.
+		operator VkSemaphore() const { return m_hSemaphore; }
 
 		//!	@brief	If semaphore handle is valid.
 		VkBool32 IsValid() const { return m_hSemaphore != VK_NULL_HANDLE; }
@@ -106,8 +103,8 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to handle.
-		operator VkEvent() { return m_hEvent; }
+		//!	@brief	Convert to Vulkan handle.
+		operator VkEvent() const { return m_hEvent; }
 
 		//!	@brief	If event handle is valid.
 		VkBool32 IsValid() const { return m_hEvent != VK_NULL_HANDLE; }

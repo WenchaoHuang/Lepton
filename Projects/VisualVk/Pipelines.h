@@ -4,8 +4,8 @@
 #pragma once
 
 #include "Descriptor.h"
-#include "ShaderStage.h"
 #include "Framebuffer.h"
+#include "ShaderModule.h"
 
 namespace Vk
 {
@@ -13,29 +13,35 @@ namespace Vk
 	************************    PipelineLayout    ************************
 	*********************************************************************/
 
+	/**
+	 *	@brief	Vulkan pipeline layout object.
+	 */
 	class PipelineLayout : private Resource
 	{
 
 	public:
 
-		PipelineLayout();
+		//!	@brief	Create pipeline layout object.
+		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE);
 
+		//!	@brief	Destroy pipeline layout object.
 		~PipelineLayout() noexcept;
 
 	public:
 
-		operator VkPipelineLayout() { return m_hPipelineLayout; }
+		//!	@brief	Return Vulkan handle.
+		VkPipelineLayout GetHandle() const { return m_hPipelineLayout; }
 
+		//!	@brief	If pipeline layout handle is valid.
 		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
 
-		VkResult Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts = std::vector<VkDescriptorSetLayout>(),
-						const std::vector<VkPushConstantRange> & PushConstantRanges = std::vector<VkPushConstantRange>());
-
-		void Release() noexcept;
+		//!	@brief	Create a new pipeline layout object.
+		static std::shared_ptr<PipelineLayout> Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts = std::vector<VkDescriptorSetLayout>(),
+													  const std::vector<VkPushConstantRange> & PushConstantRanges = std::vector<VkPushConstantRange>());
 
 	private:
 
-		VkPipelineLayout						m_hPipelineLayout;
+		const VkPipelineLayout					m_hPipelineLayout;
 
 		std::vector<VkPushConstantRange>		m_PushConstantRanges;
 
@@ -207,7 +213,7 @@ namespace Vk
 
 	public:
 
-	//	PipelineShaderStages				ShaderStages;
+		PipelineShaderStages				ShaderStages;
 		DynamicStateCreateInfo				DynamicStates;
 		ViewportStateCreateInfo				ViewportState;
 		ColorBlendStateCreateInfo			ColorBlendState;
@@ -239,7 +245,9 @@ namespace Vk
 
 	public:
 
-		VkResult Create(GraphicsPipelineCreateInfo & CreateInfo, std::shared_ptr<RenderPass> spRenderPass);
+		operator VkPipeline() const { return m_hPipeline; }
+
+		VkResult Create(GraphicsPipelineCreateInfo & CreateInfo);
 
 		void Release() noexcept;
 		
@@ -256,13 +264,21 @@ namespace Vk
 	***********************    ComputePipeline    ************************
 	*********************************************************************/
 
+	/**
+	 *	@brief	Vulkan compute pipeline object.
+	 */
 	class ComputePipeline : private Resource
 	{
 
 	public:
 
+		ComputePipeline() {}
 
+		~ComputePipeline() {}
 		
+	public:
+
+
 
 	private:
 

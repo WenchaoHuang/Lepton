@@ -97,7 +97,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to handle.
+		//!	@brief	Convert to Vulkan handle.
 		operator VkDescriptorSetLayout() { return m_hDescriptorSetLayout; }
 
 		//!	@brief	Create a new descriptor set layout object.
