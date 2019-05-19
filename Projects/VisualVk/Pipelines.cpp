@@ -119,10 +119,10 @@ GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCrea
 *************************************************************************/
 GraphicsPipelineCreateInfo::TessellationStateCreateInfo::TessellationStateCreateInfo()
 {
-	VkPipelineTessellationStateCreateInfo::sType				= VK_STRUCTURE_TYPE_PIPELINE_TESSELLATION_STATE_CREATE_INFO;
-	VkPipelineTessellationStateCreateInfo::pNext				= nullptr;
-	VkPipelineTessellationStateCreateInfo::flags				= 0;
-	VkPipelineTessellationStateCreateInfo::patchControlPoints	= 0;
+	VkPipelineTessellationStateCreateInfo::sType					= VK_STRUCTURE_TYPE_PIPELINE_TESSELLATION_STATE_CREATE_INFO;
+	VkPipelineTessellationStateCreateInfo::pNext					= nullptr;
+	VkPipelineTessellationStateCreateInfo::flags					= 0;
+	VkPipelineTessellationStateCreateInfo::patchControlPoints		= 0;
 }
 
 
@@ -184,12 +184,50 @@ GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::VertexInputStateCreateIn
 }
 
 
+void GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::SetAttribute(uint32_t Binding, uint32_t Location, VkFormat eFormat, uint32_t Offset)
+{
+	for (size_t i = 0; i < m_AttributeDescriptions.size(); i++)
+	{
+		if (m_AttributeDescriptions[i].location == Location)
+		{
+			m_AttributeDescriptions[i].binding = Binding;
+
+			m_AttributeDescriptions[i].format = eFormat;
+
+			m_AttributeDescriptions[i].offset = Offset;
+
+			return;
+		}
+	}
+
+	m_AttributeDescriptions.push_back({ Location, Binding, eFormat, Offset });
+}
+
+
+void GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate)
+{
+	for (size_t i = 0; i < m_BindingDescriptions.size(); i++)
+	{
+		if (m_BindingDescriptions[i].binding == Binding)
+		{
+			m_BindingDescriptions[i].inputRate = eInputRate;
+
+			m_BindingDescriptions[i].stride = Stride;
+
+			return;
+		}
+	}
+
+	m_BindingDescriptions.push_back({ Binding, Stride, eInputRate });
+}
+
+
 GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::operator const VkPipelineVertexInputStateCreateInfo*()
 {
-	VkPipelineVertexInputStateCreateInfo::vertexBindingDescriptionCount		= (uint32_t)bindingDescriptions.size();
-	VkPipelineVertexInputStateCreateInfo::vertexAttributeDescriptionCount	= (uint32_t)attributeDescriptions.size();
-	VkPipelineVertexInputStateCreateInfo::pVertexAttributeDescriptions		= attributeDescriptions.data();
-	VkPipelineVertexInputStateCreateInfo::pVertexBindingDescriptions		= bindingDescriptions.data();
+	VkPipelineVertexInputStateCreateInfo::vertexBindingDescriptionCount		= (uint32_t)m_BindingDescriptions.size();
+	VkPipelineVertexInputStateCreateInfo::vertexAttributeDescriptionCount	= (uint32_t)m_AttributeDescriptions.size();
+	VkPipelineVertexInputStateCreateInfo::pVertexAttributeDescriptions		= m_AttributeDescriptions.data();
+	VkPipelineVertexInputStateCreateInfo::pVertexBindingDescriptions		= m_BindingDescriptions.data();
 
 	return (VkPipelineVertexInputStateCreateInfo*)this;
 }
@@ -321,11 +359,11 @@ VkResult GraphicsPipeline::Create(GraphicsPipelineCreateInfo & CreateInfo)
 
 	if (sm_pDevice->CreateGraphicsPipelines(VK_NULL_HANDLE, 1, CreateInfo, &hPipeline) == VK_SUCCESS)
 	{
-		sm_pDevice->DestroyPipeline(m_hPipeline);
+		this->Release();
+
+		m_hPipeline = hPipeline;
 
 		m_CreateInfo = CreateInfo;
-		
-		m_hPipeline = hPipeline;
 	}
 
 	return VK_SUCCESS;
@@ -334,7 +372,14 @@ VkResult GraphicsPipeline::Create(GraphicsPipelineCreateInfo & CreateInfo)
 
 void GraphicsPipeline::Release() noexcept
 {
-	
+	if (m_hPipeline != VK_NULL_HANDLE)
+	{
+		m_CreateInfo = GraphicsPipelineCreateInfo();
+
+		sm_pDevice->DestroyPipeline(m_hPipeline);
+
+		m_hPipeline = VK_NULL_HANDLE;
+	}
 }
 
 

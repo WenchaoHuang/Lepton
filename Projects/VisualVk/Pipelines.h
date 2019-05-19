@@ -104,7 +104,6 @@ namespace Vk
 		{
 			operator const VkPipelineInputAssemblyStateCreateInfo*() { return this; }
 
-			using VkPipelineInputAssemblyStateCreateInfo::primitiveRestartEnable;
 			using VkPipelineInputAssemblyStateCreateInfo::topology;
 
 			InputAssemblyStateCreateInfo();
@@ -165,14 +164,23 @@ namespace Vk
 		****************    VertexInputStateCreateInfo    ****************
 		*****************************************************************/
 
-		struct VertexInputStateCreateInfo : private VkPipelineVertexInputStateCreateInfo
+		class VertexInputStateCreateInfo : private VkPipelineVertexInputStateCreateInfo
 		{
-			operator const VkPipelineVertexInputStateCreateInfo*();
 
-			std::vector<VkVertexInputAttributeDescription>		attributeDescriptions;
-			std::vector<VkVertexInputBindingDescription>		bindingDescriptions;
+		public:
 
 			VertexInputStateCreateInfo();
+
+			operator const VkPipelineVertexInputStateCreateInfo*();
+
+			void SetAttribute(uint32_t Binding, uint32_t Location, VkFormat eFormat, uint32_t Offset);
+
+			void SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate = VK_VERTEX_INPUT_RATE_VERTEX);
+
+		private:
+
+			std::vector<VkVertexInputBindingDescription>		m_BindingDescriptions;
+			std::vector<VkVertexInputAttributeDescription>		m_AttributeDescriptions;
 		};
 
 		/*****************************************************************
@@ -239,8 +247,10 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Create graphics pipeline object.
 		GraphicsPipeline();
 
+		//!	@brief	Destroy graphics pipeline object.
 		~GraphicsPipeline();
 
 	public:
@@ -250,8 +260,6 @@ namespace Vk
 		VkResult Create(GraphicsPipelineCreateInfo & CreateInfo);
 
 		void Release() noexcept;
-		
-
 
 	private:
 
@@ -272,8 +280,10 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Create compute pipeline object.
 		ComputePipeline() {}
 
+		//!	@brief	Destroy compute pipeline object.
 		~ComputePipeline() {}
 		
 	public:
