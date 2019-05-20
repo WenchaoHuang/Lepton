@@ -67,11 +67,18 @@ namespace Vk
 		******************    DynamicStateCreateInfo    ******************
 		*****************************************************************/
 
-		struct DynamicStateCreateInfo : private VkPipelineDynamicStateCreateInfo, public std::vector<VkDynamicState>
+		class DynamicStateCreateInfo : public std::vector<VkDynamicState>
 		{
-			operator const VkPipelineDynamicStateCreateInfo*();
+
+		public:
 
 			DynamicStateCreateInfo();
+
+			operator const VkPipelineDynamicStateCreateInfo*();
+
+		private:
+
+			VkPipelineDynamicStateCreateInfo	m_CreateInfo;
 		};
 
 		/*****************************************************************
@@ -100,26 +107,42 @@ namespace Vk
 		***************    InputAssemblyStateCreateInfo    ***************
 		*****************************************************************/
 
-		struct InputAssemblyStateCreateInfo : private VkPipelineInputAssemblyStateCreateInfo
+		class InputAssemblyStateCreateInfo
 		{
-			operator const VkPipelineInputAssemblyStateCreateInfo*() { return this; }
 
-			using VkPipelineInputAssemblyStateCreateInfo::topology;
+		public:
 
 			InputAssemblyStateCreateInfo();
+
+			void operator=(VkPrimitiveTopology eTopology);
+
+			operator const VkPipelineInputAssemblyStateCreateInfo*();
+
+			operator VkPrimitiveTopology() const { return m_CreateInfo.topology; }
+
+		private:
+
+			VkPipelineInputAssemblyStateCreateInfo		m_CreateInfo;
 		};
 
 		/*****************************************************************
 		***************    TessellationStateCreateInfo    ****************
 		*****************************************************************/
 
-		struct TessellationStateCreateInfo : private VkPipelineTessellationStateCreateInfo
+		class TessellationStateCreateInfo
 		{
-			operator const VkPipelineTessellationStateCreateInfo*() { return this; }
 
-			using VkPipelineTessellationStateCreateInfo::patchControlPoints;
+		public:
 
 			TessellationStateCreateInfo();
+
+			operator const VkPipelineTessellationStateCreateInfo*();
+
+			void SetPatchControlPoints(uint32_t PatchControlPoints);
+
+		private:
+
+			VkPipelineTessellationStateCreateInfo		m_CreateInfo;
 		};
 
 		/*****************************************************************
@@ -164,7 +187,7 @@ namespace Vk
 		****************    VertexInputStateCreateInfo    ****************
 		*****************************************************************/
 
-		class VertexInputStateCreateInfo : private VkPipelineVertexInputStateCreateInfo
+		class VertexInputStateCreateInfo
 		{
 
 		public:
@@ -179,6 +202,7 @@ namespace Vk
 
 		private:
 
+			VkPipelineVertexInputStateCreateInfo				m_CreateInfo;
 			std::vector<VkVertexInputBindingDescription>		m_BindingDescriptions;
 			std::vector<VkVertexInputAttributeDescription>		m_AttributeDescriptions;
 		};
@@ -209,14 +233,23 @@ namespace Vk
 		*****************    ViewportStateCreateInfo    ******************
 		*****************************************************************/
 
-		struct ViewportStateCreateInfo : private VkPipelineViewportStateCreateInfo
+		class ViewportStateCreateInfo
 		{
-			operator const VkPipelineViewportStateCreateInfo*();
 
-			std::vector<VkViewport>		Viewports;
-			std::vector<VkRect2D>		Scissors;
+		public:
 
 			ViewportStateCreateInfo();
+
+			operator const VkPipelineViewportStateCreateInfo*();
+
+		public:
+
+			std::vector<VkRect2D>					Scissors;
+			std::vector<VkViewport>					Viewports;
+
+		private:
+
+			VkPipelineViewportStateCreateInfo		m_CreateInfo;
 		};
 
 	public:

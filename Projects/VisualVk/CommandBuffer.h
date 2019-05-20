@@ -194,6 +194,14 @@ namespace Vk
 								 ImageMemoryBarrierCount, pImageMemoryBarriers);
 		}
 
+		//!	@brief	Insert a image memory dependency.
+		void CmdPipelineImageMemoryBarrier(VkPipelineStageFlags SrcStageMask,
+										   VkPipelineStageFlags DstStageMask, VkDependencyFlags DependencyFlags,
+										   uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
+		{
+			vkCmdPipelineBarrier(m_hCommandBuffer, SrcStageMask, DstStageMask, DependencyFlags, 0, nullptr, 0, nullptr, ImageMemoryBarrierCount, pImageMemoryBarriers);
+		}
+
 		//!	@brief	Clear regions of a color image.
 		void CmdClearColorImage(VkImage hImage, VkImageLayout hImageLayout, const VkClearColorValue * pColor,
 								uint32_t RangeCount, const VkImageSubresourceRange * pRanges)
@@ -220,13 +228,19 @@ namespace Vk
 		}
 
 		//!	@brief	Set the viewport on a command buffer.
-		void CmdSetViewport(uint32_t FirstViewport, uint32_t ViewportCount, const VkViewport * pViewports)
+		void CmdSetViewport(VkViewport Viewport) { vkCmdSetViewport(m_hCommandBuffer, 0, 1, &Viewport); }
+
+		//!	@brief	Set the viewports on a command buffer.
+		void CmdSetViewports(uint32_t FirstViewport, uint32_t ViewportCount, const VkViewport * pViewports)
 		{
 			vkCmdSetViewport(m_hCommandBuffer, FirstViewport, ViewportCount, pViewports);
 		}
 
 		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
-		void CmdSetScissor(uint32_t FirstScissor, uint32_t ScissorCount, const VkRect2D * pScissors)
+		void CmdSetScissor(VkRect2D Scissor) { vkCmdSetScissor(m_hCommandBuffer, 0, 1, &Scissor); }
+
+		//!	@brief	Set the dynamic scissors rectangles on a command buffer.
+		void CmdSetScissors(uint32_t FirstScissor, uint32_t ScissorCount, const VkRect2D * pScissors)
 		{
 			vkCmdSetScissor(m_hCommandBuffer, FirstScissor, ScissorCount, pScissors);
 		}
@@ -241,22 +255,28 @@ namespace Vk
 									DescriptorSetCount, pDescriptorSets, DynamicOffsetCount, pDynamicOffsets);
 		}
 
+		//!	@brief	Issue an indexed draw into a command buffer.
+		void CmdDrawIndexed(uint32_t IndexCount, uint32_t InstanceCount, uint32_t FirstIndex, int32_t VertexOffset, uint32_t FirstInstance)
+		{
+			vkCmdDrawIndexed(m_hCommandBuffer, IndexCount, InstanceCount, FirstIndex, VertexOffset, FirstInstance);
+		}
+
 		//!	@brief	Bind vertex buffers to a command buffer.
 		void CmdBindVertexBuffers(uint32_t FirstBinding, uint32_t BindingCount, const VkBuffer * pBuffers, const VkDeviceSize * pOffsets)
 		{
 			vkCmdBindVertexBuffers(m_hCommandBuffer, FirstBinding, BindingCount, pBuffers, pOffsets);
 		}
 
+		//!	@brief	Bind vertex buffer to a command buffer.
+		void CmdBindVertexBuffer(uint32_t Binding, VkBuffer hBuffer, VkDeviceSize Offset = 0)
+		{
+			vkCmdBindVertexBuffers(m_hCommandBuffer, Binding, 1, &hBuffer, &Offset);
+		}
+
 		//!	@brief	Bind an index buffer to a command buffer.
 		void CmdBindIndexBuffer(VkBuffer hBuffer, VkIndexType eIndexType, VkDeviceSize Offset)
 		{
 			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, eIndexType);
-		}
-
-		//!	@brief	Issue an indexed draw into a command buffer.
-		void CmdDrawIndexed(uint32_t IndexCount, uint32_t InstanceCount, uint32_t FirstIndex, int32_t VertexOffset, uint32_t FirstInstance)
-		{
-			vkCmdDrawIndexed(m_hCommandBuffer, IndexCount, InstanceCount, FirstIndex, VertexOffset, FirstInstance);
 		}
 
 	private:
