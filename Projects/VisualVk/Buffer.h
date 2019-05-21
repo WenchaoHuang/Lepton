@@ -8,22 +8,22 @@
 namespace Vk
 {
 	/*********************************************************************
-	****************************    Buffer    ****************************
+	**************************    HostBuffer    **************************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Vulkan buffer object.
 	 */
-	class Buffer : private Resource
+	class HostBuffer : private Resource
 	{
 
 	public:
 
 		//!	@brief	Create buffer object.
-		Buffer();
+		HostBuffer();
 
 		//!	@brief	Destroy buffer object.
-		~Buffer();
+		~HostBuffer();
 
 	public:
 
@@ -37,10 +37,56 @@ namespace Vk
 		VkResult Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 		//!	@brief	Memory copy from device to device.
-		VkResult CopyFrom(const Buffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes);
+		VkResult CopyFrom(const HostBuffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes);
 
 		//!	@brief	Filling data with 0.
 		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
+
+		//!	@brief	If buffer handle is valid.
+		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
+
+		//!	@brief	Return buffer size in bytes.
+		VkDeviceSize Bytes() const { return m_Bytes; }
+
+		//!	@brief	Resize buffer.
+		VkResult Create(VkDeviceSize SizeBytes);
+
+		//!	@brief	Clear buffer.
+		void Release() noexcept;
+
+	private:
+
+		void *				m_pData;
+
+		VkBuffer			m_hBuffer;
+
+		DeviceMemory		m_Memory;
+
+		VkDeviceSize		m_Bytes;
+	};
+
+	/*********************************************************************
+	*************************    DeviceBuffer    *************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Vulkan buffer object (device local).
+	 */
+	class DeviceBuffer : private Resource
+	{
+
+	public:
+
+		//!	@brief	Create buffer object.
+		DeviceBuffer();
+
+		//!	@brief	Destroy buffer object.
+		~DeviceBuffer();
+
+	public:
+
+		//!	@brief	Convert to Vulkan handle.
+		operator VkBuffer() const { return m_hBuffer; }
 
 		//!	@brief	If buffer handle is valid.
 		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
@@ -110,6 +156,6 @@ namespace Vk
 
 	private:
 
-		Buffer		m_Buffer;
+		HostBuffer		m_Buffer;
 	};
 }
