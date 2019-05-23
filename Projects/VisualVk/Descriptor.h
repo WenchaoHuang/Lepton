@@ -3,11 +3,48 @@
 *************************************************************************/
 #pragma once
 
+#include <memory>
 #include "Resource.h"
 
 namespace Vk
 {
 	class DescriptorSet;
+
+	/*********************************************************************
+	*********************    DescriptorSetLayout    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Vulkan descriptor set layout object.
+	 */
+	class DescriptorSetLayout : private Resource
+	{
+
+	public:
+
+		//!	@brief	Create descriptor set layout object.
+		DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE);
+
+		//!	@brief	Destroy descriptor set layout object.
+		~DescriptorSetLayout();
+
+	public:
+
+		//!	@brief	Return Vulkan handle.
+		VkDescriptorSetLayout GetHandle() const { return m_hDescriptorSetLayout; }
+
+		//!	@brief	Is descriptor set layout handle is valid.
+		VkBool32 IsValid() const { return m_hDescriptorSetLayout != VK_NULL_HANDLE; }
+
+		//!	@brief	Create a new descriptor set layout object.
+		static std::shared_ptr<DescriptorSetLayout> Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings = std::vector<VkDescriptorSetLayoutBinding>());
+
+	private:
+
+		const VkDescriptorSetLayout			m_hDescriptorSetLayout;
+
+		std::vector<VkDescriptorSetLayoutBinding>		m_Bindings;
+	};
 
 	/*********************************************************************
 	************************    DescriptorPool    ************************
@@ -70,49 +107,11 @@ namespace Vk
 
 	public:
 
-
+		//!	@brief	Update the contents of a descriptor set object.
+		void Write();
 
 	private:
 
 		const VkDescriptorSet		m_hDescriptorSet;
-	};
-
-	/*********************************************************************
-	*********************    DescriptorSetLayout    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Vulkan descriptor set layout object.
-	 */
-	class DescriptorSetLayout : private Resource
-	{
-
-	public:
-
-		//!	@brief	Create descriptor set layout object.
-		DescriptorSetLayout();
-
-		//!	@brief	Destroy descriptor set layout object.
-		~DescriptorSetLayout();
-
-	public:
-
-		//!	@brief	Convert to Vulkan handle.
-		operator VkDescriptorSetLayout() { return m_hDescriptorSetLayout; }
-
-		//!	@brief	Create a new descriptor set layout object.
-		VkResult Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings = std::vector<VkDescriptorSetLayoutBinding>());
-
-		//!	@brief	Is descriptor set layout handle is valid.
-		VkBool32 IsValid() const { return m_hDescriptorSetLayout != VK_NULL_HANDLE; }
-
-		//!	@brief	Destroy descriptor set layout object.
-		void Release() noexcept;
-
-	private:
-
-		VkDescriptorSetLayout			m_hDescriptorSetLayout;
-
-		std::vector<VkDescriptorSetLayoutBinding>	m_Bindings;
 	};
 }

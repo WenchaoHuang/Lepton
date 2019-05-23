@@ -6,6 +6,45 @@
 using namespace Vk;
 
 /*************************************************************************
+***********************    DescriptorSetLayout    ************************
+*************************************************************************/
+DescriptorSetLayout::DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout) : m_hDescriptorSetLayout(hDescriptorSetLayout)
+{
+
+}
+
+
+std::shared_ptr<DescriptorSetLayout> DescriptorSetLayout::Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings)
+{
+	VkDescriptorSetLayoutCreateInfo		CreateInfo = {};
+	CreateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	CreateInfo.pNext					= nullptr;
+	CreateInfo.flags					= 0;
+	CreateInfo.bindingCount				= (uint32_t)Bindings.size();
+	CreateInfo.pBindings				= Bindings.data();
+
+	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
+
+	sm_pDevice->CreateDescriptorSetLayout(&CreateInfo, &hDescriptorSetLayout);
+
+	std::shared_ptr<DescriptorSetLayout> spDescriptorSetLayout = std::make_shared<DescriptorSetLayout>(hDescriptorSetLayout);
+
+	if (spDescriptorSetLayout->IsValid())
+	{
+		spDescriptorSetLayout->m_Bindings = Bindings;
+	}
+
+	return spDescriptorSetLayout;
+}
+
+
+DescriptorSetLayout::~DescriptorSetLayout()
+{
+	sm_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
+}
+
+
+/*************************************************************************
 **************************    DescriptorPool    **************************
 *************************************************************************/
 DescriptorPool::DescriptorPool() : m_hDescriptorPool(VK_NULL_HANDLE)
@@ -111,61 +150,30 @@ DescriptorSet::DescriptorSet(VkDescriptorSet hDescriptorSet) : m_hDescriptorSet(
 }
 
 
+void DescriptorSet::Write()
+{
+	VkDescriptorImageInfo	ImageInfo = {};
+	ImageInfo.sampler		;
+	ImageInfo.imageView		;
+	ImageInfo.imageLayout	;
+
+	VkWriteDescriptorSet					WriteDescriptorSet = {};
+	WriteDescriptorSet.sType				= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	WriteDescriptorSet.pNext				= nullptr;
+	WriteDescriptorSet.dstSet				= m_hDescriptorSet;
+	WriteDescriptorSet.dstBinding			;
+	WriteDescriptorSet.dstArrayElement		;
+	WriteDescriptorSet.descriptorCount		;
+	WriteDescriptorSet.descriptorType		;
+	WriteDescriptorSet.pImageInfo			= &ImageInfo;
+	WriteDescriptorSet.pBufferInfo			= nullptr;
+	WriteDescriptorSet.pTexelBufferView		= nullptr;
+
+	sm_pDevice->UpdateDescriptorSets(1, &WriteDescriptorSet, 0, nullptr);
+}
+
+
 DescriptorSet::~DescriptorSet() noexcept
 {
 
-}
-
-
-/*************************************************************************
-***********************    DescriptorSetLayout    ************************
-*************************************************************************/
-DescriptorSetLayout::DescriptorSetLayout() : m_hDescriptorSetLayout(VK_NULL_HANDLE)
-{
-
-}
-
-
-VkResult DescriptorSetLayout::Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings)
-{
-	VkDescriptorSetLayoutCreateInfo		CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.bindingCount				= (uint32_t)Bindings.size();
-	CreateInfo.pBindings				= Bindings.data();
-
-	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
-
-	VkResult eResult = sm_pDevice->CreateDescriptorSetLayout(&CreateInfo, &hDescriptorSetLayout);
-
-	if (eResult == VK_SUCCESS)
-	{
-		this->Release();
-
-		m_hDescriptorSetLayout = hDescriptorSetLayout;
-
-		m_Bindings = Bindings;
-	}
-
-	return eResult;
-}
-
-
-void DescriptorSetLayout::Release() noexcept
-{
-	if (m_hDescriptorSetLayout != VK_NULL_HANDLE)
-	{
-		sm_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
-
-		m_hDescriptorSetLayout = VK_NULL_HANDLE;
-
-		m_Bindings.clear();
-	}
-}
-
-
-DescriptorSetLayout::~DescriptorSetLayout()
-{
-	this->Release();
 }
