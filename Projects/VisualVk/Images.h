@@ -29,8 +29,8 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Converts to handle.
-		operator VkImage() { return m_hImage; }
+		//!	@brief	Convert to VkImage handle.
+		operator VkImage() const { return m_hImage; }
 
 		//!	@brief	Return image format.
 		VkFormat GetFormat() const { return m_eFormat; }

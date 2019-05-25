@@ -20,11 +20,11 @@ VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, VkMemoryPrope
 
 	if (MemoryTypeIndex == VK_INVALID_INDEX)		return VK_ERROR_FORMAT_NOT_SUPPORTED;
 
-	VkMemoryAllocateInfo			AllocateInfo = {};
-	AllocateInfo.sType				= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-	AllocateInfo.pNext				= nullptr;
-	AllocateInfo.allocationSize		= Requirements.size;
-	AllocateInfo.memoryTypeIndex	= MemoryTypeIndex;
+	VkMemoryAllocateInfo				AllocateInfo = {};
+	AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	AllocateInfo.pNext					= nullptr;
+	AllocateInfo.allocationSize			= Requirements.size;
+	AllocateInfo.memoryTypeIndex		= MemoryTypeIndex;
 
 	VkDeviceMemory hMemory = VK_NULL_HANDLE;
 

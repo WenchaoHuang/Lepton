@@ -6,6 +6,29 @@
 using namespace Vk;
 
 /*************************************************************************
+*******************    DescriptorSetLayoutBindings    ********************
+*************************************************************************/
+void DescriptorSetLayoutBindings::SetBinding(uint32_t Binding, VkDescriptorType eDescriptorType, uint32_t DescriptorCount, VkShaderStageFlags eStageFlags)
+{
+	for (size_t i = 0; i < m_Bindings.size(); i++)
+	{
+		if (m_Bindings[i].binding == Binding)
+		{
+			m_Bindings[i].descriptorCount = DescriptorCount;
+
+			m_Bindings[i].descriptorType = eDescriptorType;
+
+			m_Bindings[i].stageFlags = eStageFlags;
+
+			return;
+		}
+	}
+
+	m_Bindings.push_back({ Binding, eDescriptorType, DescriptorCount, eStageFlags, nullptr });
+}
+
+
+/*************************************************************************
 ***********************    DescriptorSetLayout    ************************
 *************************************************************************/
 DescriptorSetLayout::DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout) : m_hDescriptorSetLayout(hDescriptorSetLayout)

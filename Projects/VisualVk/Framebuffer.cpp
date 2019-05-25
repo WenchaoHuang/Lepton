@@ -178,7 +178,7 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 }
 
 
-VkResult Framebuffer::Update(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D)
+VkResult Framebuffer::Resize(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D)
 {
 	return this->Create(m_spRenderPass, Attachments, Extent2D);
 }

@@ -29,7 +29,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return Vulkan handle.
+		//!	@brief	Return VkPipelineLayout handle.
 		VkPipelineLayout GetHandle() const { return m_hPipelineLayout; }
 
 		//!	@brief	If pipeline layout handle is valid.
@@ -47,6 +47,7 @@ namespace Vk
 
 		std::vector<VkDescriptorSetLayout>		m_DescriptorSetLayouts;
 	};
+
 
 	/*********************************************************************
 	******************    GraphicsPipelineCreateInfo    ******************
@@ -82,28 +83,6 @@ namespace Vk
 		};
 
 		/*****************************************************************
-		***************    RasterizationStateCreateInfo    ***************
-		*****************************************************************/
-
-		struct RasterizationStateCreateInfo : private VkPipelineRasterizationStateCreateInfo
-		{
-			operator const VkPipelineRasterizationStateCreateInfo*() { return this; }
-
-			using VkPipelineRasterizationStateCreateInfo::rasterizerDiscardEnable;
-			using VkPipelineRasterizationStateCreateInfo::depthBiasConstantFactor;
-			using VkPipelineRasterizationStateCreateInfo::depthBiasSlopeFactor;
-			using VkPipelineRasterizationStateCreateInfo::depthClampEnable;
-			using VkPipelineRasterizationStateCreateInfo::depthBiasEnable;
-			using VkPipelineRasterizationStateCreateInfo::depthBiasClamp;
-			using VkPipelineRasterizationStateCreateInfo::polygonMode;
-			using VkPipelineRasterizationStateCreateInfo::frontFace;
-			using VkPipelineRasterizationStateCreateInfo::lineWidth;
-			using VkPipelineRasterizationStateCreateInfo::cullMode;
-
-			RasterizationStateCreateInfo();
-		};
-
-		/*****************************************************************
 		***************    InputAssemblyStateCreateInfo    ***************
 		*****************************************************************/
 
@@ -114,9 +93,9 @@ namespace Vk
 
 			InputAssemblyStateCreateInfo();
 
-			void operator=(VkPrimitiveTopology eTopology);
+			InputAssemblyStateCreateInfo(VkPrimitiveTopology eTopology);
 
-			operator const VkPipelineInputAssemblyStateCreateInfo*();
+			operator const VkPipelineInputAssemblyStateCreateInfo*() const;
 
 			operator VkPrimitiveTopology() const { return m_CreateInfo.topology; }
 
@@ -124,6 +103,38 @@ namespace Vk
 
 			VkPipelineInputAssemblyStateCreateInfo		m_CreateInfo;
 		};
+
+		/*****************************************************************
+		***************    RasterizationStateCreateInfo    ***************
+		*****************************************************************/
+
+		/**
+		 *	@brief	Wrapper of VkPipelineRasterizationStateCreateInfo object.
+		 */
+		class RasterizationStateCreateInfo
+		{
+
+		private:
+
+			VkStructureType								sType						= VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+			const void *								pNext						= nullptr;
+			VkPipelineRasterizationStateCreateFlags		flags						= 0;
+
+		public:
+
+			VkBool32									depthClampEnable			= VK_FALSE;
+			VkBool32									rasterizerDiscardEnable		= VK_FALSE;
+			VkPolygonMode								polygonMode					= VK_POLYGON_MODE_FILL;
+			VkCullModeFlags								cullMode					= VK_CULL_MODE_NONE;
+			VkFrontFace									frontFace					= VK_FRONT_FACE_COUNTER_CLOCKWISE;
+			VkBool32									depthBiasEnable				= VK_FALSE;
+			float										depthBiasConstantFactor		= 0.0f;
+			float										depthBiasClamp				= 0.0f;
+			float										depthBiasSlopeFactor		= 0.0f;
+			float										lineWidth					= 1.0f;
+		};
+
+		static_assert(sizeof(RasterizationStateCreateInfo) == sizeof(VkPipelineRasterizationStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
 		***************    TessellationStateCreateInfo    ****************
@@ -149,39 +160,60 @@ namespace Vk
 		***************    DepthStencilStateCreateInfo    ****************
 		*****************************************************************/
 
-		struct DepthStencilStateCreateInfo : private VkPipelineDepthStencilStateCreateInfo
+		/**
+		 *	@brief	Wrapper of VkPipelineDepthStencilStateCreateInfo object.
+		 */
+		class DepthStencilStateCreateInfo
 		{
-			operator const VkPipelineDepthStencilStateCreateInfo*() { return this; }
 
-			using VkPipelineDepthStencilStateCreateInfo::depthBoundsTestEnable;
-			using VkPipelineDepthStencilStateCreateInfo::stencilTestEnable;
-			using VkPipelineDepthStencilStateCreateInfo::depthWriteEnable;
-			using VkPipelineDepthStencilStateCreateInfo::depthTestEnable;
-			using VkPipelineDepthStencilStateCreateInfo::depthCompareOp;
-			using VkPipelineDepthStencilStateCreateInfo::minDepthBounds;
-			using VkPipelineDepthStencilStateCreateInfo::maxDepthBounds;
-			using VkPipelineDepthStencilStateCreateInfo::front;
-			using VkPipelineDepthStencilStateCreateInfo::back;
+		private:
 
-			DepthStencilStateCreateInfo();
+			VkStructureType								sType					= VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+			const void *								pNext					= nullptr;
+			VkPipelineDepthStencilStateCreateFlags		flags					= 0;
+
+		public:
+
+			VkBool32									depthTestEnable			= VK_TRUE;
+			VkBool32									depthWriteEnable		= VK_TRUE;
+			VkCompareOp									depthCompareOp			= VK_COMPARE_OP_LESS_OR_EQUAL;
+			VkBool32									depthBoundsTestEnable	= VK_FALSE;
+			VkBool32									stencilTestEnable		= VK_FALSE;
+			VkStencilOpState							front					= {};
+			VkStencilOpState							back					= {};
+			float										minDepthBounds			= 0.0f;
+			float										maxDepthBounds			= 0.0f;
 		};
+
+		static_assert(sizeof(DepthStencilStateCreateInfo) == sizeof(VkPipelineDepthStencilStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
 		****************    MultisampleStateCreateInfo    ****************
 		*****************************************************************/
 
-		struct MultisampleStateCreateInfo : private VkPipelineMultisampleStateCreateInfo
+		/**
+		 *	@brief	Wrapper of VkPipelineMultisampleStateCreateInfo object.
+		 */
+		class MultisampleStateCreateInfo
 		{
-			operator const VkPipelineMultisampleStateCreateInfo*() { return this; }
 
-			using VkPipelineMultisampleStateCreateInfo::alphaToCoverageEnable;
-			using VkPipelineMultisampleStateCreateInfo::rasterizationSamples;
-			using VkPipelineMultisampleStateCreateInfo::sampleShadingEnable;
-			using VkPipelineMultisampleStateCreateInfo::minSampleShading;
-			using VkPipelineMultisampleStateCreateInfo::alphaToOneEnable;
+		private:
 
-			MultisampleStateCreateInfo();
+			VkStructureType								sType					= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+			const void *								pNext					= nullptr;
+			VkPipelineMultisampleStateCreateFlags		flags					= 0;
+
+		public:
+
+			VkSampleCountFlagBits						rasterizationSamples	= VK_SAMPLE_COUNT_1_BIT;
+			VkBool32									sampleShadingEnable		= VK_FALSE;
+			float										minSampleShading		= 0.0f;
+			const VkSampleMask *						pSampleMask				= nullptr;
+			VkBool32									alphaToCoverageEnable	= VK_FALSE;
+			VkBool32									alphaToOneEnable		= VK_FALSE;
 		};
+
+		static_assert(sizeof(MultisampleStateCreateInfo) == sizeof(VkPipelineMultisampleStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
 		****************    VertexInputStateCreateInfo    ****************
@@ -211,10 +243,26 @@ namespace Vk
 		****************    ColorBlendAttachmentState    *****************
 		*****************************************************************/
 
-		struct ColorBlendAttachmentState : public VkPipelineColorBlendAttachmentState
+		/**
+		 *	@brief	Wrapper of VkPipelineColorBlendAttachmentState object.
+		 */
+		struct ColorBlendAttachmentState
 		{
-			ColorBlendAttachmentState();
+			VkBool32					blendEnable				= VK_FALSE;
+			VkBlendFactor				srcColorBlendFactor		= VK_BLEND_FACTOR_ZERO;
+			VkBlendFactor				dstColorBlendFactor		= VK_BLEND_FACTOR_ZERO;
+			VkBlendOp					colorBlendOp			= VK_BLEND_OP_ADD;
+			VkBlendFactor				srcAlphaBlendFactor		= VK_BLEND_FACTOR_ZERO;
+			VkBlendFactor				dstAlphaBlendFactor		= VK_BLEND_FACTOR_ZERO;
+			VkBlendOp					alphaBlendOp			= VK_BLEND_OP_ADD;
+			VkColorComponentFlags		colorWriteMask			= VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 		};
+
+		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "struct and wrapper have different size!");
+
+		/*****************************************************************
+		****************    ColorBlendStateCreateInfo    *****************
+		*****************************************************************/
 
 		struct ColorBlendStateCreateInfo : private VkPipelineColorBlendStateCreateInfo
 		{
@@ -254,18 +302,18 @@ namespace Vk
 
 	public:
 
-		PipelineShaderStages				ShaderStages;
-		DynamicStateCreateInfo				DynamicStates;
-		ViewportStateCreateInfo				ViewportState;
-		ColorBlendStateCreateInfo			ColorBlendState;
-		VertexInputStateCreateInfo			VertexInputState;
-		MultisampleStateCreateInfo			MultisampleState;
-		DepthStencilStateCreateInfo			DepthStencilState;
-		TessellationStateCreateInfo			TessellationState;
-		InputAssemblyStateCreateInfo		InputAssemblyState;
-		RasterizationStateCreateInfo		RasterizationState;
-		std::shared_ptr<PipelineLayout>		spPipelineLayout;
-		std::shared_ptr<RenderPass>			spRenderPass;
+		PipelineShaderStages					ShaderStages;
+		DynamicStateCreateInfo					DynamicStates;
+		ViewportStateCreateInfo					ViewportState;
+		ColorBlendStateCreateInfo				ColorBlendState;
+		VertexInputStateCreateInfo				VertexInputState;
+		MultisampleStateCreateInfo				MultisampleState;
+		DepthStencilStateCreateInfo				DepthStencilState;
+		TessellationStateCreateInfo				TessellationState;
+		InputAssemblyStateCreateInfo			InputAssemblyState;
+		RasterizationStateCreateInfo			RasterizationState;
+		std::shared_ptr<PipelineLayout>			spPipelineLayout;
+		std::shared_ptr<RenderPass>				spRenderPass;
 	};
 
 	/*********************************************************************

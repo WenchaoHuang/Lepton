@@ -27,7 +27,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkDeviceMemory handle.
 		operator VkDeviceMemory() const { return m_hMemory; }
 
 		//!	@brief	Allocate memory.

@@ -29,7 +29,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkFence handle.
 		operator VkFence() const { return m_hFence; }
 
 		//!	@brief	If fence handle is valid.
@@ -72,7 +72,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkSemaphore handle.
 		operator VkSemaphore() const { return m_hSemaphore; }
 
 		//!	@brief	If semaphore handle is valid.
@@ -103,7 +103,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkEvent handle.
 		operator VkEvent() const { return m_hEvent; }
 
 		//!	@brief	If event handle is valid.

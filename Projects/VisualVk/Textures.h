@@ -84,7 +84,7 @@ namespace Vk
 
 	private:
 
-		Image1D			m_Image;
+		Image1D			m_Image1D;
 	};
 
 	/*********************************************************************
@@ -99,7 +99,7 @@ namespace Vk
 
 	private:
 
-		Image1DArray		m_ImageArray;
+		Image1DArray		m_Image1DArray;
 	};
 
 	/*********************************************************************
@@ -114,7 +114,7 @@ namespace Vk
 
 	private:
 
-		Image2D			m_Image;
+		Image2D			m_Image2D;
 	};
 
 	/*********************************************************************
@@ -129,7 +129,7 @@ namespace Vk
 
 	private:
 
-		Image2DArray		m_ImageArray;
+		Image2DArray		m_Image2DArray;
 	};
 
 	/*********************************************************************
@@ -144,7 +144,7 @@ namespace Vk
 
 	private:
 
-		ImageCube			m_Image;
+		ImageCube			m_ImageCube;
 	};
 
 	/*********************************************************************
@@ -158,6 +158,6 @@ namespace Vk
 
 	private:
 
-		Image3D			m_Image;
+		Image3D			m_Image3D;
 	};
 }

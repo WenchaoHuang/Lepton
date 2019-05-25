@@ -157,7 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="CommandBuffer.cpp" />
     <ClCompile Include="Descriptor.cpp" />
     <ClCompile Include="DeviceMemory.cpp" />
@@ -168,13 +168,14 @@
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Buffers.h" />
     <ClInclude Include="CommandBuffer.h" />
     <ClInclude Include="Descriptor.h" />
     <ClInclude Include="DeviceMemory.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Pipelines.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />

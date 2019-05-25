@@ -4,11 +4,28 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 #include "Resource.h"
 
 namespace Vk
 {
 	class DescriptorSet;
+
+	/*********************************************************************
+	*****************    DescriptorSetLayoutBindings    ******************
+	*********************************************************************/
+
+	class DescriptorSetLayoutBindings
+	{
+
+	public:
+
+		void SetBinding(uint32_t Binding, VkDescriptorType eDescriptorType, uint32_t DescriptorCount, VkShaderStageFlags eStageFlags);
+
+	private:
+
+		std::vector<VkDescriptorSetLayoutBinding>		m_Bindings;
+	};
 
 	/*********************************************************************
 	*********************    DescriptorSetLayout    **********************
@@ -30,7 +47,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return Vulkan handle.
+		//!	@brief	Return VkDescriptorSetLayout handle.
 		VkDescriptorSetLayout GetHandle() const { return m_hDescriptorSetLayout; }
 
 		//!	@brief	Is descriptor set layout handle is valid.

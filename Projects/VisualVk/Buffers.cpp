@@ -1,21 +1,21 @@
 /*************************************************************************
-*************************    VisualVk_Buffer    **************************
+*************************    VisualVk_Buffers    *************************
 *************************************************************************/
 #include "Signals.h"
-#include "Buffer.h"
+#include "Buffers.h"
 
 using namespace Vk;
 
 /*************************************************************************
-****************************    HostBuffer    ****************************
+************************    HostVisibleBuffer    *************************
 *************************************************************************/
-HostBuffer::HostBuffer() : m_Bytes(0), m_pData(nullptr), m_hBuffer(VK_NULL_HANDLE)
+HostVisibleBuffer::HostVisibleBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
 {
 
 }
 
 
-VkResult HostBuffer::Create(VkDeviceSize SizeBytes)
+VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 {
 	if (SizeBytes == 0)					return VK_ERROR_OUT_OF_DEVICE_MEMORY;
 	else if (SizeBytes == m_Bytes)		return VK_SUCCESS;
@@ -25,7 +25,7 @@ VkResult HostBuffer::Create(VkDeviceSize SizeBytes)
 	CreateInfo.pNext					= nullptr;
 	CreateInfo.flags					= 0;
 	CreateInfo.size						= SizeBytes;
-	CreateInfo.usage					= 0x00001FFF;	//!	For all usages.
+	CreateInfo.usage					= 0x00001FFF;		//!	For all usages.
 	CreateInfo.sharingMode				= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount	= 0;
 	CreateInfo.pQueueFamilyIndices		= nullptr;
@@ -62,7 +62,7 @@ VkResult HostBuffer::Create(VkDeviceSize SizeBytes)
 }
 
 
-VkResult HostBuffer::CopyFrom(const HostBuffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes)
+VkResult HostVisibleBuffer::CopyFrom(HostVisibleBuffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes)
 {
 	if ((DstOffset + SizeBytes <= m_Bytes) && (SrcOffset + SizeBytes <= pSrcBuffer->m_Bytes))
 	{
@@ -91,15 +91,15 @@ VkResult HostBuffer::CopyFrom(const HostBuffer * pSrcBuffer, VkDeviceSize SrcOff
 }
 
 
-VkResult HostBuffer::Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+VkResult HostVisibleBuffer::Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 {
-	if (OffsetBytes + SizeBytes > m_Bytes)		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+	void * pData = nullptr;
 
-	VkResult eResult = m_Memory.Map(&m_pData, OffsetBytes, SizeBytes);
+	VkResult eResult = m_Memory.Map(&pData, OffsetBytes, SizeBytes);
 
 	if (eResult == VK_SUCCESS)
 	{
-		std::memcpy(m_pData, pHostData, (size_t)SizeBytes);
+		std::memcpy(pData, pHostData, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}
@@ -108,15 +108,15 @@ VkResult HostBuffer::Write(const void * pHostData, VkDeviceSize OffsetBytes, VkD
 }
 
 
-VkResult HostBuffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+VkResult HostVisibleBuffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 {
-	if (OffsetBytes + SizeBytes > m_Bytes)		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+	void * pData = nullptr;
 
-	VkResult eResult = m_Memory.Map(&m_pData, OffsetBytes, SizeBytes);
+	VkResult eResult = m_Memory.Map(&pData, OffsetBytes, SizeBytes);
 
 	if (eResult == VK_SUCCESS)
 	{
-		std::memcpy(pHostData, m_pData, (size_t)SizeBytes);
+		std::memcpy(pHostData, pData, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}
@@ -125,15 +125,15 @@ VkResult HostBuffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSi
 }
 
 
-VkResult HostBuffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+VkResult HostVisibleBuffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 {
-	if (OffsetBytes + SizeBytes > m_Bytes)		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+	void * pData = nullptr;
 
-	VkResult eResult = m_Memory.Map(&m_pData, OffsetBytes, SizeBytes);
+	VkResult eResult = m_Memory.Map(&pData, OffsetBytes, SizeBytes);
 
 	if (eResult == VK_SUCCESS)
 	{
-		std::memset((void*)((size_t)m_pData + OffsetBytes), 0, (size_t)SizeBytes);
+		std::memset(pData, 0, (size_t)SizeBytes);
 
 		m_Memory.Unmap();
 	}
@@ -142,15 +142,13 @@ VkResult HostBuffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 }
 
 
-void HostBuffer::Release() noexcept
+void HostVisibleBuffer::Release() noexcept
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
 		sm_pDevice->DestroyBuffer(m_hBuffer);
 
 		m_hBuffer = VK_NULL_HANDLE;
-
-		m_pData = nullptr;
 
 		m_Memory.Free();
 
@@ -159,22 +157,22 @@ void HostBuffer::Release() noexcept
 }
 
 
-HostBuffer::~HostBuffer()
+HostVisibleBuffer::~HostVisibleBuffer()
 {
 	this->Release();
 }
 
 
 /*************************************************************************
-***************************    DeviceBuffer    ***************************
+************************    DeviceLocalBuffer    *************************
 *************************************************************************/
-DeviceBuffer::DeviceBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
+DeviceLocalBuffer::DeviceLocalBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
 {
 
 }
 
 
-VkResult DeviceBuffer::Create(VkDeviceSize SizeBytes)
+VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 {
 	if (SizeBytes == 0)					return VK_ERROR_OUT_OF_DEVICE_MEMORY;
 	else if (SizeBytes == m_Bytes)		return VK_SUCCESS;
@@ -184,7 +182,7 @@ VkResult DeviceBuffer::Create(VkDeviceSize SizeBytes)
 	CreateInfo.pNext					= nullptr;
 	CreateInfo.flags					= 0;
 	CreateInfo.size						= SizeBytes;
-	CreateInfo.usage					= 0x00001FFF;	//!	For all usages.
+	CreateInfo.usage					= 0x00001FFF;		//!	For all usages.
 	CreateInfo.sharingMode				= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount	= 0;
 	CreateInfo.pQueueFamilyIndices		= nullptr;
@@ -221,7 +219,7 @@ VkResult DeviceBuffer::Create(VkDeviceSize SizeBytes)
 }
 
 
-void DeviceBuffer::Release() noexcept
+void DeviceLocalBuffer::Release() noexcept
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
@@ -236,7 +234,7 @@ void DeviceBuffer::Release() noexcept
 }
 
 
-DeviceBuffer::~DeviceBuffer()
+DeviceLocalBuffer::~DeviceLocalBuffer()
 {
 	this->Release();
 }

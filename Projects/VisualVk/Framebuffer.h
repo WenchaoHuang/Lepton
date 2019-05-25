@@ -40,7 +40,6 @@ namespace Vk
 		//!	@brief	Create a common render pass object for swapchain.
 		static std::shared_ptr<RenderPass> CreateForSwapchain(VkFormat eColorFormat,
 															  VkFormat eDepthStencilFormat);
-
 		//!	@brief	Create a render pass object.
 		static std::shared_ptr<RenderPass> Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
 												  const std::vector<VkSubpassDescription> & SubpassDescriptions = std::vector<VkSubpassDescription>(),
@@ -89,7 +88,7 @@ namespace Vk
 		VkResult Create(std::shared_ptr<RenderPass> spRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
 		//!	@brief	Update frame buffer.
-		VkResult Update(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
+		VkResult Resize(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
 		//!	@brief	Return extent of framebuffer.
 		VkExtent2D GetExtent() const { return m_Extent2D; }

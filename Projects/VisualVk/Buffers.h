@@ -1,5 +1,5 @@
 /*************************************************************************
-*************************    VisualVk_Buffer    **************************
+*************************    VisualVk_Buffers    *************************
 *************************************************************************/
 #pragma once
 
@@ -8,26 +8,26 @@
 namespace Vk
 {
 	/*********************************************************************
-	**************************    HostBuffer    **************************
+	**********************    HostVisibleBuffer    ***********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan buffer object.
+	 *	@brief	Vulkan host-visible buffer object.
 	 */
-	class HostBuffer : private Resource
+	class HostVisibleBuffer : private Resource
 	{
 
 	public:
 
 		//!	@brief	Create buffer object.
-		HostBuffer();
+		HostVisibleBuffer();
 
 		//!	@brief	Destroy buffer object.
-		~HostBuffer();
+		~HostVisibleBuffer();
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkBuffer handle.
 		operator VkBuffer() const { return m_hBuffer; }
 
 		//!	@brief	Memory copy from device to host.
@@ -37,7 +37,7 @@ namespace Vk
 		VkResult Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 		//!	@brief	Memory copy from device to device.
-		VkResult CopyFrom(const HostBuffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes);
+		VkResult CopyFrom(HostVisibleBuffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes);
 
 		//!	@brief	Filling data with 0.
 		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
@@ -56,8 +56,6 @@ namespace Vk
 
 	private:
 
-		void *				m_pData;
-
 		VkBuffer			m_hBuffer;
 
 		DeviceMemory		m_Memory;
@@ -66,26 +64,26 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	*************************    DeviceBuffer    *************************
+	**********************    DeviceLocalBuffer    ***********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan buffer object (device local).
+	 *	@brief	Vulkan device-local buffer object (device local).
 	 */
-	class DeviceBuffer : private Resource
+	class DeviceLocalBuffer : private Resource
 	{
 
 	public:
 
 		//!	@brief	Create buffer object.
-		DeviceBuffer();
+		DeviceLocalBuffer();
 
 		//!	@brief	Destroy buffer object.
-		~DeviceBuffer();
+		~DeviceLocalBuffer();
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkBuffer handle.
 		operator VkBuffer() const { return m_hBuffer; }
 
 		//!	@brief	If buffer handle is valid.
@@ -107,55 +105,5 @@ namespace Vk
 		DeviceMemory		m_Memory;
 
 		VkDeviceSize		m_Bytes;
-	};
-
-	/*********************************************************************
-	****************************    Array    *****************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Template for Vulkan buffer object.
-	 */
-	template<typename Type> class Array
-	{
-
-	public:
-
-		//!	@brief	Resize array.
-		VkResult Resize(VkDeviceSize Count)
-		{
-			return m_Buffer.Create(Count * sizeof(Type));
-		}
-
-		//!	@brief	Memory copy from device to host.
-		VkResult Read(Type * pHostData, VkDeviceSize Offset, VkDeviceSize Count)
-		{
-			return m_Buffer.Read(pHostData, Offset * sizeof(Type), Count * sizeof(Type));
-		}
-
-		//!	@brief	Memory copy from host to device.
-		VkResult Write(const void * pHostData, VkDeviceSize Offset, VkDeviceSize Count)
-		{
-			return m_Buffer.Write(pHostData, Offset * sizeof(Type), Count * sizeof(Type));
-		}
-
-		//!	@brief	Filling data with 0.
-		VkResult SetZero(VkDeviceSize Offset, VkDeviceSize Count)
-		{
-			return m_Buffer.SetZero(Offset * sizeof(Type), Count * sizeof(Type));
-		}
-
-		//!	@brief	Return count of elements.
-		VkDeviceSize Size() const { return m_Buffer.Bytes() / sizeof(Type); }
-
-		//!	@brief	If array is empty.
-		VkBool32 IsEmpty() const { return m_Buffer.IsEmpty(); }
-
-		//!	@brief	Erase all.
-		void Clear() noexcept { m_Buffer.Release(); }
-
-	private:
-
-		HostBuffer		m_Buffer;
 	};
 }
