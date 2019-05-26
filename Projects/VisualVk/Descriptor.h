@@ -12,58 +12,6 @@ namespace Vk
 	class DescriptorSet;
 
 	/*********************************************************************
-	*****************    DescriptorSetLayoutBindings    ******************
-	*********************************************************************/
-
-	class DescriptorSetLayoutBindings
-	{
-
-	public:
-
-		void SetBinding(uint32_t Binding, VkDescriptorType eDescriptorType, uint32_t DescriptorCount, VkShaderStageFlags eStageFlags);
-
-	private:
-
-		std::vector<VkDescriptorSetLayoutBinding>		m_Bindings;
-	};
-
-	/*********************************************************************
-	*********************    DescriptorSetLayout    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Vulkan descriptor set layout object.
-	 */
-	class DescriptorSetLayout : private Resource
-	{
-
-	public:
-
-		//!	@brief	Create descriptor set layout object.
-		DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE);
-
-		//!	@brief	Destroy descriptor set layout object.
-		~DescriptorSetLayout();
-
-	public:
-
-		//!	@brief	Return VkDescriptorSetLayout handle.
-		VkDescriptorSetLayout GetHandle() const { return m_hDescriptorSetLayout; }
-
-		//!	@brief	Is descriptor set layout handle is valid.
-		VkBool32 IsValid() const { return m_hDescriptorSetLayout != VK_NULL_HANDLE; }
-
-		//!	@brief	Create a new descriptor set layout object.
-		static std::shared_ptr<DescriptorSetLayout> Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings = std::vector<VkDescriptorSetLayoutBinding>());
-
-	private:
-
-		const VkDescriptorSetLayout			m_hDescriptorSetLayout;
-
-		std::vector<VkDescriptorSetLayoutBinding>		m_Bindings;
-	};
-
-	/*********************************************************************
 	************************    DescriptorPool    ************************
 	*********************************************************************/
 

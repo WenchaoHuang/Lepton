@@ -6,68 +6,6 @@
 using namespace Vk;
 
 /*************************************************************************
-*******************    DescriptorSetLayoutBindings    ********************
-*************************************************************************/
-void DescriptorSetLayoutBindings::SetBinding(uint32_t Binding, VkDescriptorType eDescriptorType, uint32_t DescriptorCount, VkShaderStageFlags eStageFlags)
-{
-	for (size_t i = 0; i < m_Bindings.size(); i++)
-	{
-		if (m_Bindings[i].binding == Binding)
-		{
-			m_Bindings[i].descriptorCount = DescriptorCount;
-
-			m_Bindings[i].descriptorType = eDescriptorType;
-
-			m_Bindings[i].stageFlags = eStageFlags;
-
-			return;
-		}
-	}
-
-	m_Bindings.push_back({ Binding, eDescriptorType, DescriptorCount, eStageFlags, nullptr });
-}
-
-
-/*************************************************************************
-***********************    DescriptorSetLayout    ************************
-*************************************************************************/
-DescriptorSetLayout::DescriptorSetLayout(VkDescriptorSetLayout hDescriptorSetLayout) : m_hDescriptorSetLayout(hDescriptorSetLayout)
-{
-
-}
-
-
-std::shared_ptr<DescriptorSetLayout> DescriptorSetLayout::Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings)
-{
-	VkDescriptorSetLayoutCreateInfo		CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.bindingCount				= (uint32_t)Bindings.size();
-	CreateInfo.pBindings				= Bindings.data();
-
-	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
-
-	sm_pDevice->CreateDescriptorSetLayout(&CreateInfo, &hDescriptorSetLayout);
-
-	std::shared_ptr<DescriptorSetLayout> spDescriptorSetLayout = std::make_shared<DescriptorSetLayout>(hDescriptorSetLayout);
-
-	if (spDescriptorSetLayout->IsValid())
-	{
-		spDescriptorSetLayout->m_Bindings = Bindings;
-	}
-
-	return spDescriptorSetLayout;
-}
-
-
-DescriptorSetLayout::~DescriptorSetLayout()
-{
-	sm_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
-}
-
-
-/*************************************************************************
 **************************    DescriptorPool    **************************
 *************************************************************************/
 DescriptorPool::DescriptorPool() : m_hDescriptorPool(VK_NULL_HANDLE)

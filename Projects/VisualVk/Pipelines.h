@@ -22,7 +22,8 @@ namespace Vk
 	public:
 
 		//!	@brief	Create pipeline layout object.
-		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE);
+		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE,
+					   VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE);
 
 		//!	@brief	Destroy pipeline layout object.
 		~PipelineLayout() noexcept;
@@ -35,19 +36,23 @@ namespace Vk
 		//!	@brief	If pipeline layout handle is valid.
 		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
 
+		//!	@brief	Return VkDescriptorSetLayout handle.
+		VkDescriptorSetLayout GetDescriptorSetLayout() const { return m_hDescriptorSetLayout; }
+
 		//!	@brief	Create a new pipeline layout object.
-		static std::shared_ptr<PipelineLayout> Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts = std::vector<VkDescriptorSetLayout>(),
+		static std::shared_ptr<PipelineLayout> Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings = std::vector<VkDescriptorSetLayoutBinding>(),
 													  const std::vector<VkPushConstantRange> & PushConstantRanges = std::vector<VkPushConstantRange>());
 
 	private:
 
-		const VkPipelineLayout					m_hPipelineLayout;
+		const VkPipelineLayout							m_hPipelineLayout;
 
-		std::vector<VkPushConstantRange>		m_PushConstantRanges;
+		const VkDescriptorSetLayout						m_hDescriptorSetLayout;
 
-		std::vector<VkDescriptorSetLayout>		m_DescriptorSetLayouts;
+		std::vector<VkPushConstantRange>				m_PushConstantRanges;
+
+		std::vector<VkDescriptorSetLayoutBinding>		m_DescriptorSetLayoutBindings;
 	};
-
 
 	/*********************************************************************
 	******************    GraphicsPipelineCreateInfo    ******************
@@ -94,8 +99,6 @@ namespace Vk
 			InputAssemblyStateCreateInfo();
 
 			InputAssemblyStateCreateInfo(VkPrimitiveTopology eTopology);
-
-			operator const VkPipelineInputAssemblyStateCreateInfo*() const;
 
 			operator VkPrimitiveTopology() const { return m_CreateInfo.topology; }
 

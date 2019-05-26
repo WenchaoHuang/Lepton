@@ -17,7 +17,7 @@ GraphicsPipelineCreateInfo::GraphicsPipelineCreateInfo() : spRenderPass(nullptr)
 	VkGraphicsPipelineCreateInfo::pStages				= nullptr;
 	VkGraphicsPipelineCreateInfo::pVertexInputState		= VertexInputState;
 	VkGraphicsPipelineCreateInfo::pTessellationState	= TessellationState;
-	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= InputAssemblyState;
+	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= reinterpret_cast<const VkPipelineInputAssemblyStateCreateInfo*>(&InputAssemblyState);
 	VkGraphicsPipelineCreateInfo::pRasterizationState	= reinterpret_cast<const VkPipelineRasterizationStateCreateInfo*>(&RasterizationState);
 	VkGraphicsPipelineCreateInfo::pDepthStencilState	= reinterpret_cast<const VkPipelineDepthStencilStateCreateInfo*>(&DepthStencilState);
 	VkGraphicsPipelineCreateInfo::pMultisampleState		= reinterpret_cast<const VkPipelineMultisampleStateCreateInfo*>(&MultisampleState);
@@ -41,7 +41,7 @@ GraphicsPipelineCreateInfo::operator const VkGraphicsPipelineCreateInfo*()
 	VkGraphicsPipelineCreateInfo::pStages				= ShaderStages.GetStages();
 	VkGraphicsPipelineCreateInfo::pVertexInputState		= VertexInputState;
 	VkGraphicsPipelineCreateInfo::pTessellationState	= TessellationState;
-	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= InputAssemblyState;
+	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= reinterpret_cast<const VkPipelineInputAssemblyStateCreateInfo*>(&InputAssemblyState);
 	VkGraphicsPipelineCreateInfo::pRasterizationState	= reinterpret_cast<const VkPipelineRasterizationStateCreateInfo*>(&RasterizationState);
 	VkGraphicsPipelineCreateInfo::pDepthStencilState	= reinterpret_cast<const VkPipelineDepthStencilStateCreateInfo*>(&DepthStencilState);
 	VkGraphicsPipelineCreateInfo::pMultisampleState		= reinterpret_cast<const VkPipelineMultisampleStateCreateInfo*>(&MultisampleState);
@@ -88,7 +88,7 @@ GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCrea
 	m_CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
 	m_CreateInfo.pNext						= nullptr;
 	m_CreateInfo.flags						= 0;
-	m_CreateInfo.topology					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+	m_CreateInfo.topology					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
 	m_CreateInfo.primitiveRestartEnable		= VK_FALSE;
 }
 
@@ -100,12 +100,6 @@ GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCrea
 	m_CreateInfo.flags						= 0;
 	m_CreateInfo.topology					= eTopology;
 	m_CreateInfo.primitiveRestartEnable		= VK_FALSE;
-}
-
-
-GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::operator const VkPipelineInputAssemblyStateCreateInfo*() const
-{
-	return &m_CreateInfo;
 }
 
 
@@ -254,35 +248,48 @@ GraphicsPipelineCreateInfo::ViewportStateCreateInfo::operator const VkPipelineVi
 /*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
-PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout) : m_hPipelineLayout(hPipelineLayout)
+PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout, VkDescriptorSetLayout hDescriptorSetLayout)
+	: m_hPipelineLayout(hPipelineLayout), m_hDescriptorSetLayout(hDescriptorSetLayout)
 {
 
 }
 
 
-std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<VkDescriptorSetLayout> & DescriptorSetLayouts,
+std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings,
 													   const std::vector<VkPushConstantRange> & PushConstantRanges)
 {
-	VkPipelineLayoutCreateInfo			CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.setLayoutCount			= (uint32_t)DescriptorSetLayouts.size();
-	CreateInfo.pSetLayouts				= DescriptorSetLayouts.data();
-	CreateInfo.pushConstantRangeCount	= (uint32_t)PushConstantRanges.size();
-	CreateInfo.pPushConstantRanges		= PushConstantRanges.data();
+	VkDescriptorSetLayoutCreateInfo					DescriptorSetLayoutCreateInfo = {};
+	DescriptorSetLayoutCreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	DescriptorSetLayoutCreateInfo.pNext				= nullptr;
+	DescriptorSetLayoutCreateInfo.flags				= 0;
+	DescriptorSetLayoutCreateInfo.bindingCount		= (uint32_t)Bindings.size();
+	DescriptorSetLayoutCreateInfo.pBindings			= Bindings.data();
 
 	VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
 
-	sm_pDevice->CreatePipelineLayout(&CreateInfo, &hPipelineLayout);
+	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
 
-	std::shared_ptr<PipelineLayout> spPipelineLayout = std::make_shared<PipelineLayout>(hPipelineLayout);
+	if (sm_pDevice->CreateDescriptorSetLayout(&DescriptorSetLayoutCreateInfo, &hDescriptorSetLayout) == VK_SUCCESS)
+	{
+		VkPipelineLayoutCreateInfo							PipelineLayoutCreateInfo = {};
+		PipelineLayoutCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+		PipelineLayoutCreateInfo.pNext						= nullptr;
+		PipelineLayoutCreateInfo.flags						= 0;
+		PipelineLayoutCreateInfo.setLayoutCount				= 1;
+		PipelineLayoutCreateInfo.pSetLayouts				= &hDescriptorSetLayout;
+		PipelineLayoutCreateInfo.pushConstantRangeCount		= (uint32_t)PushConstantRanges.size();
+		PipelineLayoutCreateInfo.pPushConstantRanges		= PushConstantRanges.data();
+
+		sm_pDevice->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
+	}
+
+	std::shared_ptr<PipelineLayout> spPipelineLayout = std::make_shared<PipelineLayout>(hPipelineLayout, hDescriptorSetLayout);
 
 	if (spPipelineLayout->IsValid())
 	{
-		spPipelineLayout->m_DescriptorSetLayouts = DescriptorSetLayouts;
-
 		spPipelineLayout->m_PushConstantRanges = PushConstantRanges;
+
+		spPipelineLayout->m_DescriptorSetLayoutBindings = Bindings;
 	}
 
 	return spPipelineLayout;
@@ -291,6 +298,8 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<VkDescr
 
 PipelineLayout::~PipelineLayout() noexcept
 {
+	sm_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
+
 	sm_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
 }
 

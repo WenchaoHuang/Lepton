@@ -28,7 +28,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return Vulkan handle.
+		//!	@brief	Return VkRenderPass handle.
 		VkRenderPass GetHandle() const { return m_hRenderPass; }
 
 		//!	@brief	If render pass handle is valid.
@@ -75,7 +75,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to VkFramebuffer handle.
 		operator VkFramebuffer() const { return m_hFramebuffer; }
 
 		//!	@brief	If framebuffer handle is valid.
