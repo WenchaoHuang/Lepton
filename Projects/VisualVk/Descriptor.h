@@ -73,7 +73,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Update the contents of a descriptor set object.
-		void Write();
+		void Update();
 
 	private:
 

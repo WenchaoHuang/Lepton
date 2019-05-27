@@ -16,7 +16,7 @@ GraphicsPipelineCreateInfo::GraphicsPipelineCreateInfo() : spRenderPass(nullptr)
 	VkGraphicsPipelineCreateInfo::stageCount			= 0;
 	VkGraphicsPipelineCreateInfo::pStages				= nullptr;
 	VkGraphicsPipelineCreateInfo::pVertexInputState		= VertexInputState;
-	VkGraphicsPipelineCreateInfo::pTessellationState	= TessellationState;
+	VkGraphicsPipelineCreateInfo::pTessellationState	= reinterpret_cast<const VkPipelineTessellationStateCreateInfo*>(&TessellationState);
 	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= reinterpret_cast<const VkPipelineInputAssemblyStateCreateInfo*>(&InputAssemblyState);
 	VkGraphicsPipelineCreateInfo::pRasterizationState	= reinterpret_cast<const VkPipelineRasterizationStateCreateInfo*>(&RasterizationState);
 	VkGraphicsPipelineCreateInfo::pDepthStencilState	= reinterpret_cast<const VkPipelineDepthStencilStateCreateInfo*>(&DepthStencilState);
@@ -40,7 +40,7 @@ GraphicsPipelineCreateInfo::operator const VkGraphicsPipelineCreateInfo*()
 	VkGraphicsPipelineCreateInfo::stageCount			= ShaderStages.GetStageCount();
 	VkGraphicsPipelineCreateInfo::pStages				= ShaderStages.GetStages();
 	VkGraphicsPipelineCreateInfo::pVertexInputState		= VertexInputState;
-	VkGraphicsPipelineCreateInfo::pTessellationState	= TessellationState;
+	VkGraphicsPipelineCreateInfo::pTessellationState	= reinterpret_cast<const VkPipelineTessellationStateCreateInfo*>(&TessellationState);
 	VkGraphicsPipelineCreateInfo::pInputAssemblyState	= reinterpret_cast<const VkPipelineInputAssemblyStateCreateInfo*>(&InputAssemblyState);
 	VkGraphicsPipelineCreateInfo::pRasterizationState	= reinterpret_cast<const VkPipelineRasterizationStateCreateInfo*>(&RasterizationState);
 	VkGraphicsPipelineCreateInfo::pDepthStencilState	= reinterpret_cast<const VkPipelineDepthStencilStateCreateInfo*>(&DepthStencilState);
@@ -118,12 +118,6 @@ GraphicsPipelineCreateInfo::TessellationStateCreateInfo::TessellationStateCreate
 void GraphicsPipelineCreateInfo::TessellationStateCreateInfo::SetPatchControlPoints(uint32_t PatchControlPoints)
 {
 	m_CreateInfo.patchControlPoints = PatchControlPoints;
-}
-
-
-GraphicsPipelineCreateInfo::TessellationStateCreateInfo::operator const VkPipelineTessellationStateCreateInfo*()
-{
-	return &m_CreateInfo;
 }
 
 

@@ -150,8 +150,6 @@ namespace Vk
 
 			TessellationStateCreateInfo();
 
-			operator const VkPipelineTessellationStateCreateInfo*();
-
 			void SetPatchControlPoints(uint32_t PatchControlPoints);
 
 		private:

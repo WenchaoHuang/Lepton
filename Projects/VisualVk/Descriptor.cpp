@@ -111,7 +111,7 @@ DescriptorSet::DescriptorSet(VkDescriptorSet hDescriptorSet) : m_hDescriptorSet(
 }
 
 
-void DescriptorSet::Write()
+void DescriptorSet::Update()
 {
 	VkDescriptorImageInfo	ImageInfo = {};
 	ImageInfo.sampler		;
@@ -122,9 +122,9 @@ void DescriptorSet::Write()
 	WriteDescriptorSet.sType				= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 	WriteDescriptorSet.pNext				= nullptr;
 	WriteDescriptorSet.dstSet				= m_hDescriptorSet;
-	WriteDescriptorSet.dstBinding			;
-	WriteDescriptorSet.dstArrayElement		;
-	WriteDescriptorSet.descriptorCount		;
+	WriteDescriptorSet.dstBinding			= 0;
+	WriteDescriptorSet.dstArrayElement		= 0;
+	WriteDescriptorSet.descriptorCount		= 1;
 	WriteDescriptorSet.descriptorType		;
 	WriteDescriptorSet.pImageInfo			= &ImageInfo;
 	WriteDescriptorSet.pBufferInfo			= nullptr;
