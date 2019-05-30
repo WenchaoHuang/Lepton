@@ -160,6 +160,7 @@
     <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="CommandBuffer.cpp" />
     <ClCompile Include="Descriptor.cpp" />
+    <ClCompile Include="DescriptorSet.cpp" />
     <ClCompile Include="DeviceMemory.cpp" />
     <ClCompile Include="Images.cpp" />
     <ClCompile Include="Instance.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="CommandBuffer.h" />
     <ClInclude Include="Descriptor.h" />
+    <ClInclude Include="DescriptorSet.h" />
     <ClInclude Include="DeviceMemory.h" />
     <ClInclude Include="Images.h" />
     <ClInclude Include="Instance.h" />
