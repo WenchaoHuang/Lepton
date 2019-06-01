@@ -239,64 +239,6 @@ GraphicsPipelineCreateInfo::ViewportStateCreateInfo::operator const VkPipelineVi
 }
 
 
-/*************************************************************************
-**************************    PipelineLayout    **************************
-*************************************************************************/
-PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout, VkDescriptorSetLayout hDescriptorSetLayout)
-	: m_hPipelineLayout(hPipelineLayout), m_hDescriptorSetLayout(hDescriptorSetLayout)
-{
-
-}
-
-
-std::shared_ptr<PipelineLayout> PipelineLayout::Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings,
-													   const std::vector<VkPushConstantRange> & PushConstantRanges)
-{
-	VkDescriptorSetLayoutCreateInfo					DescriptorSetLayoutCreateInfo = {};
-	DescriptorSetLayoutCreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	DescriptorSetLayoutCreateInfo.pNext				= nullptr;
-	DescriptorSetLayoutCreateInfo.flags				= 0;
-	DescriptorSetLayoutCreateInfo.bindingCount		= (uint32_t)Bindings.size();
-	DescriptorSetLayoutCreateInfo.pBindings			= Bindings.data();
-
-	VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
-
-	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
-
-	if (sm_pDevice->CreateDescriptorSetLayout(&DescriptorSetLayoutCreateInfo, &hDescriptorSetLayout) == VK_SUCCESS)
-	{
-		VkPipelineLayoutCreateInfo							PipelineLayoutCreateInfo = {};
-		PipelineLayoutCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-		PipelineLayoutCreateInfo.pNext						= nullptr;
-		PipelineLayoutCreateInfo.flags						= 0;
-		PipelineLayoutCreateInfo.setLayoutCount				= 1;
-		PipelineLayoutCreateInfo.pSetLayouts				= &hDescriptorSetLayout;
-		PipelineLayoutCreateInfo.pushConstantRangeCount		= (uint32_t)PushConstantRanges.size();
-		PipelineLayoutCreateInfo.pPushConstantRanges		= PushConstantRanges.data();
-
-		sm_pDevice->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
-	}
-
-	std::shared_ptr<PipelineLayout> spPipelineLayout = std::make_shared<PipelineLayout>(hPipelineLayout, hDescriptorSetLayout);
-
-	if (spPipelineLayout->IsValid())
-	{
-		spPipelineLayout->m_PushConstantRanges = PushConstantRanges;
-
-		spPipelineLayout->m_DescriptorSetLayoutBindings = Bindings;
-	}
-
-	return spPipelineLayout;
-}
-
-
-PipelineLayout::~PipelineLayout() noexcept
-{
-	sm_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
-
-	sm_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
-}
-
 
 /*************************************************************************
 *************************    GraphicsPipeline    *************************

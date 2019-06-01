@@ -41,20 +41,20 @@
     <Filter Include="1. Resources\7. Pipelines">
       <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\8. Descriptor">
-      <UniqueIdentifier>{9905aed2-c2ce-4997-a80c-538ce9149818}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Resources\9. Swapchain">
-      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Resources\10. Framebuffer">
-      <UniqueIdentifier>{56b8a199-e8d0-40d9-bfe6-b5e03fe6eebf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Resources\11. ShaderModule">
       <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. Resources\3. Buffers">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\8. Swapchain">
+      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\9. Framebuffer">
+      <UniqueIdentifier>{56b8a199-e8d0-40d9-bfe6-b5e03fe6eebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Resources\10. PipelineLayout">
+      <UniqueIdentifier>{9905aed2-c2ce-4997-a80c-538ce9149818}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +80,7 @@
       <Filter>1. Resources\2. Signals</Filter>
     </ClCompile>
     <ClCompile Include="Swapchain.cpp">
-      <Filter>1. Resources\9. Swapchain</Filter>
+      <Filter>1. Resources\8. Swapchain</Filter>
     </ClCompile>
     <ClCompile Include="Images.cpp">
       <Filter>1. Resources\4. Images</Filter>
@@ -89,13 +89,10 @@
       <Filter>1. Resources\6. Textures</Filter>
     </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
-      <Filter>1. Resources\10. Framebuffer</Filter>
+      <Filter>1. Resources\9. Framebuffer</Filter>
     </ClCompile>
     <ClCompile Include="Pipelines.cpp">
       <Filter>1. Resources\7. Pipelines</Filter>
-    </ClCompile>
-    <ClCompile Include="Descriptor.cpp">
-      <Filter>1. Resources\8. Descriptor</Filter>
     </ClCompile>
     <ClCompile Include="ShaderModule.cpp">
       <Filter>1. Resources\11. ShaderModule</Filter>
@@ -106,8 +103,8 @@
     <ClCompile Include="Buffers.cpp">
       <Filter>1. Resources\3. Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="DescriptorSet.cpp">
-      <Filter>1. Resources</Filter>
+    <ClCompile Include="PipelineLayout.cpp">
+      <Filter>1. Resources\10. PipelineLayout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +124,7 @@
       <Filter>1. Resources\2. Signals</Filter>
     </ClInclude>
     <ClInclude Include="Swapchain.h">
-      <Filter>1. Resources\9. Swapchain</Filter>
+      <Filter>1. Resources\8. Swapchain</Filter>
     </ClInclude>
     <ClInclude Include="Images.h">
       <Filter>1. Resources\4. Images</Filter>
@@ -136,7 +133,7 @@
       <Filter>1. Resources\6. Textures</Filter>
     </ClInclude>
     <ClInclude Include="Framebuffer.h">
-      <Filter>1. Resources\10. Framebuffer</Filter>
+      <Filter>1. Resources\9. Framebuffer</Filter>
     </ClInclude>
     <ClInclude Include="DeviceMemory.h">
       <Filter>1. Resources\1. Memory</Filter>
@@ -147,9 +144,6 @@
     <ClInclude Include="CommandBuffer.h">
       <Filter>0. Context\3. CommandBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="Descriptor.h">
-      <Filter>1. Resources\8. Descriptor</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderModule.h">
       <Filter>1. Resources\11. ShaderModule</Filter>
     </ClInclude>
@@ -159,8 +153,8 @@
     <ClInclude Include="Buffers.h">
       <Filter>1. Resources\3. Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="DescriptorSet.h">
-      <Filter>1. Resources</Filter>
+    <ClInclude Include="PipelineLayout.h">
+      <Filter>1. Resources\10. PipelineLayout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

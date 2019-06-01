@@ -3,57 +3,12 @@
 *************************************************************************/
 #pragma once
 
-#include "Descriptor.h"
 #include "Framebuffer.h"
 #include "ShaderModule.h"
+#include "PipelineLayout.h"
 
 namespace Vk
 {
-	/*********************************************************************
-	************************    PipelineLayout    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Vulkan pipeline layout object.
-	 */
-	class PipelineLayout : private Resource
-	{
-
-	public:
-
-		//!	@brief	Create pipeline layout object.
-		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE,
-					   VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE);
-
-		//!	@brief	Destroy pipeline layout object.
-		~PipelineLayout() noexcept;
-
-	public:
-
-		//!	@brief	Return VkPipelineLayout handle.
-		VkPipelineLayout GetHandle() const { return m_hPipelineLayout; }
-
-		//!	@brief	If pipeline layout handle is valid.
-		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
-
-		//!	@brief	Return VkDescriptorSetLayout handle.
-		VkDescriptorSetLayout GetDescriptorSetLayout() const { return m_hDescriptorSetLayout; }
-
-		//!	@brief	Create a new pipeline layout object.
-		static std::shared_ptr<PipelineLayout> Create(const std::vector<VkDescriptorSetLayoutBinding> & Bindings = std::vector<VkDescriptorSetLayoutBinding>(),
-													  const std::vector<VkPushConstantRange> & PushConstantRanges = std::vector<VkPushConstantRange>());
-
-	private:
-
-		const VkPipelineLayout							m_hPipelineLayout;
-
-		const VkDescriptorSetLayout						m_hDescriptorSetLayout;
-
-		std::vector<VkPushConstantRange>				m_PushConstantRanges;
-
-		std::vector<VkDescriptorSetLayoutBinding>		m_DescriptorSetLayoutBindings;
-	};
-
 	/*********************************************************************
 	******************    GraphicsPipelineCreateInfo    ******************
 	*********************************************************************/
@@ -175,8 +130,8 @@ namespace Vk
 
 		public:
 
-			VkBool32									depthTestEnable			= VK_TRUE;
-			VkBool32									depthWriteEnable		= VK_TRUE;
+			VkBool32									depthTestEnable			= VK_FALSE;
+			VkBool32									depthWriteEnable		= VK_FALSE;
 			VkCompareOp									depthCompareOp			= VK_COMPARE_OP_LESS_OR_EQUAL;
 			VkBool32									depthBoundsTestEnable	= VK_FALSE;
 			VkBool32									stencilTestEnable		= VK_FALSE;
