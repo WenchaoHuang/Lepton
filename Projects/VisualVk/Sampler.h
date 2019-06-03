@@ -8,13 +8,13 @@
 namespace Vk
 {
 	/*********************************************************************
-	**********************    SamplerCreateInfo    ***********************
+	*************************    SamplerInfo    **************************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Wrapper of VkSamplerCreateInfo object.
 	 */
-	class SamplerCreateInfo
+	class SamplerInfo
 	{
 
 	private:
@@ -42,7 +42,7 @@ namespace Vk
 		VkBool32					unnormalizedCoordinates		= VK_FALSE;
 	};
 
-	static_assert(sizeof(SamplerCreateInfo) == sizeof(VkSamplerCreateInfo), "struct and wrapper have different size!");
+	static_assert(sizeof(SamplerInfo) == sizeof(VkSamplerCreateInfo), "struct and wrapper have different size!");
 
 	/*********************************************************************
 	***************************    Sampler    ****************************
@@ -61,7 +61,7 @@ namespace Vk
 
 		operator VkSampler() const { return m_hSampler; }
 
-		VkResult Create(const SamplerCreateInfo & CreateInfo);
+		VkResult Create(const SamplerInfo & CreateInfo);
 
 		VkBool32 IsValid() const { return m_hSampler != VK_NULL_HANDLE; }
 
@@ -69,8 +69,8 @@ namespace Vk
 
 	private:
 
-		VkSampler				m_hSampler;
+		VkSampler			m_hSampler;
 
-		SamplerCreateInfo		m_CreateInfo;
+		SamplerInfo			m_CreateInfo;
 	};
 }

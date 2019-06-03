@@ -37,8 +37,8 @@ namespace Vk
 		//!	@brief	Create a new shader module object
 		static std::shared_ptr<ShaderModule> Create(const std::vector<char> & BinaryCode);
 
-		//!	@brief	Return create information of shader stage.
-		VkPipelineShaderStageCreateInfo GetStageCreateInfo(VkShaderStageFlagBits eStage) const;
+		//!	@brief	Return creating information of shader stage.
+		VkPipelineShaderStageCreateInfo GetStageInfo(VkShaderStageFlagBits eStage) const;
 
 		//!	@brief	If shader handle is valid.
 		VkBool32 IsValid() const { return m_hShaderModule != VK_NULL_HANDLE; }
@@ -49,13 +49,13 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	*********************    PipelineShaderStages    *********************
+	***********************    ShaderStagesInfo    ***********************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Vulkan pipeline shader stages object.
 	 */
-	class PipelineShaderStages
+	class ShaderStagesInfo
 	{
 
 	public:
@@ -68,11 +68,11 @@ namespace Vk
 
 	public:
 
-		std::shared_ptr<ShaderModule>			spVertexShader;
-		std::shared_ptr<ShaderModule>			spGeometryShader;
-		std::shared_ptr<ShaderModule>			spFragmentShader;
-		std::shared_ptr<ShaderModule>			spTessControlShader;
-		std::shared_ptr<ShaderModule>			spTessEvalutionShader;
+		std::shared_ptr<ShaderModule>		spVertexShader;
+		std::shared_ptr<ShaderModule>		spGeometryShader;
+		std::shared_ptr<ShaderModule>		spFragmentShader;
+		std::shared_ptr<ShaderModule>		spTessControlShader;
+		std::shared_ptr<ShaderModule>		spTessEvalutionShader;
 
 	private:
 

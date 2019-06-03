@@ -10,7 +10,7 @@ using namespace Vk;
 *************************************************************************/
 void PipelineLayoutInfo::SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, VkDescriptorType eDescriptorType, uint32_t DescriptorCount)
 {
-	LayoutBinding		NewBinding = {};
+	LayoutBinding					NewBinding = {};
 	NewBinding.descriptorType		= eDescriptorType;
 	NewBinding.descriptorCount		= DescriptorCount;
 	NewBinding.stageFlags			= eStageFlags;
@@ -125,7 +125,11 @@ std::shared_ptr<DescriptorSet> PipelineLayout::CreateDescriptorSet()
 		}
 	}
 
-	return std::make_shared<DescriptorSet>(hDescriptorSet, hDescriptorPool);
+	std::shared_ptr<DescriptorSet> spDescriptorSet = std::make_shared<DescriptorSet>(hDescriptorSet, hDescriptorPool);
+
+	spDescriptorSet->m_LayoutBindings = m_PipelineLayoutInfo.layoutBindings;
+
+	return spDescriptorSet;
 }
 
 
@@ -144,6 +148,58 @@ DescriptorSet::DescriptorSet(VkDescriptorSet hDescriptorSet, VkDescriptorPool hD
 	: m_hDescriptorSet(hDescriptorSet), m_hDescriptorPool(hDescriptorPool)
 {
 
+}
+
+
+VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorImageInfo & ImageInfo)
+{
+	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
+
+	if (EstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
+
+	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
+
+	VkWriteDescriptorSet			WriteInfo = {};
+	WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	WriteInfo.pNext					= nullptr;
+	WriteInfo.dstSet				= m_hDescriptorSet;
+	WriteInfo.dstBinding			= DstBinding;
+	WriteInfo.dstArrayElement		= EstArrayElement;
+	WriteInfo.descriptorCount		= 1;
+	WriteInfo.descriptorType		= m_LayoutBindings[DstBinding].descriptorType;
+	WriteInfo.pImageInfo			= &ImageInfo;
+	WriteInfo.pBufferInfo			= nullptr;
+	WriteInfo.pTexelBufferView		= nullptr;
+
+	sm_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
+
+	return VK_TRUE;
+}
+
+
+VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorBufferInfo & BufferInfo)
+{
+	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
+
+	if (EstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
+
+	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
+
+	VkWriteDescriptorSet			WriteInfo = {};
+	WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	WriteInfo.pNext					= nullptr;
+	WriteInfo.dstSet				= m_hDescriptorSet;
+	WriteInfo.dstBinding			= DstBinding;
+	WriteInfo.dstArrayElement		= EstArrayElement;
+	WriteInfo.descriptorCount		= 1;
+	WriteInfo.descriptorType		= m_LayoutBindings[DstBinding].descriptorType;
+	WriteInfo.pImageInfo			= nullptr;
+	WriteInfo.pBufferInfo			= &BufferInfo;
+	WriteInfo.pTexelBufferView		= nullptr;
+
+	sm_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
+
+	return VK_TRUE;
 }
 
 

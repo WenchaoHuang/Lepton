@@ -30,7 +30,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Create information for pipeline layout object.
+	 *	@brief	Creating information of Vulkan pipeline layout object.
 	 */
 	struct PipelineLayoutInfo
 	{
@@ -45,7 +45,7 @@ namespace Vk
 
 	public:
 
-		std::vector<VkPushConstantRange>					constantRanges;
+		std::vector<VkPushConstantRange>		constantRanges;
 
 		std::map<uint32_t, LayoutBinding>		layoutBindings;
 	};
@@ -99,6 +99,9 @@ namespace Vk
 	************************    DescriptorSet    *************************
 	*********************************************************************/
 
+	/**
+	 *	@brief	Vulkan Descriptor set object.
+	 */
 	class DescriptorSet : private Resource
 	{
 
@@ -115,35 +118,14 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Return VkDescriptorSet handle.
+		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
-		union Descriptor
-		{
-			struct { VkDescriptorType descriptorType; VkDescriptorImageInfo imageInfo; };
-		};
-
+		//!	@brief	Update the content of descriptor set.
+		VkBool32 Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorImageInfo & ImageInfo);
 
 		//!	@brief	Update the contents of descriptor set.
-		void Write(uint32_t DstBinding, VkDescriptorType eDescriptorType, uint32_t DescriptorCount, const VkDescriptorImageInfo * pImageInfo)
-		{
-			if ((m_hDescriptorSet != VK_NULL_HANDLE) && (DescriptorCount > 0))
-			{
-				VkWriteDescriptorSet			WriteInfo = {};
-
-				WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-				WriteInfo.pNext					= nullptr;
-				WriteInfo.dstSet				= m_hDescriptorSet;
-
-				WriteInfo.dstBinding			= DstBinding;
-				WriteInfo.dstArrayElement		= 0;
-				WriteInfo.descriptorCount		= DescriptorCount;
-				WriteInfo.descriptorType		= eDescriptorType;
-				WriteInfo.pImageInfo			= pImageInfo;
-				WriteInfo.pBufferInfo			= nullptr;
-				WriteInfo.pTexelBufferView		= nullptr;
-
-				sm_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
-			}
-		}
+		VkBool32 Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorBufferInfo & BufferInfo);
 
 	private:
 

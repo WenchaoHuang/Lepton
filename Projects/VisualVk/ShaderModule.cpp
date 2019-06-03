@@ -15,7 +15,7 @@ ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShad
 }
 
 
-VkPipelineShaderStageCreateInfo ShaderModule::GetStageCreateInfo(VkShaderStageFlagBits eStage) const
+VkPipelineShaderStageCreateInfo ShaderModule::GetStageInfo(VkShaderStageFlagBits eStage) const
 {
 	VkPipelineShaderStageCreateInfo				ShaderStageCreateInfo = {};
 	ShaderStageCreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -81,32 +81,32 @@ ShaderModule::~ShaderModule()
 
 
 /*************************************************************************
-***********************    PipelineShaderStages    ***********************
+*************************    ShaderStagesInfo    *************************
 *************************************************************************/
-const VkPipelineShaderStageCreateInfo * PipelineShaderStages::GetStages()
+const VkPipelineShaderStageCreateInfo * ShaderStagesInfo::GetStages()
 {
 	m_CreateInfos.clear();
 
 	if ((spVertexShader != nullptr) && spVertexShader->IsValid())
-		m_CreateInfos.push_back(spVertexShader->GetStageCreateInfo(VK_SHADER_STAGE_VERTEX_BIT));
+		m_CreateInfos.push_back(spVertexShader->GetStageInfo(VK_SHADER_STAGE_VERTEX_BIT));
 
 	if ((spGeometryShader != nullptr) && spGeometryShader->IsValid())
-		m_CreateInfos.push_back(spGeometryShader->GetStageCreateInfo(VK_SHADER_STAGE_GEOMETRY_BIT));
+		m_CreateInfos.push_back(spGeometryShader->GetStageInfo(VK_SHADER_STAGE_GEOMETRY_BIT));
 
 	if ((spFragmentShader != nullptr) && spFragmentShader->IsValid())
-		m_CreateInfos.push_back(spFragmentShader->GetStageCreateInfo(VK_SHADER_STAGE_FRAGMENT_BIT));
+		m_CreateInfos.push_back(spFragmentShader->GetStageInfo(VK_SHADER_STAGE_FRAGMENT_BIT));
 
 	if ((spTessControlShader != nullptr) && spTessControlShader->IsValid())
-		m_CreateInfos.push_back(spTessControlShader->GetStageCreateInfo(VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT));
+		m_CreateInfos.push_back(spTessControlShader->GetStageInfo(VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT));
 
 	if ((spTessEvalutionShader != nullptr) && spTessEvalutionShader->IsValid())
-		m_CreateInfos.push_back(spTessEvalutionShader->GetStageCreateInfo(VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT));
+		m_CreateInfos.push_back(spTessEvalutionShader->GetStageInfo(VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT));
 
 	return m_CreateInfos.data();
 }
 
 
-uint32_t PipelineShaderStages::GetStageCount() const
+uint32_t ShaderStagesInfo::GetStageCount() const
 {
 	uint32_t StageCount = 0;
 

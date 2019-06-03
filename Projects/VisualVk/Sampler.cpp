@@ -14,7 +14,7 @@ Sampler::Sampler() : m_hSampler(VK_NULL_HANDLE)
 }
 
 
-VkResult Sampler::Create(const SamplerCreateInfo & CreateInfo)
+VkResult Sampler::Create(const SamplerInfo & CreateInfo)
 {
 	VkSampler hSampler = VK_NULL_HANDLE;
 
@@ -39,7 +39,7 @@ void Sampler::Release() noexcept
 	{
 		sm_pDevice->DestroySampler(m_hSampler);
 
-		m_CreateInfo = SamplerCreateInfo();
+		m_CreateInfo = SamplerInfo();
 
 		m_hSampler = VK_NULL_HANDLE;
 	}

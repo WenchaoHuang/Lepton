@@ -182,6 +182,12 @@ namespace Vk
 			vkCmdCopyBuffer(m_hCommandBuffer, hSrcBuffer, hDstBuffer, RegionCount, pRegions);
 		}
 
+		//!	@brief	Copy data from a buffer into an image.
+		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, VkImageLayout eDstImageLayout, uint32_t RegionCount, const VkBufferImageCopy * pRegions)
+		{
+			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, eDstImageLayout, RegionCount, pRegions);
+		}
+
 		//!	@brief	Insert a memory dependency.
 		void CmdPipelineBarrier(VkPipelineStageFlags SrcStageMask,
 								VkPipelineStageFlags DstStageMask, VkDependencyFlags DependencyFlags,
@@ -243,6 +249,12 @@ namespace Vk
 		void CmdSetScissors(uint32_t FirstScissor, uint32_t ScissorCount, const VkRect2D * pScissors)
 		{
 			vkCmdSetScissor(m_hCommandBuffer, FirstScissor, ScissorCount, pScissors);
+		}
+
+		//!	@brief	Binds descriptor sets to a command buffer.
+		void CmdBindDescriptorSet(VkPipelineBindPoint ePipelineBindPoint, VkPipelineLayout hLayout, VkDescriptorSet hDescriptorSet)
+		{
+			vkCmdBindDescriptorSets(m_hCommandBuffer, ePipelineBindPoint, hLayout, 0, 1, &hDescriptorSet, 0, nullptr);
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.

@@ -10,30 +10,30 @@
 namespace Vk
 {
 	/*********************************************************************
-	******************    GraphicsPipelineCreateInfo    ******************
+	*********************    GraphicsPipelineInfo    *********************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Creating information of Vulkan graphics pipeline.
 	 */
-	struct GraphicsPipelineCreateInfo : private VkGraphicsPipelineCreateInfo
+	struct GraphicsPipelineInfo : private VkGraphicsPipelineCreateInfo
 	{
 		operator const VkGraphicsPipelineCreateInfo*();
 
-		GraphicsPipelineCreateInfo();
+		GraphicsPipelineInfo();
 
 	private:
 
 		/*****************************************************************
-		******************    DynamicStateCreateInfo    ******************
+		*********************    DynamicStateInfo    *********************
 		*****************************************************************/
 
-		class DynamicStateCreateInfo : public std::vector<VkDynamicState>
+		class DynamicStateInfo : public std::vector<VkDynamicState>
 		{
 
 		public:
 
-			DynamicStateCreateInfo();
+			DynamicStateInfo();
 
 			operator const VkPipelineDynamicStateCreateInfo*();
 
@@ -43,17 +43,17 @@ namespace Vk
 		};
 
 		/*****************************************************************
-		***************    InputAssemblyStateCreateInfo    ***************
+		******************    InputAssemblyStateInfo    ******************
 		*****************************************************************/
 
-		class InputAssemblyStateCreateInfo
+		class InputAssemblyStateInfo
 		{
 
 		public:
 
-			InputAssemblyStateCreateInfo();
+			InputAssemblyStateInfo();
 
-			InputAssemblyStateCreateInfo(VkPrimitiveTopology eTopology);
+			InputAssemblyStateInfo(VkPrimitiveTopology eTopology);
 
 			operator VkPrimitiveTopology() const { return m_CreateInfo.topology; }
 
@@ -63,13 +63,13 @@ namespace Vk
 		};
 
 		/*****************************************************************
-		***************    RasterizationStateCreateInfo    ***************
+		******************    RasterizationStateInfo    ******************
 		*****************************************************************/
 
 		/**
 		 *	@brief	Wrapper of VkPipelineRasterizationStateCreateInfo object.
 		 */
-		class RasterizationStateCreateInfo
+		class RasterizationStateInfo
 		{
 
 		private:
@@ -92,18 +92,18 @@ namespace Vk
 			float										lineWidth					= 1.0f;
 		};
 
-		static_assert(sizeof(RasterizationStateCreateInfo) == sizeof(VkPipelineRasterizationStateCreateInfo), "struct and wrapper have different size!");
+		static_assert(sizeof(RasterizationStateInfo) == sizeof(VkPipelineRasterizationStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
-		***************    TessellationStateCreateInfo    ****************
+		******************    TessellationStateInfo    *******************
 		*****************************************************************/
 
-		class TessellationStateCreateInfo
+		class TessellationStateInfo
 		{
 
 		public:
 
-			TessellationStateCreateInfo();
+			TessellationStateInfo();
 
 			void SetPatchControlPoints(uint32_t PatchControlPoints);
 
@@ -113,13 +113,13 @@ namespace Vk
 		};
 
 		/*****************************************************************
-		***************    DepthStencilStateCreateInfo    ****************
+		******************    DepthStencilStateInfo    *******************
 		*****************************************************************/
 
 		/**
 		 *	@brief	Wrapper of VkPipelineDepthStencilStateCreateInfo object.
 		 */
-		class DepthStencilStateCreateInfo
+		class DepthStencilStateInfo
 		{
 
 		private:
@@ -141,16 +141,16 @@ namespace Vk
 			float										maxDepthBounds			= 0.0f;
 		};
 
-		static_assert(sizeof(DepthStencilStateCreateInfo) == sizeof(VkPipelineDepthStencilStateCreateInfo), "struct and wrapper have different size!");
+		static_assert(sizeof(DepthStencilStateInfo) == sizeof(VkPipelineDepthStencilStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
-		****************    MultisampleStateCreateInfo    ****************
+		*******************    MultisampleStateInfo    *******************
 		*****************************************************************/
 
 		/**
 		 *	@brief	Wrapper of VkPipelineMultisampleStateCreateInfo object.
 		 */
-		class MultisampleStateCreateInfo
+		class MultisampleStateInfo
 		{
 
 		private:
@@ -169,18 +169,18 @@ namespace Vk
 			VkBool32									alphaToOneEnable		= VK_FALSE;
 		};
 
-		static_assert(sizeof(MultisampleStateCreateInfo) == sizeof(VkPipelineMultisampleStateCreateInfo), "struct and wrapper have different size!");
+		static_assert(sizeof(MultisampleStateInfo) == sizeof(VkPipelineMultisampleStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
-		****************    VertexInputStateCreateInfo    ****************
+		*******************    VertexInputStateInfo    *******************
 		*****************************************************************/
 
-		class VertexInputStateCreateInfo
+		class VertexInputStateInfo
 		{
 
 		public:
 
-			VertexInputStateCreateInfo();
+			VertexInputStateInfo();
 
 			operator const VkPipelineVertexInputStateCreateInfo*();
 
@@ -217,10 +217,10 @@ namespace Vk
 		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "struct and wrapper have different size!");
 
 		/*****************************************************************
-		****************    ColorBlendStateCreateInfo    *****************
+		*******************    ColorBlendStateInfo    ********************
 		*****************************************************************/
 
-		struct ColorBlendStateCreateInfo : private VkPipelineColorBlendStateCreateInfo
+		struct ColorBlendStateInfo : private VkPipelineColorBlendStateCreateInfo
 		{
 			operator const VkPipelineColorBlendStateCreateInfo*();
 
@@ -230,19 +230,19 @@ namespace Vk
 
 			std::vector<ColorBlendAttachmentState>		attachments;
 
-			ColorBlendStateCreateInfo();
+			ColorBlendStateInfo();
 		};
 
 		/*****************************************************************
-		*****************    ViewportStateCreateInfo    ******************
+		********************    ViewportStateInfo    *********************
 		*****************************************************************/
 
-		class ViewportStateCreateInfo
+		class ViewportStateInfo
 		{
 
 		public:
 
-			ViewportStateCreateInfo();
+			ViewportStateInfo();
 
 			operator const VkPipelineViewportStateCreateInfo*();
 
@@ -258,16 +258,16 @@ namespace Vk
 
 	public:
 
-		PipelineShaderStages					ShaderStages;
-		DynamicStateCreateInfo					DynamicStates;
-		ViewportStateCreateInfo					ViewportState;
-		ColorBlendStateCreateInfo				ColorBlendState;
-		VertexInputStateCreateInfo				VertexInputState;
-		MultisampleStateCreateInfo				MultisampleState;
-		DepthStencilStateCreateInfo				DepthStencilState;
-		TessellationStateCreateInfo				TessellationState;
-		InputAssemblyStateCreateInfo			InputAssemblyState;
-		RasterizationStateCreateInfo			RasterizationState;
+		ShaderStagesInfo						ShaderStages;
+		DynamicStateInfo						DynamicStates;
+		ViewportStateInfo						ViewportState;
+		ColorBlendStateInfo						ColorBlendState;
+		VertexInputStateInfo					VertexInputState;
+		MultisampleStateInfo					MultisampleState;
+		DepthStencilStateInfo					DepthStencilState;
+		TessellationStateInfo					TessellationState;
+		InputAssemblyStateInfo					InputAssemblyState;
+		RasterizationStateInfo					RasterizationState;
 		std::shared_ptr<PipelineLayout>			spPipelineLayout;
 		std::shared_ptr<RenderPass>				spRenderPass;
 	};
@@ -292,9 +292,10 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Convert to VkPipeline handle.
 		operator VkPipeline() const { return m_hPipeline; }
 
-		VkResult Create(GraphicsPipelineCreateInfo & CreateInfo);
+		VkResult Create(GraphicsPipelineInfo & CreateInfo);
 
 		void Release() noexcept;
 
@@ -302,7 +303,7 @@ namespace Vk
 
 		VkPipeline						m_hPipeline;
 
-		GraphicsPipelineCreateInfo		m_CreateInfo;
+		GraphicsPipelineInfo		m_CreateInfo;
 	};
 
 	/*********************************************************************

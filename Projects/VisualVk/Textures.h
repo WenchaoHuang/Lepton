@@ -25,44 +25,8 @@ namespace Vk
 		void Release() noexcept;
 
 
-	protected:
+		std::vector<char> ReadImage(std::string Path, int & With, int & Height, int & Channels);
 
-
-		VkResult CreateSampler()
-		{
-			VkSamplerCreateInfo	CreateInfo = {};
-			CreateInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-			CreateInfo.pNext = nullptr;
-			CreateInfo.flags = 0;
-			CreateInfo.magFilter = VK_FILTER_LINEAR;
-			CreateInfo.minFilter = VK_FILTER_LINEAR;
-			CreateInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
-			CreateInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-			CreateInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-			CreateInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-			CreateInfo.mipLodBias = 0.0f;
-			CreateInfo.anisotropyEnable = VK_FALSE;
-			CreateInfo.maxAnisotropy = 1.0f;
-			CreateInfo.compareEnable = VK_FALSE;
-			CreateInfo.compareOp = VK_COMPARE_OP_ALWAYS;
-			CreateInfo.minLod = 0.0f;
-			CreateInfo.maxLod = 0.0f;
-			CreateInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
-			CreateInfo.unnormalizedCoordinates = VK_FALSE;
-
-			VkSampler hSampler = VK_NULL_HANDLE;
-
-			VkResult eResult = sm_pDevice->CreateSampler(&CreateInfo, &hSampler);
-
-			if (eResult == VK_SUCCESS)
-			{
-				sm_pDevice->DestroySampler(m_hSampler);
-
-				m_hSampler = hSampler;
-			}
-
-			return eResult;
-		}
 
 
 	protected:

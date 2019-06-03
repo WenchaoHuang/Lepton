@@ -111,14 +111,11 @@ std::shared_ptr<RenderPass> RenderPass::Create(const std::vector<VkAttachmentDes
 
 	std::shared_ptr<RenderPass> spRenderPass = std::make_shared<RenderPass>(hRenderPass);
 
-	if (spRenderPass->IsValid())
-	{
-		spRenderPass->m_AttachmentDescriptions = AttachmentDescriptions;
+	spRenderPass->m_AttachmentDescriptions = AttachmentDescriptions;
 
-		spRenderPass->m_SubpassDescriptions = SubpassDescriptions;
+	spRenderPass->m_SubpassDescriptions = SubpassDescriptions;
 
-		spRenderPass->m_SubpassDependencies = SubpassDependencies;
-	}
+	spRenderPass->m_SubpassDependencies = SubpassDependencies;
 
 	return spRenderPass;
 }
@@ -146,16 +143,16 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 		return VK_ERROR_INVALID_EXTERNAL_HANDLE;
 	}
 
-	VkFramebufferCreateInfo		CreateInfo = {};
-	CreateInfo.sType			= VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-	CreateInfo.pNext			= nullptr;
-	CreateInfo.flags			= 0;
-	CreateInfo.renderPass		= spRenderPass->GetHandle();
-	CreateInfo.attachmentCount	= (uint32_t)Attachments.size();
-	CreateInfo.pAttachments		= Attachments.data();
-	CreateInfo.width			= Extent2D.width;
-	CreateInfo.height			= Extent2D.height;
-	CreateInfo.layers			= 1;
+	VkFramebufferCreateInfo			CreateInfo = {};
+	CreateInfo.sType				= VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+	CreateInfo.pNext				= nullptr;
+	CreateInfo.flags				= 0;
+	CreateInfo.renderPass			= spRenderPass->GetHandle();
+	CreateInfo.attachmentCount		= (uint32_t)Attachments.size();
+	CreateInfo.pAttachments			= Attachments.data();
+	CreateInfo.width				= Extent2D.width;
+	CreateInfo.height				= Extent2D.height;
+	CreateInfo.layers				= 1;
 
 	VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 

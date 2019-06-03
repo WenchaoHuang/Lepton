@@ -6,9 +6,9 @@
 using namespace Vk;
 
 /*************************************************************************
-********************    GraphicsPipelineCreateInfo    ********************
+***********************    GraphicsPipelineInfo    ***********************
 *************************************************************************/
-GraphicsPipelineCreateInfo::GraphicsPipelineCreateInfo() : spRenderPass(nullptr), spPipelineLayout(nullptr)
+GraphicsPipelineInfo::GraphicsPipelineInfo() : spRenderPass(nullptr), spPipelineLayout(nullptr)
 {
 	VkGraphicsPipelineCreateInfo::sType					= VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 	VkGraphicsPipelineCreateInfo::pNext					= nullptr;
@@ -32,7 +32,7 @@ GraphicsPipelineCreateInfo::GraphicsPipelineCreateInfo() : spRenderPass(nullptr)
 }
 
 
-GraphicsPipelineCreateInfo::operator const VkGraphicsPipelineCreateInfo*()
+GraphicsPipelineInfo::operator const VkGraphicsPipelineCreateInfo*()
 {
 	VkGraphicsPipelineCreateInfo::sType					= VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 	VkGraphicsPipelineCreateInfo::pNext					= nullptr;
@@ -59,9 +59,9 @@ GraphicsPipelineCreateInfo::operator const VkGraphicsPipelineCreateInfo*()
 
 
 /*************************************************************************
-**********************    DynamicStateCreateInfo    **********************
+*************************    DynamicStateInfo    *************************
 *************************************************************************/
-GraphicsPipelineCreateInfo::DynamicStateCreateInfo::DynamicStateCreateInfo()
+GraphicsPipelineInfo::DynamicStateInfo::DynamicStateInfo()
 {
 	m_CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
 	m_CreateInfo.pNext					= nullptr;
@@ -71,7 +71,7 @@ GraphicsPipelineCreateInfo::DynamicStateCreateInfo::DynamicStateCreateInfo()
 }
 
 
-GraphicsPipelineCreateInfo::DynamicStateCreateInfo::operator const VkPipelineDynamicStateCreateInfo*()
+GraphicsPipelineInfo::DynamicStateInfo::operator const VkPipelineDynamicStateCreateInfo*()
 {
 	m_CreateInfo.dynamicStateCount		= (uint32_t)std::vector<VkDynamicState>::size();
 	m_CreateInfo.pDynamicStates			= std::vector<VkDynamicState>::data();
@@ -81,9 +81,9 @@ GraphicsPipelineCreateInfo::DynamicStateCreateInfo::operator const VkPipelineDyn
 
 
 /*************************************************************************
-*******************    InputAssemblyStateCreateInfo    *******************
+**********************    InputAssemblyStateInfo    **********************
 *************************************************************************/
-GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCreateInfo()
+GraphicsPipelineInfo::InputAssemblyStateInfo::InputAssemblyStateInfo()
 {
 	m_CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
 	m_CreateInfo.pNext						= nullptr;
@@ -93,7 +93,7 @@ GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCrea
 }
 
 
-GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCreateInfo(VkPrimitiveTopology eTopology)
+GraphicsPipelineInfo::InputAssemblyStateInfo::InputAssemblyStateInfo(VkPrimitiveTopology eTopology)
 {
 	m_CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
 	m_CreateInfo.pNext						= nullptr;
@@ -104,9 +104,9 @@ GraphicsPipelineCreateInfo::InputAssemblyStateCreateInfo::InputAssemblyStateCrea
 
 
 /*************************************************************************
-*******************    TessellationStateCreateInfo    ********************
+**********************    TessellationStateInfo    ***********************
 *************************************************************************/
-GraphicsPipelineCreateInfo::TessellationStateCreateInfo::TessellationStateCreateInfo()
+GraphicsPipelineInfo::TessellationStateInfo::TessellationStateInfo()
 {
 	m_CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_TESSELLATION_STATE_CREATE_INFO;
 	m_CreateInfo.pNext					= nullptr;
@@ -115,16 +115,16 @@ GraphicsPipelineCreateInfo::TessellationStateCreateInfo::TessellationStateCreate
 }
 
 
-void GraphicsPipelineCreateInfo::TessellationStateCreateInfo::SetPatchControlPoints(uint32_t PatchControlPoints)
+void GraphicsPipelineInfo::TessellationStateInfo::SetPatchControlPoints(uint32_t PatchControlPoints)
 {
 	m_CreateInfo.patchControlPoints = PatchControlPoints;
 }
 
 
 /*************************************************************************
-********************    VertexInputStateCreateInfo    ********************
+***********************    VertexInputStateInfo    ***********************
 *************************************************************************/
-GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::VertexInputStateCreateInfo()
+GraphicsPipelineInfo::VertexInputStateInfo::VertexInputStateInfo()
 {
 	m_CreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 	m_CreateInfo.pNext								= nullptr;
@@ -136,7 +136,7 @@ GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::VertexInputStateCreateIn
 }
 
 
-void GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::SetAttribute(uint32_t Binding, uint32_t Location, VkFormat eFormat, uint32_t Offset)
+void GraphicsPipelineInfo::VertexInputStateInfo::SetAttribute(uint32_t Binding, uint32_t Location, VkFormat eFormat, uint32_t Offset)
 {
 	for (size_t i = 0; i < m_AttributeDescriptions.size(); i++)
 	{
@@ -156,7 +156,7 @@ void GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::SetAttribute(uint32
 }
 
 
-void GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate)
+void GraphicsPipelineInfo::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate)
 {
 	for (size_t i = 0; i < m_BindingDescriptions.size(); i++)
 	{
@@ -174,7 +174,7 @@ void GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::SetBinding(uint32_t
 }
 
 
-GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::operator const VkPipelineVertexInputStateCreateInfo*()
+GraphicsPipelineInfo::VertexInputStateInfo::operator const VkPipelineVertexInputStateCreateInfo*()
 {
 	m_CreateInfo.vertexBindingDescriptionCount		= (uint32_t)m_BindingDescriptions.size();
 	m_CreateInfo.vertexAttributeDescriptionCount	= (uint32_t)m_AttributeDescriptions.size();
@@ -186,9 +186,9 @@ GraphicsPipelineCreateInfo::VertexInputStateCreateInfo::operator const VkPipelin
 
 
 /*************************************************************************
-********************    ColorBlendStateCreateInfo    *********************
+***********************    ColorBlendStateInfo    ************************
 *************************************************************************/
-GraphicsPipelineCreateInfo::ColorBlendStateCreateInfo::ColorBlendStateCreateInfo()
+GraphicsPipelineInfo::ColorBlendStateInfo::ColorBlendStateInfo()
 {
 	VkPipelineColorBlendStateCreateInfo::sType					= VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
 	VkPipelineColorBlendStateCreateInfo::pNext					= nullptr;
@@ -204,7 +204,7 @@ GraphicsPipelineCreateInfo::ColorBlendStateCreateInfo::ColorBlendStateCreateInfo
 }
 
 
-GraphicsPipelineCreateInfo::ColorBlendStateCreateInfo::operator const VkPipelineColorBlendStateCreateInfo*()
+GraphicsPipelineInfo::ColorBlendStateInfo::operator const VkPipelineColorBlendStateCreateInfo*()
 {
 	VkPipelineColorBlendStateCreateInfo::attachmentCount		= (uint32_t)attachments.size();
 	VkPipelineColorBlendStateCreateInfo::pAttachments			= reinterpret_cast<const VkPipelineColorBlendAttachmentState*>(attachments.data());
@@ -214,9 +214,9 @@ GraphicsPipelineCreateInfo::ColorBlendStateCreateInfo::operator const VkPipeline
 
 
 /*************************************************************************
-*********************    ViewportStateCreateInfo    **********************
+************************    ViewportStateInfo    *************************
 *************************************************************************/
-GraphicsPipelineCreateInfo::ViewportStateCreateInfo::ViewportStateCreateInfo()
+GraphicsPipelineInfo::ViewportStateInfo::ViewportStateInfo()
 {
 	m_CreateInfo.sType			= VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
 	m_CreateInfo.pNext			= nullptr;
@@ -228,7 +228,7 @@ GraphicsPipelineCreateInfo::ViewportStateCreateInfo::ViewportStateCreateInfo()
 }
 
 
-GraphicsPipelineCreateInfo::ViewportStateCreateInfo::operator const VkPipelineViewportStateCreateInfo*()
+GraphicsPipelineInfo::ViewportStateInfo::operator const VkPipelineViewportStateCreateInfo*()
 {
 	m_CreateInfo.viewportCount	= (uint32_t)Viewports.size();
 	m_CreateInfo.scissorCount	= (uint32_t)Scissors.size();
@@ -249,7 +249,7 @@ GraphicsPipeline::GraphicsPipeline() : m_hPipeline(VK_NULL_HANDLE)
 }
 
 
-VkResult GraphicsPipeline::Create(GraphicsPipelineCreateInfo & CreateInfo)
+VkResult GraphicsPipeline::Create(GraphicsPipelineInfo & CreateInfo)
 {
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 
@@ -270,7 +270,7 @@ void GraphicsPipeline::Release() noexcept
 {
 	if (m_hPipeline != VK_NULL_HANDLE)
 	{
-		m_CreateInfo = GraphicsPipelineCreateInfo();
+		m_CreateInfo = GraphicsPipelineInfo();
 
 		sm_pDevice->DestroyPipeline(m_hPipeline);
 

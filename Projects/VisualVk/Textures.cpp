@@ -20,6 +20,22 @@ BaseTexture::BaseTexture() : m_hSampler(VK_NULL_HANDLE), m_eImageLayout(VK_IMAGE
 }
 
 
+std::vector<char> BaseTexture::ReadImage(std::string Path, int & Width, int & Height, int & Channels)
+{
+	void * pData = stbi_load(Path.c_str(), &Width, &Height, &Channels, 4);
+
+	Channels = 4;
+
+	std::vector<char> Data(Width * Height * Channels);
+
+	memcpy(Data.data(), pData, Data.size());
+
+	stbi_image_free(pData);
+
+	return Data;
+}
+
+
 void BaseTexture::Release() noexcept
 {
 	m_eImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
