@@ -32,12 +32,12 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 
 	const float QueuePriority = { 0.0f };
 
-	for (uint32_t i = 0; i < (uint32_t)QueueCreateInfos.size(); i++)
+	for (size_t i = 0; i < QueueCreateInfos.size(); i++)
 	{
 		QueueCreateInfos[i].sType				= VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 		QueueCreateInfos[i].pNext				= nullptr;
 		QueueCreateInfos[i].flags				= 0;
-		QueueCreateInfos[i].queueFamilyIndex	= i;
+		QueueCreateInfos[i].queueFamilyIndex	= static_cast<uint32_t>(i);
 		QueueCreateInfos[i].queueCount			= 1;
 		QueueCreateInfos[i].pQueuePriorities	= &QueuePriority;
 	}
@@ -53,11 +53,11 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 	DeviceCreateInfo.sType						= VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	DeviceCreateInfo.pNext						= nullptr;
 	DeviceCreateInfo.flags						= 0;
-	DeviceCreateInfo.queueCreateInfoCount		= (uint32_t)QueueCreateInfos.size();
+	DeviceCreateInfo.queueCreateInfoCount		= static_cast<uint32_t>(QueueCreateInfos.size());
 	DeviceCreateInfo.pQueueCreateInfos			= QueueCreateInfos.data();
 	DeviceCreateInfo.enabledLayerCount			= 0;
 	DeviceCreateInfo.ppEnabledLayerNames		= nullptr;
-	DeviceCreateInfo.enabledExtensionCount		= (uint32_t)pExtensions.size();
+	DeviceCreateInfo.enabledExtensionCount		= static_cast<uint32_t>(pExtensions.size());
 	DeviceCreateInfo.ppEnabledExtensionNames	= pExtensions.data();
 	DeviceCreateInfo.pEnabledFeatures			= &m_Features;
 
@@ -67,7 +67,9 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 	{
 		std::vector<CommandQueue*> pCommandQueues(m_QueueFamilyProperties.size());
 
-		for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+		uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
+
+		for (uint32_t i = 0; i < QueueFamilyCount; i++)
 		{
 			VkQueue hQueue = VK_NULL_HANDLE;
 
@@ -168,7 +170,9 @@ uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPro
 
 uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
 {
-	for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
+
+	for (uint32_t i = 0; i < QueueFamilyCount; i++)
 	{
 		if (IsSurfaceSupported(hSurface, i))
 		{
@@ -182,7 +186,9 @@ uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
 
 uint32_t PhysicalDevice::GetGraphicsQueueFamilyIndex() const
 {
-	for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
+
+	for (uint32_t i = 0; i < QueueFamilyCount; i++)
 	{
 		if (m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 		{
@@ -196,7 +202,9 @@ uint32_t PhysicalDevice::GetGraphicsQueueFamilyIndex() const
 
 uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 {
-	for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
+
+	for (uint32_t i = 0; i < QueueFamilyCount; i++)
 	{
 		//	Find transfer queue but not graphics queue.
 		if ((m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_TRANSFER_BIT) &&
@@ -207,7 +215,7 @@ uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 	}
 
 	//	No matching queue that supported transfer but not graphics, then find transfer queue.
-	for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+	for (uint32_t i = 0; i < QueueFamilyCount; i++)
 	{
 		if (m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_TRANSFER_BIT)
 		{
@@ -221,7 +229,9 @@ uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 
 uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 {
-	for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
+
+	for (uint32_t i = 0; i < QueueFamilyCount; i++)
 	{
 		//	Find computing queue but not graphics queue.
 		if ((m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_COMPUTE_BIT) &&
@@ -232,7 +242,7 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 	}
 
 	//	No matching queue that supported computing but not graphics, then find computing queue.
-	for (uint32_t i = 0; i < (uint32_t)m_QueueFamilyProperties.size(); i++)
+	for (uint32_t i = 0; i < QueueFamilyCount; i++)
 	{
 		if (m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_COMPUTE_BIT)
 		{

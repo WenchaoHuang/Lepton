@@ -25,9 +25,6 @@ namespace Vk
 		void Release() noexcept;
 
 
-		std::vector<char> ReadImage(std::string Path, int & With, int & Height, int & Channels);
-
-
 
 	protected:
 

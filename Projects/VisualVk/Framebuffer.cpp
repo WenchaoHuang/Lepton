@@ -98,11 +98,11 @@ std::shared_ptr<RenderPass> RenderPass::Create(const std::vector<VkAttachmentDes
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
 	CreateInfo.flags				= 0;
-	CreateInfo.attachmentCount		= (uint32_t)AttachmentDescriptions.size();
+	CreateInfo.attachmentCount		= static_cast<uint32_t>(AttachmentDescriptions.size());
 	CreateInfo.pAttachments			= AttachmentDescriptions.data();
-	CreateInfo.subpassCount			= (uint32_t)SubpassDescriptions.size();
+	CreateInfo.subpassCount			= static_cast<uint32_t>(SubpassDescriptions.size());
 	CreateInfo.pSubpasses			= SubpassDescriptions.data();
-	CreateInfo.dependencyCount		= (uint32_t)SubpassDependencies.size();
+	CreateInfo.dependencyCount		= static_cast<uint32_t>(SubpassDependencies.size());
 	CreateInfo.pDependencies		= SubpassDependencies.data();
 
 	VkRenderPass hRenderPass = VK_NULL_HANDLE;
@@ -148,7 +148,7 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 	CreateInfo.pNext				= nullptr;
 	CreateInfo.flags				= 0;
 	CreateInfo.renderPass			= spRenderPass->GetHandle();
-	CreateInfo.attachmentCount		= (uint32_t)Attachments.size();
+	CreateInfo.attachmentCount		= static_cast<uint32_t>(Attachments.size());
 	CreateInfo.pAttachments			= Attachments.data();
 	CreateInfo.width				= Extent2D.width;
 	CreateInfo.height				= Extent2D.height;
@@ -172,12 +172,6 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 	}
 
 	return eResult;
-}
-
-
-VkResult Framebuffer::Resize(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D)
-{
-	return this->Create(m_spRenderPass, Attachments, Extent2D);
 }
 
 

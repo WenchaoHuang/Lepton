@@ -57,24 +57,24 @@ Instance * Instance::GetCurrent()
 	Instance::GetLayerProperties();
 #endif
 
-	VkApplicationInfo					AppInfo = {};
-	AppInfo.sType						= VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	AppInfo.pNext						= nullptr;
-	AppInfo.pEngineName					= "GraceEngine";
-	AppInfo.pApplicationName			= "GraceEngine";
-	AppInfo.applicationVersion			= VK_MAKE_VERSION(1, 0, 0);
-	AppInfo.engineVersion				= VK_MAKE_VERSION(1, 0, 0);
-	AppInfo.apiVersion					= VK_API_VERSION_1_0;
+	VkApplicationInfo						AppInfo = {};
+	AppInfo.sType							= VK_STRUCTURE_TYPE_APPLICATION_INFO;
+	AppInfo.pNext							= nullptr;
+	AppInfo.pEngineName						= "GraceEngine";
+	AppInfo.pApplicationName				= "GraceEngine";
+	AppInfo.applicationVersion				= VK_MAKE_VERSION(1, 0, 0);
+	AppInfo.engineVersion					= VK_MAKE_VERSION(1, 0, 0);
+	AppInfo.apiVersion						= VK_API_VERSION_1_0;
 
-	VkInstanceCreateInfo				CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.pApplicationInfo			= &AppInfo;
-	CreateInfo.enabledExtensionCount	= (uint32_t)pExtensions.size();
-	CreateInfo.ppEnabledExtensionNames	= pExtensions.data();
-	CreateInfo.enabledLayerCount		= (uint32_t)pLayers.size();
-	CreateInfo.ppEnabledLayerNames		= pLayers.data();
+	VkInstanceCreateInfo					CreateInfo = {};
+	CreateInfo.sType						= VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+	CreateInfo.pNext						= nullptr;
+	CreateInfo.flags						= 0;
+	CreateInfo.pApplicationInfo				= &AppInfo;
+	CreateInfo.enabledExtensionCount		= static_cast<uint32_t>(pExtensions.size());
+	CreateInfo.ppEnabledExtensionNames		= pExtensions.data();
+	CreateInfo.enabledLayerCount			= static_cast<uint32_t>(pLayers.size());
+	CreateInfo.ppEnabledLayerNames			= pLayers.data();
 
 	VkInstance hInstance = VK_NULL_HANDLE;
 

@@ -73,7 +73,7 @@ GraphicsPipelineInfo::DynamicStateInfo::DynamicStateInfo()
 
 GraphicsPipelineInfo::DynamicStateInfo::operator const VkPipelineDynamicStateCreateInfo*()
 {
-	m_CreateInfo.dynamicStateCount		= (uint32_t)std::vector<VkDynamicState>::size();
+	m_CreateInfo.dynamicStateCount		= static_cast<uint32_t>(vector<VkDynamicState>::size());
 	m_CreateInfo.pDynamicStates			= std::vector<VkDynamicState>::data();
 
 	return &m_CreateInfo;
@@ -176,8 +176,8 @@ void GraphicsPipelineInfo::VertexInputStateInfo::SetBinding(uint32_t Binding, ui
 
 GraphicsPipelineInfo::VertexInputStateInfo::operator const VkPipelineVertexInputStateCreateInfo*()
 {
-	m_CreateInfo.vertexBindingDescriptionCount		= (uint32_t)m_BindingDescriptions.size();
-	m_CreateInfo.vertexAttributeDescriptionCount	= (uint32_t)m_AttributeDescriptions.size();
+	m_CreateInfo.vertexBindingDescriptionCount		= static_cast<uint32_t>(m_BindingDescriptions.size());
+	m_CreateInfo.vertexAttributeDescriptionCount	= static_cast<uint32_t>(m_AttributeDescriptions.size());
 	m_CreateInfo.pVertexAttributeDescriptions		= m_AttributeDescriptions.data();
 	m_CreateInfo.pVertexBindingDescriptions			= m_BindingDescriptions.data();
 
@@ -206,7 +206,7 @@ GraphicsPipelineInfo::ColorBlendStateInfo::ColorBlendStateInfo()
 
 GraphicsPipelineInfo::ColorBlendStateInfo::operator const VkPipelineColorBlendStateCreateInfo*()
 {
-	VkPipelineColorBlendStateCreateInfo::attachmentCount		= (uint32_t)attachments.size();
+	VkPipelineColorBlendStateCreateInfo::attachmentCount		= static_cast<uint32_t>(attachments.size());
 	VkPipelineColorBlendStateCreateInfo::pAttachments			= reinterpret_cast<const VkPipelineColorBlendAttachmentState*>(attachments.data());
 
 	return (VkPipelineColorBlendStateCreateInfo*)this;
@@ -230,8 +230,8 @@ GraphicsPipelineInfo::ViewportStateInfo::ViewportStateInfo()
 
 GraphicsPipelineInfo::ViewportStateInfo::operator const VkPipelineViewportStateCreateInfo*()
 {
-	m_CreateInfo.viewportCount	= (uint32_t)Viewports.size();
-	m_CreateInfo.scissorCount	= (uint32_t)Scissors.size();
+	m_CreateInfo.viewportCount	= static_cast<uint32_t>(Viewports.size());
+	m_CreateInfo.scissorCount	= static_cast<uint32_t>(Scissors.size());
 	m_CreateInfo.pViewports		= Viewports.data();
 	m_CreateInfo.pScissors		= Scissors.data();
 

@@ -42,7 +42,7 @@ namespace Vk
 															  VkFormat eDepthStencilFormat);
 		//!	@brief	Create a render pass object.
 		static std::shared_ptr<RenderPass> Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
-												  const std::vector<VkSubpassDescription> & SubpassDescriptions = std::vector<VkSubpassDescription>(),
+												  const std::vector<VkSubpassDescription> & SubpassDescriptions,
 												  const std::vector<VkSubpassDependency> & SubpassDependencies = std::vector<VkSubpassDependency>());
 	private:
 
@@ -86,9 +86,6 @@ namespace Vk
 
 		//!	@brief	Create a new frame buffer object.
 		VkResult Create(std::shared_ptr<RenderPass> spRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
-
-		//!	@brief	Update frame buffer.
-		VkResult Resize(const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
 		//!	@brief	Return extent of framebuffer.
 		VkExtent2D GetExtent() const { return m_Extent2D; }

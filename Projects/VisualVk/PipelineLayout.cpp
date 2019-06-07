@@ -71,7 +71,7 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 	DescriptorSetLayoutCreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 	DescriptorSetLayoutCreateInfo.pNext				= nullptr;
 	DescriptorSetLayoutCreateInfo.flags				= 0;
-	DescriptorSetLayoutCreateInfo.bindingCount		= (uint32_t)LayoutBindings.size();
+	DescriptorSetLayoutCreateInfo.bindingCount		= static_cast<uint32_t>(LayoutBindings.size());
 	DescriptorSetLayoutCreateInfo.pBindings			= LayoutBindings.data();
 
 	VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
@@ -86,7 +86,7 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 		PipelineLayoutCreateInfo.flags						= 0;
 		PipelineLayoutCreateInfo.setLayoutCount				= 1;
 		PipelineLayoutCreateInfo.pSetLayouts				= &hDescriptorSetLayout;
-		PipelineLayoutCreateInfo.pushConstantRangeCount		= (uint32_t)LayoutInfo.constantRanges.size();
+		PipelineLayoutCreateInfo.pushConstantRangeCount		= static_cast<uint32_t>(LayoutInfo.constantRanges.size());
 		PipelineLayoutCreateInfo.pPushConstantRanges		= LayoutInfo.constantRanges.data();
 
 		sm_pDevice->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
@@ -109,7 +109,7 @@ std::shared_ptr<DescriptorSet> PipelineLayout::CreateDescriptorSet()
 		CreateInfo.pNext				= nullptr;
 		CreateInfo.flags				= 0;
 		CreateInfo.maxSets				= 1;
-		CreateInfo.poolSizeCount		= (uint32_t)m_DescriptorPoolSizes.size();
+		CreateInfo.poolSizeCount		= static_cast<uint32_t>(m_DescriptorPoolSizes.size());
 		CreateInfo.pPoolSizes			= m_DescriptorPoolSizes.data();
 
 		if (sm_pDevice->CreateDescriptorPool(&CreateInfo, &hDescriptorPool) == VK_SUCCESS)
