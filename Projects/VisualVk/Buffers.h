@@ -36,9 +36,6 @@ namespace Vk
 		//!	@brief	Memory copy from host to device.
 		VkResult Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
-		//!	@brief	Memory copy from device to device.
-		VkResult CopyFrom(HostVisibleBuffer * pSrcBuffer, VkDeviceSize SrcOffset, VkDeviceSize DstOffset, VkDeviceSize SizeBytes);
-
 		//!	@brief	Filling data with 0.
 		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 

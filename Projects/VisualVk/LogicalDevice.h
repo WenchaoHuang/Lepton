@@ -6,7 +6,7 @@
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
-////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 																						\
 #define VK_DEVICE_OBJECT_CREATE_AND_DESTROY_FUNCTION(name)								\
 																						\
@@ -39,7 +39,11 @@ namespace Vk
 		friend class PhysicalDevice;
 
 		//!	@brief	Create logical device object.
-		LogicalDevice(VkDevice hDevice, std::vector<CommandQueue*> pCommandQueues);
+		LogicalDevice(VkDevice hDevice,
+					  CommandQueue * pComputeQueue,
+					  CommandQueue * pGraphicsQueue,
+					  CommandQueue * pTransferQueue,
+					  std::vector<CommandQueue*> pCommandQueues);
 
 		//!	@brief	Destroy logical device object.
 		~LogicalDevice() noexcept;
@@ -49,16 +53,30 @@ namespace Vk
 		//!	@brief	Wait for a device to become idle.
 		VkResult WaitIdle() { return vkDeviceWaitIdle(m_hDevice); }
 
+		//!	@brief	Return pointer to compute command queue.
+		CommandQueue * GetComputeQueue() const { return m_pComputeQueue; }
+
+		//!	@brief	Return pointer to graphics command queue.
+		CommandQueue * GetGraphicsQueue() const { return m_pGraphicsQueue; }
+
+		//!	@brief	Return pointer to transfer command queue.
+		CommandQueue * GetTransferQueue() const { return m_pTransferQueue; }
+
 		//!	@brief	Return a device level function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const
 		{
 			return vkGetDeviceProcAddr(m_hDevice, pName);
 		}
 
-		//!	@brief	Return command queue.
-		CommandQueue * GetCommandQueue(uint32_t Index)
+		//!	@brief	Return pointer to command queue.
+		CommandQueue * GetCommandQueue(uint32_t FamilyIndex)
 		{
-			return m_pCommandQueues[Index];
+			if (FamilyIndex < m_pCommandQueues.size())
+			{
+				return m_pCommandQueues[FamilyIndex];
+			}
+
+			return nullptr;
 		}
 
 	public:
@@ -247,6 +265,12 @@ namespace Vk
 	private:
 
 		const VkDevice						m_hDevice;
+
+		CommandQueue * const				m_pComputeQueue;
+
+		CommandQueue * const				m_pGraphicsQueue;
+
+		CommandQueue * const				m_pTransferQueue;
 
 		const std::vector<CommandQueue*>	m_pCommandQueues;
 	};

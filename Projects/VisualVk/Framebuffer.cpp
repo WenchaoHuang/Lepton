@@ -16,114 +16,108 @@ RenderPass::RenderPass(VkRenderPass hRenderPass) : m_hRenderPass(hRenderPass)
 
 std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat)
 {
-	std::vector<VkAttachmentDescription>			AttachmentDescriptions(1);
-	std::vector<VkSubpassDescription>				SubpassDescriptions(1);
+	RenderPassInfo	PassInfo;
+	PassInfo.subpassDescriptions.resize(1);
+	PassInfo.attachmentReferences.resize(1);
+	PassInfo.attachmentDescriptions.resize(1);
 
-	AttachmentDescriptions[0].format				= eColorFormat;
-	AttachmentDescriptions[0].samples				= VK_SAMPLE_COUNT_1_BIT;
-	AttachmentDescriptions[0].loadOp				= VK_ATTACHMENT_LOAD_OP_CLEAR;
-	AttachmentDescriptions[0].storeOp				= VK_ATTACHMENT_STORE_OP_STORE;
-	AttachmentDescriptions[0].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	AttachmentDescriptions[0].stencilStoreOp		= VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	AttachmentDescriptions[0].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
-	AttachmentDescriptions[0].finalLayout			= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-	AttachmentDescriptions[0].flags					= 0;
+	PassInfo.attachmentDescriptions[0].format					= eColorFormat;
+	PassInfo.attachmentDescriptions[0].samples					= VK_SAMPLE_COUNT_1_BIT;
+	PassInfo.attachmentDescriptions[0].loadOp					= VK_ATTACHMENT_LOAD_OP_CLEAR;
+	PassInfo.attachmentDescriptions[0].storeOp					= VK_ATTACHMENT_STORE_OP_STORE;
+	PassInfo.attachmentDescriptions[0].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[0].stencilStoreOp			= VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[0].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
+	PassInfo.attachmentDescriptions[0].finalLayout				= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+	PassInfo.attachmentDescriptions[0].flags					= 0;
 
-	VkAttachmentReference ColorReference			= { 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
+	PassInfo.attachmentReferences[0]							= { 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
 
-	SubpassDescriptions[0].pipelineBindPoint		= VK_PIPELINE_BIND_POINT_GRAPHICS;
-	SubpassDescriptions[0].flags					= 0;
-	SubpassDescriptions[0].inputAttachmentCount		= 0;
-	SubpassDescriptions[0].pInputAttachments		= nullptr;
-	SubpassDescriptions[0].colorAttachmentCount		= 1;
-	SubpassDescriptions[0].pColorAttachments		= &ColorReference;
-	SubpassDescriptions[0].pResolveAttachments		= nullptr;
-	SubpassDescriptions[0].pDepthStencilAttachment	= nullptr;
-	SubpassDescriptions[0].preserveAttachmentCount	= 0;
-	SubpassDescriptions[0].pPreserveAttachments		= nullptr;
+	PassInfo.subpassDescriptions[0].pipelineBindPoint			= VK_PIPELINE_BIND_POINT_GRAPHICS;
+	PassInfo.subpassDescriptions[0].flags						= 0;
+	PassInfo.subpassDescriptions[0].inputAttachmentCount		= 0;
+	PassInfo.subpassDescriptions[0].pInputAttachments			= nullptr;
+	PassInfo.subpassDescriptions[0].colorAttachmentCount		= 1;
+	PassInfo.subpassDescriptions[0].pColorAttachments			= &PassInfo.attachmentReferences[0];
+	PassInfo.subpassDescriptions[0].pResolveAttachments			= nullptr;
+	PassInfo.subpassDescriptions[0].pDepthStencilAttachment		= nullptr;
+	PassInfo.subpassDescriptions[0].preserveAttachmentCount		= 0;
+	PassInfo.subpassDescriptions[0].pPreserveAttachments		= nullptr;
 
-	return RenderPass::Create(AttachmentDescriptions, SubpassDescriptions);
+	return RenderPass::Create(PassInfo);
 }
 
 
 std::shared_ptr<RenderPass> RenderPass::CreateForSwapchain(VkFormat eColorFormat,
 														   VkFormat eDepthStencilFormat)
 {
-	std::vector<VkAttachmentDescription>			AttachmentDescriptions(2);
-	std::vector<VkSubpassDescription>				SubpassDescriptions(1);
+	RenderPassInfo	PassInfo;
+	PassInfo.subpassDescriptions.resize(1);
+	PassInfo.attachmentReferences.resize(2);
+	PassInfo.attachmentDescriptions.resize(2);
 
-	AttachmentDescriptions[0].format				= eColorFormat;
-	AttachmentDescriptions[0].samples				= VK_SAMPLE_COUNT_1_BIT;
-	AttachmentDescriptions[0].loadOp				= VK_ATTACHMENT_LOAD_OP_CLEAR;
-	AttachmentDescriptions[0].storeOp				= VK_ATTACHMENT_STORE_OP_STORE;
-	AttachmentDescriptions[0].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	AttachmentDescriptions[0].stencilStoreOp		= VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	AttachmentDescriptions[0].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
-	AttachmentDescriptions[0].finalLayout			= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-	AttachmentDescriptions[0].flags					= 0;
+	PassInfo.attachmentDescriptions[0].format					= eColorFormat;
+	PassInfo.attachmentDescriptions[0].samples					= VK_SAMPLE_COUNT_1_BIT;
+	PassInfo.attachmentDescriptions[0].loadOp					= VK_ATTACHMENT_LOAD_OP_CLEAR;
+	PassInfo.attachmentDescriptions[0].storeOp					= VK_ATTACHMENT_STORE_OP_STORE;
+	PassInfo.attachmentDescriptions[0].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[0].stencilStoreOp			= VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[0].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
+	PassInfo.attachmentDescriptions[0].finalLayout				= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+	PassInfo.attachmentDescriptions[0].flags					= 0;
 
-	AttachmentDescriptions[1].format				= eDepthStencilFormat;
-	AttachmentDescriptions[1].samples				= VK_SAMPLE_COUNT_1_BIT;
-	AttachmentDescriptions[1].loadOp				= VK_ATTACHMENT_LOAD_OP_CLEAR;
-	AttachmentDescriptions[1].storeOp				= VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	AttachmentDescriptions[1].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	AttachmentDescriptions[1].stencilStoreOp		= VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	AttachmentDescriptions[1].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
-	AttachmentDescriptions[1].finalLayout			= VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-	AttachmentDescriptions[1].flags					= 0;
+	PassInfo.attachmentDescriptions[1].format					= eDepthStencilFormat;
+	PassInfo.attachmentDescriptions[1].samples					= VK_SAMPLE_COUNT_1_BIT;
+	PassInfo.attachmentDescriptions[1].loadOp					= VK_ATTACHMENT_LOAD_OP_CLEAR;
+	PassInfo.attachmentDescriptions[1].storeOp					= VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[1].stencilLoadOp			= VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[1].stencilStoreOp			= VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	PassInfo.attachmentDescriptions[1].initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
+	PassInfo.attachmentDescriptions[1].finalLayout				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+	PassInfo.attachmentDescriptions[1].flags					= 0;
 
-	VkAttachmentReference ColorReference			= { 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
-	VkAttachmentReference DepthReference			= { 1, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL };
+	PassInfo.attachmentReferences[0]							= { 0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
+	PassInfo.attachmentReferences[1]							= { 1, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL };
 
-	SubpassDescriptions[0].pipelineBindPoint		= VK_PIPELINE_BIND_POINT_GRAPHICS;
-	SubpassDescriptions[0].flags					= 0;
-	SubpassDescriptions[0].inputAttachmentCount		= 0;
-	SubpassDescriptions[0].pInputAttachments		= nullptr;
-	SubpassDescriptions[0].colorAttachmentCount		= 1;
-	SubpassDescriptions[0].pColorAttachments		= &ColorReference;
-	SubpassDescriptions[0].pResolveAttachments		= nullptr;
-	SubpassDescriptions[0].pDepthStencilAttachment	= &DepthReference;
-	SubpassDescriptions[0].preserveAttachmentCount	= 0;
-	SubpassDescriptions[0].pPreserveAttachments		= nullptr;
+	PassInfo.subpassDescriptions[0].pipelineBindPoint			= VK_PIPELINE_BIND_POINT_GRAPHICS;
+	PassInfo.subpassDescriptions[0].flags						= 0;
+	PassInfo.subpassDescriptions[0].inputAttachmentCount		= 0;
+	PassInfo.subpassDescriptions[0].pInputAttachments			= nullptr;
+	PassInfo.subpassDescriptions[0].colorAttachmentCount		= 1;
+	PassInfo.subpassDescriptions[0].pColorAttachments			= &PassInfo.attachmentReferences[0];
+	PassInfo.subpassDescriptions[0].pResolveAttachments			= nullptr;
+	PassInfo.subpassDescriptions[0].pDepthStencilAttachment		= &PassInfo.attachmentReferences[1];
+	PassInfo.subpassDescriptions[0].preserveAttachmentCount		= 0;
+	PassInfo.subpassDescriptions[0].pPreserveAttachments		= nullptr;
 
-	return RenderPass::Create(AttachmentDescriptions, SubpassDescriptions);
+	return RenderPass::Create(PassInfo);
 }
 
 
-std::shared_ptr<RenderPass> RenderPass::Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
-											   const std::vector<VkSubpassDescription> & SubpassDescriptions,
-											   const std::vector<VkSubpassDependency> & SubpassDependencies)
+std::shared_ptr<RenderPass> RenderPass::Create(const RenderPassInfo & PassInfo)
 {
 	VkRenderPassCreateInfo			CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
 	CreateInfo.flags				= 0;
-	CreateInfo.attachmentCount		= static_cast<uint32_t>(AttachmentDescriptions.size());
-	CreateInfo.pAttachments			= AttachmentDescriptions.data();
-	CreateInfo.subpassCount			= static_cast<uint32_t>(SubpassDescriptions.size());
-	CreateInfo.pSubpasses			= SubpassDescriptions.data();
-	CreateInfo.dependencyCount		= static_cast<uint32_t>(SubpassDependencies.size());
-	CreateInfo.pDependencies		= SubpassDependencies.data();
+	CreateInfo.attachmentCount		= static_cast<uint32_t>(PassInfo.attachmentDescriptions.size());
+	CreateInfo.pAttachments			= PassInfo.attachmentDescriptions.data();
+	CreateInfo.subpassCount			= static_cast<uint32_t>(PassInfo.subpassDescriptions.size());
+	CreateInfo.pSubpasses			= PassInfo.subpassDescriptions.data();
+	CreateInfo.dependencyCount		= static_cast<uint32_t>(PassInfo.subpassDependencies.size());
+	CreateInfo.pDependencies		= PassInfo.subpassDependencies.data();
 
 	VkRenderPass hRenderPass = VK_NULL_HANDLE;
 
-	sm_pDevice->CreateRenderPass(&CreateInfo, &hRenderPass);
+	sm_pLogicalDevice->CreateRenderPass(&CreateInfo, &hRenderPass);
 
-	std::shared_ptr<RenderPass> spRenderPass = std::make_shared<RenderPass>(hRenderPass);
-
-	spRenderPass->m_AttachmentDescriptions = AttachmentDescriptions;
-
-	spRenderPass->m_SubpassDescriptions = SubpassDescriptions;
-
-	spRenderPass->m_SubpassDependencies = SubpassDependencies;
-
-	return spRenderPass;
+	return std::make_shared<RenderPass>(hRenderPass);
 }
 
 
 RenderPass::~RenderPass() noexcept
 {
-	sm_pDevice->DestroyRenderPass(m_hRenderPass);
+	m_pDevice->DestroyRenderPass(m_hRenderPass);
 }
 
 
@@ -156,7 +150,7 @@ VkResult Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, const std
 
 	VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 
-	VkResult eResult = sm_pDevice->CreateFramebuffer(&CreateInfo, &hFramebuffer);
+	VkResult eResult = m_pDevice->CreateFramebuffer(&CreateInfo, &hFramebuffer);
 
 	if (eResult == VK_SUCCESS)
 	{
@@ -179,7 +173,7 @@ void Framebuffer::Release() noexcept
 {
 	if (m_hFramebuffer != VK_NULL_HANDLE)
 	{
-		sm_pDevice->DestroyFramebuffer(m_hFramebuffer);
+		m_pDevice->DestroyFramebuffer(m_hFramebuffer);
 
 		m_hFramebuffer = VK_NULL_HANDLE;
 

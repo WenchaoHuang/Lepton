@@ -3,9 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Instance.h"
 #include "LogicalDevice.h"
-#include "CommandBuffer.h"
 #include "PhysicalDevice.h"
 
 namespace Vk
@@ -15,41 +13,31 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan resource object.
+	 *	@brief	Base class for Vulkan resource object.
 	 */
 	class Resource
 	{
 
-	protected:
-
-		Resource() {}
-
-		Resource(const Resource&) = delete;
-
-		void operator=(const Resource&) = delete;
-
 	public:
 
-		static void SetupDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice);
+		Resource() : m_pDevice(sm_pLogicalDevice), m_pPhysDevice(sm_pPhysicalDevice) {}
+
+		//!	@brief	Set current physical device and logical device.
+		static void SetDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice)
+		{
+			sm_pPhysicalDevice = pPhysicalDevice;
+
+			sm_pLogicalDevice = pLogicalDevice;
+		}
 
 	protected:
 
-		static Instance * sm_pInstance;
+		LogicalDevice * const		m_pDevice;
 
-		static LogicalDevice * sm_pDevice;
+		PhysicalDevice * const		m_pPhysDevice;
 
-		static PhysicalDevice *	sm_pPhyDevice;
+		static LogicalDevice *		sm_pLogicalDevice;
 
-		static CommandQueue * sm_pComputeQueue;
-
-		static CommandQueue * sm_pGraphicsQueue;
-
-		static CommandQueue * sm_pTransferQueue;
-
-		static CommandPool * sm_pComputeCmdPool;
-
-		static CommandPool * sm_pGraphicsCmdPool;
-
-		static CommandPool * sm_pTransferCmdPool;
+		static PhysicalDevice *		sm_pPhysicalDevice;
 	};
 }

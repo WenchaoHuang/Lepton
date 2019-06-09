@@ -18,7 +18,7 @@ VkResult Sampler::Create(const SamplerInfo & CreateInfo)
 {
 	VkSampler hSampler = VK_NULL_HANDLE;
 
-	VkResult eResult = sm_pDevice->CreateSampler(reinterpret_cast<const VkSamplerCreateInfo*>(&CreateInfo), &hSampler);
+	VkResult eResult = m_pDevice->CreateSampler(reinterpret_cast<const VkSamplerCreateInfo*>(&CreateInfo), &hSampler);
 
 	if (eResult == VK_SUCCESS)
 	{
@@ -37,7 +37,7 @@ void Sampler::Release() noexcept
 {
 	if (m_hSampler != VK_NULL_HANDLE)
 	{
-		sm_pDevice->DestroySampler(m_hSampler);
+		m_pDevice->DestroySampler(m_hSampler);
 
 		m_CreateInfo = SamplerInfo();
 

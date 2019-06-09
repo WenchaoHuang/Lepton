@@ -36,7 +36,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create logical device that has queues on all queue family.
+		//!	@brief	Create a logical device that has queues on all queue family.
 		LogicalDevice * CreateLogicalDevice();
 
 		//!	@brief	If device extension is available.

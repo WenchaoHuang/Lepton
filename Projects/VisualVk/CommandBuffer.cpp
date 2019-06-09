@@ -53,6 +53,8 @@ VkResult CommandQueue::DestroyCommandPool(CommandPool * pCommandPool)
 
 CommandQueue::~CommandQueue() noexcept
 {
+	this->WaitIdle();
+
 	for (auto pCommandPool : m_pCommandPools)
 	{
 		delete pCommandPool;
@@ -70,13 +72,13 @@ CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommna
 }
 
 
-CommandBuffer * CommandPool::AllocateCommandBuffer(VkCommandBufferLevel eLevel)
+CommandBuffer * CommandPool::AllocateCommandBuffer()
 {
 	VkCommandBufferAllocateInfo			AllocateInfo = {};
 	AllocateInfo.sType					= VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	AllocateInfo.pNext					= nullptr;
 	AllocateInfo.commandPool			= m_hCommandPool;
-	AllocateInfo.level					= eLevel;
+	AllocateInfo.level					= VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	AllocateInfo.commandBufferCount		= 1;
 
 	VkCommandBuffer hCommandBuffer = VK_NULL_HANDLE;

@@ -9,8 +9,12 @@ using namespace Vk;
 /*************************************************************************
 **************************    LogicalDevice    ***************************
 *************************************************************************/
-LogicalDevice::LogicalDevice(VkDevice hDevice, std::vector<CommandQueue*> pCommandQueues)
-	: m_hDevice(hDevice), m_pCommandQueues(pCommandQueues)
+LogicalDevice::LogicalDevice(VkDevice hDevice,
+							 CommandQueue * pComputeQueue,
+							 CommandQueue * pGraphicsQueue,
+							 CommandQueue * pTransferQueue,
+							 std::vector<CommandQueue*> pCommandQueues)
+	: m_hDevice(hDevice), m_pComputeQueue(pComputeQueue), m_pGraphicsQueue(pGraphicsQueue), m_pTransferQueue(pTransferQueue), m_pCommandQueues(pCommandQueues)
 {
 
 }

@@ -78,7 +78,15 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 			pCommandQueues[i] = new CommandQueue(hDevice, hQueue, i, m_QueueFamilyProperties[i].queueFlags);
 		}
 
-		LogicalDevice * pLogicalDevice = new LogicalDevice(hDevice, pCommandQueues);
+		uint32_t ComputeQueueIndex = this->GetComputeQueueFamilyIndex();
+		uint32_t GraphicsQueueIndex = this->GetGraphicsQueueFamilyIndex();
+		uint32_t TransferQueueIndex = this->GetTransferQueueFamilyIndex();
+
+		CommandQueue * pComputeQueue = (ComputeQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[ComputeQueueIndex] : nullptr;
+		CommandQueue * pGraphicsQueue = (GraphicsQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[GraphicsQueueIndex] : nullptr;
+		CommandQueue * pTransferQueue = (TransferQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[TransferQueueIndex] : nullptr;
+
+		LogicalDevice * pLogicalDevice = new LogicalDevice(hDevice, pComputeQueue, pGraphicsQueue, pTransferQueue, pCommandQueues);
 
 		m_pLogicalDevices.insert(pLogicalDevice);
 
@@ -107,11 +115,11 @@ std::vector<VkPresentModeKHR> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKH
 
 	vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &PresentModeCount, nullptr);
 
-	std::vector<VkPresentModeKHR> SurfacePresentModes(PresentModeCount);
+	std::vector<VkPresentModeKHR> PresentModes(PresentModeCount);
 
-	vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &PresentModeCount, SurfacePresentModes.data());
+	vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &PresentModeCount, PresentModes.data());
 
-	return SurfacePresentModes;
+	return PresentModes;
 }
 
 

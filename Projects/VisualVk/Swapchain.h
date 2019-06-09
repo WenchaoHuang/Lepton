@@ -27,11 +27,17 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Destroy swapchain.
+		void Destroy() noexcept;
+
 		//!	@brief	Reconstruct swapchain.
 		VkResult Reconstruct(VkBool32 bVsync);
 
 		//!	@brief	Queue an image for presentation.
 		VkResult Present(VkSemaphore hWaitSemaphore);
+
+		//!	@brief	Construct swapchain.
+		VkResult Construct(VkSurfaceKHR hSurface, VkBool32 bVsync);
 
 		//!	@brief	If swapchain handle is valid.
 		VkBool32 IsValid() const { return m_hSwapchain != VK_NULL_HANDLE; }
@@ -51,16 +57,20 @@ namespace Vk
 		//!	@brief	Retrieve the index of the next available presentable image.
 		uint32_t AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
-			sm_pDevice->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
+			m_pDevice->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
 
 			return m_ImageIndex;
 		}
 
-		CommandQueue * GetPresentQueue() { return m_pPresentQueue; }
+	private:
+
+
 
 	private:
 
 		uint32_t							m_ImageIndex;
+
+		VkSurfaceKHR						m_hSurface;
 
 		VkSwapchainKHR						m_hSwapchain;
 
@@ -68,16 +78,14 @@ namespace Vk
 
 		CommandQueue *						m_pPresentQueue;
 
-		std::vector<VkSurfaceFormatKHR>		m_SurfaceFormats;
-
-		std::vector<VkPresentModeKHR>		m_PresentModes;
-
-		std::vector<VkImageView>			m_hImageViews;
-
 		VkSwapchainCreateInfoKHR			m_CreateInfo;
 
 		std::vector<VkImage>				m_hImages;
 
-		const VkSurfaceKHR					m_hSurface;
+		std::vector<VkImageView>			m_hImageViews;
+
+		std::vector<VkPresentModeKHR>		m_PresentModes;
+
+		std::vector<VkSurfaceFormatKHR>		m_SurfaceFormats;
 	};
 }

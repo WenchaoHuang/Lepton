@@ -253,7 +253,7 @@ VkResult GraphicsPipeline::Create(GraphicsPipelineInfo & CreateInfo)
 {
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 
-	if (sm_pDevice->CreateGraphicsPipelines(VK_NULL_HANDLE, 1, CreateInfo, &hPipeline) == VK_SUCCESS)
+	if (m_pDevice->CreateGraphicsPipelines(VK_NULL_HANDLE, 1, CreateInfo, &hPipeline) == VK_SUCCESS)
 	{
 		this->Release();
 
@@ -272,7 +272,7 @@ void GraphicsPipeline::Release() noexcept
 	{
 		m_CreateInfo = GraphicsPipelineInfo();
 
-		sm_pDevice->DestroyPipeline(m_hPipeline);
+		m_pDevice->DestroyPipeline(m_hPipeline);
 
 		m_hPipeline = VK_NULL_HANDLE;
 	}

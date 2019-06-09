@@ -9,6 +9,21 @@
 namespace Vk
 {
 	/*********************************************************************
+	************************    RenderPassInfo    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Information for creating RenderPass object.
+	 */
+	struct RenderPassInfo
+	{
+		std::vector<VkSubpassDependency>		subpassDependencies;
+		std::vector<VkSubpassDescription>		subpassDescriptions;
+		std::vector<VkAttachmentReference>		attachmentReferences;
+		std::vector<VkAttachmentDescription>	attachmentDescriptions;
+	};
+
+	/*********************************************************************
 	**************************    RenderPass    **************************
 	*********************************************************************/
 
@@ -41,18 +56,11 @@ namespace Vk
 		static std::shared_ptr<RenderPass> CreateForSwapchain(VkFormat eColorFormat,
 															  VkFormat eDepthStencilFormat);
 		//!	@brief	Create a render pass object.
-		static std::shared_ptr<RenderPass> Create(const std::vector<VkAttachmentDescription> & AttachmentDescriptions,
-												  const std::vector<VkSubpassDescription> & SubpassDescriptions,
-												  const std::vector<VkSubpassDependency> & SubpassDependencies = std::vector<VkSubpassDependency>());
+		static std::shared_ptr<RenderPass> Create(const RenderPassInfo & PassInfo);
+
 	private:
 
-		const VkRenderPass						m_hRenderPass;
-
-		std::vector<VkSubpassDependency>		m_SubpassDependencies;
-
-		std::vector<VkSubpassDescription>		m_SubpassDescriptions;
-
-		std::vector<VkAttachmentDescription>	m_AttachmentDescriptions;
+		const VkRenderPass			m_hRenderPass;
 	};
 
 	/*********************************************************************

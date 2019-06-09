@@ -36,15 +36,15 @@ namespace Vk
 		VkBool32 IsValid() const { return m_hFence != VK_NULL_HANDLE; }
 
 		//!	@brief	Reset to non-signaled state.
-		VkResult Reset() { return sm_pDevice->ResetFences(1, &m_hFence); }
+		VkResult Reset() { return m_pDevice->ResetFences(1, &m_hFence); }
 
 		//!	@brief	Return status of fence.
-		VkResult GetStatus() { return sm_pDevice->GetFenceStatus(m_hFence); }
+		VkResult GetStatus() { return m_pDevice->GetFenceStatus(m_hFence); }
 
 		//!	@brief	Wait for fence to become signaled.
 		VkResult Wait(uint64_t Timeout = VK_DEFAULT_TIMEOUT)
 		{
-			return sm_pDevice->WaitForFences(1, &m_hFence, TRUE, Timeout);
+			return m_pDevice->WaitForFences(1, &m_hFence, VK_TRUE, Timeout);
 		}
 
 	private:
@@ -110,13 +110,13 @@ namespace Vk
 		VkBool32 IsValid() const { return m_hEvent != VK_NULL_HANDLE; }
 
 		//!	@brief	Retrieve the status of event.
-		VkResult GetStatus() { return sm_pDevice->GetEventStatus(m_hEvent); }
+		VkResult GetStatus() { return m_pDevice->GetEventStatus(m_hEvent); }
 
 		//!	@brief	Set event to signaled state.
-		VkResult SetSignaled() { return sm_pDevice->SetEvent(m_hEvent); }
+		VkResult SetSignaled() { return m_pDevice->SetEvent(m_hEvent); }
 
 		//!	@brief	Reset event to non-signaled state.
-		VkResult Reset() { return sm_pDevice->ResetEvent(m_hEvent); }
+		VkResult Reset() { return m_pDevice->ResetEvent(m_hEvent); }
 
 	private:
 

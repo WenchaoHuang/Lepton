@@ -91,14 +91,14 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Free command buffer.
-		VkResult FreeCommandBuffer(CommandBuffer * pCommandBuffer);
-
-		//!	@brief	Allocate command buffer from command pool.
-		CommandBuffer * AllocateCommandBuffer(VkCommandBufferLevel eLevel = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+		//!	@brief	Allocate a primary command buffer from command pool.
+		CommandBuffer * AllocateCommandBuffer();
 
 		//!	@brief	Reset command pool.
 		VkResult Reset() { return vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT); }
+
+		//!	@brief	Free command buffer.
+		VkResult FreeCommandBuffer(CommandBuffer * pCommandBuffer);
 
 	private:
 
@@ -289,6 +289,24 @@ namespace Vk
 		void CmdBindIndexBuffer(VkBuffer hBuffer, VkIndexType eIndexType, VkDeviceSize Offset)
 		{
 			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, eIndexType);
+		}
+		
+		//!	@brief	Execute a secondary command buffer from a primary command buffer.
+		void CmdExecuteCommands(uint32_t CommandBufferCount, const VkCommandBuffer * pCommandBuffers)
+		{
+			vkCmdExecuteCommands(m_hCommandBuffer, CommandBufferCount, pCommandBuffers);
+		}
+
+		//!	@brief	Set the depth bias dynamic state.
+		void CmdSetDepthBias(float DepthBiasConstantFactor, float DepthBiasClamp, float DepthBiasSlopeFactor)
+		{
+			vkCmdSetDepthBias(m_hCommandBuffer, DepthBiasConstantFactor, DepthBiasClamp, DepthBiasSlopeFactor);
+		}
+
+		//!	@brief	Set the dynamic line width state.
+		void CmdSetLineWidth(float LineWidth)
+		{
+			vkCmdSetLineWidth(m_hCommandBuffer, LineWidth);
 		}
 
 	private:

@@ -41,7 +41,7 @@ std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & Bin
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-	sm_pDevice->CreateShaderModule(&CreateInfo, &hShaderModule);
+	sm_pLogicalDevice->CreateShaderModule(&CreateInfo, &hShaderModule);
 
 	return std::make_shared<ShaderModule>(hShaderModule);
 }
@@ -76,7 +76,7 @@ std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
 
 ShaderModule::~ShaderModule()
 {
-	sm_pDevice->DestroyShaderModule(m_hShaderModule);
+	m_pDevice->DestroyShaderModule(m_hShaderModule);
 }
 
 

@@ -16,7 +16,7 @@ DeviceMemory::DeviceMemory() : m_Bytes(0), m_hMemory(VK_NULL_HANDLE)
 
 VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, VkMemoryPropertyFlags ePropertyFlags)
 {
-	uint32_t MemoryTypeIndex = sm_pPhyDevice->GetMemoryTypeIndex(Requirements.memoryTypeBits, ePropertyFlags);
+	uint32_t MemoryTypeIndex = m_pPhysDevice->GetMemoryTypeIndex(Requirements.memoryTypeBits, ePropertyFlags);
 
 	if (MemoryTypeIndex == VK_INVALID_INDEX)		return VK_ERROR_FORMAT_NOT_SUPPORTED;
 
@@ -28,7 +28,7 @@ VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, VkMemoryPrope
 
 	VkDeviceMemory hMemory = VK_NULL_HANDLE;
 
-	VkResult eResult = sm_pDevice->AllocateMemory(&AllocateInfo, &hMemory);
+	VkResult eResult = m_pDevice->AllocateMemory(&AllocateInfo, &hMemory);
 
 	if (eResult == VK_SUCCESS)
 	{
@@ -55,7 +55,7 @@ VkResult DeviceMemory::Map(void ** ppData, VkDeviceSize OffsetBytes, VkDeviceSiz
 	}
 	else
 	{
-		return sm_pDevice->MapMemory(m_hMemory, OffsetBytes, SizeBytes, ppData);
+		return m_pDevice->MapMemory(m_hMemory, OffsetBytes, SizeBytes, ppData);
 	}
 }
 
@@ -79,7 +79,7 @@ VkResult DeviceMemory::Invalidate(VkDeviceSize OffsetBytes, VkDeviceSize SizeByt
 		MemoryRange.offset		= OffsetBytes;
 		MemoryRange.size		= SizeBytes;
 
-		return sm_pDevice->InvalidateMappedMemoryRanges(1, &MemoryRange);
+		return m_pDevice->InvalidateMappedMemoryRanges(1, &MemoryRange);
 	}
 }
 
@@ -103,7 +103,7 @@ VkResult DeviceMemory::Flush(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 		MemoryRange.offset		= OffsetBytes;
 		MemoryRange.size		= SizeBytes;
 
-		return sm_pDevice->FlushMappedMemoryRanges(1, &MemoryRange);
+		return m_pDevice->FlushMappedMemoryRanges(1, &MemoryRange);
 	}
 }
 
@@ -112,7 +112,7 @@ void DeviceMemory::Unmap() noexcept
 {
 	if (m_hMemory != VK_NULL_HANDLE)
 	{
-		sm_pDevice->UnmapMemory(m_hMemory);
+		m_pDevice->UnmapMemory(m_hMemory);
 	}
 }
 
@@ -121,7 +121,7 @@ void DeviceMemory::Free() noexcept
 {
 	if (m_hMemory != VK_NULL_HANDLE)
 	{
-		sm_pDevice->FreeMemory(m_hMemory);
+		m_pDevice->FreeMemory(m_hMemory);
 
 		m_hMemory = VK_NULL_HANDLE;
 

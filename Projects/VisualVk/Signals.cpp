@@ -12,13 +12,13 @@ Fence::Fence() : m_hFence(VK_NULL_HANDLE)
 {
 	VkFenceCreateInfo CreateInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO, nullptr, 0 };
 
-	sm_pDevice->CreateFence(&CreateInfo, &m_hFence);
+	m_pDevice->CreateFence(&CreateInfo, &m_hFence);
 }
 
 
 Fence::~Fence()
 {
-	sm_pDevice->DestroyFence(m_hFence);
+	m_pDevice->DestroyFence(m_hFence);
 }
 
 
@@ -29,13 +29,13 @@ Semaphore::Semaphore() : m_hSemaphore(VK_NULL_HANDLE)
 {
 	VkSemaphoreCreateInfo CreateInfo = { VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO, nullptr, 0 };
 
-	sm_pDevice->CreateSemaphore(&CreateInfo, &m_hSemaphore);
+	m_pDevice->CreateSemaphore(&CreateInfo, &m_hSemaphore);
 }
 
 
 Semaphore::~Semaphore()
 {
-	sm_pDevice->DestroySemaphore(m_hSemaphore);
+	m_pDevice->DestroySemaphore(m_hSemaphore);
 }
 
 
@@ -46,11 +46,11 @@ Event::Event() : m_hEvent(VK_NULL_HANDLE)
 {
 	VkEventCreateInfo CreateInfo = { VK_STRUCTURE_TYPE_EVENT_CREATE_INFO, nullptr, 0 };
 
-	sm_pDevice->CreateEvent(&CreateInfo, &m_hEvent);
+	m_pDevice->CreateEvent(&CreateInfo, &m_hEvent);
 }
 
 
 Event::~Event()
 {
-	sm_pDevice->DestroyEvent(m_hEvent);
+	m_pDevice->DestroyEvent(m_hEvent);
 }
