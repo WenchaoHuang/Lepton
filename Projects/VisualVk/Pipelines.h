@@ -284,10 +284,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create graphics pipeline object.
+		//!	@brief	Creates graphics pipeline object.
 		GraphicsPipeline();
 
-		//!	@brief	Destroy graphics pipeline object.
+		//!	@brief	Destroys graphics pipeline object.
 		~GraphicsPipeline();
 
 	public:
@@ -318,10 +318,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create compute pipeline object.
+		//!	@brief	Creates compute pipeline object.
 		ComputePipeline() {}
 
-		//!	@brief	Destroy compute pipeline object.
+		//!	@brief	Destroys compute pipeline object.
 		~ComputePipeline() {}
 		
 	public:

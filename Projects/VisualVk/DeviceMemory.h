@@ -19,10 +19,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create memory object.
+		//!	@brief	Creates memory object.
 		DeviceMemory();
 
-		//!	@brief	Destroy memory object.
+		//!	@brief	Destroys memory object.
 		~DeviceMemory();
 
 	public:
@@ -42,7 +42,7 @@ namespace Vk
 		//!	@brief	Flush memory.
 		VkResult Flush(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
-		//!	@brief	Return size of device memory.
+		//!	@brief	Returns the size of device memory.
 		VkDeviceSize Bytes() const { return m_Bytes; }
 
 		//!	@brief	Unmap previously mapped memory.

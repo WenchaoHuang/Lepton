@@ -28,33 +28,33 @@ namespace Vk
 		//!	@brief	Only created by Instance.
 		friend class Instance;
 
-		//!	@brief	Create physical device object.
+		//!	@brief	Creates physical device object.
 		PhysicalDevice(VkPhysicalDevice hDevice);
 
-		//!	@brief	Destroy physical device object.
+		//!	@brief	Destroys physical device object.
 		~PhysicalDevice() noexcept;
 
 	public:
 
-		//!	@brief	Create a logical device that has queues on all queue family.
+		//!	@brief	Creates a logical device that has queues on all queue family.
 		LogicalDevice * CreateLogicalDevice();
 
 		//!	@brief	If device extension is available.
 		VkBool32 IsExtensionAvailable(std::string TargetName) const;
 
-		//!	@brief	Destroy logical device.
+		//!	@brief	Destroys a logical device.
 		VkResult DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
 
-		//!	@brief	Return format properties.
+		//!	@brief	Returns the format properties.
 		VkFormatProperties GetFormatProperties(VkFormat eFormat) const;
 
-		//!	@brief	Return surface capabilities.
+		//!	@brief	Returns the surface capabilities.
 		VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(VkSurfaceKHR hSurface) const;
 
-		//!	@brief	Return surface formats.
+		//!	@brief	Returns the surface formats.
 		std::vector<VkSurfaceFormatKHR> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
 
-		//!	@brief	Return surface present modes.
+		//!	@brief	Returns the surface present modes.
 		std::vector<VkPresentModeKHR> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	If present surface is supported by specify queue family.
@@ -75,22 +75,22 @@ namespace Vk
 		//!	@brief	Find queue family that supported computing, and return the queue family index.
 		uint32_t GetComputeQueueFamilyIndex() const;
 
-		//!	@brief	Return queue family properties.
+		//!	@brief	Returns the queue family properties.
 		const std::vector<VkQueueFamilyProperties> & GetQueueFamilyProperties();
 
-		//!	@brief	Return extension properties.
+		//!	@brief	Returns the extension properties.
 		const std::vector<VkExtensionProperties> & GetExtensionProperties();
 
-		//!	@brief	Return memory properties.
+		//!	@brief	Returns the memory properties.
 		const VkPhysicalDeviceMemoryProperties & GetMemoryProperties();
 
-		//!	@brief	Return layer properties.
+		//!	@brief	Returns the layer properties.
 		const std::vector<VkLayerProperties> & GetLayerProperties();
 
-		//!	@brief	Return physical properties.
+		//!	@brief	Returns the physical properties.
 		const VkPhysicalDeviceProperties & GetProperties();
 
-		//!	@brief	Return physical features.
+		//!	@brief	Returns the physical features.
 		const VkPhysicalDeviceFeatures & GetFeatures();
 
 	private:

@@ -20,10 +20,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create shader module object.
+		//!	@brief	Creates shader module object.
 		ShaderModule(VkShaderModule hShaderModule = VK_NULL_HANDLE);
 
-		//!	@brief	Destroy shader module object.
+		//!	@brief	Destroys shader module object.
 		~ShaderModule() noexcept;
 
 	public:
@@ -31,13 +31,13 @@ namespace Vk
 		//!	@brief	Read file as binary data.
 		static std::vector<char> ReadBinary(const char * pFileName);
 
-		//!	@brief	Create a new shader module object
+		//!	@brief	Creates a new shader module object
 		static std::shared_ptr<ShaderModule> Create(const char * pFileName);
 
-		//!	@brief	Create a new shader module object
+		//!	@brief	Creates a new shader module object
 		static std::shared_ptr<ShaderModule> Create(const std::vector<char> & BinaryCode);
 
-		//!	@brief	Return creating information of shader stage.
+		//!	@brief	Returns creating information of shader stage.
 		VkPipelineShaderStageCreateInfo GetStageInfo(VkShaderStageFlagBits eStage) const;
 
 		//!	@brief	If shader handle is valid.
@@ -60,10 +60,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return count of valid states.
+		//!	@brief	Returns count of valid states.
 		uint32_t GetStageCount() const;
 
-		//!	@brief	Return pointer to array of create informations.
+		//!	@brief	Returns pointer to array of create informations.
 		const VkPipelineShaderStageCreateInfo * GetStages();
 
 	public:

@@ -27,10 +27,10 @@ namespace Vk
 
 		friend class PhysicalDevice;
 
-		//!	@brief	Create command queue object.
+		//!	@brief	Creates command queue object.
 		CommandQueue(VkDevice hDevice, VkQueue hQueue, uint32_t QueueFamilyIndex, VkQueueFlags eFlags);
 
-		//!	@brief	Destroy command queue object.
+		//!	@brief	Destroys command queue object.
 		~CommandQueue() noexcept;
 
 	public:
@@ -38,16 +38,16 @@ namespace Vk
 		//!	@brief	Wait for a queue to become idle.
 		void WaitIdle() { vkQueueWaitIdle(m_hQueue); }
 
-		//!	@brief	Return queue flags.
+		//!	@brief	Returns the queue flags.
 		VkQueueFlags GetFlags() const { return m_QueueFlags; }
 
-		//!	@brief	Return queue family index.
+		//!	@brief	Returns the queue family index.
 		uint32_t GetFamilyIndex() const { return m_FamilyIdx; }
 
-		//!	@brief	Create a new command pool object.
+		//!	@brief	Creates a new command pool object.
 		CommandPool * CreateCommandPool(VkCommandPoolCreateFlags eCreateFlags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
 
-		//!	@brief	Destroy a command pool object.
+		//!	@brief	Destroys a command pool object.
 		VkResult DestroyCommandPool(CommandPool * pCommandPool);
 
 		//!	@brief	Queue an image for presentation.
@@ -83,10 +83,10 @@ namespace Vk
 
 		friend class CommandQueue;
 
-		//!	@brief	Create command pool object.
+		//!	@brief	Creates command pool object.
 		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool);
 
-		//!	@brief	Destroy command pool object.
+		//!	@brief	Destroys command pool object.
 		~CommandPool() noexcept;
 
 	public:
@@ -125,10 +125,10 @@ namespace Vk
 
 		friend class CommandPool;
 
-		//!	@brief	Create command buffer object.
+		//!	@brief	Creates command buffer object.
 		CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer);
 
-		//!	@brief	Destroy command buffer object.
+		//!	@brief	Destroys command buffer object.
 		~CommandBuffer() noexcept;
 
 	public:

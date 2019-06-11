@@ -6,9 +6,6 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#undef	CreateSemaphore
-#undef	CreateEvent
-
 namespace Vk
 {
 	class PhysicalDevice;
@@ -25,45 +22,45 @@ namespace Vk
 
 	private:
 
-		//!	@brief	Create Vulkan instance object (private).
+		//!	@brief	Creates Vulkan instance object (private).
 		Instance(VkInstance hInstance);
 
-		//!	@brief	Destroy Vulkan instance object (private).
+		//!	@brief	Destroys Vulkan instance object (private).
 		~Instance() noexcept;
 
 	public:
 
-		//!	@brief	Destroy surface.
+		//!	@brief	Destroys surface.
 		void DestroySurface(VkSurfaceKHR hSurface);
 
-		//!	@brief	Create win32 surface.
+		//!	@brief	Creates win32 surface.
 		VkSurfaceKHR CreateWin32Surface(HWND hWindow);
 
-		//!	@brief	Return a function pointer for a command.
+		//!	@brief	Returns a function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const;
 
-		//!	@brief	Return physical devices.
+		//!	@brief	Returns physical devices array.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const;
 
-		//!	@brief	Create debug report callback.
+		//!	@brief	Creates a debug report callback.
 		VkDebugReportCallbackEXT CreateDebugReportCallback(VkDebugReportFlagsEXT eFlags,
 														   PFN_vkDebugReportCallbackEXT pfnCallback);
-		//!	@brief	Destroy debug report callback.
+		//!	@brief	Destroys a debug report callback.
 		void DestroyDebugReportCallback(VkDebugReportCallbackEXT hDebugReportCallback);
 
-		//!	@brief	Return extension properties.
+		//!	@brief	Returns extension properties array.
 		static const std::vector<VkExtensionProperties> & GetExtensionProperties();
 
-		//!	@brief	Return layer properties.
+		//!	@brief	Returns layer properties array.
 		static const std::vector<VkLayerProperties> & GetLayerProperties();
 
 		//!	@brief	Check if extension is available.
 		static VkBool32 IsExtensionAvailable(std::string TargetName);
 
-		//!	@brief	Return Vulkan instance (singleton).
+		//!	@brief	Returns the Vulkan instance (singleton).
 		static Instance * GetCurrent();
 
-		//!	@brief	Destroy Vulkan instance.
+		//!	@brief	Destroys the Vulkan instance.
 		static void Destroy();
 
 	private:

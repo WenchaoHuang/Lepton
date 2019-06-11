@@ -38,14 +38,14 @@ namespace Vk
 
 		friend class PhysicalDevice;
 
-		//!	@brief	Create logical device object.
+		//!	@brief	Creates logical device object.
 		LogicalDevice(VkDevice hDevice,
 					  CommandQueue * pComputeQueue,
 					  CommandQueue * pGraphicsQueue,
 					  CommandQueue * pTransferQueue,
 					  std::vector<CommandQueue*> pCommandQueues);
 
-		//!	@brief	Destroy logical device object.
+		//!	@brief	Destroys logical device object.
 		~LogicalDevice() noexcept;
 
 	public:
@@ -53,22 +53,22 @@ namespace Vk
 		//!	@brief	Wait for a device to become idle.
 		VkResult WaitIdle() { return vkDeviceWaitIdle(m_hDevice); }
 
-		//!	@brief	Return pointer to compute command queue.
+		//!	@brief	Returns the pointer to compute command queue.
 		CommandQueue * GetComputeQueue() const { return m_pComputeQueue; }
 
-		//!	@brief	Return pointer to graphics command queue.
+		//!	@brief	Returns the pointer to graphics command queue.
 		CommandQueue * GetGraphicsQueue() const { return m_pGraphicsQueue; }
 
-		//!	@brief	Return pointer to transfer command queue.
+		//!	@brief	Returns the pointer to transfer command queue.
 		CommandQueue * GetTransferQueue() const { return m_pTransferQueue; }
 
-		//!	@brief	Return a device level function pointer for a command.
+		//!	@brief	Returns a device level function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const
 		{
 			return vkGetDeviceProcAddr(m_hDevice, pName);
 		}
 
-		//!	@brief	Return pointer to command queue.
+		//!	@brief	Returns the pointer to command queue.
 		CommandQueue * GetCommandQueue(uint32_t FamilyIndex)
 		{
 			if (FamilyIndex < m_pCommandQueues.size())
@@ -107,7 +107,7 @@ namespace Vk
 		**************************    Fence    ***************************
 		*****************************************************************/
 
-		//!	@brief	Return the status of a fence.
+		//!	@brief	Returns the status of a fence.
 		VkResult GetFenceStatus(VkFence hFence) { return vkGetFenceStatus(m_hDevice, hFence); }
 
 		//!	@brief	Wait for one or more fences to become signaled.
@@ -218,16 +218,16 @@ namespace Vk
 		*************************    Pipeline    *************************
 		*****************************************************************/
 
-		//!	@brief	Destroy a pipeline object.
+		//!	@brief	Destroys a pipeline object.
 		void DestroyPipeline(VkPipeline hPipeline) { vkDestroyPipeline(m_hDevice, hPipeline, nullptr); }
 		
-		//!	@brief	Create compute pipelines.
+		//!	@brief	Creates compute pipelines.
 		VkResult CreateComputePipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount, const VkComputePipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
 		{
 			return vkCreateComputePipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);
 		}
 
-		//!	@brief	Create graphics pipelines.
+		//!	@brief	Creates graphics pipelines.
 		VkResult CreateGraphicsPipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount, const VkGraphicsPipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
 		{
 			return vkCreateGraphicsPipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);

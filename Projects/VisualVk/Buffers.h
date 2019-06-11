@@ -19,10 +19,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create buffer object.
+		//!	@brief	Creates buffer object.
 		HostVisibleBuffer();
 
-		//!	@brief	Destroy buffer object.
+		//!	@brief	Destroys buffer object.
 		~HostVisibleBuffer();
 
 	public:
@@ -42,7 +42,7 @@ namespace Vk
 		//!	@brief	If buffer handle is valid.
 		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
 
-		//!	@brief	Return buffer size in bytes.
+		//!	@brief	Returns the buffer size in bytes.
 		VkDeviceSize Bytes() const { return m_Bytes; }
 
 		//!	@brief	Resize buffer.
@@ -72,10 +72,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create buffer object.
+		//!	@brief	Creates buffer object.
 		DeviceLocalBuffer();
 
-		//!	@brief	Destroy buffer object.
+		//!	@brief	Destroys buffer object.
 		~DeviceLocalBuffer();
 
 	public:
@@ -86,7 +86,7 @@ namespace Vk
 		//!	@brief	If buffer handle is valid.
 		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
 
-		//!	@brief	Return buffer size in bytes.
+		//!	@brief	Returns the buffer size in bytes.
 		VkDeviceSize Bytes() const { return m_Bytes; }
 
 		//!	@brief	Resize buffer.
