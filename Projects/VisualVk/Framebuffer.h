@@ -35,27 +35,27 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates render pass object.
+		//!	@brief	Create render pass object.
 		RenderPass(VkRenderPass hRenderPass = VK_NULL_HANDLE);
 
-		//!	@brief	Destroys render pass object.
+		//!	@brief	Destroy render pass object.
 		~RenderPass() noexcept;
 
 	public:
 
-		//!	@brief	Returns the VkRenderPass handle.
+		//!	@brief	Return the VkRenderPass handle.
 		VkRenderPass GetHandle() const { return m_hRenderPass; }
 
 		//!	@brief	If render pass handle is valid.
 		VkBool32 IsValid() const { return m_hRenderPass != VK_NULL_HANDLE; }
 
-		//!	@brief	Creates a common render pass object for swapchain.
+		//!	@brief	Create a common render pass object for swapchain.
 		static std::shared_ptr<RenderPass> CreateForSwapchain(VkFormat eColorFormat);
 
-		//!	@brief	Creates a common render pass object for swapchain.
+		//!	@brief	Create a common render pass object for swapchain.
 		static std::shared_ptr<RenderPass> CreateForSwapchain(VkFormat eColorFormat,
 															  VkFormat eDepthStencilFormat);
-		//!	@brief	Creates a render pass object.
+		//!	@brief	Create a render pass object.
 		static std::shared_ptr<RenderPass> Create(const RenderPassInfo & PassInfo);
 
 	private:
@@ -75,10 +75,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates framebuffer object.
+		//!	@brief	Create framebuffer object.
 		Framebuffer();
 
-		//!	@brief	Destroys framebuffer object.
+		//!	@brief	Destroy framebuffer object.
 		~Framebuffer();
 
 	public:
@@ -89,13 +89,13 @@ namespace Vk
 		//!	@brief	If framebuffer handle is valid.
 		VkBool32 IsValid() const { return m_hFramebuffer != VK_NULL_HANDLE; }
 
-		//!	@brief	Returns shared pointer to the render pass object.
+		//!	@brief	Return shared pointer to the render pass object.
 		std::shared_ptr<RenderPass> GetRenderPass() const { return m_spRenderPass; }
 
-		//!	@brief	Creates a new frame buffer object.
+		//!	@brief	Create a new frame buffer object.
 		VkResult Create(std::shared_ptr<RenderPass> spRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
-		//!	@brief	Returns extent of framebuffer.
+		//!	@brief	Return extent of framebuffer.
 		VkExtent2D GetExtent() const { return m_Extent2D; }
 
 		//!	@brief	Release frame buffer.

@@ -16,50 +16,52 @@ namespace Vk
 	/**
 	 *	@brief	Creating information of Vulkan graphics pipeline.
 	 */
-	struct GraphicsPipelineInfo : private VkGraphicsPipelineCreateInfo
+	struct GraphicsPipelineInfo
 	{
-		operator const VkGraphicsPipelineCreateInfo*();
 
+	public:
+
+		//!	@brief	Construction.
 		GraphicsPipelineInfo();
 
 	private:
 
+		//!	@brief	Tessellation state information.
+		using TessellationStateInfo = uint32_t;
+
+		//!	@brief	Input assembly state information. 
+		using InputAssemblyStateInfo = VkPrimitiveTopology;
+
+		//!	@brief	Dynamic states information.
+		using DynamicStateInfo = std::vector<VkDynamicState>;
+
 		/*****************************************************************
-		*********************    DynamicStateInfo    *********************
+		********************    ViewportStateInfo    *********************
 		*****************************************************************/
 
-		class DynamicStateInfo : public std::vector<VkDynamicState>
+		/**
+		 *	@brief	Viewport stage information.
+		 */
+		struct ViewportStateInfo
 		{
-
-		public:
-
-			DynamicStateInfo();
-
-			operator const VkPipelineDynamicStateCreateInfo*();
-
-		private:
-
-			VkPipelineDynamicStateCreateInfo	m_CreateInfo;
+			std::vector<VkRect2D>				scissors;
+			std::vector<VkViewport>				viewports;
 		};
 
 		/*****************************************************************
-		******************    InputAssemblyStateInfo    ******************
+		*********************    ShaderStagesInfo    *********************
 		*****************************************************************/
 
-		class InputAssemblyStateInfo
+		/**
+		 *	@brief	Shader stages information.
+		 */
+		struct ShaderStagesInfo
 		{
-
-		public:
-
-			InputAssemblyStateInfo();
-
-			InputAssemblyStateInfo(VkPrimitiveTopology eTopology);
-
-			operator VkPrimitiveTopology() const { return m_CreateInfo.topology; }
-
-		private:
-
-			VkPipelineInputAssemblyStateCreateInfo		m_CreateInfo;
+			std::shared_ptr<ShaderModule>		spVertexShader;
+			std::shared_ptr<ShaderModule>		spGeometryShader;
+			std::shared_ptr<ShaderModule>		spFragmentShader;
+			std::shared_ptr<ShaderModule>		spTessControlShader;
+			std::shared_ptr<ShaderModule>		spTessEvalutionShader;
 		};
 
 		/*****************************************************************
@@ -67,49 +69,20 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Wrapper of VkPipelineRasterizationStateCreateInfo object.
+		 *	@brief	Rasterization state information.
 		 */
-		class RasterizationStateInfo
+		struct RasterizationStateInfo
 		{
-
-		private:
-
-			VkStructureType								sType						= VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-			const void *								pNext						= nullptr;
-			VkPipelineRasterizationStateCreateFlags		flags						= 0;
-
-		public:
-
-			VkBool32									depthClampEnable			= VK_FALSE;
-			VkBool32									rasterizerDiscardEnable		= VK_FALSE;
-			VkPolygonMode								polygonMode					= VK_POLYGON_MODE_FILL;
-			VkCullModeFlags								cullMode					= VK_CULL_MODE_NONE;
-			VkFrontFace									frontFace					= VK_FRONT_FACE_COUNTER_CLOCKWISE;
-			VkBool32									depthBiasEnable				= VK_FALSE;
-			float										depthBiasConstantFactor		= 0.0f;
-			float										depthBiasClamp				= 0.0f;
-			float										depthBiasSlopeFactor		= 0.0f;
-			float										lineWidth					= 1.0f;
-		};
-
-		static_assert(sizeof(RasterizationStateInfo) == sizeof(VkPipelineRasterizationStateCreateInfo), "struct and wrapper have different size!");
-
-		/*****************************************************************
-		******************    TessellationStateInfo    *******************
-		*****************************************************************/
-
-		class TessellationStateInfo
-		{
-
-		public:
-
-			TessellationStateInfo();
-
-			void SetPatchControlPoints(uint32_t PatchControlPoints);
-
-		private:
-
-			VkPipelineTessellationStateCreateInfo		m_CreateInfo;
+			VkBool32			depthClampEnable			= VK_FALSE;
+			VkBool32			rasterizerDiscardEnable		= VK_FALSE;
+			VkPolygonMode		polygonMode					= VK_POLYGON_MODE_FILL;
+			VkCullModeFlags		cullMode					= VK_CULL_MODE_NONE;
+			VkFrontFace			frontFace					= VK_FRONT_FACE_COUNTER_CLOCKWISE;
+			VkBool32			depthBiasEnable				= VK_FALSE;
+			float				depthBiasConstantFactor		= 0.0f;
+			float				depthBiasClamp				= 0.0f;
+			float				depthBiasSlopeFactor		= 0.0f;
+			float				lineWidth					= 1.0f;
 		};
 
 		/*****************************************************************
@@ -117,82 +90,60 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Wrapper of VkPipelineDepthStencilStateCreateInfo object.
+		 *	@brief	DepthStencil state information
 		 */
-		class DepthStencilStateInfo
+		struct DepthStencilStateInfo
 		{
-
-		private:
-
-			VkStructureType								sType					= VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-			const void *								pNext					= nullptr;
-			VkPipelineDepthStencilStateCreateFlags		flags					= 0;
-
-		public:
-
-			VkBool32									depthTestEnable			= VK_FALSE;
-			VkBool32									depthWriteEnable		= VK_FALSE;
-			VkCompareOp									depthCompareOp			= VK_COMPARE_OP_LESS_OR_EQUAL;
-			VkBool32									depthBoundsTestEnable	= VK_FALSE;
-			VkBool32									stencilTestEnable		= VK_FALSE;
-			VkStencilOpState							front					= {};
-			VkStencilOpState							back					= {};
-			float										minDepthBounds			= 0.0f;
-			float										maxDepthBounds			= 0.0f;
+			VkBool32				depthTestEnable				= VK_FALSE;
+			VkBool32				depthWriteEnable			= VK_FALSE;
+			VkCompareOp				depthCompareOp				= VK_COMPARE_OP_LESS_OR_EQUAL;
+			VkBool32				depthBoundsTestEnable		= VK_FALSE;
+			VkBool32				stencilTestEnable			= VK_FALSE;
+			VkStencilOpState		front						= {};
+			VkStencilOpState		back						= {};
+			float					minDepthBounds				= 0.0f;
+			float					maxDepthBounds				= 0.0f;
 		};
-
-		static_assert(sizeof(DepthStencilStateInfo) == sizeof(VkPipelineDepthStencilStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
 		*******************    MultisampleStateInfo    *******************
 		*****************************************************************/
 
 		/**
-		 *	@brief	Wrapper of VkPipelineMultisampleStateCreateInfo object.
+		 *	@brief	Multisample state information.
 		 */
-		class MultisampleStateInfo
+		struct MultisampleStateInfo
 		{
-
-		private:
-
-			VkStructureType								sType					= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-			const void *								pNext					= nullptr;
-			VkPipelineMultisampleStateCreateFlags		flags					= 0;
-
-		public:
-
-			VkSampleCountFlagBits						rasterizationSamples	= VK_SAMPLE_COUNT_1_BIT;
-			VkBool32									sampleShadingEnable		= VK_FALSE;
-			float										minSampleShading		= 0.0f;
-			const VkSampleMask *						pSampleMask				= nullptr;
-			VkBool32									alphaToCoverageEnable	= VK_FALSE;
-			VkBool32									alphaToOneEnable		= VK_FALSE;
+			VkSampleCountFlagBits		rasterizationSamples		= VK_SAMPLE_COUNT_1_BIT;
+			VkBool32					sampleShadingEnable			= VK_FALSE;
+			float						minSampleShading			= 0.0f;
+			const VkSampleMask *		pSampleMask					= nullptr;
+			VkBool32					alphaToCoverageEnable		= VK_FALSE;
+			VkBool32					alphaToOneEnable			= VK_FALSE;
 		};
-
-		static_assert(sizeof(MultisampleStateInfo) == sizeof(VkPipelineMultisampleStateCreateInfo), "struct and wrapper have different size!");
 
 		/*****************************************************************
 		*******************    VertexInputStateInfo    *******************
 		*****************************************************************/
 
-		class VertexInputStateInfo
+		/**
+		 *	@brief	VertexInput state information.
+		 */
+		struct VertexInputStateInfo
 		{
 
 		public:
 
-			VertexInputStateInfo();
+			//!	@brief	Specify vertex attribute location.
+			void SetLocation(uint32_t Location, uint32_t Binding, VkFormat eFormat, uint32_t Offset);
 
-			operator const VkPipelineVertexInputStateCreateInfo*();
-
-			void SetAttribute(uint32_t Binding, uint32_t Location, VkFormat eFormat, uint32_t Offset);
-
+			//!	@brief	Specify vertex input binding.
 			void SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate = VK_VERTEX_INPUT_RATE_VERTEX);
 
-		private:
+		public:
 
-			VkPipelineVertexInputStateCreateInfo				m_CreateInfo;
-			std::vector<VkVertexInputBindingDescription>		m_BindingDescriptions;
-			std::vector<VkVertexInputAttributeDescription>		m_AttributeDescriptions;
+			std::vector<VkVertexInputBindingDescription>		bindingDescriptions;
+			std::vector<VkVertexInputAttributeDescription>		attributeDescriptions;
 		};
 
 		/*****************************************************************
@@ -220,40 +171,12 @@ namespace Vk
 		*******************    ColorBlendStateInfo    ********************
 		*****************************************************************/
 
-		struct ColorBlendStateInfo : private VkPipelineColorBlendStateCreateInfo
+		struct ColorBlendStateInfo
 		{
-			operator const VkPipelineColorBlendStateCreateInfo*();
-
-			using VkPipelineColorBlendStateCreateInfo::blendConstants;
-			using VkPipelineColorBlendStateCreateInfo::logicOpEnable;
-			using VkPipelineColorBlendStateCreateInfo::logicOp;
-
+			VkBool32									logicOpEnable			= VK_FALSE;
+			VkLogicOp									logicOp					= VK_LOGIC_OP_NO_OP;
+			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;
-
-			ColorBlendStateInfo();
-		};
-
-		/*****************************************************************
-		********************    ViewportStateInfo    *********************
-		*****************************************************************/
-
-		class ViewportStateInfo
-		{
-
-		public:
-
-			ViewportStateInfo();
-
-			operator const VkPipelineViewportStateCreateInfo*();
-
-		public:
-
-			std::vector<VkRect2D>					Scissors;
-			std::vector<VkViewport>					Viewports;
-
-		private:
-
-			VkPipelineViewportStateCreateInfo		m_CreateInfo;
 		};
 
 	public:
@@ -284,10 +207,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates graphics pipeline object.
+		//!	@brief	Create graphics pipeline object.
 		GraphicsPipeline();
 
-		//!	@brief	Destroys graphics pipeline object.
+		//!	@brief	Destroy graphics pipeline object.
 		~GraphicsPipeline();
 
 	public:
@@ -295,13 +218,13 @@ namespace Vk
 		//!	@brief	Convert to VkPipeline handle.
 		operator VkPipeline() const { return m_hPipeline; }
 
-		VkResult Create(GraphicsPipelineInfo & CreateInfo);
+		VkResult Create(const GraphicsPipelineInfo & CreateInfo);
 
 		void Release() noexcept;
 
 	private:
 
-		VkPipeline						m_hPipeline;
+		VkPipeline					m_hPipeline;
 
 		GraphicsPipelineInfo		m_CreateInfo;
 	};
@@ -318,10 +241,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates compute pipeline object.
+		//!	@brief	Create compute pipeline object.
 		ComputePipeline() {}
 
-		//!	@brief	Destroys compute pipeline object.
+		//!	@brief	Destroy compute pipeline object.
 		~ComputePipeline() {}
 		
 	public:

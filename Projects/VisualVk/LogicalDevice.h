@@ -38,14 +38,14 @@ namespace Vk
 
 		friend class PhysicalDevice;
 
-		//!	@brief	Creates logical device object.
+		//!	@brief	Create logical device object.
 		LogicalDevice(VkDevice hDevice,
 					  CommandQueue * pComputeQueue,
 					  CommandQueue * pGraphicsQueue,
 					  CommandQueue * pTransferQueue,
 					  std::vector<CommandQueue*> pCommandQueues);
 
-		//!	@brief	Destroys logical device object.
+		//!	@brief	Destroy logical device object.
 		~LogicalDevice() noexcept;
 
 	public:
@@ -53,22 +53,22 @@ namespace Vk
 		//!	@brief	Wait for a device to become idle.
 		VkResult WaitIdle() { return vkDeviceWaitIdle(m_hDevice); }
 
-		//!	@brief	Returns the pointer to compute command queue.
+		//!	@brief	Return the pointer to compute command queue.
 		CommandQueue * GetComputeQueue() const { return m_pComputeQueue; }
 
-		//!	@brief	Returns the pointer to graphics command queue.
+		//!	@brief	Return the pointer to graphics command queue.
 		CommandQueue * GetGraphicsQueue() const { return m_pGraphicsQueue; }
 
-		//!	@brief	Returns the pointer to transfer command queue.
+		//!	@brief	Return the pointer to transfer command queue.
 		CommandQueue * GetTransferQueue() const { return m_pTransferQueue; }
 
-		//!	@brief	Returns a device level function pointer for a command.
+		//!	@brief	Return a device level function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const
 		{
 			return vkGetDeviceProcAddr(m_hDevice, pName);
 		}
 
-		//!	@brief	Returns the pointer to command queue.
+		//!	@brief	Return the pointer to command queue.
 		CommandQueue * GetCommandQueue(uint32_t FamilyIndex)
 		{
 			if (FamilyIndex < m_pCommandQueues.size())
@@ -107,7 +107,7 @@ namespace Vk
 		**************************    Fence    ***************************
 		*****************************************************************/
 
-		//!	@brief	Returns the status of a fence.
+		//!	@brief	Return the status of a fence.
 		VkResult GetFenceStatus(VkFence hFence) { return vkGetFenceStatus(m_hDevice, hFence); }
 
 		//!	@brief	Wait for one or more fences to become signaled.
@@ -186,7 +186,7 @@ namespace Vk
 		**************************    Buffer    **************************
 		*****************************************************************/
 
-		//!	@brief	Returns the memory requirements for buffer object.
+		//!	@brief	Return the memory requirements for buffer object.
 		void GetBufferMemoryRequirements(VkBuffer hBuffer, VkMemoryRequirements * pMemoryRequirements)
 		{
 			vkGetBufferMemoryRequirements(m_hDevice, hBuffer, pMemoryRequirements);
@@ -202,7 +202,7 @@ namespace Vk
 		**************************    Image    ***************************
 		*****************************************************************/
 
-		//!	@brief	Returns the memory requirements for image object.
+		//!	@brief	Return the memory requirements for image object.
 		void GetImageMemoryRequirements(VkImage hImage, VkMemoryRequirements * pMemoryRequirements)
 		{
 			vkGetImageMemoryRequirements(m_hDevice, hImage, pMemoryRequirements);
@@ -218,16 +218,16 @@ namespace Vk
 		*************************    Pipeline    *************************
 		*****************************************************************/
 
-		//!	@brief	Destroys a pipeline object.
+		//!	@brief	Destroy a pipeline object.
 		void DestroyPipeline(VkPipeline hPipeline) { vkDestroyPipeline(m_hDevice, hPipeline, nullptr); }
 		
-		//!	@brief	Creates compute pipelines.
+		//!	@brief	Create compute pipelines.
 		VkResult CreateComputePipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount, const VkComputePipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
 		{
 			return vkCreateComputePipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);
 		}
 
-		//!	@brief	Creates graphics pipelines.
+		//!	@brief	Create graphics pipelines.
 		VkResult CreateGraphicsPipelines(VkPipelineCache hPipelineCache, uint32_t CreateInfoCount, const VkGraphicsPipelineCreateInfo * pCreateInfos, VkPipeline * pPipelines)
 		{
 			return vkCreateGraphicsPipelines(m_hDevice, hPipelineCache, CreateInfoCount, pCreateInfos, nullptr, pPipelines);

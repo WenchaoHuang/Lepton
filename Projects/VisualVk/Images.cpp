@@ -19,7 +19,7 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
 	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(VK_FORMAT_UNDEFINED), m_eSampleCount(VK_SAMPLE_COUNT_1_BIT)
 {
-	m_MipLevels = 0;	m_ArrayLayers = 0;		m_Extent3D = { 0, 0, 0 };
+	m_MipLevels = 0;		m_ArrayLayers = 0;		m_Extent3D = { 0, 0, 0 };
 }
 
 
@@ -89,8 +89,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType>
-VkResult BaseImage<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask)
+template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask)
 {
 	if (m_hImage == VK_NULL_HANDLE)				return VK_INCOMPLETE;
 

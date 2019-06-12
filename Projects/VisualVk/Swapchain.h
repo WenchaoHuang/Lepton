@@ -19,15 +19,15 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates swapchain object.
+		//!	@brief	Create swapchain object.
 		Swapchain(VkSurfaceKHR hSurface);
 
-		//!	@brief	Destroys swapchain object.
+		//!	@brief	Destroy swapchain object.
 		~Swapchain() noexcept;
 
 	public:
 
-		//!	@brief	Destroys the swapchain.
+		//!	@brief	Destroy the swapchain.
 		void Destroy() noexcept;
 
 		//!	@brief	Reconstruct swapchain.
@@ -42,16 +42,16 @@ namespace Vk
 		//!	@brief	If swapchain handle is valid.
 		VkBool32 IsValid() const { return m_hSwapchain != VK_NULL_HANDLE; }
 
-		//!	@brief	Returns the format of swapchain images.
+		//!	@brief	Return the format of swapchain images.
 		VkFormat GetImageFormat() const { return m_CreateInfo.imageFormat; }
 
-		//!	@brief	Returns the swapchain images.
+		//!	@brief	Return the swapchain images.
 		const std::vector<VkImage> & GetImages() const { return m_hImages; }
 
-		//!	@brief	Returns the extent of swapchain images.
+		//!	@brief	Return the extent of swapchain images.
 		VkExtent2D GetImageExtent() const { return m_CreateInfo.imageExtent; }
 
-		//!	@brief	Returns the swapchain image views.
+		//!	@brief	Return the swapchain image views.
 		const std::vector<VkImageView> & GetImageViews() const { return m_hImageViews; }
 
 		//!	@brief	Retrieve the index of the next available presentable image.

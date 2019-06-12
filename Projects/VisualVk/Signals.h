@@ -21,10 +21,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates fence object.
+		//!	@brief	Create fence object.
 		Fence();
 
-		//!	@brief	Destroys fence object.
+		//!	@brief	Destroy fence object.
 		~Fence();
 
 	public:
@@ -38,7 +38,7 @@ namespace Vk
 		//!	@brief	Reset to non-signaled state.
 		VkResult Reset() { return m_pDevice->ResetFences(1, &m_hFence); }
 
-		//!	@brief	Returns the status of fence.
+		//!	@brief	Return the status of fence.
 		VkResult GetStatus() { return m_pDevice->GetFenceStatus(m_hFence); }
 
 		//!	@brief	Wait for fence to become signaled.
@@ -64,10 +64,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates semaphore object.
+		//!	@brief	Create semaphore object.
 		Semaphore();
 
-		//!	@brief	Destroys semaphore object.
+		//!	@brief	Destroy semaphore object.
 		~Semaphore();
 
 	public:
@@ -95,10 +95,10 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates event object.
+		//!	@brief	Create event object.
 		Event();
 
-		//!	@brief	Destroys event object.
+		//!	@brief	Destroy event object.
 		~Event();
 
 	public:

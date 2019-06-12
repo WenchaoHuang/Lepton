@@ -20,6 +20,7 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Initialize devices.
 		Resource() : m_pDevice(sm_pLogicalDevice), m_pPhysDevice(sm_pPhysicalDevice) {}
 
 		//!	@brief	Set current physical device and logical device.

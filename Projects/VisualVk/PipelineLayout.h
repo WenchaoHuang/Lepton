@@ -62,26 +62,26 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Creates pipeline layout object.
+		//!	@brief	Create pipeline layout object.
 		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE,
 					   VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE,
 					   const PipelineLayoutInfo & LayoutInfo = PipelineLayoutInfo());
 
-		//!	@brief	Destroys pipeline layout object.
+		//!	@brief	Destroy pipeline layout object.
 		~PipelineLayout() noexcept;
 
 	public:
 
-		//!	@brief	Creates a new descriptor set object.
+		//!	@brief	Create a new descriptor set object.
 		std::shared_ptr<DescriptorSet> CreateDescriptorSet();
 
-		//!	@brief	Creates a new pipeline layout object.
+		//!	@brief	Create a new pipeline layout object.
 		static std::shared_ptr<PipelineLayout> Create(const PipelineLayoutInfo & CreateInfo = PipelineLayoutInfo());
 
 		//!	@brief	If pipeline layout handle is valid.
 		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
 
-		//!	@brief	Returns the VkPipelineLayout handle.
+		//!	@brief	Return the VkPipelineLayout handle.
 		VkPipelineLayout GetHandle() const { return m_hPipelineLayout; }
 
 	private:
@@ -109,16 +109,16 @@ namespace Vk
 
 		friend class PipelineLayout;
 
-		//!	@brief	Creates descriptor set object.
+		//!	@brief	Create descriptor set object.
 		DescriptorSet(VkDescriptorSet hDescriptorSet = VK_NULL_HANDLE,
 					  VkDescriptorPool hDescriptorPool = VK_NULL_HANDLE);
 
-		//!	@brief	Destroys descriptor set object.
+		//!	@brief	Destroy descriptor set object.
 		~DescriptorSet() noexcept;
 
 	public:
 
-		//!	@brief	Returns the VkDescriptorSet handle.
+		//!	@brief	Return the VkDescriptorSet handle.
 		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
 		//!	@brief	Update the content of descriptor set.
