@@ -64,75 +64,70 @@ GraphicsPipeline::GraphicsPipeline() : m_hPipeline(VK_NULL_HANDLE)
 
 VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 {
-	std::vector<VkPipelineShaderStageCreateInfo>		ShaderStageCreateInfos;
+	std::vector<VkPipelineShaderStageCreateInfo>					ShaderStageCreateInfos;
 
 	if ((CreateInfo.ShaderStages.spVertexShader != 0) && CreateInfo.ShaderStages.spVertexShader->IsValid())
 	{
-		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext						= nullptr;
-		ShaderStageCreateInfo.flags						= 0;
-		ShaderStageCreateInfo.stage						= VK_SHADER_STAGE_VERTEX_BIT;
-		ShaderStageCreateInfo.module					= CreateInfo.ShaderStages.spVertexShader->GetHandle();
-		ShaderStageCreateInfo.pName						= "main";
-		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
-
+		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
+		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		ShaderStageCreateInfo.pNext									= nullptr;
+		ShaderStageCreateInfo.flags									= 0;
+		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_VERTEX_BIT;
+		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spVertexShader->GetHandle();
+		ShaderStageCreateInfo.pName									= "main";
+		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
 		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
 	}
 
 	if ((CreateInfo.ShaderStages.spFragmentShader != 0) && CreateInfo.ShaderStages.spFragmentShader->IsValid())
 	{
-		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext						= nullptr;
-		ShaderStageCreateInfo.flags						= 0;
-		ShaderStageCreateInfo.stage						= VK_SHADER_STAGE_FRAGMENT_BIT;
-		ShaderStageCreateInfo.module					= CreateInfo.ShaderStages.spFragmentShader->GetHandle();
-		ShaderStageCreateInfo.pName						= "main";
-		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
-
+		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
+		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		ShaderStageCreateInfo.pNext									= nullptr;
+		ShaderStageCreateInfo.flags									= 0;
+		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_FRAGMENT_BIT;
+		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spFragmentShader->GetHandle();
+		ShaderStageCreateInfo.pName									= "main";
+		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
 		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
 	}
 	
 	if ((CreateInfo.ShaderStages.spGeometryShader != 0) && CreateInfo.ShaderStages.spGeometryShader->IsValid())
 	{
-		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext						= nullptr;
-		ShaderStageCreateInfo.flags						= 0;
-		ShaderStageCreateInfo.stage						= VK_SHADER_STAGE_GEOMETRY_BIT;
-		ShaderStageCreateInfo.module					= CreateInfo.ShaderStages.spGeometryShader->GetHandle();
-		ShaderStageCreateInfo.pName						= "main";
-		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
-
+		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
+		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		ShaderStageCreateInfo.pNext									= nullptr;
+		ShaderStageCreateInfo.flags									= 0;
+		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_GEOMETRY_BIT;
+		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spGeometryShader->GetHandle();
+		ShaderStageCreateInfo.pName									= "main";
+		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
 		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
 	}
 	
 	if ((CreateInfo.ShaderStages.spTessControlShader != 0) && CreateInfo.ShaderStages.spTessControlShader->IsValid())
 	{
-		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext						= nullptr;
-		ShaderStageCreateInfo.flags						= 0;
-		ShaderStageCreateInfo.stage						= VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT;
-		ShaderStageCreateInfo.module					= CreateInfo.ShaderStages.spTessControlShader->GetHandle();
-		ShaderStageCreateInfo.pName						= "main";
-		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
-
+		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
+		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		ShaderStageCreateInfo.pNext									= nullptr;
+		ShaderStageCreateInfo.flags									= 0;
+		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT;
+		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spTessControlShader->GetHandle();
+		ShaderStageCreateInfo.pName									= "main";
+		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
 		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
 	}
 	
 	if ((CreateInfo.ShaderStages.spTessEvalutionShader != 0) && CreateInfo.ShaderStages.spTessEvalutionShader->IsValid())
 	{
-		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext						= nullptr;
-		ShaderStageCreateInfo.flags						= 0;
-		ShaderStageCreateInfo.stage						= VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT;
-		ShaderStageCreateInfo.module					= CreateInfo.ShaderStages.spTessEvalutionShader->GetHandle();
-		ShaderStageCreateInfo.pName						= "main";
-		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
-
+		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
+		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		ShaderStageCreateInfo.pNext									= nullptr;
+		ShaderStageCreateInfo.flags									= 0;
+		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT;
+		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spTessEvalutionShader->GetHandle();
+		ShaderStageCreateInfo.pName									= "main";
+		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
 		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
 	}
 

@@ -28,9 +28,6 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return VkShaderModule handle.
-		VkShaderModule GetHandle() const { return m_hShaderModule; }
-
 		//!	@brief	Read file as binary data.
 		static std::vector<char> ReadBinary(const char * pFileName);
 
@@ -42,6 +39,9 @@ namespace Vk
 
 		//!	@brief	If shader handle is valid.
 		VkBool32 IsValid() const { return m_hShaderModule != VK_NULL_HANDLE; }
+
+		//!	@brief	Return VkShaderModule handle.
+		VkShaderModule GetHandle() const { return m_hShaderModule; }
 
 	private:
 
