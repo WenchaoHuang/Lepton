@@ -64,10 +64,6 @@ namespace Vk
 
 	private:
 
-
-
-	private:
-
 		uint32_t							m_ImageIndex;
 
 		VkSurfaceKHR						m_hSurface;

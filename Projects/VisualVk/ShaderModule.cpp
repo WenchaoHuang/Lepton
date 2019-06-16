@@ -22,7 +22,7 @@ std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & Bin
 	CreateInfo.pNext			= nullptr;
 	CreateInfo.flags			= 0;
 	CreateInfo.codeSize			= BinaryCode.size();
-	CreateInfo.pCode			= (uint32_t*)BinaryCode.data();
+	CreateInfo.pCode			= reinterpret_cast<const uint32_t*>(BinaryCode.data());
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
