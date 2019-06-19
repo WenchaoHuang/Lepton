@@ -170,9 +170,9 @@ namespace Vk
 		}
 
 		//!	@brief	Create a new depth-stencil attachment object.
-		VkResult CreateDepthStencilAttachment(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		VkResult CreateDepthStencilAttachment(uint32_t Width, uint32_t Height, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D24_UNORM_S8_UINT, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+			VkResult eResult = BaseImage::Create(VK_FORMAT_D24_UNORM_S8_UINT, { Width, Height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT) : eResult;
 		}

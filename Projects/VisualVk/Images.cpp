@@ -67,7 +67,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 		}
 		else
 		{
-			this->Release();
+			m_pDevice->DestroyImage(m_hImage);
 
 			m_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
 
