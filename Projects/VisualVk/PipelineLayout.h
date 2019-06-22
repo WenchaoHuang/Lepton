@@ -12,6 +12,58 @@ namespace Vk
 	class DescriptorSet;
 
 	/*********************************************************************
+	************************    DescriptorType    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	
+	 */
+	enum class DescriptorType
+	{
+		eSampler					= VK_DESCRIPTOR_TYPE_SAMPLER,
+		eSampledImage				= VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE,
+		eStorageImage				= VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
+		eUniformBuffer				= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		eStorageBuffer				= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+		eInputAttachment			= VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT,
+		eStorageTexelBuffer			= VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER,
+		eUniformTexelBuffer			= VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER,
+		eCombinedImageSampler		= VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+		eUniformBufferDynamic		= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
+		eStorageBufferDynamic		= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
+		eInlineUniformBlockEXT		= VK_DESCRIPTOR_TYPE_INLINE_UNIFORM_BLOCK_EXT,
+		eAccelerationStructureNV	= VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_NV
+	};
+
+	/*********************************************************************
+	*************************    ImageLayout    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief
+	 */
+	enum class ImageLayout
+	{
+		eGeneral									= VK_IMAGE_LAYOUT_GENERAL,
+		eUndefined									= VK_IMAGE_LAYOUT_UNDEFINED,
+		ePreinitialized								= VK_IMAGE_LAYOUT_PREINITIALIZED,
+		eTransferSrcOptimal							= VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		eTransferDstOptimal							= VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		eShaderReadOnlyOptimal						= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+		eColorAttachmentOptimal						= VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+		eDepthStencilReadOnlyOptimal				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL,
+		eDepthStencilAttachmentOptimal				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+		eDepthReadOnlyStencilAttachmentOptimal		= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL,
+		eDepthAttachmentStencilReadOnlyOptimal		= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL,
+		eDepthAttachmentStencilReadOnlyOptimalKHR	= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL_KHR,
+		eDepthReadOnlyStencilAttachmentOptimalKHR	= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL_KHR,
+		eFragmentDensityMapOptimalEXT				= VK_IMAGE_LAYOUT_FRAGMENT_DENSITY_MAP_OPTIMAL_EXT,
+		eShadingRateOptimalNV						= VK_IMAGE_LAYOUT_SHADING_RATE_OPTIMAL_NV,
+		eSharedPresentKHR							= VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR,
+		ePresentSrcKHR								= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+	};
+
+	/*********************************************************************
 	******************    DescriptorSetLayoutBinding    ******************
 	*********************************************************************/
 
@@ -21,7 +73,7 @@ namespace Vk
 	struct LayoutBinding
 	{
 		VkShaderStageFlags		stageFlags			= VK_SHADER_STAGE_ALL_GRAPHICS;
-		VkDescriptorType		descriptorType		= VK_DESCRIPTOR_TYPE_SAMPLER;
+		DescriptorType			descriptorType		= DescriptorType::eSampler;
 		uint32_t				descriptorCount		= 1;
 	};
 
@@ -41,7 +93,7 @@ namespace Vk
 		void PushConstantRange(VkShaderStageFlags eStageFlags, uint32_t OffsetBytes, uint32_t SizeBytes);
 
 		//!	@brief	Specify descriptor set layout binding.
-		void SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, VkDescriptorType eDescriptorType, uint32_t DescriptorCount);
+		void SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount);
 
 	public:
 
@@ -122,10 +174,10 @@ namespace Vk
 		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
 		//!	@brief	Update the content of descriptor set.
-		VkBool32 Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorImageInfo & ImageInfo);
+		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
 
 		//!	@brief	Update the contents of descriptor set.
-		VkBool32 Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorBufferInfo & BufferInfo);
+		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 	private:
 

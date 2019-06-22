@@ -8,7 +8,7 @@ using namespace Vk;
 /*************************************************************************
 ************************    PipelineLayoutInfo    ************************
 *************************************************************************/
-void PipelineLayoutInfo::SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, VkDescriptorType eDescriptorType, uint32_t DescriptorCount)
+void PipelineLayoutInfo::SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount)
 {
 	LayoutBinding					NewBinding = {};
 	NewBinding.descriptorType		= eDescriptorType;
@@ -40,9 +40,9 @@ PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout, VkDescriptorSet
 
 	for (auto layoutBinding : m_PipelineLayoutInfo.layoutBindings)
 	{
-		VkDescriptorPoolSize				DescriptorPoolSize = {};
-		DescriptorPoolSize.type				= layoutBinding.second.descriptorType;
-		DescriptorPoolSize.descriptorCount	= layoutBinding.second.descriptorCount;
+		VkDescriptorPoolSize					DescriptorPoolSize = {};
+		DescriptorPoolSize.type					= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
+		DescriptorPoolSize.descriptorCount		= layoutBinding.second.descriptorCount;
 
 		m_DescriptorPoolSizes.push_back(DescriptorPoolSize);
 	}
@@ -59,7 +59,7 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 	{
 		VkDescriptorSetLayoutBinding					DescriptorSetLayoutBinding = {};
 		DescriptorSetLayoutBinding.binding				= layoutBinding.first;
-		DescriptorSetLayoutBinding.descriptorType		= layoutBinding.second.descriptorType;
+		DescriptorSetLayoutBinding.descriptorType		= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
 		DescriptorSetLayoutBinding.descriptorCount		= layoutBinding.second.descriptorCount;
 		DescriptorSetLayoutBinding.stageFlags			= layoutBinding.second.stageFlags;
 		DescriptorSetLayoutBinding.pImmutableSamplers	= nullptr;
@@ -151,22 +151,27 @@ DescriptorSet::DescriptorSet(VkDescriptorSet hDescriptorSet, VkDescriptorPool hD
 }
 
 
-VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorImageInfo & ImageInfo)
+VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
 {
 	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
 
-	if (EstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
+	if (DstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
 
 	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
+
+	VkDescriptorImageInfo			ImageInfo = {};
+	ImageInfo.sampler				= hSampler;
+	ImageInfo.imageView				= hImageView;
+	ImageInfo.imageLayout			= static_cast<VkImageLayout>(eImageLayout);
 
 	VkWriteDescriptorSet			WriteInfo = {};
 	WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 	WriteInfo.pNext					= nullptr;
 	WriteInfo.dstSet				= m_hDescriptorSet;
 	WriteInfo.dstBinding			= DstBinding;
-	WriteInfo.dstArrayElement		= EstArrayElement;
+	WriteInfo.dstArrayElement		= DstArrayElement;
 	WriteInfo.descriptorCount		= 1;
-	WriteInfo.descriptorType		= m_LayoutBindings[DstBinding].descriptorType;
+	WriteInfo.descriptorType		= static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
 	WriteInfo.pImageInfo			= &ImageInfo;
 	WriteInfo.pBufferInfo			= nullptr;
 	WriteInfo.pTexelBufferView		= nullptr;
@@ -177,22 +182,27 @@ VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t EstArrayElement, con
 }
 
 
-VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t EstArrayElement, const VkDescriptorBufferInfo & BufferInfo)
+VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 {
 	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
 
-	if (EstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
+	if (DstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
 
 	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
+
+	VkDescriptorBufferInfo			BufferInfo = {};
+	BufferInfo.buffer				= hBuffer;
+	BufferInfo.offset				= OffsetBytes;
+	BufferInfo.range				= SizeBytes;
 
 	VkWriteDescriptorSet			WriteInfo = {};
 	WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 	WriteInfo.pNext					= nullptr;
 	WriteInfo.dstSet				= m_hDescriptorSet;
 	WriteInfo.dstBinding			= DstBinding;
-	WriteInfo.dstArrayElement		= EstArrayElement;
+	WriteInfo.dstArrayElement		= DstArrayElement;
 	WriteInfo.descriptorCount		= 1;
-	WriteInfo.descriptorType		= m_LayoutBindings[DstBinding].descriptorType;
+	WriteInfo.descriptorType		= static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
 	WriteInfo.pImageInfo			= nullptr;
 	WriteInfo.pBufferInfo			= &BufferInfo;
 	WriteInfo.pTexelBufferView		= nullptr;

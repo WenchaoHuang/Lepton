@@ -8,46 +8,116 @@
 namespace Vk
 {
 	/*********************************************************************
+	****************************    Filter    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify filters used for texture lookups.
+	 */
+	enum class Filter
+	{
+		eLinear			= VK_FILTER_LINEAR,
+		eNearest		= VK_FILTER_NEAREST,
+	};
+
+	/*********************************************************************
+	**************************    MipmapMode    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify mipmap mode used for texture lookups.
+	 */
+	enum class MipmapMode
+	{
+		eLinear			= VK_SAMPLER_MIPMAP_MODE_LINEAR,
+		eNearest		= VK_SAMPLER_MIPMAP_MODE_NEAREST
+	};
+
+	/*********************************************************************
+	*************************    AddressMode    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify behavior of sampling with texture coordinates outside an image.
+	 */
+	enum class AddressMode
+	{
+		eRepeat					= VK_SAMPLER_ADDRESS_MODE_REPEAT,
+		eClampToEdge			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
+		eClampToBorder			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER,
+		eMirroredRepeat			= VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT,
+		eMirrorClampToEdge		= VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
+	};
+
+	/*********************************************************************
+	**************************    CompareOp    ***************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Stencil comparison function.
+	 */
+	enum class CompareOp
+	{
+		eLess				= VK_COMPARE_OP_LESS,
+		eEqual				= VK_COMPARE_OP_EQUAL,
+		eNever				= VK_COMPARE_OP_NEVER,
+		eAlways				= VK_COMPARE_OP_ALWAYS,
+		eGreater			= VK_COMPARE_OP_GREATER,
+		eNotEqual			= VK_COMPARE_OP_NOT_EQUAL,
+		eLessOrEqual		= VK_COMPARE_OP_LESS_OR_EQUAL,
+		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL
+	};
+
+	/*********************************************************************
+	*************************    BorderColor    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify border color used for texture lookups.
+	 */
+	enum class BorderColor
+	{
+		eIntOpaqueWhite				= VK_BORDER_COLOR_INT_OPAQUE_WHITE,
+		eIntOpaqueBlack				= VK_BORDER_COLOR_INT_OPAQUE_BLACK,
+		eFloatOpaqueWhite			= VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE,
+		eFloatOpaqueBlack			= VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK,
+		eIntTransparentBlack		= VK_BORDER_COLOR_INT_TRANSPARENT_BLACK,
+		eFloatTransparentBlack		= VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK
+	};
+
+	/*********************************************************************
 	*************************    SamplerInfo    **************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Wrapper of VkSamplerCreateInfo object.
+	 *	@brief	Sampler information.
 	 */
-	class SamplerInfo
+	struct SamplerInfo
 	{
-
-	private:
-
-		VkStructureType				sType						= VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-		const void *				pNext						= nullptr;
-		VkSamplerCreateFlags		flags						= 0;
-
-	public:
-
-		VkFilter					magFilter					= VK_FILTER_LINEAR;
-		VkFilter					minFilter					= VK_FILTER_LINEAR;
-		VkSamplerMipmapMode			mipmapMode					= VK_SAMPLER_MIPMAP_MODE_NEAREST;
-		VkSamplerAddressMode		addressModeU				= VK_SAMPLER_ADDRESS_MODE_REPEAT;
-		VkSamplerAddressMode		addressModeV				= VK_SAMPLER_ADDRESS_MODE_REPEAT;
-		VkSamplerAddressMode		addressModeW				= VK_SAMPLER_ADDRESS_MODE_REPEAT;
-		float						mipLodBias					= 0.0f;
-		VkBool32					anisotropyEnable			= VK_FALSE;
-		float						maxAnisotropy				= 1.0f;
-		VkBool32					compareEnable				= VK_FALSE;
-		VkCompareOp					compareOp					= VK_COMPARE_OP_ALWAYS;
-		float						minLod						= 0.0f;
-		float						maxLod						= 0.0f;
-		VkBorderColor				borderColor					= VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
-		VkBool32					unnormalizedCoordinates		= VK_FALSE;
+		Filter				magFilter					= Filter::eLinear;
+		Filter				minFilter					= Filter::eLinear;
+		CompareOp			compareOp					= CompareOp::eAlways;
+		MipmapMode			mipmapMode					= MipmapMode::eNearest;
+		AddressMode			addressModeU				= AddressMode::eRepeat;
+		AddressMode			addressModeV				= AddressMode::eRepeat;
+		AddressMode			addressModeW				= AddressMode::eRepeat;
+		BorderColor			borderColor					= BorderColor::eFloatTransparentBlack;
+		VkBool32			unnormalizedCoordinates		= VK_FALSE;
+		VkBool32			anisotropyEnable			= VK_FALSE;
+		VkBool32			compareEnable				= VK_FALSE;
+		float				maxAnisotropy				= 1.0f;
+		float				mipLodBias					= 0.0f;
+		float				minLod						= 0.0f;
+		float				maxLod						= 0.0f;
 	};
-
-	static_assert(sizeof(SamplerInfo) == sizeof(VkSamplerCreateInfo), "struct and wrapper have different size!");
 
 	/*********************************************************************
 	***************************    Sampler    ****************************
 	*********************************************************************/
 
+	/**
+	 *	@brief	Vulkan sampler object.
+	 */
 	class Sampler : private Resource
 	{
 
@@ -73,4 +143,7 @@ namespace Vk
 
 		SamplerInfo			m_CreateInfo;
 	};
+
+
+
 }

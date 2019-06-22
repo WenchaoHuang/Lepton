@@ -91,24 +91,24 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 
 template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask)
 {
-	if (m_hImage == VK_NULL_HANDLE)				return VK_INCOMPLETE;
+	if (m_hImage == VK_NULL_HANDLE)					return VK_INCOMPLETE;
 
-	VkImageViewCreateInfo						CreateInfo = {};
-	CreateInfo.sType							= VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	CreateInfo.pNext							= nullptr;
-	CreateInfo.flags							= 0;
-	CreateInfo.image							= m_hImage;
-	CreateInfo.viewType							= eViewType;
-	CreateInfo.format							= m_eFormat;
-	CreateInfo.components.r						= VK_COMPONENT_SWIZZLE_R;
-	CreateInfo.components.g						= VK_COMPONENT_SWIZZLE_G;
-	CreateInfo.components.b						= VK_COMPONENT_SWIZZLE_B;
-	CreateInfo.components.a						= VK_COMPONENT_SWIZZLE_A;
-	CreateInfo.subresourceRange.baseArrayLayer	= 0;
-	CreateInfo.subresourceRange.baseMipLevel	= 0;
-	CreateInfo.subresourceRange.aspectMask		= eAspectMask;
-	CreateInfo.subresourceRange.layerCount		= m_ArrayLayers;
-	CreateInfo.subresourceRange.levelCount		= m_MipLevels;
+	VkImageViewCreateInfo							CreateInfo = {};
+	CreateInfo.sType								= VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	CreateInfo.pNext								= nullptr;
+	CreateInfo.flags								= 0;
+	CreateInfo.image								= m_hImage;
+	CreateInfo.viewType								= eViewType;
+	CreateInfo.format								= m_eFormat;
+	CreateInfo.components.r							= VK_COMPONENT_SWIZZLE_R;
+	CreateInfo.components.g							= VK_COMPONENT_SWIZZLE_G;
+	CreateInfo.components.b							= VK_COMPONENT_SWIZZLE_B;
+	CreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
+	CreateInfo.subresourceRange.baseArrayLayer		= 0;
+	CreateInfo.subresourceRange.baseMipLevel		= 0;
+	CreateInfo.subresourceRange.aspectMask			= eAspectMask;
+	CreateInfo.subresourceRange.layerCount			= m_ArrayLayers;
+	CreateInfo.subresourceRange.levelCount			= m_MipLevels;
 
 	VkImageView hImageView = VK_NULL_HANDLE;
 

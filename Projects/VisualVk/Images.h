@@ -8,15 +8,34 @@
 namespace Vk
 {
 	/*********************************************************************
+	**********************    ImageUsageFlagBits    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	
+	 */
+	enum class ImageUsageFlagBits
+	{
+		eSampled					= VK_IMAGE_USAGE_SAMPLED_BIT,
+		eStorage					= VK_IMAGE_USAGE_STORAGE_BIT,
+		eTransferSrc				= VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+		eTransferDst				= VK_IMAGE_USAGE_TRANSFER_DST_BIT,
+		eColorAttachment			= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+		eInputAttachment			= VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT,
+		eTransientAttachment		= VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT,
+		eDepthStencilAttachment		= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+		eFragmentDensityMapEXT		= VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT,
+		eShadingRateImageNV			= VK_IMAGE_USAGE_SHADING_RATE_IMAGE_BIT_NV
+	};
+
+	/*********************************************************************
 	**************************    BaseImage    ***************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Template for Vulkan image object.
+	 *	@brief	Template for Vulkan image objects.
 	 */
-	template<VkImageType eImageType, VkImageViewType eViewType>
-
-	class BaseImage : private Resource
+	template<VkImageType eImageType, VkImageViewType eViewType> class BaseImage : private Resource
 	{
 
 	protected:
@@ -138,41 +157,41 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels, VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
+		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, Height, 1 }, MipLevels, 1, eSamples, eUsage);
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 1, eSamples, eUsage);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(eAspectMask) : eResult;
 		}
 
 		//!	@brief	Create a new color attachment object.
-		VkResult CreateColorAttachment(VkFormat eFormat, uint32_t Width, uint32_t Height, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		VkResult CreateColorAttachment(VkFormat eFormat, VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, Height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT);
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(VK_IMAGE_ASPECT_COLOR_BIT) : eResult;
 		}
 
 		//!	@brief	Create a new 16-bit depth attachment object.
-		VkResult CreateDepthAttachment16(uint32_t Width, uint32_t Height, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		VkResult CreateDepthAttachment16(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D16_UNORM, { Width, Height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+			VkResult eResult = BaseImage::Create(VK_FORMAT_D16_UNORM, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(VK_IMAGE_ASPECT_DEPTH_BIT) : eResult;
 		}
 
 		//!	@brief	Create a new 32-bit depth attachment object.
-		VkResult CreateDepthAttachment32(uint32_t Width, uint32_t Height, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		VkResult CreateDepthAttachment32(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D32_SFLOAT, { Width, Height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+			VkResult eResult = BaseImage::Create(VK_FORMAT_D32_SFLOAT, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(VK_IMAGE_ASPECT_DEPTH_BIT) : eResult;
 		}
 
 		//!	@brief	Create a new depth-stencil attachment object.
-		VkResult CreateDepthStencilAttachment(uint32_t Width, uint32_t Height, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		VkResult CreateDepthStencilAttachment(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D24_UNORM_S8_UINT, { Width, Height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+			VkResult eResult = BaseImage::Create(VK_FORMAT_D24_UNORM_S8_UINT, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT) : eResult;
 		}
@@ -191,9 +210,9 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels, uint32_t ArrayLayers, VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
+		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, VkSampleCountFlagBits eSamples, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, Height, 1 }, MipLevels, ArrayLayers, eSamples, eUsage);
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, ArrayLayers, eSamples, eUsage);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(eAspectMask) : eResult;
 		}
@@ -212,9 +231,30 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube object.
-		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t MipLevels, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
+		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, Height, 1 }, MipLevels, 6, VK_SAMPLE_COUNT_1_BIT, eUsage, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6, VK_SAMPLE_COUNT_1_BIT, eUsage, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+
+			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(eAspectMask) : eResult;
+		}
+	};
+
+	/*********************************************************************
+	************************    ImageCubeArray    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Vulkan image cube array object.
+	 */
+	class ImageCubeArray : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>
+	{
+
+	public:
+
+		//!	@brief	Create a new image cube array object.
+		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
+		{
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6 * ArrayLayers, VK_SAMPLE_COUNT_1_BIT, eUsage, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(eAspectMask) : eResult;
 		}
@@ -233,9 +273,9 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 3D object.
-		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t Height, uint32_t Depth, uint32_t MipLevels, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
+		VkResult Create(VkFormat eFormat, VkExtent3D Extent3D, uint32_t MipLevels, VkImageUsageFlags eUsage, VkImageAspectFlags eAspectMask)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, Height, Depth }, MipLevels, 1, VK_SAMPLE_COUNT_1_BIT, eUsage);
+			VkResult eResult = BaseImage::Create(eFormat, Extent3D, MipLevels, 1, VK_SAMPLE_COUNT_1_BIT, eUsage);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(eAspectMask) : eResult;
 		}
