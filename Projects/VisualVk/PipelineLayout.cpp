@@ -6,6 +6,31 @@
 using namespace Vk;
 
 /*************************************************************************
+************************    PipelineLayoutInfo    ************************
+*************************************************************************/
+void PipelineLayoutInfo::SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount)
+{
+	LayoutBinding					NewBinding = {};
+	NewBinding.descriptorType		= eDescriptorType;
+	NewBinding.descriptorCount		= DescriptorCount;
+	NewBinding.stageFlags			= eStageFlags;
+
+	layoutBindings[Binding] = NewBinding;
+}
+
+
+void PipelineLayoutInfo::PushConstantRange(VkShaderStageFlags eStageFlags, uint32_t OffsetBytes, uint32_t SizeBytes)
+{
+	VkPushConstantRange		NewRange = {};
+	NewRange.stageFlags		= eStageFlags;
+	NewRange.offset			= OffsetBytes;
+	NewRange.size			= SizeBytes;
+
+	constantRanges.push_back(NewRange);
+}
+
+
+/*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
 PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout, VkDescriptorSetLayout hDescriptorSetLayout, const PipelineLayoutInfo & LayoutInfo)
@@ -126,37 +151,6 @@ DescriptorSet::DescriptorSet(VkDescriptorSet hDescriptorSet, VkDescriptorPool hD
 }
 
 
-VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
-{
-	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
-
-	if (DstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
-
-	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
-
-	VkDescriptorBufferInfo			BufferInfo = {};
-	BufferInfo.buffer = hBuffer;
-	BufferInfo.offset = OffsetBytes;
-	BufferInfo.range = SizeBytes;
-
-	VkWriteDescriptorSet			WriteInfo = {};
-	WriteInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	WriteInfo.pNext = nullptr;
-	WriteInfo.dstSet = m_hDescriptorSet;
-	WriteInfo.dstBinding = DstBinding;
-	WriteInfo.dstArrayElement = DstArrayElement;
-	WriteInfo.descriptorCount = 1;
-	WriteInfo.descriptorType = static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
-	WriteInfo.pImageInfo = nullptr;
-	WriteInfo.pBufferInfo = &BufferInfo;
-	WriteInfo.pTexelBufferView = nullptr;
-
-	m_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
-
-	return VK_TRUE;
-}
-
-
 VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
 {
 	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
@@ -180,6 +174,37 @@ VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkS
 	WriteInfo.descriptorType		= static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
 	WriteInfo.pImageInfo			= &ImageInfo;
 	WriteInfo.pBufferInfo			= nullptr;
+	WriteInfo.pTexelBufferView		= nullptr;
+
+	m_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
+
+	return VK_TRUE;
+}
+
+
+VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+{
+	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
+
+	if (DstArrayElement >= m_LayoutBindings[DstBinding].descriptorCount)		return VK_FALSE;
+
+	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
+
+	VkDescriptorBufferInfo			BufferInfo = {};
+	BufferInfo.buffer				= hBuffer;
+	BufferInfo.offset				= OffsetBytes;
+	BufferInfo.range				= SizeBytes;
+
+	VkWriteDescriptorSet			WriteInfo = {};
+	WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	WriteInfo.pNext					= nullptr;
+	WriteInfo.dstSet				= m_hDescriptorSet;
+	WriteInfo.dstBinding			= DstBinding;
+	WriteInfo.dstArrayElement		= DstArrayElement;
+	WriteInfo.descriptorCount		= 1;
+	WriteInfo.descriptorType		= static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
+	WriteInfo.pImageInfo			= nullptr;
+	WriteInfo.pBufferInfo			= &BufferInfo;
 	WriteInfo.pTexelBufferView		= nullptr;
 
 	m_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);

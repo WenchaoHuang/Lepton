@@ -46,7 +46,7 @@ std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
 
 	if (Stream.is_open() && Stream.good())
 	{
-		BinaryCode.resize(static_cast<size_t>(Stream.tellg()));
+		BinaryCode.resize((size_t)Stream.tellg());
 
 		Stream.seekg(0);
 

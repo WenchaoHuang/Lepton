@@ -17,7 +17,7 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 ****************************    BaseImage    *****************************
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
-	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(VK_FORMAT_UNDEFINED), m_eSampleCount(SampleCount::e1)
+	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(VK_FORMAT_UNDEFINED), m_eSampleCount(VK_SAMPLE_COUNT_1_BIT)
 {
 	m_MipLevels = 0;		m_ArrayLayers = 0;		m_Extent3D = { 0, 0, 0 };
 }
@@ -28,8 +28,8 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 												  VkExtent3D Extent,
 												  uint32_t MipLevels,
 												  uint32_t ArrayLayers,
-												  SampleCount eSamples,
-												  Flags<ImageUsage> UsageFlags,
+												  VkSampleCountFlagBits eSamples,
+												  VkImageUsageFlags eUsage,
 												  VkImageCreateFlags eCreateFlags)
 {
 	VkImageCreateInfo					CreateInfo = {};
@@ -41,9 +41,9 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 	CreateInfo.extent					= Extent;
 	CreateInfo.mipLevels				= MipLevels;
 	CreateInfo.arrayLayers				= ArrayLayers;
-	CreateInfo.samples					= static_cast<VkSampleCountFlagBits>(eSamples);
+	CreateInfo.samples					= eSamples;
 	CreateInfo.tiling					= VK_IMAGE_TILING_OPTIMAL;
-	CreateInfo.usage					= UsageFlags;
+	CreateInfo.usage					= eUsage;
 	CreateInfo.sharingMode				= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount	= 0;
 	CreateInfo.pQueueFamilyIndices		= nullptr;
@@ -59,7 +59,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 
 		m_pDevice->GetImageMemoryRequirements(hNewImage, &Requirements);
 
-		eResult = m_DeviceMemory.Allocate(Requirements, MemoryProperty::eDeviceLocal);
+		eResult = m_DeviceMemory.Allocate(Requirements, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 		if (eResult != VK_SUCCESS)
 		{
@@ -89,7 +89,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<eImageType, eViewType>::CreateView(Flags<ImageAspect> AspectFlags)
+template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<eImageType, eViewType>::CreateView(VkImageAspectFlags eAspectMask)
 {
 	if (m_hImage == VK_NULL_HANDLE)					return VK_INCOMPLETE;
 
@@ -106,7 +106,7 @@ template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<e
 	CreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
 	CreateInfo.subresourceRange.baseArrayLayer		= 0;
 	CreateInfo.subresourceRange.baseMipLevel		= 0;
-	CreateInfo.subresourceRange.aspectMask			= AspectFlags;
+	CreateInfo.subresourceRange.aspectMask			= eAspectMask;
 	CreateInfo.subresourceRange.layerCount			= m_ArrayLayers;
 	CreateInfo.subresourceRange.levelCount			= m_MipLevels;
 
@@ -135,7 +135,7 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 
 		m_pDevice->DestroyImageView(m_hImageView);
 
-		m_eSampleCount = SampleCount::e1;
+		m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
 
 		m_eFormat = VK_FORMAT_UNDEFINED;
 

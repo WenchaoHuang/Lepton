@@ -4,19 +4,18 @@
 #pragma once
 
 #include <memory>
-#include "Flags.h"
 #include "Resource.h"
 
 namespace Vk
 {
 	/*********************************************************************
-	*************************    ShaderStage    **************************
+	*********************    ShaderStageFlagBits    **********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying a pipeline stage.
+	 *	@brief	
 	 */
-	enum class ShaderStage : VkFlags
+	enum class ShaderStageFlagBits
 	{
 		eAll						= VK_SHADER_STAGE_ALL,
 		eVertex						= VK_SHADER_STAGE_VERTEX_BIT,

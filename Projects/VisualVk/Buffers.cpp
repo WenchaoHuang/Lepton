@@ -39,7 +39,7 @@ VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 
 		m_pDevice->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
 
-		eResult = m_Memory.Allocate(Requirements, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
+		eResult = m_Memory.Allocate(Requirements, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
 		if (eResult != VK_SUCCESS)
 		{
@@ -167,7 +167,7 @@ VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 
 		m_pDevice->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
 
-		eResult = m_Memory.Allocate(Requirements, MemoryProperty::eDeviceLocal);
+		eResult = m_Memory.Allocate(Requirements, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 		if (eResult != VK_SUCCESS)
 		{

@@ -6,7 +6,6 @@
 #include <map>
 #include <memory>
 #include "Resource.h"
-#include "ShaderModule.h"
 
 namespace Vk
 {
@@ -17,7 +16,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specifies the type of a descriptor in a descriptor set.
+	 *	@brief	
 	 */
 	enum class DescriptorType
 	{
@@ -41,7 +40,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Layout of image and image subresources.
+	 *	@brief
 	 */
 	enum class ImageLayout
 	{
@@ -73,7 +72,7 @@ namespace Vk
 	 */
 	struct LayoutBinding
 	{
-		Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
+		VkShaderStageFlags		stageFlags			= VK_SHADER_STAGE_ALL_GRAPHICS;
 		DescriptorType			descriptorType		= DescriptorType::eSampler;
 		uint32_t				descriptorCount		= 1;
 	};
@@ -85,26 +84,18 @@ namespace Vk
 	/**
 	 *	@brief	Creating information of Vulkan pipeline layout object.
 	 */
-	class PipelineLayoutInfo
+	struct PipelineLayoutInfo
 	{
 
 	public:
 
-		friend class PipelineLayout;
-
 		//!	@brief	Specify push constant range.
-		void PushConstantRange(Flags<ShaderStage> StageFlags, uint32_t OffsetBytes, uint32_t SizeBytes)
-		{
-			constantRanges.push_back({ StageFlags, OffsetBytes, SizeBytes });
-		}
-		
-		//!	@brief	Specify descriptor set layout binding.
-		template<uint32_t Binding> void SetBinding(Flags<ShaderStage> StageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount)
-		{
-			layoutBindings[Binding] = { StageFlags, eDescriptorType, DescriptorCount };
-		}
+		void PushConstantRange(VkShaderStageFlags eStageFlags, uint32_t OffsetBytes, uint32_t SizeBytes);
 
-	private:
+		//!	@brief	Specify descriptor set layout binding.
+		void SetBinding(uint32_t Binding, VkShaderStageFlags eStageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount);
+
+	public:
 
 		std::vector<VkPushConstantRange>		constantRanges;
 
@@ -182,11 +173,11 @@ namespace Vk
 		//!	@brief	Return the VkDescriptorSet handle.
 		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
-		//!	@brief	Update the contents of descriptor set.
-		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
-
 		//!	@brief	Update the content of descriptor set.
 		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
+
+		//!	@brief	Update the contents of descriptor set.
+		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 	private:
 

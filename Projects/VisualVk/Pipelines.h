@@ -3,31 +3,13 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
-#include "Images.h"
 #include "Sampler.h"
+#include "Framebuffer.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
 
 namespace Vk
 {
-	class RenderPass;
-
-	/*********************************************************************
-	************************    ColorComponent    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask controlling which components are written to the framebuffer.
-	 */
-	enum class ColorComponent : VkFlags
-	{
-		eRed		= VK_COLOR_COMPONENT_R_BIT,
-		eBlue		= VK_COLOR_COMPONENT_B_BIT,
-		eGreen		= VK_COLOR_COMPONENT_G_BIT,
-		eAlpha		= VK_COLOR_COMPONENT_A_BIT
-	};
-
 	/*********************************************************************
 	**************************    FrontFace    ***************************
 	*********************************************************************/
@@ -46,7 +28,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask controlling triangle culling.
+	 *	@brief	
 	 */
 	enum class CullMode
 	{
@@ -72,25 +54,6 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	**************************    StencilOp    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Stencil comparison function.
-	 */
-	enum class StencilOp
-	{
-		eKeep					= VK_STENCIL_OP_KEEP,
-		eZero					= VK_STENCIL_OP_ZERO,
-		eInvert					= VK_STENCIL_OP_INVERT,
-		eReplace				= VK_STENCIL_OP_REPLACE,
-		eIncrementAndWrap		= VK_STENCIL_OP_INCREMENT_AND_WRAP,
-		eDecrementAndWrap		= VK_STENCIL_OP_DECREMENT_AND_WRAP,
-		eIncrementAndClamp		= VK_STENCIL_OP_INCREMENT_AND_CLAMP,
-		eDecrementAndClamp		= VK_STENCIL_OP_DECREMENT_AND_CLAMP
-	};
-
-	/*********************************************************************
 	**********************    PrimitiveTopology    ***********************
 	*********************************************************************/
 
@@ -109,34 +72,7 @@ namespace Vk
 		eLineListWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_LIST_WITH_ADJACENCY,
 		eLineStripWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP_WITH_ADJACENCY,
 		eTriangleListWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST_WITH_ADJACENCY,
-		eTriangleStripWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_WITH_ADJACENCY
-	};
-
-	/*********************************************************************
-	***************************    LogicOp    ****************************
-	*********************************************************************/
-	
-	/**
-	 *	@brief	Framebuffer logical operations.
-	 */
-	enum class LogicOp
-	{
-		eOr					= VK_LOGIC_OP_OR,
-		eNor				= VK_LOGIC_OP_NOR,
-		eXor				= VK_LOGIC_OP_XOR,
-		eSet				= VK_LOGIC_OP_SET,
-		eAnd				= VK_LOGIC_OP_AND,
-		eNand				= VK_LOGIC_OP_NAND,
-		eCopy				= VK_LOGIC_OP_COPY,
-		eNoOp				= VK_LOGIC_OP_NO_OP,
-		eClear				= VK_LOGIC_OP_CLEAR,
-		eInvert				= VK_LOGIC_OP_INVERT,
-		eOrReverse			= VK_LOGIC_OP_OR_REVERSE,
-		eEquivalent			= VK_LOGIC_OP_EQUIVALENT,
-		eOrInverted			= VK_LOGIC_OP_OR_INVERTED,
-		eAndReverse			= VK_LOGIC_OP_AND_REVERSE,
-		eAndInverted		= VK_LOGIC_OP_AND_INVERTED,
-		eCopyInverted		= VK_LOGIC_OP_COPY_INVERTED
+		eTriangleStripWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_WITH_ADJACENCY,
 	};
 
 	/*********************************************************************
@@ -170,11 +106,100 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	***************************    BlendOp    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Framebuffer blending operations.
+	 */
+	enum class BlendOp
+	{
+		eMin					= VK_BLEND_OP_MIN,
+		eMax					= VK_BLEND_OP_MAX,
+		eAdd					= VK_BLEND_OP_ADD,
+		eSubtract				= VK_BLEND_OP_SUBTRACT,
+		eReverseSubtract		= VK_BLEND_OP_REVERSE_SUBTRACT,
+		eZeroEXT				= VK_BLEND_OP_ZERO_EXT,
+		eSrcEXT					= VK_BLEND_OP_SRC_EXT,
+		eDstEXT					= VK_BLEND_OP_DST_EXT,
+		eSrcOverEXT				= VK_BLEND_OP_SRC_OVER_EXT,
+		eDstOverEXT				= VK_BLEND_OP_DST_OVER_EXT,
+		eSrcInEXT				= VK_BLEND_OP_SRC_IN_EXT,
+		eDstInEXT				= VK_BLEND_OP_DST_IN_EXT,
+		eSrcOutEXT				= VK_BLEND_OP_SRC_OUT_EXT,
+		eDstOutEXT				= VK_BLEND_OP_DST_OUT_EXT,
+		eSrcAtopEXT				= VK_BLEND_OP_SRC_ATOP_EXT,
+		eDstAtopEXT				= VK_BLEND_OP_DST_ATOP_EXT,
+		eXorEXT					= VK_BLEND_OP_XOR_EXT,
+		eMultiplyEXT			= VK_BLEND_OP_MULTIPLY_EXT,
+		eScreenEXT				= VK_BLEND_OP_SCREEN_EXT,
+		eOverlayEXT				= VK_BLEND_OP_OVERLAY_EXT,
+		eDarkenEXT				= VK_BLEND_OP_DARKEN_EXT,
+		eLightenEXT				= VK_BLEND_OP_LIGHTEN_EXT,
+		eColordodgeEXT			= VK_BLEND_OP_COLORDODGE_EXT,
+		eColorburnEXT			= VK_BLEND_OP_COLORBURN_EXT,
+		eHardlightEXT			= VK_BLEND_OP_HARDLIGHT_EXT,
+		eSoftlightEXT			= VK_BLEND_OP_SOFTLIGHT_EXT,
+		eDifferenceEXT			= VK_BLEND_OP_DIFFERENCE_EXT,
+		eExclusionEXT			= VK_BLEND_OP_EXCLUSION_EXT,
+		eInvertEXT				= VK_BLEND_OP_INVERT_EXT,
+		eInvertRgbEXT			= VK_BLEND_OP_INVERT_RGB_EXT,
+		eLineardodgeEXT			= VK_BLEND_OP_LINEARDODGE_EXT,
+		eLinearburnEXT			= VK_BLEND_OP_LINEARBURN_EXT,
+		eVividlightEXT			= VK_BLEND_OP_VIVIDLIGHT_EXT,
+		eLinearlightEXT			= VK_BLEND_OP_LINEARLIGHT_EXT,
+		ePinlightEXT			= VK_BLEND_OP_PINLIGHT_EXT,
+		eHardmixEXT				= VK_BLEND_OP_HARDMIX_EXT,
+		eHslHueEXT				= VK_BLEND_OP_HSL_HUE_EXT,
+		eHslSaturationEXT		= VK_BLEND_OP_HSL_SATURATION_EXT,
+		eHslColorEXT			= VK_BLEND_OP_HSL_COLOR_EXT,
+		eHslLuminosityEXT		= VK_BLEND_OP_HSL_LUMINOSITY_EXT,
+		ePlusEXT				= VK_BLEND_OP_PLUS_EXT,
+		ePlusClampedEXT			= VK_BLEND_OP_PLUS_CLAMPED_EXT,
+		ePlusClampedAlphaEXT	= VK_BLEND_OP_PLUS_CLAMPED_ALPHA_EXT,
+		ePlusDarkerEXT			= VK_BLEND_OP_PLUS_DARKER_EXT,
+		eMinusEXT				= VK_BLEND_OP_MINUS_EXT,
+		eMinusClampedEXT		= VK_BLEND_OP_MINUS_CLAMPED_EXT,
+		eContrastEXT			= VK_BLEND_OP_CONTRAST_EXT,
+		eInvertOvgEXT			= VK_BLEND_OP_INVERT_OVG_EXT,
+		eRedEXT					= VK_BLEND_OP_RED_EXT,
+		eGreenEXT				= VK_BLEND_OP_GREEN_EXT,
+		eBlueEXT				= VK_BLEND_OP_BLUE_EXT
+	};
+
+	/*********************************************************************
+	***************************    LogicOp    ****************************
+	*********************************************************************/
+	
+	/**
+	 *	@brief	Framebuffer logical operations.
+	 */
+	enum class LogicOp
+	{
+		eOr					= VK_LOGIC_OP_OR,
+		eNor				= VK_LOGIC_OP_NOR,
+		eXor				= VK_LOGIC_OP_XOR,
+		eSet				= VK_LOGIC_OP_SET,
+		eAnd				= VK_LOGIC_OP_AND,
+		eNand				= VK_LOGIC_OP_NAND,
+		eCopy				= VK_LOGIC_OP_COPY,
+		eNoOp				= VK_LOGIC_OP_NO_OP,
+		eClear				= VK_LOGIC_OP_CLEAR,
+		eInvert				= VK_LOGIC_OP_INVERT,
+		eOrReverse			= VK_LOGIC_OP_OR_REVERSE,
+		eEquivalent			= VK_LOGIC_OP_EQUIVALENT,
+		eOrInverted			= VK_LOGIC_OP_OR_INVERTED,
+		eAndReverse			= VK_LOGIC_OP_AND_REVERSE,
+		eAndInverted		= VK_LOGIC_OP_AND_INVERTED,
+		eCopyInverted		= VK_LOGIC_OP_COPY_INVERTED
+	};
+
+	/*********************************************************************
 	*************************    DynamicState    *************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Indicate which dynamic state is taken from dynamic state commands.
+	 *	@brief	
 	 */
 	enum class DynamicState
 	{
@@ -189,72 +214,10 @@ namespace Vk
 		eStencilCompareMask				= VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
 		eViewportWScalingNV				= VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_NV,
 		eSampleLocationsEXT				= VK_DYNAMIC_STATE_SAMPLE_LOCATIONS_EXT,
-		eExclusiveScissorNV				= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV,
 		eDiscardRectangleEXT			= VK_DYNAMIC_STATE_DISCARD_RECTANGLE_EXT,
+		eExclusiveScissorNV				= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV,
 		eViewportCoarseSampleOrderNV	= VK_DYNAMIC_STATE_VIEWPORT_COARSE_SAMPLE_ORDER_NV,
 		eViewportShadingRatePaletteNV	= VK_DYNAMIC_STATE_VIEWPORT_SHADING_RATE_PALETTE_NV
-	};
-
-	/*********************************************************************
-	***************************    BlendOp    ****************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Framebuffer blending operations.
-	 */
-	enum class BlendOp
-	{
-		eMin					= VK_BLEND_OP_MIN,
-		eMax					= VK_BLEND_OP_MAX,
-		eAdd					= VK_BLEND_OP_ADD,
-		eSubtract				= VK_BLEND_OP_SUBTRACT,
-		eReverseSubtract		= VK_BLEND_OP_REVERSE_SUBTRACT,
-		eSrcEXT					= VK_BLEND_OP_SRC_EXT,
-		eDstEXT					= VK_BLEND_OP_DST_EXT,
-		eXorEXT					= VK_BLEND_OP_XOR_EXT,
-		eRedEXT					= VK_BLEND_OP_RED_EXT,
-		eZeroEXT				= VK_BLEND_OP_ZERO_EXT,
-		ePlusEXT				= VK_BLEND_OP_PLUS_EXT,
-		eBlueEXT				= VK_BLEND_OP_BLUE_EXT,
-		eGreenEXT				= VK_BLEND_OP_GREEN_EXT,
-		eMinusEXT				= VK_BLEND_OP_MINUS_EXT,
-		eSrcInEXT				= VK_BLEND_OP_SRC_IN_EXT,
-		eDstInEXT				= VK_BLEND_OP_DST_IN_EXT,
-		eInvertEXT				= VK_BLEND_OP_INVERT_EXT,
-		eScreenEXT				= VK_BLEND_OP_SCREEN_EXT,
-		eDarkenEXT				= VK_BLEND_OP_DARKEN_EXT,
-		eHardmixEXT				= VK_BLEND_OP_HARDMIX_EXT,
-		eLightenEXT				= VK_BLEND_OP_LIGHTEN_EXT,
-		eOverlayEXT				= VK_BLEND_OP_OVERLAY_EXT,
-		eSrcOutEXT				= VK_BLEND_OP_SRC_OUT_EXT,
-		eDstOutEXT				= VK_BLEND_OP_DST_OUT_EXT,
-		eHslHueEXT				= VK_BLEND_OP_HSL_HUE_EXT,
-		eDstOverEXT				= VK_BLEND_OP_DST_OVER_EXT,
-		eSrcOverEXT				= VK_BLEND_OP_SRC_OVER_EXT,
-		eSrcAtopEXT				= VK_BLEND_OP_SRC_ATOP_EXT,
-		eDstAtopEXT				= VK_BLEND_OP_DST_ATOP_EXT,
-		eMultiplyEXT			= VK_BLEND_OP_MULTIPLY_EXT,
-		ePinlightEXT			= VK_BLEND_OP_PINLIGHT_EXT,
-		eContrastEXT			= VK_BLEND_OP_CONTRAST_EXT,
-		eColorburnEXT			= VK_BLEND_OP_COLORBURN_EXT,
-		eHardlightEXT			= VK_BLEND_OP_HARDLIGHT_EXT,
-		eSoftlightEXT			= VK_BLEND_OP_SOFTLIGHT_EXT,
-		eExclusionEXT			= VK_BLEND_OP_EXCLUSION_EXT,
-		eHslColorEXT			= VK_BLEND_OP_HSL_COLOR_EXT,
-		eDifferenceEXT			= VK_BLEND_OP_DIFFERENCE_EXT,
-		eColordodgeEXT			= VK_BLEND_OP_COLORDODGE_EXT,
-		eInvertRgbEXT			= VK_BLEND_OP_INVERT_RGB_EXT,
-		eLinearburnEXT			= VK_BLEND_OP_LINEARBURN_EXT,
-		eVividlightEXT			= VK_BLEND_OP_VIVIDLIGHT_EXT,
-		eInvertOvgEXT			= VK_BLEND_OP_INVERT_OVG_EXT,
-		eLineardodgeEXT			= VK_BLEND_OP_LINEARDODGE_EXT,
-		eLinearlightEXT			= VK_BLEND_OP_LINEARLIGHT_EXT,
-		ePlusDarkerEXT			= VK_BLEND_OP_PLUS_DARKER_EXT,
-		ePlusClampedEXT			= VK_BLEND_OP_PLUS_CLAMPED_EXT,
-		eMinusClampedEXT		= VK_BLEND_OP_MINUS_CLAMPED_EXT,
-		eHslSaturationEXT		= VK_BLEND_OP_HSL_SATURATION_EXT,
-		eHslLuminosityEXT		= VK_BLEND_OP_HSL_LUMINOSITY_EXT,
-		ePlusClampedAlphaEXT	= VK_BLEND_OP_PLUS_CLAMPED_ALPHA_EXT
 	};
 
 	/*********************************************************************
@@ -269,18 +232,18 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Constructor.
+		//!	@brief	Construction.
 		GraphicsPipelineInfo();
 
 	private:
 
-		//!	@brief	Parameter of a newly created pipeline tessellation state.
+		//!	@brief	Tessellation state information.
 		using TessellationStateInfo = uint32_t;
 
-		//!	@brief	Parameter of a newly created pipeline input assembly state.
+		//!	@brief	Input assembly state information. 
 		using InputAssemblyStateInfo = PrimitiveTopology;
 
-		//!	@brief	Parameters of a newly created pipeline dynamic state.
+		//!	@brief	Dynamic states information.
 		using DynamicStateInfo = std::vector<DynamicState>;
 
 		/*****************************************************************
@@ -288,12 +251,12 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline viewport state.
+		 *	@brief	Viewport stage information.
 		 */
 		struct ViewportStateInfo
 		{
-			std::vector<VkRect2D>			scissors;
-			std::vector<VkViewport>			viewports;
+			std::vector<VkRect2D>				scissors;
+			std::vector<VkViewport>				viewports;
 		};
 
 		/*****************************************************************
@@ -301,7 +264,7 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline shader stages.
+		 *	@brief	Shader stages information.
 		 */
 		struct ShaderStagesInfo
 		{
@@ -317,7 +280,7 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline rasterization state.
+		 *	@brief	Rasterization state information.
 		 */
 		struct RasterizationStateInfo
 		{
@@ -334,29 +297,11 @@ namespace Vk
 		};
 
 		/*****************************************************************
-		**********************    StencilOpState    **********************
-		*****************************************************************/
-
-		/**
-		 *	@brief	Structure specifying stencil operation state.
-		 */
-		struct StencilOpState
-		{
-			StencilOp		failOp			= StencilOp::eKeep;
-			StencilOp		passOp			= StencilOp::eKeep;
-			StencilOp		depthFailOp		= StencilOp::eKeep;
-			CompareOp		compareOp		= CompareOp::eNever;
-			uint32_t		compareMask		= 0;
-			uint32_t		writeMask		= 0;
-			uint32_t		reference		= 0;
-		};
-
-		/*****************************************************************
 		******************    DepthStencilStateInfo    *******************
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline depth stencil state.
+		 *	@brief	DepthStencil state information
 		 */
 		struct DepthStencilStateInfo
 		{
@@ -365,8 +310,8 @@ namespace Vk
 			VkBool32				depthBoundsTestEnable		= VK_FALSE;
 			VkBool32				stencilTestEnable			= VK_FALSE;
 			CompareOp				depthCompareOp				= CompareOp::eLessOrEqual;
-			StencilOpState			front						= {};
-			StencilOpState			back						= {};
+			VkStencilOpState		front						= {};
+			VkStencilOpState		back						= {};
 			float					minDepthBounds				= 0.0f;
 			float					maxDepthBounds				= 0.0f;
 		};
@@ -376,15 +321,15 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline multisample state.
+		 *	@brief	Multisample state information.
 		 */
 		struct MultisampleStateInfo
 		{
-			SampleCount			rasterizationSamples		= SampleCount::e1;
-			VkBool32			alphaToCoverageEnable		= VK_FALSE;
-			VkBool32			sampleShadingEnable			= VK_FALSE;
-			VkBool32			alphaToOneEnable			= VK_FALSE;
-			float				minSampleShading			= 0.0f;
+			VkSampleCountFlagBits		rasterizationSamples		= VK_SAMPLE_COUNT_1_BIT;
+			VkBool32					alphaToCoverageEnable		= VK_FALSE;
+			VkBool32					sampleShadingEnable			= VK_FALSE;
+			VkBool32					alphaToOneEnable			= VK_FALSE;
+			float						minSampleShading			= 0.0f;
 		};
 
 		/*****************************************************************
@@ -392,7 +337,7 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline vertex input state.
+		 *	@brief	VertexInput state information.
 		 */
 		struct VertexInputStateInfo
 		{
@@ -416,7 +361,7 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Structure specifying a pipeline color blend attachment state.
+		 *	@brief	Wrapper of VkPipelineColorBlendAttachmentState object.
 		 */
 		struct ColorBlendAttachmentState
 		{
@@ -427,7 +372,7 @@ namespace Vk
 			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
 			BlendFactor					stAlphaBlendFactor		= BlendFactor::eZero;
 			BlendOp						alphaBlendOp			= BlendOp::eAdd;
-			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eRed | ColorComponent::eGreen | ColorComponent::eBlue | ColorComponent::eAlpha;
+			VkColorComponentFlags		colorWriteMask			= VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 		};
 		
 		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "struct and wrapper have different size!");
@@ -436,9 +381,6 @@ namespace Vk
 		*******************    ColorBlendStateInfo    ********************
 		*****************************************************************/
 
-		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline color blend state.
-		 */
 		struct ColorBlendStateInfo
 		{
 			VkBool32									logicOpEnable			= VK_FALSE;
@@ -486,10 +428,8 @@ namespace Vk
 		//!	@brief	Convert to VkPipeline handle.
 		operator VkPipeline() const { return m_hPipeline; }
 
-		//!	@brief	Create a new graphics pipeline.
 		VkResult Create(const GraphicsPipelineInfo & CreateInfo);
 
-		//!	@brief	Destroy graphics pipeline.
 		void Release() noexcept;
 
 	private:

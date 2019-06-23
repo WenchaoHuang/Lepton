@@ -147,8 +147,5 @@
     <ClInclude Include="Resource.h">
       <Filter>1. Resources\0. Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Flags.h">
-      <Filter>0. Context</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 /*************************************************************************
 ************************    VisualVk_Pipelines    ************************
 *************************************************************************/
-#include "Framebuffer.h"
+#include <functional>
 #include "Pipelines.h"
 
 using namespace Vk;
@@ -181,7 +181,7 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 	MultisampleStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
 	MultisampleStateCreateInfo.pNext								= nullptr;
 	MultisampleStateCreateInfo.flags								= 0;
-	MultisampleStateCreateInfo.rasterizationSamples					= static_cast<VkSampleCountFlagBits>(CreateInfo.MultisampleState.rasterizationSamples);
+	MultisampleStateCreateInfo.rasterizationSamples					= CreateInfo.MultisampleState.rasterizationSamples;
 	MultisampleStateCreateInfo.sampleShadingEnable					= CreateInfo.MultisampleState.sampleShadingEnable;
 	MultisampleStateCreateInfo.minSampleShading						= CreateInfo.MultisampleState.minSampleShading;
 	MultisampleStateCreateInfo.pSampleMask							= nullptr;
@@ -197,20 +197,8 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 	DepthStencilStateCreateInfo.depthCompareOp						= static_cast<VkCompareOp>(CreateInfo.DepthStencilState.depthCompareOp);
 	DepthStencilStateCreateInfo.depthBoundsTestEnable				= CreateInfo.DepthStencilState.depthBoundsTestEnable;
 	DepthStencilStateCreateInfo.stencilTestEnable					= CreateInfo.DepthStencilState.stencilTestEnable;
-	DepthStencilStateCreateInfo.front.failOp						= static_cast<VkStencilOp>(CreateInfo.DepthStencilState.front.failOp);
-	DepthStencilStateCreateInfo.front.passOp						= static_cast<VkStencilOp>(CreateInfo.DepthStencilState.front.passOp);
-	DepthStencilStateCreateInfo.front.depthFailOp					= static_cast<VkStencilOp>(CreateInfo.DepthStencilState.front.depthFailOp);
-	DepthStencilStateCreateInfo.front.compareOp						= static_cast<VkCompareOp>(CreateInfo.DepthStencilState.front.compareOp);
-	DepthStencilStateCreateInfo.front.compareMask					= CreateInfo.DepthStencilState.front.compareMask;
-	DepthStencilStateCreateInfo.front.writeMask						= CreateInfo.DepthStencilState.front.writeMask;
-	DepthStencilStateCreateInfo.front.reference						= CreateInfo.DepthStencilState.front.reference;
-	DepthStencilStateCreateInfo.back.failOp							= static_cast<VkStencilOp>(CreateInfo.DepthStencilState.back.failOp);
-	DepthStencilStateCreateInfo.back.passOp							= static_cast<VkStencilOp>(CreateInfo.DepthStencilState.back.passOp);
-	DepthStencilStateCreateInfo.back.depthFailOp					= static_cast<VkStencilOp>(CreateInfo.DepthStencilState.back.depthFailOp);
-	DepthStencilStateCreateInfo.back.compareOp						= static_cast<VkCompareOp>(CreateInfo.DepthStencilState.back.compareOp);
-	DepthStencilStateCreateInfo.back.compareMask					= CreateInfo.DepthStencilState.back.compareMask;
-	DepthStencilStateCreateInfo.back.writeMask						= CreateInfo.DepthStencilState.back.writeMask;
-	DepthStencilStateCreateInfo.back.reference						= CreateInfo.DepthStencilState.back.reference;
+	DepthStencilStateCreateInfo.front								= CreateInfo.DepthStencilState.front;
+	DepthStencilStateCreateInfo.back								= CreateInfo.DepthStencilState.back;
 	DepthStencilStateCreateInfo.minDepthBounds						= CreateInfo.DepthStencilState.minDepthBounds;
 	DepthStencilStateCreateInfo.maxDepthBounds						= CreateInfo.DepthStencilState.maxDepthBounds;
 
