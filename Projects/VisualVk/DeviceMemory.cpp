@@ -1,6 +1,7 @@
 /*************************************************************************
 **********************    VisualVk_DeviceMemory    ***********************
 *************************************************************************/
+#include "PhysicalDevice.h"
 #include "DeviceMemory.h"
 
 using namespace Vk;
@@ -14,9 +15,9 @@ DeviceMemory::DeviceMemory() : m_Bytes(0), m_hMemory(VK_NULL_HANDLE)
 }
 
 
-VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, VkMemoryPropertyFlags ePropertyFlags)
+VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, Flags<MemoryProperty> PropertyFlags)
 {
-	uint32_t MemoryTypeIndex = m_pPhysDevice->GetMemoryTypeIndex(Requirements.memoryTypeBits, ePropertyFlags);
+	uint32_t MemoryTypeIndex = m_pPhysDevice->GetMemoryTypeIndex(Requirements.memoryTypeBits, PropertyFlags);
 
 	if (MemoryTypeIndex == VK_INVALID_INDEX)		return VK_ERROR_FORMAT_NOT_SUPPORTED;
 

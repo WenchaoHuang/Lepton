@@ -4,10 +4,14 @@
 #pragma once
 
 #include "LogicalDevice.h"
-#include "PhysicalDevice.h"
 
 namespace Vk
 {
+	class CommandPool;
+	class CommandQueue;
+	class CommandBuffer;
+	class PhysicalDevice;
+
 	/*********************************************************************
 	***************************    Resource    ***************************
 	*********************************************************************/

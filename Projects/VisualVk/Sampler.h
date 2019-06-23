@@ -143,7 +143,4 @@ namespace Vk
 
 		SamplerInfo			m_CreateInfo;
 	};
-
-
-
 }
