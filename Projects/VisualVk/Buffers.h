@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include "Resource.h"
 #include "DeviceMemory.h"
 
 namespace Vk
