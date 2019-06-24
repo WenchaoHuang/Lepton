@@ -1,154 +1,160 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="0. Context">
+    <Filter Include="1. Context">
       <UniqueIdentifier>{d0afaa23-2255-47d3-86e3-e15a77f0bce9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. Context\0. Instance">
+    <Filter Include="1. Context\0. Instance">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="0. Context\1. LogicalDevice">
+    <Filter Include="1. Context\1. LogicalDevice">
       <UniqueIdentifier>{62024ca4-2f98-411f-b6cf-0b4b886cc121}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. Context\2. PhysicalDevice">
+    <Filter Include="1. Context\2. PhysicalDevice">
       <UniqueIdentifier>{2f9d1a1c-0214-4931-87f7-6fbe6aef4cbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. Context\3. CommandBuffer">
+    <Filter Include="1. Context\3. CommandBuffer">
       <UniqueIdentifier>{21975e96-0c12-406e-be91-75fd8f0691ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources">
+    <Filter Include="2. Resources">
       <UniqueIdentifier>{c26a652c-6aa1-40cc-a967-552bef9f4a57}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\1. Memory">
+    <Filter Include="2. Resources\1. Memory">
       <UniqueIdentifier>{f8e3d7f4-da3f-4582-a3ce-5c1147ec9418}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\2. Signals">
+    <Filter Include="2. Resources\2. Signals">
       <UniqueIdentifier>{7765e599-96ba-4222-8f99-c7fafa597028}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\4. Images">
+    <Filter Include="2. Resources\4. Images">
       <UniqueIdentifier>{d97cc3bb-3b72-44ae-8387-cfd83ec20e1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\5. Sampler">
+    <Filter Include="2. Resources\5. Sampler">
       <UniqueIdentifier>{138df1b1-fedb-442a-92f9-4414d5716e9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\3. Buffers">
+    <Filter Include="2. Resources\3. Buffers">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\6. Pipelines">
+    <Filter Include="2. Resources\6. Pipelines">
       <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\7. Swapchain">
+    <Filter Include="2. Resources\7. Swapchain">
       <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\8. Framebuffer">
+    <Filter Include="2. Resources\8. Framebuffer">
       <UniqueIdentifier>{56b8a199-e8d0-40d9-bfe6-b5e03fe6eebf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\9. PipelineLayout">
+    <Filter Include="2. Resources\9. PipelineLayout">
       <UniqueIdentifier>{9905aed2-c2ce-4997-a80c-538ce9149818}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\10. ShaderModule">
+    <Filter Include="2. Resources\10. ShaderModule">
       <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Resources\0. Resource">
+    <Filter Include="2. Resources\0. Resource">
       <UniqueIdentifier>{c81ed798-3cbd-4d4b-9ed9-31a3d6340beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. Wrapper">
+      <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Instance.cpp">
-      <Filter>0. Context\0. Instance</Filter>
+      <Filter>1. Context\0. Instance</Filter>
     </ClCompile>
     <ClCompile Include="LogicalDevice.cpp">
-      <Filter>0. Context\1. LogicalDevice</Filter>
+      <Filter>1. Context\1. LogicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="PhysicalDevice.cpp">
-      <Filter>0. Context\2. PhysicalDevice</Filter>
+      <Filter>1. Context\2. PhysicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="CommandBuffer.cpp">
-      <Filter>0. Context\3. CommandBuffer</Filter>
+      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClCompile>
     <ClCompile Include="DeviceMemory.cpp">
-      <Filter>1. Resources\1. Memory</Filter>
+      <Filter>2. Resources\1. Memory</Filter>
     </ClCompile>
     <ClCompile Include="Signals.cpp">
-      <Filter>1. Resources\2. Signals</Filter>
+      <Filter>2. Resources\2. Signals</Filter>
     </ClCompile>
     <ClCompile Include="Swapchain.cpp">
-      <Filter>1. Resources\7. Swapchain</Filter>
+      <Filter>2. Resources\7. Swapchain</Filter>
     </ClCompile>
     <ClCompile Include="Images.cpp">
-      <Filter>1. Resources\4. Images</Filter>
+      <Filter>2. Resources\4. Images</Filter>
     </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
-      <Filter>1. Resources\8. Framebuffer</Filter>
+      <Filter>2. Resources\8. Framebuffer</Filter>
     </ClCompile>
     <ClCompile Include="Pipelines.cpp">
-      <Filter>1. Resources\6. Pipelines</Filter>
+      <Filter>2. Resources\6. Pipelines</Filter>
     </ClCompile>
     <ClCompile Include="ShaderModule.cpp">
-      <Filter>1. Resources\10. ShaderModule</Filter>
+      <Filter>2. Resources\10. ShaderModule</Filter>
     </ClCompile>
     <ClCompile Include="Sampler.cpp">
-      <Filter>1. Resources\5. Sampler</Filter>
+      <Filter>2. Resources\5. Sampler</Filter>
     </ClCompile>
     <ClCompile Include="Buffers.cpp">
-      <Filter>1. Resources\3. Buffers</Filter>
+      <Filter>2. Resources\3. Buffers</Filter>
     </ClCompile>
     <ClCompile Include="PipelineLayout.cpp">
-      <Filter>1. Resources\9. PipelineLayout</Filter>
+      <Filter>2. Resources\9. PipelineLayout</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>1. Resources\0. Resource</Filter>
+      <Filter>2. Resources\0. Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Instance.h">
-      <Filter>0. Context\0. Instance</Filter>
+      <Filter>1. Context\0. Instance</Filter>
     </ClInclude>
     <ClInclude Include="LogicalDevice.h">
-      <Filter>0. Context\1. LogicalDevice</Filter>
+      <Filter>1. Context\1. LogicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="PhysicalDevice.h">
-      <Filter>0. Context\2. PhysicalDevice</Filter>
+      <Filter>1. Context\2. PhysicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="Signals.h">
-      <Filter>1. Resources\2. Signals</Filter>
+      <Filter>2. Resources\2. Signals</Filter>
     </ClInclude>
     <ClInclude Include="Swapchain.h">
-      <Filter>1. Resources\7. Swapchain</Filter>
+      <Filter>2. Resources\7. Swapchain</Filter>
     </ClInclude>
     <ClInclude Include="Images.h">
-      <Filter>1. Resources\4. Images</Filter>
+      <Filter>2. Resources\4. Images</Filter>
     </ClInclude>
     <ClInclude Include="Framebuffer.h">
-      <Filter>1. Resources\8. Framebuffer</Filter>
+      <Filter>2. Resources\8. Framebuffer</Filter>
     </ClInclude>
     <ClInclude Include="DeviceMemory.h">
-      <Filter>1. Resources\1. Memory</Filter>
+      <Filter>2. Resources\1. Memory</Filter>
     </ClInclude>
     <ClInclude Include="Pipelines.h">
-      <Filter>1. Resources\6. Pipelines</Filter>
+      <Filter>2. Resources\6. Pipelines</Filter>
     </ClInclude>
     <ClInclude Include="CommandBuffer.h">
-      <Filter>0. Context\3. CommandBuffer</Filter>
+      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClInclude>
     <ClInclude Include="ShaderModule.h">
-      <Filter>1. Resources\10. ShaderModule</Filter>
+      <Filter>2. Resources\10. ShaderModule</Filter>
     </ClInclude>
     <ClInclude Include="Sampler.h">
-      <Filter>1. Resources\5. Sampler</Filter>
+      <Filter>2. Resources\5. Sampler</Filter>
     </ClInclude>
     <ClInclude Include="Buffers.h">
-      <Filter>1. Resources\3. Buffers</Filter>
+      <Filter>2. Resources\3. Buffers</Filter>
     </ClInclude>
     <ClInclude Include="PipelineLayout.h">
-      <Filter>1. Resources\9. PipelineLayout</Filter>
+      <Filter>2. Resources\9. PipelineLayout</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>1. Resources\0. Resource</Filter>
+      <Filter>2. Resources\0. Resource</Filter>
     </ClInclude>
     <ClInclude Include="Flags.h">
-      <Filter>0. Context</Filter>
+      <Filter>0. Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Handle.h">
+      <Filter>0. Wrapper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

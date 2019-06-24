@@ -394,10 +394,12 @@ namespace Vk
 		/**
 		 *	@brief	Structure specifying parameters of a newly created pipeline vertex input state.
 		 */
-		struct VertexInputStateInfo
+		class VertexInputStateInfo
 		{
 
 		public:
+
+			friend class GraphicsPipeline;
 
 			//!	@brief	Specify vertex attribute location.
 			void SetLocation(uint32_t Location, uint32_t Binding, VkFormat eFormat, uint32_t Offset);
@@ -405,7 +407,7 @@ namespace Vk
 			//!	@brief	Specify vertex input binding.
 			void SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate = VK_VERTEX_INPUT_RATE_VERTEX);
 
-		public:
+		private:
 
 			std::vector<VkVertexInputBindingDescription>		bindingDescriptions;
 			std::vector<VkVertexInputAttributeDescription>		attributeDescriptions;

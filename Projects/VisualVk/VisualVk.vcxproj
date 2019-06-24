@@ -181,6 +181,7 @@
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="CommandBuffer.h" />
     <ClInclude Include="Flags.h" />
+    <ClInclude Include="Handle.h" />
     <ClInclude Include="PipelineLayout.h" />
     <ClInclude Include="DeviceMemory.h" />
     <ClInclude Include="Images.h" />
