@@ -123,12 +123,15 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Create sampler object.
 		Sampler();
 
+		//!	@brief	Destroy sampler object.
 		~Sampler();
 
 	public:
 
+		//!	@brief	Convert to VkSampler handle.
 		operator VkSampler() const { return m_hSampler; }
 
 		VkResult Create(const SamplerInfo & CreateInfo);

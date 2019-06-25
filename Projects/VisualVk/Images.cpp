@@ -59,7 +59,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 
 		m_pDevice->GetImageMemoryRequirements(hNewImage, &Requirements);
 
-		eResult = m_DeviceMemory.Allocate(Requirements, MemoryProperty::eDeviceLocal);
+		eResult = m_DeviceMemory.Allocate(Requirements.size, Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
 
 		if (eResult != VK_SUCCESS)
 		{

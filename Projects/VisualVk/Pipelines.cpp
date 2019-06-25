@@ -35,13 +35,13 @@ void GraphicsPipelineInfo::VertexInputStateInfo::SetLocation(uint32_t Location, 
 }
 
 
-void GraphicsPipelineInfo::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate)
+void GraphicsPipelineInfo::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VertexInputRate eInputRate)
 {
 	for (size_t i = 0; i < bindingDescriptions.size(); i++)
 	{
 		if (bindingDescriptions[i].binding == Binding)
 		{
-			bindingDescriptions[i].inputRate = eInputRate;
+			bindingDescriptions[i].inputRate = static_cast<VkVertexInputRate>(eInputRate);
 
 			bindingDescriptions[i].stride = Stride;
 
@@ -49,7 +49,7 @@ void GraphicsPipelineInfo::VertexInputStateInfo::SetBinding(uint32_t Binding, ui
 		}
 	}
 
-	bindingDescriptions.push_back({ Binding, Stride, eInputRate });
+	bindingDescriptions.push_back({ Binding, Stride, static_cast<VkVertexInputRate>(eInputRate) });
 }
 
 
@@ -64,72 +64,18 @@ GraphicsPipeline::GraphicsPipeline() : m_hPipeline(VK_NULL_HANDLE)
 
 VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 {
-	std::vector<VkPipelineShaderStageCreateInfo>					ShaderStageCreateInfos;
+	std::vector<VkPipelineShaderStageCreateInfo>		ShaderStageCreateInfos;
 
-	if ((CreateInfo.ShaderStages.spVertexShader != 0) && CreateInfo.ShaderStages.spVertexShader->IsValid())
-	{
-		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext									= nullptr;
-		ShaderStageCreateInfo.flags									= 0;
-		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_VERTEX_BIT;
-		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spVertexShader->GetHandle();
-		ShaderStageCreateInfo.pName									= "main";
-		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
-		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
-	}
-
-	if ((CreateInfo.ShaderStages.spFragmentShader != 0) && CreateInfo.ShaderStages.spFragmentShader->IsValid())
-	{
-		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext									= nullptr;
-		ShaderStageCreateInfo.flags									= 0;
-		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_FRAGMENT_BIT;
-		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spFragmentShader->GetHandle();
-		ShaderStageCreateInfo.pName									= "main";
-		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
-		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
-	}
-	
-	if ((CreateInfo.ShaderStages.spGeometryShader != 0) && CreateInfo.ShaderStages.spGeometryShader->IsValid())
-	{
-		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext									= nullptr;
-		ShaderStageCreateInfo.flags									= 0;
-		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_GEOMETRY_BIT;
-		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spGeometryShader->GetHandle();
-		ShaderStageCreateInfo.pName									= "main";
-		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
-		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
-	}
-	
-	if ((CreateInfo.ShaderStages.spTessControlShader != 0) && CreateInfo.ShaderStages.spTessControlShader->IsValid())
-	{
-		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext									= nullptr;
-		ShaderStageCreateInfo.flags									= 0;
-		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT;
-		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spTessControlShader->GetHandle();
-		ShaderStageCreateInfo.pName									= "main";
-		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
-		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
-	}
-	
-	if ((CreateInfo.ShaderStages.spTessEvalutionShader != 0) && CreateInfo.ShaderStages.spTessEvalutionShader->IsValid())
-	{
-		VkPipelineShaderStageCreateInfo								ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext									= nullptr;
-		ShaderStageCreateInfo.flags									= 0;
-		ShaderStageCreateInfo.stage									= VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT;
-		ShaderStageCreateInfo.module								= CreateInfo.ShaderStages.spTessEvalutionShader->GetHandle();
-		ShaderStageCreateInfo.pName									= "main";
-		ShaderStageCreateInfo.pSpecializationInfo					= nullptr;
-		ShaderStageCreateInfos.push_back(ShaderStageCreateInfo);
-	}
+	if ((CreateInfo.ShaderStages.spVertexShader != nullptr) && CreateInfo.ShaderStages.spVertexShader->IsValid())
+		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spVertexShader->GetStageInfo(ShaderStage::eVertex));
+	if ((CreateInfo.ShaderStages.spFragmentShader != nullptr) && CreateInfo.ShaderStages.spFragmentShader->IsValid())
+		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spFragmentShader->GetStageInfo(ShaderStage::eFragment));
+	if ((CreateInfo.ShaderStages.spGeometryShader != nullptr) && CreateInfo.ShaderStages.spGeometryShader->IsValid())
+		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spGeometryShader->GetStageInfo(ShaderStage::eGeometry));
+	if ((CreateInfo.ShaderStages.spTessControlShader != nullptr) && CreateInfo.ShaderStages.spTessControlShader->IsValid())
+		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spTessControlShader->GetStageInfo(ShaderStage::eTessellationControl));
+	if ((CreateInfo.ShaderStages.spTessEvalutionShader != nullptr) && CreateInfo.ShaderStages.spTessEvalutionShader->IsValid())
+		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spTessEvalutionShader->GetStageInfo(ShaderStage::eTessellationEvaluation));
 
 	VkPipelineVertexInputStateCreateInfo							VertexInputStateCreateInfo = {};
 	VertexInputStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;

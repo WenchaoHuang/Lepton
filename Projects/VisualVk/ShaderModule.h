@@ -65,11 +65,11 @@ namespace Vk
 		//!	@brief	Create a new shader module object
 		static std::shared_ptr<ShaderModule> Create(const std::vector<char> & BinaryCode);
 
+		//!	@brief	Return shader stage create information.
+		VkPipelineShaderStageCreateInfo GetStageInfo(ShaderStage eStage) const;
+
 		//!	@brief	If shader handle is valid.
 		VkBool32 IsValid() const { return m_hShaderModule != VK_NULL_HANDLE; }
-
-		//!	@brief	Return VkShaderModule handle.
-		VkShaderModule GetHandle() const { return m_hShaderModule; }
 
 	private:
 

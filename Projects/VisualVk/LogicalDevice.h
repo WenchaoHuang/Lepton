@@ -50,6 +50,9 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Convert to VkDevice handle.
+		operator VkDevice() const { return m_hDevice; }
+
 		//!	@brief	Wait for a device to become idle.
 		VkResult WaitIdle() { return vkDeviceWaitIdle(m_hDevice); }
 

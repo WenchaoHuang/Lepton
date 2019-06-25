@@ -24,6 +24,9 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Noncopyable.
+		Resource(const Resource&) = delete;
+
 		//!	@brief	Initialize devices.
 		Resource() : m_pDevice(sm_pLogicalDevice), m_pPhysDevice(sm_pPhysicalDevice) {}
 

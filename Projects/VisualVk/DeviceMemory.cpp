@@ -15,16 +15,16 @@ DeviceMemory::DeviceMemory() : m_Bytes(0), m_hMemory(VK_NULL_HANDLE)
 }
 
 
-VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, Flags<MemoryProperty> PropertyFlags)
+VkResult DeviceMemory::Allocate(VkDeviceSize AllocationSize, uint32_t MemoryTypeBits, Flags<MemoryProperty> PropertyFlags)
 {
-	uint32_t MemoryTypeIndex = m_pPhysDevice->GetMemoryTypeIndex(Requirements.memoryTypeBits, PropertyFlags);
+	uint32_t MemoryTypeIndex = m_pPhysDevice->GetMemoryTypeIndex(MemoryTypeBits, PropertyFlags);
 
 	if (MemoryTypeIndex == VK_INVALID_INDEX)		return VK_ERROR_FORMAT_NOT_SUPPORTED;
 
 	VkMemoryAllocateInfo				AllocateInfo = {};
 	AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	AllocateInfo.pNext					= nullptr;
-	AllocateInfo.allocationSize			= Requirements.size;
+	AllocateInfo.allocationSize			= AllocationSize;
 	AllocateInfo.memoryTypeIndex		= MemoryTypeIndex;
 
 	VkDeviceMemory hMemory = VK_NULL_HANDLE;
@@ -35,9 +35,9 @@ VkResult DeviceMemory::Allocate(VkMemoryRequirements Requirements, Flags<MemoryP
 	{
 		this->Free();
 
-		m_Bytes = Requirements.size;
-
 		m_hMemory = hMemory;
+
+		m_Bytes = AllocationSize;
 	}
 
 	return eResult;

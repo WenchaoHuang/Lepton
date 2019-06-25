@@ -31,7 +31,7 @@ namespace Vk
 		Handle() = default;
 
 		//!	@brief	Constructed by Vulkan handle.
-		Handle(VkDependency hDependency, VkResource hResource) : m_spInnerHandle(std::make_shared<InnerHandle>(hDependency, hResource)) {}
+		Handle(VkResource hResource, VkDependency hDependency) : m_spInnerHandle(std::make_shared<InnerHandle>(hResource, hDependency)) {}
 
 		//!	@brief	Convert to Vulkan handle.
 		operator VkResource() const { return (m_spInnerHandle == nullptr) ? VK_NULL_HANDLE : m_spInnerHandle->m_hResource; }
@@ -57,7 +57,7 @@ namespace Vk
 		public:
 
 			//!	@brief	Constructed by Vulkan handle.
-			InnerHandle(VkDependency hDependency, VkResource hResource) : m_hDependency(hDependency), m_hResource(hResource) {}
+			InnerHandle(VkResource hResource, VkDependency hDependency) : m_hResource(hResource), m_hDependency(hDependency) {}
 
 			//!	@brief	Call Vulkan API to destroy resource object.
 			~InnerHandle() { if (m_hDependency != VK_NULL_HANDLE) DestroyFn(m_hDependency, m_hResource, nullptr); }

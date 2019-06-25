@@ -49,7 +49,7 @@ namespace Vk
 		operator VkDeviceMemory() const { return m_hMemory; }
 
 		//!	@brief	Allocate memory.
-		VkResult Allocate(VkMemoryRequirements Requirements, Flags<MemoryProperty> PropertyFlags);
+		VkResult Allocate(VkDeviceSize AllocationSize, uint32_t MemoryTypeBits, Flags<MemoryProperty> PropertyFlags);
 
 		//!	@brief	Map memory into application address space.
 		VkResult Map(void ** ppData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);

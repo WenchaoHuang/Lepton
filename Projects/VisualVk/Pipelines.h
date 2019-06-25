@@ -29,6 +29,19 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	***********************    VertexInputRate    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify rate at which vertex attributes are pulled from buffers.
+	 */
+	enum class VertexInputRate
+	{
+		eVertex			= VK_VERTEX_INPUT_RATE_VERTEX,
+		eInstance		= VK_VERTEX_INPUT_RATE_INSTANCE
+	};
+
+	/*********************************************************************
 	**************************    FrontFace    ***************************
 	*********************************************************************/
 
@@ -405,7 +418,7 @@ namespace Vk
 			void SetLocation(uint32_t Location, uint32_t Binding, VkFormat eFormat, uint32_t Offset);
 
 			//!	@brief	Specify vertex input binding.
-			void SetBinding(uint32_t Binding, uint32_t Stride, VkVertexInputRate eInputRate = VK_VERTEX_INPUT_RATE_VERTEX);
+			void SetBinding(uint32_t Binding, uint32_t Stride, VertexInputRate eInputRate = VertexInputRate::eVertex);
 
 		private:
 
