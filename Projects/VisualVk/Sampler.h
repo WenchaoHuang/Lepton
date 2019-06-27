@@ -118,7 +118,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan sampler object.
 	 */
-	class Sampler : private Resource
+	class Sampler : private Resource, public SamplerH
 	{
 
 	public:
@@ -131,18 +131,9 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkSampler handle.
-		operator VkSampler() const { return m_hSampler; }
-
 		VkResult Create(const SamplerInfo & CreateInfo);
 
-		VkBool32 IsValid() const { return m_hSampler != VK_NULL_HANDLE; }
-
-		void Release() noexcept;
-
 	private:
-
-		VkSampler			m_hSampler;
 
 		SamplerInfo			m_CreateInfo;
 	};

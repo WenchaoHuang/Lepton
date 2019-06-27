@@ -4,7 +4,7 @@
 #pragma once
 
 #include <memory>
-#include "Images.h"
+#include "Handle.h"
 #include "Sampler.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
@@ -393,11 +393,11 @@ namespace Vk
 		 */
 		struct MultisampleStateInfo
 		{
-			SampleCount			rasterizationSamples		= SampleCount::e1;
-			VkBool32			alphaToCoverageEnable		= VK_FALSE;
-			VkBool32			sampleShadingEnable			= VK_FALSE;
-			VkBool32			alphaToOneEnable			= VK_FALSE;
-			float				minSampleShading			= 0.0f;
+			VkSampleCountFlagBits		rasterizationSamples		= VK_SAMPLE_COUNT_1_BIT;
+			VkBool32					alphaToCoverageEnable		= VK_FALSE;
+			VkBool32					sampleShadingEnable			= VK_FALSE;
+			VkBool32					alphaToOneEnable			= VK_FALSE;
+			float						minSampleShading			= 0.0f;
 		};
 
 		/*****************************************************************
@@ -464,6 +464,7 @@ namespace Vk
 
 	public:
 
+		RenderPassH								hRenderPass;
 		ShaderStagesInfo						ShaderStages;
 		DynamicStateInfo						DynamicStates;
 		ViewportStateInfo						ViewportState;
@@ -475,7 +476,6 @@ namespace Vk
 		InputAssemblyStateInfo					InputAssemblyState;
 		RasterizationStateInfo					RasterizationState;
 		std::shared_ptr<PipelineLayout>			spPipelineLayout;
-		std::shared_ptr<RenderPass>				spRenderPass;
 	};
 
 	/*********************************************************************

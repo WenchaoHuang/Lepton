@@ -127,7 +127,7 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 	MultisampleStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
 	MultisampleStateCreateInfo.pNext								= nullptr;
 	MultisampleStateCreateInfo.flags								= 0;
-	MultisampleStateCreateInfo.rasterizationSamples					= static_cast<VkSampleCountFlagBits>(CreateInfo.MultisampleState.rasterizationSamples);
+	MultisampleStateCreateInfo.rasterizationSamples					= CreateInfo.MultisampleState.rasterizationSamples;
 	MultisampleStateCreateInfo.sampleShadingEnable					= CreateInfo.MultisampleState.sampleShadingEnable;
 	MultisampleStateCreateInfo.minSampleShading						= CreateInfo.MultisampleState.minSampleShading;
 	MultisampleStateCreateInfo.pSampleMask							= nullptr;
@@ -196,7 +196,7 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 	PipelineCreateInfo.pColorBlendState								= &ColorBlendStateCreateInfo;
 	PipelineCreateInfo.pDynamicState								= &DynamicStateCreateInfo;
 	PipelineCreateInfo.layout										= (CreateInfo.spPipelineLayout == nullptr) ? VK_NULL_HANDLE : CreateInfo.spPipelineLayout->GetHandle();
-	PipelineCreateInfo.renderPass									= (CreateInfo.spRenderPass == nullptr) ? VK_NULL_HANDLE : CreateInfo.spRenderPass->GetHandle();;
+	PipelineCreateInfo.renderPass									= CreateInfo.hRenderPass;
 	PipelineCreateInfo.subpass										= 0;
 	PipelineCreateInfo.basePipelineHandle							= VK_NULL_HANDLE;
 	PipelineCreateInfo.basePipelineIndex							= 0;

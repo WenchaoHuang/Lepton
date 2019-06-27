@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include "Handle.h"
 #include "LogicalDevice.h"
 
 namespace Vk

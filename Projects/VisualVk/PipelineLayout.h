@@ -73,9 +73,9 @@ namespace Vk
 	 */
 	struct LayoutBinding
 	{
-		Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
-		DescriptorType			descriptorType		= DescriptorType::eSampler;
-		uint32_t				descriptorCount		= 1;
+		Flags<ShaderStage>		stageFlags = ShaderStage::eAllGraphics;
+		DescriptorType			descriptorType = DescriptorType::eSampler;
+		uint32_t				descriptorCount = 1;
 	};
 
 	/*********************************************************************
@@ -95,20 +95,20 @@ namespace Vk
 		//!	@brief	Specify push constant range.
 		void PushConstantRange(Flags<ShaderStage> StageFlags, uint32_t OffsetBytes, uint32_t SizeBytes)
 		{
-			constantRanges.push_back({ StageFlags, OffsetBytes, SizeBytes });
+			m_ConstantRanges.push_back({ StageFlags, OffsetBytes, SizeBytes });
 		}
 		
 		//!	@brief	Specify descriptor set layout binding.
 		template<uint32_t Binding> void SetBinding(Flags<ShaderStage> StageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount)
 		{
-			layoutBindings[Binding] = { StageFlags, eDescriptorType, DescriptorCount };
+			m_LayoutBindings[Binding] = { StageFlags, eDescriptorType, DescriptorCount };
 		}
 
 	private:
 
-		std::vector<VkPushConstantRange>		constantRanges;
+		std::vector<VkPushConstantRange>		m_ConstantRanges;
 
-		std::map<uint32_t, LayoutBinding>		layoutBindings;
+		std::map<uint32_t, LayoutBinding>		m_LayoutBindings;
 	};
 
 	/*********************************************************************

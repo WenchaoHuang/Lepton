@@ -8,7 +8,7 @@ using namespace Vk;
 /*************************************************************************
 *****************************    Sampler    ******************************
 *************************************************************************/
-Sampler::Sampler() : m_hSampler(VK_NULL_HANDLE)
+Sampler::Sampler()
 {
 
 }
@@ -42,9 +42,7 @@ VkResult Sampler::Create(const SamplerInfo & CreateInfo)
 
 	if (eResult == VK_SUCCESS)
 	{
-		this->Release();
-
-		m_hSampler = hSampler;
+		*static_cast<SamplerH*>(this) = SamplerH(hSampler, *m_pDevice);
 
 		m_CreateInfo = CreateInfo;
 	}
@@ -53,20 +51,7 @@ VkResult Sampler::Create(const SamplerInfo & CreateInfo)
 }
 
 
-void Sampler::Release() noexcept
-{
-	if (m_hSampler != VK_NULL_HANDLE)
-	{
-		m_pDevice->DestroySampler(m_hSampler);
-
-		m_CreateInfo = SamplerInfo();
-
-		m_hSampler = VK_NULL_HANDLE;
-	}
-}
-
-
 Sampler::~Sampler()
 {
-	this->Release();
+	
 }

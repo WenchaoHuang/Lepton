@@ -11,9 +11,9 @@ using namespace Vk;
 PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout, VkDescriptorSetLayout hDescriptorSetLayout, const PipelineLayoutInfo & LayoutInfo)
 	: m_hPipelineLayout(hPipelineLayout), m_hDescriptorSetLayout(hDescriptorSetLayout), m_PipelineLayoutInfo(LayoutInfo)
 {
-	m_DescriptorPoolSizes.reserve(m_PipelineLayoutInfo.layoutBindings.size());
+	m_DescriptorPoolSizes.reserve(m_PipelineLayoutInfo.m_LayoutBindings.size());
 
-	for (auto layoutBinding : m_PipelineLayoutInfo.layoutBindings)
+	for (auto layoutBinding : m_PipelineLayoutInfo.m_LayoutBindings)
 	{
 		VkDescriptorPoolSize					DescriptorPoolSize = {};
 		DescriptorPoolSize.type					= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
@@ -28,9 +28,9 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 {
 	std::vector<VkDescriptorSetLayoutBinding> LayoutBindings;
 
-	LayoutBindings.reserve(LayoutInfo.layoutBindings.size());
+	LayoutBindings.reserve(LayoutInfo.m_LayoutBindings.size());
 
-	for (auto layoutBinding : LayoutInfo.layoutBindings)
+	for (auto layoutBinding : LayoutInfo.m_LayoutBindings)
 	{
 		VkDescriptorSetLayoutBinding					DescriptorSetLayoutBinding = {};
 		DescriptorSetLayoutBinding.binding				= layoutBinding.first;
@@ -61,8 +61,8 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 		PipelineLayoutCreateInfo.flags						= 0;
 		PipelineLayoutCreateInfo.setLayoutCount				= 1;
 		PipelineLayoutCreateInfo.pSetLayouts				= &hDescriptorSetLayout;
-		PipelineLayoutCreateInfo.pushConstantRangeCount		= static_cast<uint32_t>(LayoutInfo.constantRanges.size());
-		PipelineLayoutCreateInfo.pPushConstantRanges		= LayoutInfo.constantRanges.data();
+		PipelineLayoutCreateInfo.pushConstantRangeCount		= static_cast<uint32_t>(LayoutInfo.m_ConstantRanges.size());
+		PipelineLayoutCreateInfo.pPushConstantRanges		= LayoutInfo.m_ConstantRanges.data();
 
 		sm_pLogicalDevice->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
 	}
@@ -102,7 +102,7 @@ std::shared_ptr<DescriptorSet> PipelineLayout::CreateDescriptorSet()
 
 	std::shared_ptr<DescriptorSet> spDescriptorSet = std::make_shared<DescriptorSet>(hDescriptorSet, hDescriptorPool);
 
-	spDescriptorSet->m_LayoutBindings = m_PipelineLayoutInfo.layoutBindings;
+	spDescriptorSet->m_LayoutBindings = m_PipelineLayoutInfo.m_LayoutBindings;
 
 	return spDescriptorSet;
 }

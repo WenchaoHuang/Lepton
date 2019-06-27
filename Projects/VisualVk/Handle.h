@@ -4,7 +4,7 @@
 #pragma once
 
 #include <memory>
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan_core.h>
 
 namespace Vk
 {
@@ -71,4 +71,11 @@ namespace Vk
 
 		std::shared_ptr<InnerHandle>	m_spInnerHandle;
 	};
+
+	/*********************************************************************
+	*************************    Declarations    *************************
+	*********************************************************************/
+
+	using SamplerH			= Handle<VkSampler, VkDevice, vkDestroySampler>;
+	using RenderPassH		= Handle<VkRenderPass, VkDevice, vkDestroyRenderPass>;
 }
