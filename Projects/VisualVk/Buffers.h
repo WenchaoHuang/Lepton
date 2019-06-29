@@ -23,6 +23,9 @@ namespace Vk
 		//!	@brief	Create buffer object.
 		HostVisibleBuffer();
 
+		//!	@brief	Create buffer object and allocate memory.
+		HostVisibleBuffer(VkDeviceSize SizeBytes) : HostVisibleBuffer() { this->Create(SizeBytes); }
+
 		//!	@brief	Destroy buffer object.
 		~HostVisibleBuffer();
 

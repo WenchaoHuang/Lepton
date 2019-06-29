@@ -3,7 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
 #include "Handle.h"
 #include "Resource.h"
 
@@ -27,7 +26,7 @@ namespace Vk
 		//!	@brief	Destroy render pass object.
 		~RenderPass();
 
-	protected:
+	public:
 
 		//!	@brief	Create a render pass object.
 		VkResult Create(const std::vector<VkAttachmentDescription> & attachmentDescriptions,
@@ -73,8 +72,8 @@ namespace Vk
 		//!	@brief	Return extent of framebuffer.
 		VkExtent2D GetExtent() const { return m_Extent2D; }
 
-		//!	@brief	Invalidate.
-		void Invalidate();
+		//!	@brief	Invalidate framebuffer.
+		void Release();
 
 	private:
 

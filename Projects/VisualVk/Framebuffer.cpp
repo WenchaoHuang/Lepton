@@ -87,7 +87,7 @@ VkResult Framebuffer::Create(RenderPassH hRenderPass, const std::vector<VkImageV
 
 	if (eResult == VK_SUCCESS)
 	{
-		this->Invalidate();
+		this->Release();
 
 		m_hFramebuffer = hFramebuffer;
 
@@ -102,7 +102,7 @@ VkResult Framebuffer::Create(RenderPassH hRenderPass, const std::vector<VkImageV
 }
 
 
-void Framebuffer::Invalidate()
+void Framebuffer::Release()
 {
 	if (m_hFramebuffer != VK_NULL_HANDLE)
 	{
@@ -121,5 +121,5 @@ void Framebuffer::Invalidate()
 
 Framebuffer::~Framebuffer()
 {
-	this->Invalidate();
+	this->Release();
 }

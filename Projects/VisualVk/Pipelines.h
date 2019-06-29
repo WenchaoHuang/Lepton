@@ -504,6 +504,8 @@ namespace Vk
 		//!	@brief	Create a new graphics pipeline.
 		VkResult Create(const GraphicsPipelineInfo & CreateInfo);
 
+		std::shared_ptr<PipelineLayout> GetLayout() { return m_CreateInfo.spPipelineLayout; }
+
 		//!	@brief	Destroy graphics pipeline.
 		void Release() noexcept;
 

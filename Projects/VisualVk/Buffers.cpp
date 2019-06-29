@@ -69,7 +69,7 @@ VkResult HostVisibleBuffer::Write(const void * pHostData, VkDeviceSize OffsetByt
 
 	if (eResult == VK_SUCCESS)
 	{
-		std::memcpy(pBufferData, pHostData, (size_t)SizeBytes);
+		std::memcpy(pBufferData, pHostData, static_cast<size_t>(SizeBytes));
 
 		m_Memory.Unmap();
 	}
@@ -86,7 +86,7 @@ VkResult HostVisibleBuffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkD
 
 	if (eResult == VK_SUCCESS)
 	{
-		std::memcpy(pHostData, pBufferData, (size_t)SizeBytes);
+		std::memcpy(pHostData, pBufferData, static_cast<size_t>(SizeBytes));
 
 		m_Memory.Unmap();
 	}
@@ -103,7 +103,7 @@ VkResult HostVisibleBuffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeB
 
 	if (eResult == VK_SUCCESS)
 	{
-		std::memset(pBufferData, 0, (size_t)SizeBytes);
+		std::memset(pBufferData, 0, static_cast<size_t>(SizeBytes));
 
 		m_Memory.Unmap();
 	}
