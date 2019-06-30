@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Flags.h"
+#include "Format.h"
 #include "Resource.h"
 #include "DeviceMemory.h"
 
@@ -79,7 +80,7 @@ namespace Vk
 		operator VkImage() const { return m_hImage; }
 
 		//!	@brief	Return the image format.
-		VkFormat GetFormat() const { return m_eFormat; }
+		Format GetFormat() const { return m_eFormat; }
 
 		//!	@brief	Return the image extent.
 		VkExtent3D GetExtent() const { return m_Extent3D; }
@@ -105,7 +106,7 @@ namespace Vk
 	protected:
 
 		//!	@brief	Create a new image object.
-		VkResult Create(VkFormat eFormat, VkExtent3D Extent3D,uint32_t MipLevels, uint32_t ArrayLayers, VkSampleCountFlagBits eSamples, Flags<ImageUsage> UsageFlags, VkImageCreateFlags eCreateFlags = 0);
+		VkResult Create(Format eFormat, VkExtent3D Extent3D,uint32_t MipLevels, uint32_t ArrayLayers, VkSampleCountFlagBits eSamples, Flags<ImageUsage> UsageFlags, VkImageCreateFlags eCreateFlags = 0);
 
 		//!	@brief	Create a new image view object.
 		VkResult CreateView(Flags<ImageAspect> AspectFlags);
@@ -114,7 +115,7 @@ namespace Vk
 
 		VkImage						m_hImage;
 
-		VkFormat					m_eFormat;
+		Format						m_eFormat;
 
 		VkExtent3D					m_Extent3D;
 
@@ -142,7 +143,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 1D object.
-		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, uint32_t Width, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, 1, VK_SAMPLE_COUNT_1_BIT, UsageFlags);
 
@@ -163,7 +164,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 1D array object.
-		VkResult Create(VkFormat eFormat, uint32_t Width, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, uint32_t Width, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, ArrayLayers, VK_SAMPLE_COUNT_1_BIT, UsageFlags);
 
@@ -184,7 +185,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, VkSampleCountFlagBits eSamples, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, VkSampleCountFlagBits eSamples, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 1, eSamples, UsageFlags);
 
@@ -192,7 +193,7 @@ namespace Vk
 		}
 
 		//!	@brief	Create a new color attachment object.
-		VkResult CreateColorAttachment(VkFormat eFormat, VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
+		VkResult CreateColorAttachment(Format eFormat, VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eColorAttachment);
 
@@ -202,7 +203,7 @@ namespace Vk
 		//!	@brief	Create a new 16-bit depth attachment object.
 		VkResult CreateDepthAttachment16(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D16_UNORM, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
+			VkResult eResult = BaseImage::Create(Format::eD16Unorm, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eDepth) : eResult;
 		}
@@ -210,7 +211,7 @@ namespace Vk
 		//!	@brief	Create a new 32-bit depth attachment object.
 		VkResult CreateDepthAttachment32(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D32_SFLOAT, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
+			VkResult eResult = BaseImage::Create(Format::eD32Sfloat, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eDepth) : eResult;
 		}
@@ -218,7 +219,7 @@ namespace Vk
 		//!	@brief	Create a new depth-stencil attachment object.
 		VkResult CreateDepthStencilAttachment(VkExtent2D Extent2D, VkSampleCountFlagBits eSamples = VK_SAMPLE_COUNT_1_BIT)
 		{
-			VkResult eResult = BaseImage::Create(VK_FORMAT_D24_UNORM_S8_UINT, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
+			VkResult eResult = BaseImage::Create(Format::eD24UnormS8Uint, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eDepth | ImageAspect::eStencil) : eResult;
 		}
@@ -237,7 +238,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, VkSampleCountFlagBits eSamples, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, VkSampleCountFlagBits eSamples, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, ArrayLayers, eSamples, UsageFlags);
 
@@ -258,7 +259,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube object.
-		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6, VK_SAMPLE_COUNT_1_BIT, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
@@ -279,7 +280,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube array object.
-		VkResult Create(VkFormat eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6 * ArrayLayers, VK_SAMPLE_COUNT_1_BIT, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
@@ -300,7 +301,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 3D object.
-		VkResult Create(VkFormat eFormat, VkExtent3D Extent3D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		VkResult Create(Format eFormat, VkExtent3D Extent3D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
 			VkResult eResult = BaseImage::Create(eFormat, Extent3D, MipLevels, 1, VK_SAMPLE_COUNT_1_BIT, UsageFlags);
 

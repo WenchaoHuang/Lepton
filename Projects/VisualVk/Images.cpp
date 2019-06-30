@@ -17,14 +17,14 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 ****************************    BaseImage    *****************************
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
-	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(VK_FORMAT_UNDEFINED), m_eSampleCount(VK_SAMPLE_COUNT_1_BIT)
+	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined), m_eSampleCount(VK_SAMPLE_COUNT_1_BIT)
 {
 	m_MipLevels = 0;		m_ArrayLayers = 0;		m_Extent3D = { 0, 0, 0 };
 }
 
 
 template<VkImageType eImageType, VkImageViewType eViewType>
-VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
+VkResult BaseImage<eImageType, eViewType>::Create(Format eFormat,
 												  VkExtent3D Extent,
 												  uint32_t MipLevels,
 												  uint32_t ArrayLayers,
@@ -37,7 +37,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(VkFormat eFormat,
 	CreateInfo.pNext					= nullptr;
 	CreateInfo.flags					= eCreateFlags;
 	CreateInfo.imageType				= eImageType;
-	CreateInfo.format					= eFormat;
+	CreateInfo.format					= static_cast<VkFormat>(eFormat);
 	CreateInfo.extent					= Extent;
 	CreateInfo.mipLevels				= MipLevels;
 	CreateInfo.arrayLayers				= ArrayLayers;
@@ -99,7 +99,7 @@ template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<e
 	CreateInfo.flags								= 0;
 	CreateInfo.image								= m_hImage;
 	CreateInfo.viewType								= eViewType;
-	CreateInfo.format								= m_eFormat;
+	CreateInfo.format								= static_cast<VkFormat>(m_eFormat);
 	CreateInfo.components.r							= VK_COMPONENT_SWIZZLE_R;
 	CreateInfo.components.g							= VK_COMPONENT_SWIZZLE_G;
 	CreateInfo.components.b							= VK_COMPONENT_SWIZZLE_B;
@@ -137,7 +137,7 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 
 		m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
 
-		m_eFormat = VK_FORMAT_UNDEFINED;
+		m_eFormat = Format::eUndefined;
 
 		m_hImageView = VK_NULL_HANDLE;
 

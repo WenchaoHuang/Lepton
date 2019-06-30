@@ -35,26 +35,29 @@
     <Filter Include="2. Resources\3. Buffers">
       <UniqueIdentifier>{cc6d9c4c-2bbc-43ee-9609-4e77e43c9595}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\6. Pipelines">
-      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2. Resources\7. Swapchain">
-      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2. Resources\8. Framebuffer">
-      <UniqueIdentifier>{56b8a199-e8d0-40d9-bfe6-b5e03fe6eebf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2. Resources\9. PipelineLayout">
-      <UniqueIdentifier>{9905aed2-c2ce-4997-a80c-538ce9149818}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2. Resources\10. ShaderModule">
-      <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2. Resources\0. Resource">
       <UniqueIdentifier>{c81ed798-3cbd-4d4b-9ed9-31a3d6340beb}</UniqueIdentifier>
     </Filter>
     <Filter Include="0. Wrapper">
       <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\7. Pipelines">
+      <UniqueIdentifier>{8d3995e1-9f12-4672-bec1-9bbdc302e458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\8. Swapchain">
+      <UniqueIdentifier>{771f30a1-02c3-4ce9-a5ce-bfe03c097cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\9. Framebuffer">
+      <UniqueIdentifier>{56b8a199-e8d0-40d9-bfe6-b5e03fe6eebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\10. PipelineLayout">
+      <UniqueIdentifier>{9905aed2-c2ce-4997-a80c-538ce9149818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\11. ShaderModule">
+      <UniqueIdentifier>{f1a0f1a5-6074-41b6-887a-c26f951d031f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\6. Textures">
+      <UniqueIdentifier>{7a862fce-a3f2-4056-9361-3c019d8698d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,19 +80,19 @@
       <Filter>2. Resources\2. Signals</Filter>
     </ClCompile>
     <ClCompile Include="Swapchain.cpp">
-      <Filter>2. Resources\7. Swapchain</Filter>
+      <Filter>2. Resources\8. Swapchain</Filter>
     </ClCompile>
     <ClCompile Include="Images.cpp">
       <Filter>2. Resources\4. Images</Filter>
     </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
-      <Filter>2. Resources\8. Framebuffer</Filter>
+      <Filter>2. Resources\9. Framebuffer</Filter>
     </ClCompile>
     <ClCompile Include="Pipelines.cpp">
-      <Filter>2. Resources\6. Pipelines</Filter>
+      <Filter>2. Resources\7. Pipelines</Filter>
     </ClCompile>
     <ClCompile Include="ShaderModule.cpp">
-      <Filter>2. Resources\10. ShaderModule</Filter>
+      <Filter>2. Resources\11. ShaderModule</Filter>
     </ClCompile>
     <ClCompile Include="Sampler.cpp">
       <Filter>2. Resources\5. Sampler</Filter>
@@ -98,10 +101,13 @@
       <Filter>2. Resources\3. Buffers</Filter>
     </ClCompile>
     <ClCompile Include="PipelineLayout.cpp">
-      <Filter>2. Resources\9. PipelineLayout</Filter>
+      <Filter>2. Resources\10. PipelineLayout</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>2. Resources\0. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>2. Resources\6. Textures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,25 +124,25 @@
       <Filter>2. Resources\2. Signals</Filter>
     </ClInclude>
     <ClInclude Include="Swapchain.h">
-      <Filter>2. Resources\7. Swapchain</Filter>
+      <Filter>2. Resources\8. Swapchain</Filter>
     </ClInclude>
     <ClInclude Include="Images.h">
       <Filter>2. Resources\4. Images</Filter>
     </ClInclude>
     <ClInclude Include="Framebuffer.h">
-      <Filter>2. Resources\8. Framebuffer</Filter>
+      <Filter>2. Resources\9. Framebuffer</Filter>
     </ClInclude>
     <ClInclude Include="DeviceMemory.h">
       <Filter>2. Resources\1. Memory</Filter>
     </ClInclude>
     <ClInclude Include="Pipelines.h">
-      <Filter>2. Resources\6. Pipelines</Filter>
+      <Filter>2. Resources\7. Pipelines</Filter>
     </ClInclude>
     <ClInclude Include="CommandBuffer.h">
       <Filter>1. Context\3. CommandBuffer</Filter>
     </ClInclude>
     <ClInclude Include="ShaderModule.h">
-      <Filter>2. Resources\10. ShaderModule</Filter>
+      <Filter>2. Resources\11. ShaderModule</Filter>
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>2. Resources\5. Sampler</Filter>
@@ -145,7 +151,7 @@
       <Filter>2. Resources\3. Buffers</Filter>
     </ClInclude>
     <ClInclude Include="PipelineLayout.h">
-      <Filter>2. Resources\9. PipelineLayout</Filter>
+      <Filter>2. Resources\10. PipelineLayout</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>2. Resources\0. Resource</Filter>
@@ -155,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="Handle.h">
       <Filter>0. Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Format.h">
+      <Filter>0. Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>2. Resources\6. Textures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

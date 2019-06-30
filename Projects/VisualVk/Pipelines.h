@@ -5,6 +5,7 @@
 
 #include <memory>
 #include "Handle.h"
+#include "Format.h"
 #include "Sampler.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
@@ -415,7 +416,7 @@ namespace Vk
 			friend class GraphicsPipeline;
 
 			//!	@brief	Specify vertex attribute location.
-			void SetLocation(uint32_t Location, uint32_t Binding, VkFormat eFormat, uint32_t Offset);
+			void SetLocation(uint32_t Location, uint32_t Binding, Format eFormat, uint32_t Offset);
 
 			//!	@brief	Specify vertex input binding.
 			void SetBinding(uint32_t Binding, uint32_t Stride, VertexInputRate eInputRate = VertexInputRate::eVertex);

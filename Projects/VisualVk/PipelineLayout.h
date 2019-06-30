@@ -73,9 +73,9 @@ namespace Vk
 	 */
 	struct LayoutBinding
 	{
-		Flags<ShaderStage>		stageFlags = ShaderStage::eAllGraphics;
-		DescriptorType			descriptorType = DescriptorType::eSampler;
-		uint32_t				descriptorCount = 1;
+		Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
+		DescriptorType			descriptorType		= DescriptorType::eSampler;
+		uint32_t				descriptorCount		= 1;
 	};
 
 	/*********************************************************************

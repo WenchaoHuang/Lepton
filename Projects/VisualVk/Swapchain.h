@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include "Format.h"
 #include "Resource.h"
 
 namespace Vk
@@ -34,7 +35,7 @@ namespace Vk
 		VkResult Present(VkSemaphore hWaitSemaphore);
 
 		//!	@brief	Return the format of swapchain images.
-		VkFormat GetImageFormat() const { return m_eImageFormat; }
+		Format GetImageFormat() const { return m_eImageFormat; }
 
 		//!	@brief	Return the extent of swapchain images.
 		VkExtent2D GetImageExtent() const { return m_ImageExtent; }
@@ -63,7 +64,7 @@ namespace Vk
 
 		uint32_t							m_ImageIndex;
 
-		VkFormat							m_eImageFormat;
+		Format								m_eImageFormat;
 
 		VkExtent2D							m_ImageExtent;
 

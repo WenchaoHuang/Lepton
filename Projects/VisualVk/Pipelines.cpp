@@ -15,15 +15,15 @@ GraphicsPipelineInfo::GraphicsPipelineInfo() : InputAssemblyState(PrimitiveTopol
 }
 
 
-void GraphicsPipelineInfo::VertexInputStateInfo::SetLocation(uint32_t Location, uint32_t Binding, VkFormat eFormat, uint32_t Offset)
+void GraphicsPipelineInfo::VertexInputStateInfo::SetLocation(uint32_t Location, uint32_t Binding, Format eFormat, uint32_t Offset)
 {
 	for (size_t i = 0; i < attributeDescriptions.size(); i++)
 	{
 		if (attributeDescriptions[i].location == Location)
 		{
-			attributeDescriptions[i].binding = Binding;
+			attributeDescriptions[i].format = static_cast<VkFormat>(eFormat);
 
-			attributeDescriptions[i].format = eFormat;
+			attributeDescriptions[i].binding = Binding;
 
 			attributeDescriptions[i].offset = Offset;
 
@@ -31,7 +31,7 @@ void GraphicsPipelineInfo::VertexInputStateInfo::SetLocation(uint32_t Location, 
 		}
 	}
 
-	attributeDescriptions.push_back({ Location, Binding, eFormat, Offset });
+	attributeDescriptions.push_back({ Location, Binding, static_cast<VkFormat>(eFormat), Offset });
 }
 
 

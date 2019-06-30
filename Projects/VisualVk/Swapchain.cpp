@@ -10,7 +10,7 @@ using namespace Vk;
 /*************************************************************************
 ****************************    Swapchain    *****************************
 *************************************************************************/
-Swapchain::Swapchain() : m_hSwapchain(VK_NULL_HANDLE), m_eImageFormat(VK_FORMAT_UNDEFINED), m_pPresentQueue(nullptr), m_ImageIndex(0)
+Swapchain::Swapchain() : m_hSwapchain(VK_NULL_HANDLE), m_eImageFormat(Format::eUndefined), m_pPresentQueue(nullptr), m_ImageIndex(0)
 {
 	m_PresentInfo.sType					= VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	m_PresentInfo.pNext					= nullptr;
@@ -70,11 +70,11 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 
 		m_ImageExtent = CreateInfo.imageExtent;
 
-		m_eImageFormat = CreateInfo.imageFormat;
-
 		m_pDevice->GetSwapchainImages(m_hSwapchain, m_hImages);
 
 		m_pPresentQueue = m_pDevice->GetCommandQueue(PresentQueueIndex);
+
+		m_eImageFormat = static_cast<Format>(CreateInfo.imageFormat);
 
 		m_hImageViews.resize(m_hImages.size());
 
@@ -126,7 +126,7 @@ void Swapchain::Destroy() noexcept
 
 		m_pDevice->DestroySwapchainKHR(m_hSwapchain);
 
-		m_eImageFormat = VK_FORMAT_UNDEFINED;
+		m_eImageFormat = Format::eUndefined;
 
 		m_hSwapchain = VK_NULL_HANDLE;
 

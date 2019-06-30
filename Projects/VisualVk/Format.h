@@ -1,0 +1,120 @@
+/*************************************************************************
+*************************    VisualVk_Format    **************************
+*************************************************************************/
+#pragma once
+
+#include <vulkan/vulkan_core.h>
+
+namespace Vk
+{
+	/*********************************************************************
+	****************************    Format    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Common available image formats.
+	 */
+	enum class Format
+	{
+		eUndefined					= VK_FORMAT_UNDEFINED,
+
+		eR8Uint						= VK_FORMAT_R8_UINT,
+		eR8Sint						= VK_FORMAT_R8_SINT,
+		eR8Srgb						= VK_FORMAT_R8_SRGB,
+		eR8Unorm					= VK_FORMAT_R8_UNORM,
+		eR8Snorm					= VK_FORMAT_R8_SNORM,
+
+		eR8G8Uint					= VK_FORMAT_R8G8_UINT,
+		eR8G8Sint					= VK_FORMAT_R8G8_SINT,
+		eR8G8Srgb					= VK_FORMAT_R8G8_SRGB,
+		eR8G8Unorm					= VK_FORMAT_R8G8_UNORM,
+		eR8G8Snorm					= VK_FORMAT_R8G8_SNORM,
+
+		eR8G8B8Uint					= VK_FORMAT_R8G8B8_UINT,
+		eR8G8B8Sint					= VK_FORMAT_R8G8B8_SINT,
+		eR8G8B8Srgb					= VK_FORMAT_R8G8B8_SRGB,
+		eR8G8B8Unorm				= VK_FORMAT_R8G8B8_UNORM,
+		eR8G8B8Snorm				= VK_FORMAT_R8G8B8_SNORM,
+
+		eB8G8R8Uint					= VK_FORMAT_B8G8R8_UINT,
+		eB8G8R8Sint					= VK_FORMAT_B8G8R8_SINT,
+		eB8G8R8Srgb					= VK_FORMAT_B8G8R8_SRGB,
+		eB8G8R8Unorm				= VK_FORMAT_B8G8R8_UNORM,
+		eB8G8R8Snorm				= VK_FORMAT_B8G8R8_SNORM,
+
+		eR8G8B8A8Uint				= VK_FORMAT_R8G8B8A8_UINT,
+		eR8G8B8A8Sint				= VK_FORMAT_R8G8B8A8_SINT,
+		eR8G8B8A8Srgb				= VK_FORMAT_R8G8B8A8_SRGB,
+		eR8G8B8A8Unorm				= VK_FORMAT_R8G8B8A8_UNORM,
+		eR8G8B8A8Snorm				= VK_FORMAT_R8G8B8A8_SNORM,
+
+		eB8G8R8A8Uint				= VK_FORMAT_B8G8R8A8_UINT,
+		eB8G8R8A8Sint				= VK_FORMAT_B8G8R8A8_SINT,
+		eB8G8R8A8Srgb				= VK_FORMAT_B8G8R8A8_SRGB,
+		eB8G8R8A8Unorm				= VK_FORMAT_B8G8R8A8_UNORM,
+		eB8G8R8A8Snorm				= VK_FORMAT_B8G8R8A8_SNORM,
+
+		eR16Uint					= VK_FORMAT_R16_UINT,
+		eR16Sint					= VK_FORMAT_R16_SINT,
+		eR16Unorm					= VK_FORMAT_R16_UNORM,
+		eR16Snorm					= VK_FORMAT_R16_SNORM,
+		eR16Sfloat					= VK_FORMAT_R16_SFLOAT,
+
+		eR16G16Uint					= VK_FORMAT_R16G16_UINT,
+		eR16G16Sint					= VK_FORMAT_R16G16_SINT,
+		eR16G16Unorm				= VK_FORMAT_R16G16_UNORM,
+		eR16G16Snorm				= VK_FORMAT_R16G16_SNORM,
+		eR16G16Sfloat				= VK_FORMAT_R16G16_SFLOAT,
+
+		eR16G16B16Uint				= VK_FORMAT_R16G16B16_UINT,
+		eR16G16B16Sint				= VK_FORMAT_R16G16B16_SINT,
+		eR16G16B16Unorm				= VK_FORMAT_R16G16B16_UNORM,
+		eR16G16B16Snorm				= VK_FORMAT_R16G16B16_SNORM,
+		eR16G16B16Sfloat			= VK_FORMAT_R16G16B16_SFLOAT,
+
+		eR16G16B16A16Uint			= VK_FORMAT_R16G16B16A16_UINT,
+		eR16G16B16A16Sint			= VK_FORMAT_R16G16B16A16_SINT,
+		eR16G16B16A16Unorm			= VK_FORMAT_R16G16B16A16_UNORM,
+		eR16G16B16A16Snorm			= VK_FORMAT_R16G16B16A16_SNORM,
+		eR16G16B16A16Sfloat			= VK_FORMAT_R16G16B16A16_SFLOAT,
+
+		eR32Uint					= VK_FORMAT_R32_UINT,
+		eR32Sint					= VK_FORMAT_R32_SINT,
+		eR32Sfloat					= VK_FORMAT_R32_SFLOAT,
+
+		eR32G32Uint					= VK_FORMAT_R32G32_UINT,
+		eR32G32Sint					= VK_FORMAT_R32G32_SINT,
+		eR32G32Sfloat				= VK_FORMAT_R32G32_SFLOAT,
+
+		eR32G32B32Uint				= VK_FORMAT_R32G32B32_UINT,
+		eR32G32B32Sint				= VK_FORMAT_R32G32B32_SINT,
+		eR32G32B32Sfloat			= VK_FORMAT_R32G32B32_SFLOAT,
+
+		eR32G32B32A32Uint			= VK_FORMAT_R32G32B32A32_UINT,
+		eR32G32B32A32Sint			= VK_FORMAT_R32G32B32A32_SINT,
+		eR32G32B32A32Sfloat			= VK_FORMAT_R32G32B32A32_SFLOAT,
+
+		eR64Uint					= VK_FORMAT_R64_UINT,
+		eR64Sint					= VK_FORMAT_R64_SINT,
+		eR64Sfloat					= VK_FORMAT_R64_SFLOAT,
+
+		eR64G64Uint					= VK_FORMAT_R64G64_UINT,
+		eR64G64Sint					= VK_FORMAT_R64G64_SINT,
+		eR64G64Sfloat				= VK_FORMAT_R64G64_SFLOAT,
+
+		eR64G64B64Uint				= VK_FORMAT_R64G64B64_UINT,
+		eR64G64B64Sint				= VK_FORMAT_R64G64B64_SINT,
+		eR64G64B64Sfloat			= VK_FORMAT_R64G64B64_SFLOAT,
+
+		eR64G64B64A64Uint			= VK_FORMAT_R64G64B64A64_UINT,
+		eR64G64B64A64Sint			= VK_FORMAT_R64G64B64A64_SINT,
+		eR64G64B64A64Sfloat			= VK_FORMAT_R64G64B64A64_SFLOAT,
+
+		eS8Uint						= VK_FORMAT_S8_UINT,
+		eD16Unorm					= VK_FORMAT_D16_UNORM,
+		eD32Sfloat					= VK_FORMAT_D32_SFLOAT,
+		eD16UnormS8Uint				= VK_FORMAT_D16_UNORM_S8_UINT,
+		eD24UnormS8Uint				= VK_FORMAT_D24_UNORM_S8_UINT,
+		eD32SfloatS8Uint			= VK_FORMAT_D32_SFLOAT_S8_UINT
+	};
+}

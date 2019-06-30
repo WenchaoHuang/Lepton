@@ -176,11 +176,13 @@
     <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
+    <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="CommandBuffer.h" />
     <ClInclude Include="Flags.h" />
+    <ClInclude Include="Format.h" />
     <ClInclude Include="Handle.h" />
     <ClInclude Include="PipelineLayout.h" />
     <ClInclude Include="DeviceMemory.h" />
@@ -195,6 +197,7 @@
     <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />
+    <ClInclude Include="Textures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
