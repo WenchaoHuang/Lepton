@@ -60,8 +60,8 @@ Instance * Instance::GetCurrent()
 	VkApplicationInfo						AppInfo = {};
 	AppInfo.sType							= VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	AppInfo.pNext							= nullptr;
-	AppInfo.pEngineName						= "GraceEngine";
-	AppInfo.pApplicationName				= "GraceEngine";
+	AppInfo.pEngineName						= "VisualVk";
+	AppInfo.pApplicationName				= "VisualVk";
 	AppInfo.applicationVersion				= VK_MAKE_VERSION(1, 0, 0);
 	AppInfo.engineVersion					= VK_MAKE_VERSION(1, 0, 0);
 	AppInfo.apiVersion						= VK_API_VERSION_1_0;

@@ -53,8 +53,6 @@ VkResult CommandQueue::DestroyCommandPool(CommandPool * pCommandPool)
 
 CommandQueue::~CommandQueue() noexcept
 {
-	this->WaitIdle();
-
 	for (auto pCommandPool : m_pCommandPools)
 	{
 		delete pCommandPool;
@@ -100,6 +98,8 @@ VkResult CommandPool::FreeCommandBuffer(CommandBuffer * pCommandBuffer)
 {
 	if (m_pCommandBuffers.erase(pCommandBuffer) != 0)
 	{
+		vkQueueWaitIdle(m_hQueue);
+
 		VkCommandBuffer hCommandBuffer = pCommandBuffer->m_hCommandBuffer;
 
 		vkFreeCommandBuffers(m_hDevice, m_hCommandPool, 1, &hCommandBuffer);
@@ -144,5 +144,5 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 
 CommandBuffer::~CommandBuffer() noexcept
 {
-
+	
 }

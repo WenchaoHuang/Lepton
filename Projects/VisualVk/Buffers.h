@@ -34,14 +34,14 @@ namespace Vk
 		//!	@brief	Convert to VkBuffer handle.
 		operator VkBuffer() const { return m_hBuffer; }
 
+		//!	@brief	Filling data with 0.
+		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
+
 		//!	@brief	Memory copy from device to host.
 		VkResult Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 		//!	@brief	Memory copy from host to device.
 		VkResult Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
-
-		//!	@brief	Filling data with 0.
-		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 		//!	@brief	If buffer handle is valid.
 		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }

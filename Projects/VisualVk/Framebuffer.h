@@ -9,6 +9,47 @@
 namespace Vk
 {
 	/*********************************************************************
+	***********************    AttachmentLoadOp    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify how contents of an attachment are treated at the beginning of a subpass.
+	 */
+	enum class AttachmentLoadOp
+	{
+		eLoad		= VK_ATTACHMENT_LOAD_OP_LOAD,
+		eClear		= VK_ATTACHMENT_LOAD_OP_CLEAR,
+		eDontCare	= VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+	};
+
+	/*********************************************************************
+	**********************    AttachmentStoreOp    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify how contents of an attachment are treated at the end of a subpass.
+	 */
+	enum class AttachmentStoreOp
+	{
+		eStore		= VK_ATTACHMENT_STORE_OP_STORE,
+		eDontCare	= VK_ATTACHMENT_STORE_OP_DONT_CARE,
+	};
+	
+	/*********************************************************************
+	**********************    PipelineBindPoint    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify the bind point of a pipeline object to a command buffer.
+	 */
+	enum class PipelineBindPoint
+	{
+		eCompute		= VK_PIPELINE_BIND_POINT_COMPUTE,
+		eGraphics		= VK_PIPELINE_BIND_POINT_GRAPHICS,
+		eRayTracingNV	= VK_PIPELINE_BIND_POINT_RAY_TRACING_NV
+	};
+
+	/*********************************************************************
 	**************************    RenderPass    **************************
 	*********************************************************************/
 

@@ -15,6 +15,14 @@ namespace Vk
 	class BaseTexture
 	{
 
+	public:
+
+
+
+	protected:
+
+		bool IsHDR(const char * pFileName);
+
 	};
 
 	/*********************************************************************
@@ -23,6 +31,8 @@ namespace Vk
 
 	class Texture1D : public BaseTexture
 	{
+
+	public:
 
 	};
 
@@ -33,6 +43,8 @@ namespace Vk
 	class Texture1DArray : public BaseTexture
 	{
 
+	public:
+
 	};
 
 	/*********************************************************************
@@ -41,6 +53,8 @@ namespace Vk
 
 	class Texture2D : public BaseTexture
 	{
+
+	public:
 
 	};
 
@@ -51,6 +65,8 @@ namespace Vk
 	class Texture2DArray : public BaseTexture
 	{
 
+	public:
+
 	};
 
 	/*********************************************************************
@@ -59,6 +75,8 @@ namespace Vk
 
 	class TextureCube : public BaseTexture
 	{
+
+	public:
 
 	};
 
@@ -69,6 +87,8 @@ namespace Vk
 	class TextureCubeArray : public BaseTexture
 	{
 
+	public:
+
 	};
 
 	/*********************************************************************
@@ -77,6 +97,8 @@ namespace Vk
 
 	class Texture3D : public BaseTexture
 	{
+
+	public:
 
 	};
 }

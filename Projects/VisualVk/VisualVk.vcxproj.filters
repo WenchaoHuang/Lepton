@@ -168,5 +168,8 @@
     <ClInclude Include="Textures.h">
       <Filter>2. Resources\6. Textures</Filter>
     </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>0. Wrapper</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,9 +4,10 @@
 #pragma once
 
 #include <map>
-#include <memory>
+#include "Enum.h"
+#include "Flags.h"
+#include "Handle.h"
 #include "Resource.h"
-#include "ShaderModule.h"
 
 namespace Vk
 {
@@ -34,34 +35,6 @@ namespace Vk
 		eStorageBufferDynamic		= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
 		eInlineUniformBlockEXT		= VK_DESCRIPTOR_TYPE_INLINE_UNIFORM_BLOCK_EXT,
 		eAccelerationStructureNV	= VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_NV
-	};
-
-	/*********************************************************************
-	*************************    ImageLayout    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Layout of image and image subresources.
-	 */
-	enum class ImageLayout
-	{
-		eGeneral									= VK_IMAGE_LAYOUT_GENERAL,
-		eUndefined									= VK_IMAGE_LAYOUT_UNDEFINED,
-		ePreinitialized								= VK_IMAGE_LAYOUT_PREINITIALIZED,
-		eTransferSrcOptimal							= VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		eTransferDstOptimal							= VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		eShaderReadOnlyOptimal						= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		eColorAttachmentOptimal						= VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-		eDepthStencilReadOnlyOptimal				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL,
-		eDepthStencilAttachmentOptimal				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
-		eDepthReadOnlyStencilAttachmentOptimal		= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL,
-		eDepthAttachmentStencilReadOnlyOptimal		= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL,
-		eDepthAttachmentStencilReadOnlyOptimalKHR	= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL_KHR,
-		eDepthReadOnlyStencilAttachmentOptimalKHR	= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL_KHR,
-		eFragmentDensityMapOptimalEXT				= VK_IMAGE_LAYOUT_FRAGMENT_DENSITY_MAP_OPTIMAL_EXT,
-		eShadingRateOptimalNV						= VK_IMAGE_LAYOUT_SHADING_RATE_OPTIMAL_NV,
-		eSharedPresentKHR							= VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR,
-		ePresentSrcKHR								= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
 	};
 
 	/*********************************************************************

@@ -221,10 +221,22 @@ namespace Vk
 			vkCmdBeginRenderPass(m_hCommandBuffer, pRenderPassBegin, eContents);
 		}
 
-		//!	@brief	Bind a pipeline object to a command buffer.
-		void CmdBindPipeline(VkPipelineBindPoint ePipelineBindPoint, VkPipeline hPipeline)
+		//!	@brief	Bind a graphics pipeline object to a command buffer.
+		void CmdBindGraphicsPipeline(VkPipeline hPipeline)
 		{
-			vkCmdBindPipeline(m_hCommandBuffer, ePipelineBindPoint, hPipeline);
+			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, hPipeline);
+		}
+
+		//!	@brief	Bind a compute pipeline object to a command buffer.
+		void CmdBindComputePipeline(VkPipeline hPipeline)
+		{
+			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, hPipeline);
+		}
+
+		//!	@brief	Bind a ray-tracing pipeline object to a command buffer.
+		void CmdBindRayTracingPipeline(VkPipeline hPipeline)
+		{
+			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_RAY_TRACING_NV, hPipeline);
 		}
 
 		//!	@brief	Draw primitives.
@@ -236,6 +248,14 @@ namespace Vk
 		//!	@brief	Set the viewport on a command buffer.
 		void CmdSetViewport(VkViewport Viewport) { vkCmdSetViewport(m_hCommandBuffer, 0, 1, &Viewport); }
 
+		//!	@brief	Set the viewport on a command buffer.
+		void CmdSetViewport(float X, float Y, float Width, float Height, float MinDepth = 0.0f, float MaxDepth = 1.0f)
+		{
+			VkViewport Viewport = { X, Y, Width, Height, MinDepth, MaxDepth };
+
+			vkCmdSetViewport(m_hCommandBuffer, 0, 1, &Viewport);
+		}
+
 		//!	@brief	Set the viewports on a command buffer.
 		void CmdSetViewports(uint32_t FirstViewport, uint32_t ViewportCount, const VkViewport * pViewports)
 		{
@@ -244,6 +264,9 @@ namespace Vk
 
 		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
 		void CmdSetScissor(VkRect2D Scissor) { vkCmdSetScissor(m_hCommandBuffer, 0, 1, &Scissor); }
+
+		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
+		void CmdSetScissor(VkOffset2D Offset, VkExtent2D Extent) { VkRect2D Scissor = { Offset, Extent }; vkCmdSetScissor(m_hCommandBuffer, 0, 1, &Scissor); }
 
 		//!	@brief	Set the dynamic scissors rectangles on a command buffer.
 		void CmdSetScissors(uint32_t FirstScissor, uint32_t ScissorCount, const VkRect2D * pScissors)
@@ -268,7 +291,7 @@ namespace Vk
 		}
 
 		//!	@brief	Issue an indexed draw into a command buffer.
-		void CmdDrawIndexed(uint32_t IndexCount, uint32_t InstanceCount, uint32_t FirstIndex, int32_t VertexOffset, uint32_t FirstInstance)
+		void CmdDrawIndexed(uint32_t IndexCount, uint32_t InstanceCount, uint32_t FirstIndex = 0, int32_t VertexOffset = 0, uint32_t FirstInstance = 0)
 		{
 			vkCmdDrawIndexed(m_hCommandBuffer, IndexCount, InstanceCount, FirstIndex, VertexOffset, FirstInstance);
 		}
@@ -285,10 +308,16 @@ namespace Vk
 			vkCmdBindVertexBuffers(m_hCommandBuffer, Binding, 1, &hBuffer, &Offset);
 		}
 
-		//!	@brief	Bind an index buffer to a command buffer.
-		void CmdBindIndexBuffer(VkBuffer hBuffer, VkIndexType eIndexType, VkDeviceSize Offset)
+		//!	@brief	Bind an uint16 index buffer to a command buffer.
+		void CmdBindIndexBufferUint16(VkBuffer hBuffer, VkDeviceSize Offset = 0)
 		{
-			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, eIndexType);
+			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, VK_INDEX_TYPE_UINT16);
+		}
+
+		//!	@brief	Bind an uint32 index buffer to a command buffer.
+		void CmdBindIndexBufferUint32(VkBuffer hBuffer, VkDeviceSize Offset = 0)
+		{
+			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, VK_INDEX_TYPE_UINT32);
 		}
 		
 		//!	@brief	Execute a secondary command buffer from a primary command buffer.

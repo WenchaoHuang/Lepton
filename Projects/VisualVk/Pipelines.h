@@ -3,10 +3,8 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
-#include "Handle.h"
 #include "Format.h"
-#include "Sampler.h"
+#include "Handle.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
 
