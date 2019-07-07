@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Enum.h"
+#include "Flags.h"
 #include "Format.h"
 #include "Handle.h"
 #include "Resource.h"
@@ -19,9 +20,9 @@ namespace Vk
 	 */
 	enum class AttachmentLoadOp
 	{
-		eLoad		= VK_ATTACHMENT_LOAD_OP_LOAD,
-		eClear		= VK_ATTACHMENT_LOAD_OP_CLEAR,
-		eDontCare	= VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+		eLoad			= VK_ATTACHMENT_LOAD_OP_LOAD,
+		eClear			= VK_ATTACHMENT_LOAD_OP_CLEAR,
+		eDontCare		= VK_ATTACHMENT_LOAD_OP_DONT_CARE,
 	};
 
 	/*********************************************************************
@@ -33,10 +34,24 @@ namespace Vk
 	 */
 	enum class AttachmentStoreOp
 	{
-		eStore		= VK_ATTACHMENT_STORE_OP_STORE,
-		eDontCare	= VK_ATTACHMENT_STORE_OP_DONT_CARE,
+		eStore			= VK_ATTACHMENT_STORE_OP_STORE,
+		eDontCare		= VK_ATTACHMENT_STORE_OP_DONT_CARE,
 	};
 
+	/*********************************************************************
+	**********************    DependencyFlagBits    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying how execution and memory dependencies are formed.
+	 */
+	enum class DependencyFlagBits
+	{
+		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
+		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
+		eDeviceGroup		= VK_DEPENDENCY_DEVICE_GROUP_BIT
+	};
+	
 	/*********************************************************************
 	************************    AccessFlagBits    ************************
 	*********************************************************************/
@@ -44,7 +59,7 @@ namespace Vk
 	/**
 	 *	@brief	Bitmask specifying memory access types that will participate in a memory dependency.
 	 */
-	enum class Access : VkFlags
+	enum class AccessFlagBits : VkFlags
 	{
 		eHostRead								= VK_ACCESS_HOST_READ_BIT,
 		eHostWrite								= VK_ACCESS_HOST_WRITE_BIT,
@@ -96,6 +111,24 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	**********************    SubpassDependency    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Structure specifying a subpass dependency.
+	 */
+	struct SubpassDependency
+	{
+		uint32_t						srcSubpass			= 0;
+		uint32_t						dstSubpass			= 0;
+		Flags<PipelineStage>			srcStageMask		= 0;
+		Flags<PipelineStage>			dstStageMask		= 0;
+		Flags<AccessFlagBits>			srcAccessMask		= 0;
+		Flags<AccessFlagBits>			dstAccessMask		= 0;
+		Flags<DependencyFlagBits>		dependencyFlags		= 0;
+	};
+
+	/*********************************************************************
 	**************************    RenderPass    **************************
 	*********************************************************************/
 
@@ -118,13 +151,13 @@ namespace Vk
 		//!	@brief	Create a render pass object.
 		VkResult Create(const std::vector<AttachmentDescription> & attachmentDescriptions,
 						const std::vector<VkSubpassDescription> & subpassDescriptions,
-						const std::vector<VkSubpassDependency> & subpassDependencies);
+						const std::vector<SubpassDependency> & subpassDependencies);
 
 	private:
 
-		std::vector<VkSubpassDependency>			m_SubpassDependencies;
-		std::vector<VkSubpassDescription>			m_SubpassDescriptions;
-		std::vector<AttachmentDescription>			m_AttachmentDescriptions;
+		std::vector<SubpassDependency>			m_SubpassDependencies;
+		std::vector<VkSubpassDescription>		m_SubpassDescriptions;
+		std::vector<AttachmentDescription>		m_AttachmentDescriptions;
 	};
 
 	/*********************************************************************

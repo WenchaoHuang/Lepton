@@ -32,12 +32,12 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 
 	for (auto layoutBinding : LayoutInfo.m_LayoutBindings)
 	{
-		VkDescriptorSetLayoutBinding					DescriptorSetLayoutBinding = {};
-		DescriptorSetLayoutBinding.binding				= layoutBinding.first;
-		DescriptorSetLayoutBinding.descriptorType		= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
-		DescriptorSetLayoutBinding.descriptorCount		= layoutBinding.second.descriptorCount;
-		DescriptorSetLayoutBinding.stageFlags			= layoutBinding.second.stageFlags;
-		DescriptorSetLayoutBinding.pImmutableSamplers	= nullptr;
+		VkDescriptorSetLayoutBinding						DescriptorSetLayoutBinding = {};
+		DescriptorSetLayoutBinding.binding					= layoutBinding.first;
+		DescriptorSetLayoutBinding.descriptorType			= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
+		DescriptorSetLayoutBinding.descriptorCount			= layoutBinding.second.descriptorCount;
+		DescriptorSetLayoutBinding.stageFlags				= layoutBinding.second.stageFlags;
+		DescriptorSetLayoutBinding.pImmutableSamplers		= nullptr;
 
 		LayoutBindings.push_back(DescriptorSetLayoutBinding);
 	}
@@ -135,21 +135,21 @@ VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkB
 	if (m_hDescriptorSet == VK_NULL_HANDLE)										return VK_FALSE;
 
 	VkDescriptorBufferInfo			BufferInfo = {};
-	BufferInfo.buffer = hBuffer;
-	BufferInfo.offset = OffsetBytes;
-	BufferInfo.range = SizeBytes;
+	BufferInfo.buffer				= hBuffer;
+	BufferInfo.offset				= OffsetBytes;
+	BufferInfo.range				= SizeBytes;
 
 	VkWriteDescriptorSet			WriteInfo = {};
-	WriteInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-	WriteInfo.pNext = nullptr;
-	WriteInfo.dstSet = m_hDescriptorSet;
-	WriteInfo.dstBinding = DstBinding;
-	WriteInfo.dstArrayElement = DstArrayElement;
-	WriteInfo.descriptorCount = 1;
-	WriteInfo.descriptorType = static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
-	WriteInfo.pImageInfo = nullptr;
-	WriteInfo.pBufferInfo = &BufferInfo;
-	WriteInfo.pTexelBufferView = nullptr;
+	WriteInfo.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	WriteInfo.pNext					= nullptr;
+	WriteInfo.dstSet				= m_hDescriptorSet;
+	WriteInfo.dstBinding			= DstBinding;
+	WriteInfo.dstArrayElement		= DstArrayElement;
+	WriteInfo.descriptorCount		= 1;
+	WriteInfo.descriptorType		= static_cast<VkDescriptorType>(m_LayoutBindings[DstBinding].descriptorType);
+	WriteInfo.pImageInfo			= nullptr;
+	WriteInfo.pBufferInfo			= &BufferInfo;
+	WriteInfo.pTexelBufferView		= nullptr;
 
 	m_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
 

@@ -12,15 +12,15 @@ using namespace Vk;
 *************************************************************************/
 Swapchain::Swapchain() : m_hSwapchain(VK_NULL_HANDLE), m_eImageFormat(Format::eUndefined), m_pPresentQueue(nullptr), m_ImageIndex(0)
 {
-	m_PresentInfo.sType					= VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-	m_PresentInfo.pNext					= nullptr;
-	m_PresentInfo.waitSemaphoreCount	= 0;
-	m_PresentInfo.pWaitSemaphores		= nullptr;
-	m_PresentInfo.swapchainCount		= 1;
-	m_PresentInfo.pSwapchains			= &m_hSwapchain;
-	m_PresentInfo.pImageIndices			= &m_ImageIndex;
-	m_PresentInfo.pResults				= nullptr;
-	m_ImageExtent						= { 0, 0 };
+	m_PresentInfo.sType						= VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	m_PresentInfo.pNext						= nullptr;
+	m_PresentInfo.waitSemaphoreCount		= 0;
+	m_PresentInfo.pWaitSemaphores			= nullptr;
+	m_PresentInfo.swapchainCount			= 1;
+	m_PresentInfo.pSwapchains				= &m_hSwapchain;
+	m_PresentInfo.pImageIndices				= &m_ImageIndex;
+	m_PresentInfo.pResults					= nullptr;
+	m_ImageExtent							= { 0, 0 };
 }
 
 

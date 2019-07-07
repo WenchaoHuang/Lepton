@@ -16,21 +16,21 @@ RenderPass::RenderPass()
 
 VkResult RenderPass::Create(const std::vector<AttachmentDescription> & attachmentDescriptions,
 							const std::vector<VkSubpassDescription> & subpassDescriptions,
-							const std::vector<VkSubpassDependency> & subpassDependencies)
+							const std::vector<SubpassDependency> & subpassDependencies)
 {
 	std::vector<VkAttachmentDescription> attachmentDesc(attachmentDescriptions.size());
 
 	for (size_t i = 0; i < attachmentDesc.size(); i++)
 	{
-		attachmentDesc[i].flags				= 0;
-		attachmentDesc[i].format			= static_cast<VkFormat>(attachmentDescriptions[i].format);
-		attachmentDesc[i].samples			= static_cast<VkSampleCountFlagBits>(attachmentDescriptions[i].samples);
-		attachmentDesc[i].loadOp			= static_cast<VkAttachmentLoadOp>(attachmentDescriptions[i].loadOp);
-		attachmentDesc[i].storeOp			= static_cast<VkAttachmentStoreOp>(attachmentDescriptions[i].storeOp);
-		attachmentDesc[i].stencilLoadOp		= static_cast<VkAttachmentLoadOp>(attachmentDescriptions[i].stencilLoadOp);
-		attachmentDesc[i].stencilStoreOp	= static_cast<VkAttachmentStoreOp>(attachmentDescriptions[i].stencilStoreOp);
-		attachmentDesc[i].initialLayout		= static_cast<VkImageLayout>(attachmentDescriptions[i].initialLayout);
-		attachmentDesc[i].finalLayout		= static_cast<VkImageLayout>(attachmentDescriptions[i].finalLayout);
+		attachmentDesc[i].flags					= 0;
+		attachmentDesc[i].format				= static_cast<VkFormat>(attachmentDescriptions[i].format);
+		attachmentDesc[i].samples				= static_cast<VkSampleCountFlagBits>(attachmentDescriptions[i].samples);
+		attachmentDesc[i].loadOp				= static_cast<VkAttachmentLoadOp>(attachmentDescriptions[i].loadOp);
+		attachmentDesc[i].storeOp				= static_cast<VkAttachmentStoreOp>(attachmentDescriptions[i].storeOp);
+		attachmentDesc[i].stencilLoadOp			= static_cast<VkAttachmentLoadOp>(attachmentDescriptions[i].stencilLoadOp);
+		attachmentDesc[i].stencilStoreOp		= static_cast<VkAttachmentStoreOp>(attachmentDescriptions[i].stencilStoreOp);
+		attachmentDesc[i].initialLayout			= static_cast<VkImageLayout>(attachmentDescriptions[i].initialLayout);
+		attachmentDesc[i].finalLayout			= static_cast<VkImageLayout>(attachmentDescriptions[i].finalLayout);
 	}
 
 	VkRenderPassCreateInfo			CreateInfo = {};
@@ -42,7 +42,7 @@ VkResult RenderPass::Create(const std::vector<AttachmentDescription> & attachmen
 	CreateInfo.subpassCount			= static_cast<uint32_t>(subpassDescriptions.size());
 	CreateInfo.pSubpasses			= subpassDescriptions.data();
 	CreateInfo.dependencyCount		= static_cast<uint32_t>(subpassDependencies.size());
-	CreateInfo.pDependencies		= subpassDependencies.data();
+	CreateInfo.pDependencies		= reinterpret_cast<const VkSubpassDependency*>(subpassDependencies.data());
 
 	VkRenderPass hRenderPass = VK_NULL_HANDLE;
 

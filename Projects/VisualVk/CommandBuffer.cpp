@@ -130,15 +130,15 @@ CommandPool::~CommandPool() noexcept
 CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 	: m_hQueue(hQueue), m_hCommandBuffer(hCommandBuffer)
 {
-	m_SubmitInfo.sType					= VK_STRUCTURE_TYPE_SUBMIT_INFO;
-	m_SubmitInfo.pNext					= nullptr;
-	m_SubmitInfo.waitSemaphoreCount		= 0;
-	m_SubmitInfo.pWaitSemaphores		= nullptr;
-	m_SubmitInfo.pWaitDstStageMask		= nullptr;
-	m_SubmitInfo.commandBufferCount		= 1;
-	m_SubmitInfo.pCommandBuffers		= &m_hCommandBuffer;
-	m_SubmitInfo.signalSemaphoreCount	= 0;
-	m_SubmitInfo.pSignalSemaphores		= nullptr;
+	m_SubmitInfo.sType						= VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	m_SubmitInfo.pNext						= nullptr;
+	m_SubmitInfo.waitSemaphoreCount			= 0;
+	m_SubmitInfo.pWaitSemaphores			= nullptr;
+	m_SubmitInfo.pWaitDstStageMask			= nullptr;
+	m_SubmitInfo.commandBufferCount			= 1;
+	m_SubmitInfo.pCommandBuffers			= &m_hCommandBuffer;
+	m_SubmitInfo.signalSemaphoreCount		= 0;
+	m_SubmitInfo.pSignalSemaphores			= nullptr;
 }
 
 

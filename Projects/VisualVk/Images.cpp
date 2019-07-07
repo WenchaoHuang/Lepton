@@ -17,7 +17,7 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 ****************************    BaseImage    *****************************
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
-	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined), m_eSampleCount(VK_SAMPLE_COUNT_1_BIT)
+	: m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined), m_eSamples(SampleCount::e1)
 {
 	m_MipLevels = 0;		m_ArrayLayers = 0;		m_Extent3D = { 0, 0, 0 };
 }
@@ -28,26 +28,26 @@ VkResult BaseImage<eImageType, eViewType>::Create(Format eFormat,
 												  VkExtent3D Extent,
 												  uint32_t MipLevels,
 												  uint32_t ArrayLayers,
-												  VkSampleCountFlagBits eSamples,
+												  SampleCount eSamples,
 												  Flags<ImageUsage> UsageFlags,
 												  VkImageCreateFlags eCreateFlags)
 {
-	VkImageCreateInfo					CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= eCreateFlags;
-	CreateInfo.imageType				= eImageType;
-	CreateInfo.format					= static_cast<VkFormat>(eFormat);
-	CreateInfo.extent					= Extent;
-	CreateInfo.mipLevels				= MipLevels;
-	CreateInfo.arrayLayers				= ArrayLayers;
-	CreateInfo.samples					= eSamples;
-	CreateInfo.tiling					= VK_IMAGE_TILING_OPTIMAL;
-	CreateInfo.usage					= UsageFlags;
-	CreateInfo.sharingMode				= VK_SHARING_MODE_EXCLUSIVE;
-	CreateInfo.queueFamilyIndexCount	= 0;
-	CreateInfo.pQueueFamilyIndices		= nullptr;
-	CreateInfo.initialLayout			= VK_IMAGE_LAYOUT_UNDEFINED;
+	VkImageCreateInfo						CreateInfo = {};
+	CreateInfo.sType						= VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	CreateInfo.pNext						= nullptr;
+	CreateInfo.flags						= static_cast<VkSampleCountFlagBits>(eCreateFlags);
+	CreateInfo.imageType					= eImageType;
+	CreateInfo.format						= static_cast<VkFormat>(eFormat);
+	CreateInfo.extent						= Extent;
+	CreateInfo.mipLevels					= MipLevels;
+	CreateInfo.arrayLayers					= ArrayLayers;
+	CreateInfo.samples						= static_cast<VkSampleCountFlagBits>(eSamples);
+	CreateInfo.tiling						= VK_IMAGE_TILING_OPTIMAL;
+	CreateInfo.usage						= UsageFlags;
+	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
+	CreateInfo.queueFamilyIndexCount		= 0;
+	CreateInfo.pQueueFamilyIndices			= nullptr;
+	CreateInfo.initialLayout				= VK_IMAGE_LAYOUT_UNDEFINED;
 
 	VkImage hNewImage = VK_NULL_HANDLE;
 
@@ -73,9 +73,9 @@ VkResult BaseImage<eImageType, eViewType>::Create(Format eFormat,
 
 			m_ArrayLayers = ArrayLayers;
 
-			m_eSampleCount = eSamples;
-
 			m_MipLevels = MipLevels;
+
+			m_eSamples = eSamples;
 
 			m_hImage = hNewImage;
 
@@ -135,11 +135,11 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 
 		m_pDevice->DestroyImageView(m_hImageView);
 
-		m_eSampleCount = VK_SAMPLE_COUNT_1_BIT;
-
 		m_eFormat = Format::eUndefined;
 
 		m_hImageView = VK_NULL_HANDLE;
+
+		m_eSamples = SampleCount::e1;
 
 		m_hImage = VK_NULL_HANDLE;
 

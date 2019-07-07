@@ -17,14 +17,14 @@ ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShad
 
 VkPipelineShaderStageCreateInfo ShaderModule::GetStageInfo(ShaderStage eStage) const
 {
-	VkPipelineShaderStageCreateInfo			CreateInfo = {};
-	CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	CreateInfo.pNext						= nullptr;
-	CreateInfo.flags						= 0;
-	CreateInfo.stage						= static_cast<VkShaderStageFlagBits>(eStage);
-	CreateInfo.module						= m_hShaderModule;
-	CreateInfo.pName						= "main";
-	CreateInfo.pSpecializationInfo			= nullptr;
+	VkPipelineShaderStageCreateInfo		CreateInfo = {};
+	CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	CreateInfo.pNext					= nullptr;
+	CreateInfo.flags					= 0;
+	CreateInfo.stage					= static_cast<VkShaderStageFlagBits>(eStage);
+	CreateInfo.module					= m_hShaderModule;
+	CreateInfo.pName					= "main";
+	CreateInfo.pSpecializationInfo		= nullptr;
 
 	return CreateInfo;
 }
@@ -32,12 +32,12 @@ VkPipelineShaderStageCreateInfo ShaderModule::GetStageInfo(ShaderStage eStage) c
 
 std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode)
 {
-	VkShaderModuleCreateInfo	CreateInfo = {};
-	CreateInfo.sType			= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-	CreateInfo.pNext			= nullptr;
-	CreateInfo.flags			= 0;
-	CreateInfo.codeSize			= BinaryCode.size();
-	CreateInfo.pCode			= reinterpret_cast<const uint32_t*>(BinaryCode.data());
+	VkShaderModuleCreateInfo		CreateInfo = {};
+	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+	CreateInfo.pNext				= nullptr;
+	CreateInfo.flags				= 0;
+	CreateInfo.codeSize				= BinaryCode.size();
+	CreateInfo.pCode				= reinterpret_cast<const uint32_t*>(BinaryCode.data());
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 

@@ -190,21 +190,21 @@ namespace Vk
 	 */
 	enum class DynamicState
 	{
-		eScissor						= VK_DYNAMIC_STATE_SCISSOR,
-		eViewport						= VK_DYNAMIC_STATE_VIEWPORT,
-		eLineWidth						= VK_DYNAMIC_STATE_LINE_WIDTH,
-		eDepthBias						= VK_DYNAMIC_STATE_DEPTH_BIAS,
-		eDepthBounds					= VK_DYNAMIC_STATE_DEPTH_BOUNDS,
-		eBlendConstants					= VK_DYNAMIC_STATE_BLEND_CONSTANTS,
-		eStencilWriteMask				= VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
-		eStencilReference				= VK_DYNAMIC_STATE_STENCIL_REFERENCE,
-		eStencilCompareMask				= VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
-		eViewportWScalingNV				= VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_NV,
-		eSampleLocationsEXT				= VK_DYNAMIC_STATE_SAMPLE_LOCATIONS_EXT,
-		eExclusiveScissorNV				= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV,
-		eDiscardRectangleEXT			= VK_DYNAMIC_STATE_DISCARD_RECTANGLE_EXT,
-		eViewportCoarseSampleOrderNV	= VK_DYNAMIC_STATE_VIEWPORT_COARSE_SAMPLE_ORDER_NV,
-		eViewportShadingRatePaletteNV	= VK_DYNAMIC_STATE_VIEWPORT_SHADING_RATE_PALETTE_NV
+		eScissor							= VK_DYNAMIC_STATE_SCISSOR,
+		eViewport							= VK_DYNAMIC_STATE_VIEWPORT,
+		eLineWidth							= VK_DYNAMIC_STATE_LINE_WIDTH,
+		eDepthBias							= VK_DYNAMIC_STATE_DEPTH_BIAS,
+		eDepthBounds						= VK_DYNAMIC_STATE_DEPTH_BOUNDS,
+		eBlendConstants						= VK_DYNAMIC_STATE_BLEND_CONSTANTS,
+		eStencilWriteMask					= VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
+		eStencilReference					= VK_DYNAMIC_STATE_STENCIL_REFERENCE,
+		eStencilCompareMask					= VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
+		eViewportShadingRatePaletteNV		= VK_DYNAMIC_STATE_VIEWPORT_SHADING_RATE_PALETTE_NV,
+		eViewportCoarseSampleOrderNV		= VK_DYNAMIC_STATE_VIEWPORT_COARSE_SAMPLE_ORDER_NV,
+		eDiscardRectangleEXT				= VK_DYNAMIC_STATE_DISCARD_RECTANGLE_EXT,
+		eSampleLocationsEXT					= VK_DYNAMIC_STATE_SAMPLE_LOCATIONS_EXT,
+		eViewportWScalingNV					= VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_NV,
+		eExclusiveScissorNV					= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV
 	};
 
 	/*********************************************************************
@@ -216,57 +216,57 @@ namespace Vk
 	 */
 	enum class BlendOp
 	{
-		eMin					= VK_BLEND_OP_MIN,
-		eMax					= VK_BLEND_OP_MAX,
-		eAdd					= VK_BLEND_OP_ADD,
-		eSubtract				= VK_BLEND_OP_SUBTRACT,
-		eReverseSubtract		= VK_BLEND_OP_REVERSE_SUBTRACT,
-		eSrcEXT					= VK_BLEND_OP_SRC_EXT,
-		eDstEXT					= VK_BLEND_OP_DST_EXT,
-		eXorEXT					= VK_BLEND_OP_XOR_EXT,
-		eRedEXT					= VK_BLEND_OP_RED_EXT,
-		eZeroEXT				= VK_BLEND_OP_ZERO_EXT,
-		ePlusEXT				= VK_BLEND_OP_PLUS_EXT,
-		eBlueEXT				= VK_BLEND_OP_BLUE_EXT,
-		eGreenEXT				= VK_BLEND_OP_GREEN_EXT,
-		eMinusEXT				= VK_BLEND_OP_MINUS_EXT,
-		eSrcInEXT				= VK_BLEND_OP_SRC_IN_EXT,
-		eDstInEXT				= VK_BLEND_OP_DST_IN_EXT,
-		eInvertEXT				= VK_BLEND_OP_INVERT_EXT,
-		eScreenEXT				= VK_BLEND_OP_SCREEN_EXT,
-		eDarkenEXT				= VK_BLEND_OP_DARKEN_EXT,
-		eHardmixEXT				= VK_BLEND_OP_HARDMIX_EXT,
-		eLightenEXT				= VK_BLEND_OP_LIGHTEN_EXT,
-		eOverlayEXT				= VK_BLEND_OP_OVERLAY_EXT,
-		eSrcOutEXT				= VK_BLEND_OP_SRC_OUT_EXT,
-		eDstOutEXT				= VK_BLEND_OP_DST_OUT_EXT,
-		eHslHueEXT				= VK_BLEND_OP_HSL_HUE_EXT,
-		eDstOverEXT				= VK_BLEND_OP_DST_OVER_EXT,
-		eSrcOverEXT				= VK_BLEND_OP_SRC_OVER_EXT,
-		eSrcAtopEXT				= VK_BLEND_OP_SRC_ATOP_EXT,
-		eDstAtopEXT				= VK_BLEND_OP_DST_ATOP_EXT,
-		eMultiplyEXT			= VK_BLEND_OP_MULTIPLY_EXT,
-		ePinlightEXT			= VK_BLEND_OP_PINLIGHT_EXT,
-		eContrastEXT			= VK_BLEND_OP_CONTRAST_EXT,
-		eColorburnEXT			= VK_BLEND_OP_COLORBURN_EXT,
-		eHardlightEXT			= VK_BLEND_OP_HARDLIGHT_EXT,
-		eSoftlightEXT			= VK_BLEND_OP_SOFTLIGHT_EXT,
-		eExclusionEXT			= VK_BLEND_OP_EXCLUSION_EXT,
-		eHslColorEXT			= VK_BLEND_OP_HSL_COLOR_EXT,
-		eDifferenceEXT			= VK_BLEND_OP_DIFFERENCE_EXT,
-		eColordodgeEXT			= VK_BLEND_OP_COLORDODGE_EXT,
-		eInvertRgbEXT			= VK_BLEND_OP_INVERT_RGB_EXT,
-		eLinearburnEXT			= VK_BLEND_OP_LINEARBURN_EXT,
-		eVividlightEXT			= VK_BLEND_OP_VIVIDLIGHT_EXT,
-		eInvertOvgEXT			= VK_BLEND_OP_INVERT_OVG_EXT,
-		eLineardodgeEXT			= VK_BLEND_OP_LINEARDODGE_EXT,
-		eLinearlightEXT			= VK_BLEND_OP_LINEARLIGHT_EXT,
-		ePlusDarkerEXT			= VK_BLEND_OP_PLUS_DARKER_EXT,
-		ePlusClampedEXT			= VK_BLEND_OP_PLUS_CLAMPED_EXT,
-		eMinusClampedEXT		= VK_BLEND_OP_MINUS_CLAMPED_EXT,
-		eHslSaturationEXT		= VK_BLEND_OP_HSL_SATURATION_EXT,
-		eHslLuminosityEXT		= VK_BLEND_OP_HSL_LUMINOSITY_EXT,
-		ePlusClampedAlphaEXT	= VK_BLEND_OP_PLUS_CLAMPED_ALPHA_EXT
+		eMin						= VK_BLEND_OP_MIN,
+		eMax						= VK_BLEND_OP_MAX,
+		eAdd						= VK_BLEND_OP_ADD,
+		eSubtract					= VK_BLEND_OP_SUBTRACT,
+		eReverseSubtract			= VK_BLEND_OP_REVERSE_SUBTRACT,
+		ePlusClampedAlphaEXT		= VK_BLEND_OP_PLUS_CLAMPED_ALPHA_EXT,
+		eHslLuminosityEXT			= VK_BLEND_OP_HSL_LUMINOSITY_EXT,
+		eHslSaturationEXT			= VK_BLEND_OP_HSL_SATURATION_EXT,
+		eMinusClampedEXT			= VK_BLEND_OP_MINUS_CLAMPED_EXT,
+		ePlusClampedEXT				= VK_BLEND_OP_PLUS_CLAMPED_EXT,
+		eLinearlightEXT				= VK_BLEND_OP_LINEARLIGHT_EXT,
+		eLineardodgeEXT				= VK_BLEND_OP_LINEARDODGE_EXT,
+		ePlusDarkerEXT				= VK_BLEND_OP_PLUS_DARKER_EXT,
+		eVividlightEXT				= VK_BLEND_OP_VIVIDLIGHT_EXT,
+		eLinearburnEXT				= VK_BLEND_OP_LINEARBURN_EXT,
+		eColordodgeEXT				= VK_BLEND_OP_COLORDODGE_EXT,
+		eDifferenceEXT				= VK_BLEND_OP_DIFFERENCE_EXT,
+		eInvertRgbEXT				= VK_BLEND_OP_INVERT_RGB_EXT,
+		eInvertOvgEXT				= VK_BLEND_OP_INVERT_OVG_EXT,
+		eExclusionEXT				= VK_BLEND_OP_EXCLUSION_EXT,
+		eSoftlightEXT				= VK_BLEND_OP_SOFTLIGHT_EXT,
+		eHardlightEXT				= VK_BLEND_OP_HARDLIGHT_EXT,
+		eColorburnEXT				= VK_BLEND_OP_COLORBURN_EXT,
+		eHslColorEXT				= VK_BLEND_OP_HSL_COLOR_EXT,
+		eContrastEXT				= VK_BLEND_OP_CONTRAST_EXT,
+		ePinlightEXT				= VK_BLEND_OP_PINLIGHT_EXT,
+		eMultiplyEXT				= VK_BLEND_OP_MULTIPLY_EXT,
+		eDstAtopEXT					= VK_BLEND_OP_DST_ATOP_EXT,
+		eSrcAtopEXT					= VK_BLEND_OP_SRC_ATOP_EXT,
+		eSrcOverEXT					= VK_BLEND_OP_SRC_OVER_EXT,
+		eDstOverEXT					= VK_BLEND_OP_DST_OVER_EXT,
+		eOverlayEXT					= VK_BLEND_OP_OVERLAY_EXT,
+		eLightenEXT					= VK_BLEND_OP_LIGHTEN_EXT,
+		eHardmixEXT					= VK_BLEND_OP_HARDMIX_EXT,
+		eHslHueEXT					= VK_BLEND_OP_HSL_HUE_EXT,
+		eDstOutEXT					= VK_BLEND_OP_DST_OUT_EXT,
+		eSrcOutEXT					= VK_BLEND_OP_SRC_OUT_EXT,
+		eDarkenEXT					= VK_BLEND_OP_DARKEN_EXT,
+		eScreenEXT					= VK_BLEND_OP_SCREEN_EXT,
+		eInvertEXT					= VK_BLEND_OP_INVERT_EXT,
+		eDstInEXT					= VK_BLEND_OP_DST_IN_EXT,
+		eSrcInEXT					= VK_BLEND_OP_SRC_IN_EXT,
+		eMinusEXT					= VK_BLEND_OP_MINUS_EXT,
+		eGreenEXT					= VK_BLEND_OP_GREEN_EXT,
+		eBlueEXT					= VK_BLEND_OP_BLUE_EXT,
+		ePlusEXT					= VK_BLEND_OP_PLUS_EXT,
+		eZeroEXT					= VK_BLEND_OP_ZERO_EXT,
+		eSrcEXT						= VK_BLEND_OP_SRC_EXT,
+		eDstEXT						= VK_BLEND_OP_DST_EXT,
+		eXorEXT						= VK_BLEND_OP_XOR_EXT,
+		eRedEXT						= VK_BLEND_OP_RED_EXT
 	};
 
 	/*********************************************************************
@@ -304,8 +304,8 @@ namespace Vk
 		 */
 		struct ViewportStateInfo
 		{
-			std::vector<VkRect2D>			scissors;
-			std::vector<VkViewport>			viewports;
+			std::vector<VkRect2D>		scissors;
+			std::vector<VkViewport>		viewports;
 		};
 
 		/*****************************************************************
@@ -336,9 +336,9 @@ namespace Vk
 			CullMode		cullMode					= CullMode::eNone;
 			FrontFace		frontFace					= FrontFace::eCounterClockwise;
 			PolygonMode		polygonMode					= PolygonMode::eFill;
-			VkBool32		depthClampEnable			= VK_FALSE;
-			VkBool32		rasterizerDiscardEnable		= VK_FALSE;
-			VkBool32		depthBiasEnable				= VK_FALSE;
+			Bool32			depthClampEnable			= eFalse;
+			Bool32			rasterizerDiscardEnable		= eFalse;
+			Bool32			depthBiasEnable				= eFalse;
 			float			depthBiasConstantFactor		= 0.0f;
 			float			depthBiasClamp				= 0.0f;
 			float			depthBiasSlopeFactor		= 0.0f;
@@ -372,15 +372,15 @@ namespace Vk
 		 */
 		struct DepthStencilStateInfo
 		{
-			VkBool32				depthTestEnable				= VK_FALSE;
-			VkBool32				depthWriteEnable			= VK_FALSE;
-			VkBool32				depthBoundsTestEnable		= VK_FALSE;
-			VkBool32				stencilTestEnable			= VK_FALSE;
-			CompareOp				depthCompareOp				= CompareOp::eLessOrEqual;
-			StencilOpState			front						= {};
-			StencilOpState			back						= {};
-			float					minDepthBounds				= 0.0f;
-			float					maxDepthBounds				= 0.0f;
+			Bool32				depthTestEnable				= eFalse;
+			Bool32				depthWriteEnable			= eFalse;
+			Bool32				depthBoundsTestEnable		= eFalse;
+			Bool32				stencilTestEnable			= eFalse;
+			CompareOp			depthCompareOp				= CompareOp::eLessOrEqual;
+			StencilOpState		front						= {};
+			StencilOpState		back						= {};
+			float				minDepthBounds				= 0.0f;
+			float				maxDepthBounds				= 0.0f;
 		};
 
 		/*****************************************************************
@@ -392,11 +392,11 @@ namespace Vk
 		 */
 		struct MultisampleStateInfo
 		{
-			VkSampleCountFlagBits		rasterizationSamples		= VK_SAMPLE_COUNT_1_BIT;
-			VkBool32					alphaToCoverageEnable		= VK_FALSE;
-			VkBool32					sampleShadingEnable			= VK_FALSE;
-			VkBool32					alphaToOneEnable			= VK_FALSE;
-			float						minSampleShading			= 0.0f;
+			SampleCount		rasterizationSamples		= SampleCount::e1;
+			Bool32			alphaToCoverageEnable		= eFalse;
+			Bool32			sampleShadingEnable			= eFalse;
+			Bool32			alphaToOneEnable			= eFalse;
+			float			minSampleShading			= 0.0f;
 		};
 
 		/*****************************************************************
@@ -434,7 +434,7 @@ namespace Vk
 		 */
 		struct ColorBlendAttachmentState
 		{
-			VkBool32					blendEnable				= VK_FALSE;
+			Bool32						blendEnable				= eFalse;
 			BlendFactor					srcColorBlendFactor		= BlendFactor::eZero;
 			BlendFactor					dstColorBlendFactor		= BlendFactor::eZero;
 			BlendOp						colorBlendOp			= BlendOp::eAdd;
@@ -455,7 +455,7 @@ namespace Vk
 		 */
 		struct ColorBlendStateInfo
 		{
-			VkBool32									logicOpEnable			= VK_FALSE;
+			Bool32										logicOpEnable			= eFalse;
 			LogicOp										logicOp					= LogicOp::eNoOp;
 			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;

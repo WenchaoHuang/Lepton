@@ -16,18 +16,18 @@ HostVisibleBuffer::HostVisibleBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
 
 VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 {
-	if (SizeBytes == 0)					return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	else if (SizeBytes == m_Bytes)		return VK_SUCCESS;
+	if (SizeBytes == 0)						return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+	else if (SizeBytes == m_Bytes)			return VK_SUCCESS;
 
-	VkBufferCreateInfo					CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.size						= SizeBytes;
-	CreateInfo.usage					= 0x00001FFF;		//!	For all usages.
-	CreateInfo.sharingMode				= VK_SHARING_MODE_EXCLUSIVE;
-	CreateInfo.queueFamilyIndexCount	= 0;
-	CreateInfo.pQueueFamilyIndices		= nullptr;
+	VkBufferCreateInfo						CreateInfo = {};
+	CreateInfo.sType						= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	CreateInfo.pNext						= nullptr;
+	CreateInfo.flags						= 0;
+	CreateInfo.size							= SizeBytes;
+	CreateInfo.usage						= 0x00001FFF;		//!	For all usages.
+	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
+	CreateInfo.queueFamilyIndexCount		= 0;
+	CreateInfo.pQueueFamilyIndices			= nullptr;
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
@@ -144,18 +144,18 @@ DeviceLocalBuffer::DeviceLocalBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
 
 VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 {
-	if (SizeBytes == 0)					return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	else if (SizeBytes == m_Bytes)		return VK_SUCCESS;
+	if (SizeBytes == 0)						return VK_ERROR_OUT_OF_DEVICE_MEMORY;
+	else if (SizeBytes == m_Bytes)			return VK_SUCCESS;
 
-	VkBufferCreateInfo					CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.size						= SizeBytes;
-	CreateInfo.usage					= 0x00001FFF;		//!	For all usages.
-	CreateInfo.sharingMode				= VK_SHARING_MODE_EXCLUSIVE;
-	CreateInfo.queueFamilyIndexCount	= 0;
-	CreateInfo.pQueueFamilyIndices		= nullptr;
+	VkBufferCreateInfo						CreateInfo = {};
+	CreateInfo.sType						= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	CreateInfo.pNext						= nullptr;
+	CreateInfo.flags						= 0;
+	CreateInfo.size							= SizeBytes;
+	CreateInfo.usage						= 0x00001FFF;		//!	For all usages.
+	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
+	CreateInfo.queueFamilyIndexCount		= 0;
+	CreateInfo.pQueueFamilyIndices			= nullptr;
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 

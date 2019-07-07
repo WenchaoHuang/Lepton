@@ -127,7 +127,7 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 	MultisampleStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
 	MultisampleStateCreateInfo.pNext								= nullptr;
 	MultisampleStateCreateInfo.flags								= 0;
-	MultisampleStateCreateInfo.rasterizationSamples					= CreateInfo.MultisampleState.rasterizationSamples;
+	MultisampleStateCreateInfo.rasterizationSamples					= static_cast<VkSampleCountFlagBits>(CreateInfo.MultisampleState.rasterizationSamples);
 	MultisampleStateCreateInfo.sampleShadingEnable					= CreateInfo.MultisampleState.sampleShadingEnable;
 	MultisampleStateCreateInfo.minSampleShading						= CreateInfo.MultisampleState.minSampleShading;
 	MultisampleStateCreateInfo.pSampleMask							= nullptr;

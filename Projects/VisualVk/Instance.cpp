@@ -98,12 +98,12 @@ VkDebugReportCallbackEXT Instance::CreateDebugReportCallback(VkDebugReportFlagsE
 
 	if (pfnCreateDebugReportCallback != nullptr)
 	{
-		VkDebugReportCallbackCreateInfoEXT	CreateInfo = {};
-		CreateInfo.sType					= VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-		CreateInfo.pNext					= nullptr;
-		CreateInfo.flags					= eFlags;
-		CreateInfo.pfnCallback				= pfnCallback;
-		CreateInfo.pUserData				= nullptr;
+		VkDebugReportCallbackCreateInfoEXT		CreateInfo = {};
+		CreateInfo.sType						= VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+		CreateInfo.pNext						= nullptr;
+		CreateInfo.flags						= eFlags;
+		CreateInfo.pfnCallback					= pfnCallback;
+		CreateInfo.pUserData					= nullptr;
 
 		pfnCreateDebugReportCallback(m_hInstance, &CreateInfo, nullptr, &hDebugReportCallback);
 	}

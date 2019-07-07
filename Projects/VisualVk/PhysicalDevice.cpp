@@ -34,12 +34,12 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 
 	for (size_t i = 0; i < QueueCreateInfos.size(); i++)
 	{
-		QueueCreateInfos[i].sType				= VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-		QueueCreateInfos[i].pNext				= nullptr;
-		QueueCreateInfos[i].flags				= 0;
-		QueueCreateInfos[i].queueFamilyIndex	= static_cast<uint32_t>(i);
-		QueueCreateInfos[i].queueCount			= 1;
-		QueueCreateInfos[i].pQueuePriorities	= &QueuePriority;
+		QueueCreateInfos[i].sType					= VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+		QueueCreateInfos[i].pNext					= nullptr;
+		QueueCreateInfos[i].flags					= 0;
+		QueueCreateInfos[i].queueFamilyIndex		= static_cast<uint32_t>(i);
+		QueueCreateInfos[i].queueCount				= 1;
+		QueueCreateInfos[i].pQueuePriorities		= &QueuePriority;
 	}
 
 	std::vector<const char*>	pExtensions;
@@ -49,17 +49,17 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 		pExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 	}
 
-	VkDeviceCreateInfo							DeviceCreateInfo = {};
-	DeviceCreateInfo.sType						= VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-	DeviceCreateInfo.pNext						= nullptr;
-	DeviceCreateInfo.flags						= 0;
-	DeviceCreateInfo.queueCreateInfoCount		= static_cast<uint32_t>(QueueCreateInfos.size());
-	DeviceCreateInfo.pQueueCreateInfos			= QueueCreateInfos.data();
-	DeviceCreateInfo.enabledLayerCount			= 0;
-	DeviceCreateInfo.ppEnabledLayerNames		= nullptr;
-	DeviceCreateInfo.enabledExtensionCount		= static_cast<uint32_t>(pExtensions.size());
-	DeviceCreateInfo.ppEnabledExtensionNames	= pExtensions.data();
-	DeviceCreateInfo.pEnabledFeatures			= &m_Features;
+	VkDeviceCreateInfo								DeviceCreateInfo = {};
+	DeviceCreateInfo.sType							= VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+	DeviceCreateInfo.pNext							= nullptr;
+	DeviceCreateInfo.flags							= 0;
+	DeviceCreateInfo.queueCreateInfoCount			= static_cast<uint32_t>(QueueCreateInfos.size());
+	DeviceCreateInfo.pQueueCreateInfos				= QueueCreateInfos.data();
+	DeviceCreateInfo.enabledLayerCount				= 0;
+	DeviceCreateInfo.ppEnabledLayerNames			= nullptr;
+	DeviceCreateInfo.enabledExtensionCount			= static_cast<uint32_t>(pExtensions.size());
+	DeviceCreateInfo.ppEnabledExtensionNames		= pExtensions.data();
+	DeviceCreateInfo.pEnabledFeatures				= &m_Features;
 
 	VkDevice hDevice = VK_NULL_HANDLE;
 

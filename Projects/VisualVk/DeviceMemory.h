@@ -17,12 +17,12 @@ namespace Vk
 	 */
 	enum class MemoryProperty : VkFlags
 	{
-		eProtected			= VK_MEMORY_PROPERTY_PROTECTED_BIT,
-		eHostCached			= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
-		eDeviceLocal		= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-		eHostVisible		= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-		eHostCoherent		= VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		eLazilyAllocated	= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT
+		eProtected				= VK_MEMORY_PROPERTY_PROTECTED_BIT,
+		eHostCached				= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
+		eDeviceLocal			= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+		eHostVisible			= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+		eHostCoherent			= VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		eLazilyAllocated		= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT
 	};
 
 	/*********************************************************************
@@ -49,7 +49,7 @@ namespace Vk
 		operator VkDeviceMemory() const { return m_hMemory; }
 
 		//!	@brief	Allocate memory.
-		VkResult Allocate(VkDeviceSize AllocationSize, uint32_t MemoryTypeBits, Flags<MemoryProperty> PropertyFlags);
+		VkResult Allocate(VkDeviceSize SizeBytes, uint32_t MemoryTypeBits, Flags<MemoryProperty> PropertyFlags);
 
 		//!	@brief	Map memory into application address space.
 		VkResult Map(void ** ppData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);

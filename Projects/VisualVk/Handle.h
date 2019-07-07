@@ -28,12 +28,12 @@ namespace Vk
 	public:
 
 		//!	@brief	Default constructor.
-		Handle() = default;
+		Handle() : m_spInnerHandle(nullptr) {}
 
 		//!	@brief	Constructed by Vulkan handle.
 		Handle(VkResource hResource, VkDependency hDependency) : m_spInnerHandle(std::make_shared<InnerHandle>(hResource, hDependency)) {}
 
-		//!	@brief	Convert to Vulkan handle.
+		//!	@brief	Convert to Vulkan resource handle.
 		operator VkResource() const { return (m_spInnerHandle == nullptr) ? VK_NULL_HANDLE : m_spInnerHandle->m_hResource; }
 
 		//!	@brief	If resource handle is valid.
@@ -49,7 +49,7 @@ namespace Vk
 		*****************************************************************/
 
 		/**
-		 *	@brief	Inner handle object, which holds Vulkan handle.
+		 *	@brief	Inner handle object, which holds Vulkan handle really.
 		 */
 		class InnerHandle
 		{

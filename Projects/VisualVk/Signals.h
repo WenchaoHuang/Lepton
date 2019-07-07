@@ -5,7 +5,7 @@
 
 #include "Resource.h"
 
-#define VK_DEFAULT_TIMEOUT			100000000000L		//!	100 seconds.
+#define VK_DEFAULT_TIMEOUT		100000000000L		//!	100 seconds.
 
 namespace Vk
 {

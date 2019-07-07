@@ -76,7 +76,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying a pipeline stage.
+	 *	@brief	Bitmask specifying a pipeline shader stage.
 	 */
 	enum class ShaderStage : VkFlags
 	{
@@ -99,6 +99,43 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	************************    PipelineStage    *************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying pipeline stages.
+	 */
+	enum class PipelineStage : VkFlags
+	{
+		eHost								= VK_PIPELINE_STAGE_HOST_BIT,
+		eTransfer							= VK_PIPELINE_STAGE_TRANSFER_BIT,
+		eTopOfPipe							= VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+		eVertexInput						= VK_PIPELINE_STAGE_VERTEX_INPUT_BIT,
+		eAllGraphics						= VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT,
+		eAllCommands						= VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+		eBottomOfPipe						= VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+		eDrawIndirect						= VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT,
+		eVertexShader						= VK_PIPELINE_STAGE_VERTEX_SHADER_BIT,
+		eComputeShader						= VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+		eGeometryShader						= VK_PIPELINE_STAGE_GEOMETRY_SHADER_BIT,
+		eFragmentShader						= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+		eLateFragmentTests					= VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
+		eEarlyFragmentTests					= VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
+		eColorAttachmentOutput				= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+		eTessellationControlShader			= VK_PIPELINE_STAGE_TESSELLATION_CONTROL_SHADER_BIT,
+		eTessellationEvaluationShader		= VK_PIPELINE_STAGE_TESSELLATION_EVALUATION_SHADER_BIT,
+		eAccelerationStructureBuildNV		= VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_NV,
+		eFragmentDensityProcessEXT			= VK_PIPELINE_STAGE_FRAGMENT_DENSITY_PROCESS_BIT_EXT,
+		eConditionalRenderingEXT			= VK_PIPELINE_STAGE_CONDITIONAL_RENDERING_BIT_EXT,
+		eTransformFeedbackEXT				= VK_PIPELINE_STAGE_TRANSFORM_FEEDBACK_BIT_EXT,
+		eShadingRateImageNV					= VK_PIPELINE_STAGE_SHADING_RATE_IMAGE_BIT_NV,
+		eRayTracingShaderNV					= VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_NV,
+		eCommandProcessNVX					= VK_PIPELINE_STAGE_COMMAND_PROCESS_BIT_NVX,
+		eTaskShaderNV						= VK_PIPELINE_STAGE_TASK_SHADER_BIT_NV,
+		eMeshShaderNV						= VK_PIPELINE_STAGE_MESH_SHADER_BIT_NV
+	};
+
+	/*********************************************************************
 	*************************    ImageLayout    **************************
 	*********************************************************************/
 
@@ -107,22 +144,22 @@ namespace Vk
 	 */
 	enum class ImageLayout
 	{
-		eGeneral									= VK_IMAGE_LAYOUT_GENERAL,
-		eUndefined									= VK_IMAGE_LAYOUT_UNDEFINED,
-		ePreinitialized								= VK_IMAGE_LAYOUT_PREINITIALIZED,
-		eTransferSrcOptimal							= VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		eTransferDstOptimal							= VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		eShaderReadOnlyOptimal						= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		eColorAttachmentOptimal						= VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-		eDepthStencilReadOnlyOptimal				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL,
-		eDepthStencilAttachmentOptimal				= VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
-		eDepthReadOnlyStencilAttachmentOptimal		= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL,
-		eDepthAttachmentStencilReadOnlyOptimal		= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL,
-		eDepthAttachmentStencilReadOnlyOptimalKHR	= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL_KHR,
-		eDepthReadOnlyStencilAttachmentOptimalKHR	= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL_KHR,
-		eFragmentDensityMapOptimalEXT				= VK_IMAGE_LAYOUT_FRAGMENT_DENSITY_MAP_OPTIMAL_EXT,
-		eShadingRateOptimalNV						= VK_IMAGE_LAYOUT_SHADING_RATE_OPTIMAL_NV,
-		eSharedPresentKHR							= VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR,
-		ePresentSrcKHR								= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+		eGeneral										= VK_IMAGE_LAYOUT_GENERAL,
+		eUndefined										= VK_IMAGE_LAYOUT_UNDEFINED,
+		ePreinitialized									= VK_IMAGE_LAYOUT_PREINITIALIZED,
+		eTransferSrcOptimal								= VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		eTransferDstOptimal								= VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		eShaderReadOnlyOptimal							= VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+		eColorAttachmentOptimal							= VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+		eDepthStencilReadOnlyOptimal					= VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL,
+		eDepthStencilAttachmentOptimal					= VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+		eDepthReadOnlyStencilAttachmentOptimal			= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL,
+		eDepthAttachmentStencilReadOnlyOptimal			= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL,
+		eDepthAttachmentStencilReadOnlyOptimalKHR		= VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_STENCIL_READ_ONLY_OPTIMAL_KHR,
+		eDepthReadOnlyStencilAttachmentOptimalKHR		= VK_IMAGE_LAYOUT_DEPTH_READ_ONLY_STENCIL_ATTACHMENT_OPTIMAL_KHR,
+		eFragmentDensityMapOptimalEXT					= VK_IMAGE_LAYOUT_FRAGMENT_DENSITY_MAP_OPTIMAL_EXT,
+		eShadingRateOptimalNV							= VK_IMAGE_LAYOUT_SHADING_RATE_OPTIMAL_NV,
+		eSharedPresentKHR								= VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR,
+		ePresentSrcKHR									= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
 	};
 }
