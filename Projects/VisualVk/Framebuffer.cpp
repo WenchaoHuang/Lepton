@@ -14,16 +14,31 @@ RenderPass::RenderPass()
 }
 
 
-VkResult RenderPass::Create(const std::vector<VkAttachmentDescription> & attachmentDescriptions,
+VkResult RenderPass::Create(const std::vector<AttachmentDescription> & attachmentDescriptions,
 							const std::vector<VkSubpassDescription> & subpassDescriptions,
 							const std::vector<VkSubpassDependency> & subpassDependencies)
 {
+	std::vector<VkAttachmentDescription> attachmentDesc(attachmentDescriptions.size());
+
+	for (size_t i = 0; i < attachmentDesc.size(); i++)
+	{
+		attachmentDesc[i].flags				= 0;
+		attachmentDesc[i].format			= static_cast<VkFormat>(attachmentDescriptions[i].format);
+		attachmentDesc[i].samples			= static_cast<VkSampleCountFlagBits>(attachmentDescriptions[i].samples);
+		attachmentDesc[i].loadOp			= static_cast<VkAttachmentLoadOp>(attachmentDescriptions[i].loadOp);
+		attachmentDesc[i].storeOp			= static_cast<VkAttachmentStoreOp>(attachmentDescriptions[i].storeOp);
+		attachmentDesc[i].stencilLoadOp		= static_cast<VkAttachmentLoadOp>(attachmentDescriptions[i].stencilLoadOp);
+		attachmentDesc[i].stencilStoreOp	= static_cast<VkAttachmentStoreOp>(attachmentDescriptions[i].stencilStoreOp);
+		attachmentDesc[i].initialLayout		= static_cast<VkImageLayout>(attachmentDescriptions[i].initialLayout);
+		attachmentDesc[i].finalLayout		= static_cast<VkImageLayout>(attachmentDescriptions[i].finalLayout);
+	}
+
 	VkRenderPassCreateInfo			CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
 	CreateInfo.flags				= 0;
 	CreateInfo.attachmentCount		= static_cast<uint32_t>(attachmentDescriptions.size());
-	CreateInfo.pAttachments			= attachmentDescriptions.data();
+	CreateInfo.pAttachments			= attachmentDesc.data();
 	CreateInfo.subpassCount			= static_cast<uint32_t>(subpassDescriptions.size());
 	CreateInfo.pSubpasses			= subpassDescriptions.data();
 	CreateInfo.dependencyCount		= static_cast<uint32_t>(subpassDependencies.size());

@@ -12,12 +12,30 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan boolean type.
+	 *	@brief	Boolean type.
 	 */
 	enum Bool32 : VkBool32
 	{
 		eTrue		= VK_TRUE,
 		eFalse		= VK_FALSE
+	};
+
+	/*********************************************************************
+	*************************    SampleCount    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying sample counts supported for an image used for storage operations.
+	 */
+	enum class SampleCount : VkFlags
+	{
+		e1		= VK_SAMPLE_COUNT_1_BIT,
+		e2		= VK_SAMPLE_COUNT_2_BIT,
+		e4		= VK_SAMPLE_COUNT_4_BIT,
+		e8		= VK_SAMPLE_COUNT_8_BIT,
+		e16		= VK_SAMPLE_COUNT_16_BIT,
+		e32		= VK_SAMPLE_COUNT_32_BIT,
+		e64		= VK_SAMPLE_COUNT_64_BIT
 	};
 
 	/*********************************************************************
@@ -40,21 +58,17 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	*************************    SampleCount    **************************
+	**********************    PipelineBindPoint    ***********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying sample counts supported for an image used for storage operations.
+	 *	@brief	Specify the bind point of a pipeline object to a command buffer.
 	 */
-	enum class SampleCount : VkFlags
+	enum class PipelineBindPoint
 	{
-		e1		= VK_SAMPLE_COUNT_1_BIT,
-		e2		= VK_SAMPLE_COUNT_2_BIT,
-		e4		= VK_SAMPLE_COUNT_4_BIT,
-		e8		= VK_SAMPLE_COUNT_8_BIT,
-		e16		= VK_SAMPLE_COUNT_16_BIT,
-		e32		= VK_SAMPLE_COUNT_32_BIT,
-		e64		= VK_SAMPLE_COUNT_64_BIT
+		eCompute			= VK_PIPELINE_BIND_POINT_COMPUTE,
+		eGraphics			= VK_PIPELINE_BIND_POINT_GRAPHICS,
+		eRayTracingNV		= VK_PIPELINE_BIND_POINT_RAY_TRACING_NV
 	};
 
 	/*********************************************************************

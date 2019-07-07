@@ -1,22 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="1. Context">
-      <UniqueIdentifier>{d0afaa23-2255-47d3-86e3-e15a77f0bce9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Context\0. Instance">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="1. Context\1. LogicalDevice">
-      <UniqueIdentifier>{62024ca4-2f98-411f-b6cf-0b4b886cc121}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Context\2. PhysicalDevice">
-      <UniqueIdentifier>{2f9d1a1c-0214-4931-87f7-6fbe6aef4cbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Context\3. CommandBuffer">
-      <UniqueIdentifier>{21975e96-0c12-406e-be91-75fd8f0691ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2. Resources">
       <UniqueIdentifier>{c26a652c-6aa1-40cc-a967-552bef9f4a57}</UniqueIdentifier>
     </Filter>
@@ -59,19 +43,35 @@
     <Filter Include="2. Resources\6. Textures">
       <UniqueIdentifier>{7a862fce-a3f2-4056-9361-3c019d8698d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. VkContext">
+      <UniqueIdentifier>{d0afaa23-2255-47d3-86e3-e15a77f0bce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. VkContext\0. Instance">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="1. VkContext\1. LogicalDevice">
+      <UniqueIdentifier>{62024ca4-2f98-411f-b6cf-0b4b886cc121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. VkContext\2. PhysicalDevice">
+      <UniqueIdentifier>{2f9d1a1c-0214-4931-87f7-6fbe6aef4cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. VkContext\3. CommandBuffer">
+      <UniqueIdentifier>{21975e96-0c12-406e-be91-75fd8f0691ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Instance.cpp">
-      <Filter>1. Context\0. Instance</Filter>
+      <Filter>1. VkContext\0. Instance</Filter>
     </ClCompile>
     <ClCompile Include="LogicalDevice.cpp">
-      <Filter>1. Context\1. LogicalDevice</Filter>
+      <Filter>1. VkContext\1. LogicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="PhysicalDevice.cpp">
-      <Filter>1. Context\2. PhysicalDevice</Filter>
+      <Filter>1. VkContext\2. PhysicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="CommandBuffer.cpp">
-      <Filter>1. Context\3. CommandBuffer</Filter>
+      <Filter>1. VkContext\3. CommandBuffer</Filter>
     </ClCompile>
     <ClCompile Include="DeviceMemory.cpp">
       <Filter>2. Resources\1. Memory</Filter>
@@ -112,13 +112,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Instance.h">
-      <Filter>1. Context\0. Instance</Filter>
+      <Filter>1. VkContext\0. Instance</Filter>
     </ClInclude>
     <ClInclude Include="LogicalDevice.h">
-      <Filter>1. Context\1. LogicalDevice</Filter>
+      <Filter>1. VkContext\1. LogicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="PhysicalDevice.h">
-      <Filter>1. Context\2. PhysicalDevice</Filter>
+      <Filter>1. VkContext\2. PhysicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="Signals.h">
       <Filter>2. Resources\2. Signals</Filter>
@@ -139,7 +139,7 @@
       <Filter>2. Resources\7. Pipelines</Filter>
     </ClInclude>
     <ClInclude Include="CommandBuffer.h">
-      <Filter>1. Context\3. CommandBuffer</Filter>
+      <Filter>1. VkContext\3. CommandBuffer</Filter>
     </ClInclude>
     <ClInclude Include="ShaderModule.h">
       <Filter>2. Resources\11. ShaderModule</Filter>
