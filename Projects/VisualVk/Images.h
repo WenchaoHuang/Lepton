@@ -114,21 +114,21 @@ namespace Vk
 
 	private:
 
-		VkImage						m_hImage;
+		VkImage					m_hImage;
 
-		Format						m_eFormat;
+		Format					m_eFormat;
 
-		VkExtent3D					m_Extent3D;
+		VkExtent3D				m_Extent3D;
 
-		SampleCount					m_eSamples;
+		SampleCount				m_eSamples;
 
-		VkImageView					m_hImageView;
+		VkImageView				m_hImageView;
 
-		DeviceMemory				m_DeviceMemory;
+		DeviceMemory			m_DeviceMemory;
 
-		uint32_t					m_ArrayLayers;
+		uint32_t				m_ArrayLayers;
 
-		uint32_t					m_MipLevels;
+		uint32_t				m_MipLevels;
 	};
 
 	/*********************************************************************

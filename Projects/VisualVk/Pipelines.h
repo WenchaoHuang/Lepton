@@ -336,9 +336,9 @@ namespace Vk
 			CullMode		cullMode					= CullMode::eNone;
 			FrontFace		frontFace					= FrontFace::eCounterClockwise;
 			PolygonMode		polygonMode					= PolygonMode::eFill;
-			Bool32			depthClampEnable			= eFalse;
-			Bool32			rasterizerDiscardEnable		= eFalse;
-			Bool32			depthBiasEnable				= eFalse;
+			VkBool32		depthClampEnable			= VK_FALSE;
+			VkBool32		rasterizerDiscardEnable		= VK_FALSE;
+			VkBool32		depthBiasEnable				= VK_FALSE;
 			float			depthBiasConstantFactor		= 0.0f;
 			float			depthBiasClamp				= 0.0f;
 			float			depthBiasSlopeFactor		= 0.0f;
@@ -372,10 +372,10 @@ namespace Vk
 		 */
 		struct DepthStencilStateInfo
 		{
-			Bool32				depthTestEnable				= eFalse;
-			Bool32				depthWriteEnable			= eFalse;
-			Bool32				depthBoundsTestEnable		= eFalse;
-			Bool32				stencilTestEnable			= eFalse;
+			VkBool32			depthTestEnable				= VK_FALSE;
+			VkBool32			depthWriteEnable			= VK_FALSE;
+			VkBool32			depthBoundsTestEnable		= VK_FALSE;
+			VkBool32			stencilTestEnable			= VK_FALSE;
 			CompareOp			depthCompareOp				= CompareOp::eLessOrEqual;
 			StencilOpState		front						= {};
 			StencilOpState		back						= {};
@@ -393,9 +393,9 @@ namespace Vk
 		struct MultisampleStateInfo
 		{
 			SampleCount		rasterizationSamples		= SampleCount::e1;
-			Bool32			alphaToCoverageEnable		= eFalse;
-			Bool32			sampleShadingEnable			= eFalse;
-			Bool32			alphaToOneEnable			= eFalse;
+			VkBool32		alphaToCoverageEnable		= VK_FALSE;
+			VkBool32		sampleShadingEnable			= VK_FALSE;
+			VkBool32		alphaToOneEnable			= VK_FALSE;
 			float			minSampleShading			= 0.0f;
 		};
 
@@ -434,7 +434,7 @@ namespace Vk
 		 */
 		struct ColorBlendAttachmentState
 		{
-			Bool32						blendEnable				= eFalse;
+			VkBool32					blendEnable				= VK_FALSE;
 			BlendFactor					srcColorBlendFactor		= BlendFactor::eZero;
 			BlendFactor					dstColorBlendFactor		= BlendFactor::eZero;
 			BlendOp						colorBlendOp			= BlendOp::eAdd;
@@ -455,7 +455,7 @@ namespace Vk
 		 */
 		struct ColorBlendStateInfo
 		{
-			Bool32										logicOpEnable			= eFalse;
+			VkBool32									logicOpEnable			= VK_FALSE;
 			LogicOp										logicOp					= LogicOp::eNoOp;
 			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;

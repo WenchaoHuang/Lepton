@@ -85,9 +85,9 @@ namespace Vk
 		AddressMode			addressModeV				= AddressMode::eRepeat;
 		AddressMode			addressModeW				= AddressMode::eRepeat;
 		BorderColor			borderColor					= BorderColor::eFloatTransparentBlack;
-		Bool32				unnormalizedCoordinates		= eFalse;
-		Bool32				anisotropyEnable			= eFalse;
-		Bool32				compareEnable				= eFalse;
+		VkBool32			unnormalizedCoordinates		= VK_FALSE;
+		VkBool32			anisotropyEnable			= VK_FALSE;
+		VkBool32			compareEnable				= VK_FALSE;
 		float				maxAnisotropy				= 1.0f;
 		float				mipLodBias					= 0.0f;
 		float				minLod						= 0.0f;
