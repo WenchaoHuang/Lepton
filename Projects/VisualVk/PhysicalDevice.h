@@ -95,22 +95,22 @@ namespace Vk
 
 	private:
 
-		const VkPhysicalDevice					m_hPhysicalDevice;
+		const VkPhysicalDevice			m_hPhysicalDevice;
 
-		std::set<LogicalDevice*>				m_pLogicalDevices;
+		std::set<LogicalDevice*>		m_pLogicalDevices;
 
 	private:
 
-		VkPhysicalDeviceFeatures				m_Features;
+		VkPhysicalDeviceFeatures					m_Features;
 
-		VkPhysicalDeviceProperties				m_Properties;
+		VkPhysicalDeviceProperties					m_Properties;
 
-		std::vector<VkLayerProperties>			m_LayerProperties;
+		std::vector<VkLayerProperties>				m_LayerProperties;
 
-		VkPhysicalDeviceMemoryProperties		m_MemoryProperties;
+		VkPhysicalDeviceMemoryProperties			m_MemoryProperties;
 
-		std::vector<VkExtensionProperties>		m_ExtensionProperties;
+		std::vector<VkExtensionProperties>			m_ExtensionProperties;
 
-		std::vector<VkQueueFamilyProperties>	m_QueueFamilyProperties;
+		std::vector<VkQueueFamilyProperties>		m_QueueFamilyProperties;
 	};
 }

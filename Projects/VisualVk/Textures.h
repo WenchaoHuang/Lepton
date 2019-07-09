@@ -12,6 +12,9 @@ namespace Vk
 	*************************    BaseTexture    **************************
 	*********************************************************************/
 
+	/**
+	 *	@brief	Template for Vulkan texture objects.
+	 */
 	class BaseTexture
 	{
 
@@ -29,10 +32,21 @@ namespace Vk
 	**************************    Texture1D    ***************************
 	*********************************************************************/
 
-	class Texture1D : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture 1D object.
+	 */
+	class Texture1D : public BaseTexture, public Image1D
 	{
 
 	public:
+
+
+
+	private:
+
+		using Image1D::Create;
+
+
 
 	};
 
@@ -40,65 +54,118 @@ namespace Vk
 	************************    Texture1DArray    ************************
 	*********************************************************************/
 
-	class Texture1DArray : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture 1D array object.
+	 */
+	class Texture1DArray : public BaseTexture, public Image1DArray
 	{
 
 	public:
 
+
+
+	private:
+
+		using Image1DArray::Create;
 	};
 
 	/*********************************************************************
 	**************************    Texture2D    ***************************
 	*********************************************************************/
 
-	class Texture2D : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture 2D object.
+	 */
+	class Texture2D : public BaseTexture, public Image2D
 	{
 
 	public:
 
+
+
+	private:
+
+		using Image2D::Create;
+		using Image2D::CreateColorAttachment;
+		using Image2D::CreateDepthAttachment16;
+		using Image2D::CreateDepthAttachment32;
+		using Image2D::CreateDepthStencilAttachment;
 	};
 
 	/*********************************************************************
 	************************    Texture2DArray    ************************
 	*********************************************************************/
 
-	class Texture2DArray : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture 2D array object.
+	 */
+	class Texture2DArray : public BaseTexture, public Image2DArray
 	{
 
 	public:
 
+
+
+	private:
+
+		using Image2DArray::Create;
 	};
 
 	/*********************************************************************
 	*************************    TextureCube    **************************
 	*********************************************************************/
 
-	class TextureCube : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture cube object.
+	 */
+	class TextureCube : public BaseTexture, public ImageCube
 	{
 
 	public:
 
+
+
+	private:
+
+		using ImageCube::Create;
 	};
 
 	/*********************************************************************
 	***********************    TextureCubeArray    ***********************
 	*********************************************************************/
 
-	class TextureCubeArray : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture cube array object.
+	 */
+	class TextureCubeArray : public BaseTexture, public ImageCubeArray
 	{
 
 	public:
 
+
+	private:
+
+		using ImageCubeArray::Create;
 	};
 
 	/*********************************************************************
 	**************************    Texture3D    ***************************
 	*********************************************************************/
 
-	class Texture3D : public BaseTexture
+	/**
+	 *	@brief	Vulkan texture 3D object.
+	 */
+	class Texture3D : public BaseTexture, public Image3D
 	{
 
 	public:
+
+
+
+	private:
+
+		using Image3D::Create;
+
 
 	};
 }

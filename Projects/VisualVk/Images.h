@@ -12,52 +12,6 @@
 namespace Vk
 {
 	/*********************************************************************
-	**************************    ImageUsage    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask specifying intended usage of an image.
-	 */
-	enum class ImageUsage : VkFlags
-	{
-		eSampled					= VK_IMAGE_USAGE_SAMPLED_BIT,
-		eStorage					= VK_IMAGE_USAGE_STORAGE_BIT,
-		eTransferSrc				= VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
-		eTransferDst				= VK_IMAGE_USAGE_TRANSFER_DST_BIT,
-		eColorAttachment			= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
-		eInputAttachment			= VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT,
-		eTransientAttachment		= VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT,
-		eDepthStencilAttachment		= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-		eFragmentDensityMapEXT		= VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT,
-		eShadingRateImageNV			= VK_IMAGE_USAGE_SHADING_RATE_IMAGE_BIT_NV
-	};
-
-	/*********************************************************************
-	*************************    ImageAspect    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask specifying which aspects of an image are included in a view.
-	 */
-	enum class ImageAspect : VkFlags
-	{
-		eColor					= VK_IMAGE_ASPECT_COLOR_BIT,
-		eDepth					= VK_IMAGE_ASPECT_DEPTH_BIT,
-		eStencil				= VK_IMAGE_ASPECT_STENCIL_BIT,
-		eMetadata				= VK_IMAGE_ASPECT_METADATA_BIT,
-		ePlane0					= VK_IMAGE_ASPECT_PLANE_0_BIT,
-		ePlane1					= VK_IMAGE_ASPECT_PLANE_1_BIT,
-		ePlane2					= VK_IMAGE_ASPECT_PLANE_2_BIT,
-		ePlane0KHR				= VK_IMAGE_ASPECT_PLANE_0_BIT_KHR,
-		ePlane1KHR				= VK_IMAGE_ASPECT_PLANE_1_BIT_KHR,
-		ePlane2KHR				= VK_IMAGE_ASPECT_PLANE_2_BIT_KHR,
-		eMemoryPlane0EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT_EXT,
-		eMemoryPlane1EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_1_BIT_EXT,
-		eMemoryPlane2EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_2_BIT_EXT,
-		eMemoryPlane3EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_3_BIT_EXT
-	};
-
-	/*********************************************************************
 	**************************    BaseImage    ***************************
 	*********************************************************************/
 
@@ -80,26 +34,26 @@ namespace Vk
 		//!	@brief	Convert to VkImage handle.
 		operator VkImage() const { return m_hImage; }
 
-		//!	@brief	Return the image format.
-		Format GetFormat() const { return m_eFormat; }
+		//!	@brief	Convert to VkImageView handle.
+		operator VkImageView() const { return m_hImageView; }
 
-		//!	@brief	Return the image extent.
-		VkExtent3D GetExtent() const { return m_Extent3D; }
-
-		//!	@brief	Return the image view.
-		VkImageView GetView() const { return m_hImageView; }
-
-		//!	@brief	Return the number of mip-levels.
-		uint32_t GetMipLevels() const { return m_MipLevels; }
-
-		//!	@brief	Return the count of layers.
-		uint32_t GetArrayLayers() const { return m_ArrayLayers; }
+		//!	@brief	Whether image handle is valid.
+		VkBool32 IsValid() const { return m_hImage != VK_NULL_HANDLE; }
 
 		//!	@brief	Return the count of samples.
 		SampleCount GetSampleCount() const { return m_eSamples; }
 
-		//!	@brief	Whether image handle is valid.
-		VkBool32 IsValid() const { return m_hImage != VK_NULL_HANDLE; }
+		//!	@brief	Return the count of layers.
+		uint32_t GetArrayLayers() const { return m_ArrayLayers; }
+
+		//!	@brief	Return the number of mip-levels.
+		uint32_t GetMipLevels() const { return m_MipLevels; }
+
+		//!	@brief	Return the image extent.
+		VkExtent3D GetExtent() const { return m_Extent3D; }
+
+		//!	@brief	Return the image format.
+		Format GetFormat() const { return m_eFormat; }
 
 		//!	@brief	Release image.
 		void Release() noexcept;
@@ -107,7 +61,8 @@ namespace Vk
 	protected:
 
 		//!	@brief	Create a new image object.
-		VkResult Create(Format eFormat, VkExtent3D Extent3D,uint32_t MipLevels, uint32_t ArrayLayers, SampleCount eSamples, Flags<ImageUsage> UsageFlags, VkImageCreateFlags eCreateFlags = 0);
+		VkResult Create(Format eFormat, VkExtent3D Extent3D,uint32_t MipLevels, uint32_t ArrayLayers,
+						SampleCount eSamples, Flags<ImageUsage> UsageFlags, VkImageCreateFlags eCreateFlags = 0);
 
 		//!	@brief	Create a new image view object.
 		VkResult CreateView(Flags<ImageAspect> AspectFlags);
@@ -192,6 +147,8 @@ namespace Vk
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
 		}
+
+	public:
 
 		//!	@brief	Create a new color attachment object.
 		VkResult CreateColorAttachment(Format eFormat, VkExtent2D Extent2D, SampleCount eSamples = SampleCount::e1)

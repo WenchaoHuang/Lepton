@@ -65,12 +65,12 @@ namespace Vk
 
 	private:
 
-		const VkInstance							m_hInstance;
+		const VkInstance								m_hInstance;
 
-		std::vector<PhysicalDevice*>				m_pPhysicalDevices;
+		std::vector<PhysicalDevice*>					m_pPhysicalDevices;
 
-		static std::vector<VkLayerProperties>		sm_LayerProperties;
+		static std::vector<VkLayerProperties>			sm_LayerProperties;
 
-		static std::vector<VkExtensionProperties>	sm_ExtensionProperties;
+		static std::vector<VkExtensionProperties>		sm_ExtensionProperties;
 	};
 }

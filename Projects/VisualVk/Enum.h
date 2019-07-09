@@ -26,25 +26,6 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	**************************    CompareOp    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Stencil comparison function.
-	 */
-	enum class CompareOp
-	{
-		eLess				= VK_COMPARE_OP_LESS,
-		eEqual				= VK_COMPARE_OP_EQUAL,
-		eNever				= VK_COMPARE_OP_NEVER,
-		eAlways				= VK_COMPARE_OP_ALWAYS,
-		eGreater			= VK_COMPARE_OP_GREATER,
-		eNotEqual			= VK_COMPARE_OP_NOT_EQUAL,
-		eLessOrEqual		= VK_COMPARE_OP_LESS_OR_EQUAL,
-		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL
-	};
-
-	/*********************************************************************
 	**********************    PipelineBindPoint    ***********************
 	*********************************************************************/
 
@@ -123,6 +104,52 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	**************************    ImageUsage    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying intended usage of an image.
+	 */
+	enum class ImageUsage : VkFlags
+	{
+		eSampled					= VK_IMAGE_USAGE_SAMPLED_BIT,
+		eStorage					= VK_IMAGE_USAGE_STORAGE_BIT,
+		eTransferSrc				= VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+		eTransferDst				= VK_IMAGE_USAGE_TRANSFER_DST_BIT,
+		eColorAttachment			= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+		eInputAttachment			= VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT,
+		eTransientAttachment		= VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT,
+		eDepthStencilAttachment		= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+		eFragmentDensityMapEXT		= VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT,
+		eShadingRateImageNV			= VK_IMAGE_USAGE_SHADING_RATE_IMAGE_BIT_NV
+	};
+
+	/*********************************************************************
+	*************************    ImageAspect    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying which aspects of an image are included in a view.
+	 */
+	enum class ImageAspect : VkFlags
+	{
+		eColor					= VK_IMAGE_ASPECT_COLOR_BIT,
+		eDepth					= VK_IMAGE_ASPECT_DEPTH_BIT,
+		eStencil				= VK_IMAGE_ASPECT_STENCIL_BIT,
+		eMetadata				= VK_IMAGE_ASPECT_METADATA_BIT,
+		ePlane0					= VK_IMAGE_ASPECT_PLANE_0_BIT,
+		ePlane1					= VK_IMAGE_ASPECT_PLANE_1_BIT,
+		ePlane2					= VK_IMAGE_ASPECT_PLANE_2_BIT,
+		ePlane0KHR				= VK_IMAGE_ASPECT_PLANE_0_BIT_KHR,
+		ePlane1KHR				= VK_IMAGE_ASPECT_PLANE_1_BIT_KHR,
+		ePlane2KHR				= VK_IMAGE_ASPECT_PLANE_2_BIT_KHR,
+		eMemoryPlane0EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT_EXT,
+		eMemoryPlane1EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_1_BIT_EXT,
+		eMemoryPlane2EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_2_BIT_EXT,
+		eMemoryPlane3EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_3_BIT_EXT
+	};
+
+	/*********************************************************************
 	*************************    ImageLayout    **************************
 	*********************************************************************/
 
@@ -148,5 +175,133 @@ namespace Vk
 		eShadingRateOptimalNV							= VK_IMAGE_LAYOUT_SHADING_RATE_OPTIMAL_NV,
 		eSharedPresentKHR								= VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR,
 		ePresentSrcKHR									= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+	};
+
+	/*********************************************************************
+	**************************    CompareOp    ***************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Stencil comparison function.
+	 */
+	enum class CompareOp
+	{
+		eLess				= VK_COMPARE_OP_LESS,
+		eEqual				= VK_COMPARE_OP_EQUAL,
+		eNever				= VK_COMPARE_OP_NEVER,
+		eAlways				= VK_COMPARE_OP_ALWAYS,
+		eGreater			= VK_COMPARE_OP_GREATER,
+		eNotEqual			= VK_COMPARE_OP_NOT_EQUAL,
+		eLessOrEqual		= VK_COMPARE_OP_LESS_OR_EQUAL,
+		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL
+	};
+
+
+	/*********************************************************************
+	**************************    StencilOp    ***************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Stencil comparison function.
+	 */
+	enum class StencilOp
+	{
+		eKeep					= VK_STENCIL_OP_KEEP,
+		eZero					= VK_STENCIL_OP_ZERO,
+		eInvert					= VK_STENCIL_OP_INVERT,
+		eReplace				= VK_STENCIL_OP_REPLACE,
+		eIncrementAndWrap		= VK_STENCIL_OP_INCREMENT_AND_WRAP,
+		eDecrementAndWrap		= VK_STENCIL_OP_DECREMENT_AND_WRAP,
+		eIncrementAndClamp		= VK_STENCIL_OP_INCREMENT_AND_CLAMP,
+		eDecrementAndClamp		= VK_STENCIL_OP_DECREMENT_AND_CLAMP
+	};
+
+	/*********************************************************************
+	***************************    LogicOp    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Framebuffer logical operations.
+	 */
+	enum class LogicOp
+	{
+		eOr					= VK_LOGIC_OP_OR,
+		eNor				= VK_LOGIC_OP_NOR,
+		eXor				= VK_LOGIC_OP_XOR,
+		eSet				= VK_LOGIC_OP_SET,
+		eAnd				= VK_LOGIC_OP_AND,
+		eNand				= VK_LOGIC_OP_NAND,
+		eCopy				= VK_LOGIC_OP_COPY,
+		eNoOp				= VK_LOGIC_OP_NO_OP,
+		eClear				= VK_LOGIC_OP_CLEAR,
+		eInvert				= VK_LOGIC_OP_INVERT,
+		eOrReverse			= VK_LOGIC_OP_OR_REVERSE,
+		eEquivalent			= VK_LOGIC_OP_EQUIVALENT,
+		eOrInverted			= VK_LOGIC_OP_OR_INVERTED,
+		eAndReverse			= VK_LOGIC_OP_AND_REVERSE,
+		eAndInverted		= VK_LOGIC_OP_AND_INVERTED,
+		eCopyInverted		= VK_LOGIC_OP_COPY_INVERTED
+	};
+
+	/*********************************************************************
+	***************************    BlendOp    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Framebuffer blending operations.
+	 */
+	enum class BlendOp
+	{
+		eMin						= VK_BLEND_OP_MIN,
+		eMax						= VK_BLEND_OP_MAX,
+		eAdd						= VK_BLEND_OP_ADD,
+		eSubtract					= VK_BLEND_OP_SUBTRACT,
+		eReverseSubtract			= VK_BLEND_OP_REVERSE_SUBTRACT,
+		ePlusClampedAlphaEXT		= VK_BLEND_OP_PLUS_CLAMPED_ALPHA_EXT,
+		eHslLuminosityEXT			= VK_BLEND_OP_HSL_LUMINOSITY_EXT,
+		eHslSaturationEXT			= VK_BLEND_OP_HSL_SATURATION_EXT,
+		eMinusClampedEXT			= VK_BLEND_OP_MINUS_CLAMPED_EXT,
+		ePlusClampedEXT				= VK_BLEND_OP_PLUS_CLAMPED_EXT,
+		eLinearlightEXT				= VK_BLEND_OP_LINEARLIGHT_EXT,
+		eLineardodgeEXT				= VK_BLEND_OP_LINEARDODGE_EXT,
+		ePlusDarkerEXT				= VK_BLEND_OP_PLUS_DARKER_EXT,
+		eVividlightEXT				= VK_BLEND_OP_VIVIDLIGHT_EXT,
+		eLinearburnEXT				= VK_BLEND_OP_LINEARBURN_EXT,
+		eColordodgeEXT				= VK_BLEND_OP_COLORDODGE_EXT,
+		eDifferenceEXT				= VK_BLEND_OP_DIFFERENCE_EXT,
+		eInvertRgbEXT				= VK_BLEND_OP_INVERT_RGB_EXT,
+		eInvertOvgEXT				= VK_BLEND_OP_INVERT_OVG_EXT,
+		eExclusionEXT				= VK_BLEND_OP_EXCLUSION_EXT,
+		eSoftlightEXT				= VK_BLEND_OP_SOFTLIGHT_EXT,
+		eHardlightEXT				= VK_BLEND_OP_HARDLIGHT_EXT,
+		eColorburnEXT				= VK_BLEND_OP_COLORBURN_EXT,
+		eHslColorEXT				= VK_BLEND_OP_HSL_COLOR_EXT,
+		eContrastEXT				= VK_BLEND_OP_CONTRAST_EXT,
+		ePinlightEXT				= VK_BLEND_OP_PINLIGHT_EXT,
+		eMultiplyEXT				= VK_BLEND_OP_MULTIPLY_EXT,
+		eDstAtopEXT					= VK_BLEND_OP_DST_ATOP_EXT,
+		eSrcAtopEXT					= VK_BLEND_OP_SRC_ATOP_EXT,
+		eSrcOverEXT					= VK_BLEND_OP_SRC_OVER_EXT,
+		eDstOverEXT					= VK_BLEND_OP_DST_OVER_EXT,
+		eOverlayEXT					= VK_BLEND_OP_OVERLAY_EXT,
+		eLightenEXT					= VK_BLEND_OP_LIGHTEN_EXT,
+		eHardmixEXT					= VK_BLEND_OP_HARDMIX_EXT,
+		eHslHueEXT					= VK_BLEND_OP_HSL_HUE_EXT,
+		eDstOutEXT					= VK_BLEND_OP_DST_OUT_EXT,
+		eSrcOutEXT					= VK_BLEND_OP_SRC_OUT_EXT,
+		eDarkenEXT					= VK_BLEND_OP_DARKEN_EXT,
+		eScreenEXT					= VK_BLEND_OP_SCREEN_EXT,
+		eInvertEXT					= VK_BLEND_OP_INVERT_EXT,
+		eDstInEXT					= VK_BLEND_OP_DST_IN_EXT,
+		eSrcInEXT					= VK_BLEND_OP_SRC_IN_EXT,
+		eMinusEXT					= VK_BLEND_OP_MINUS_EXT,
+		eGreenEXT					= VK_BLEND_OP_GREEN_EXT,
+		eBlueEXT					= VK_BLEND_OP_BLUE_EXT,
+		ePlusEXT					= VK_BLEND_OP_PLUS_EXT,
+		eZeroEXT					= VK_BLEND_OP_ZERO_EXT,
+		eSrcEXT						= VK_BLEND_OP_SRC_EXT,
+		eDstEXT						= VK_BLEND_OP_DST_EXT,
+		eXorEXT						= VK_BLEND_OP_XOR_EXT,
+		eRedEXT						= VK_BLEND_OP_RED_EXT
 	};
 }
