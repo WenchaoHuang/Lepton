@@ -42,7 +42,7 @@ VkResult Sampler::Create(const SamplerInfo & CreateInfo)
 
 	if (eResult == VK_SUCCESS)
 	{
-		*static_cast<SamplerH*>(this) = SamplerH(hSampler, *m_pDevice);
+		static_cast<SamplerH&>(*this) = SamplerH(hSampler, *m_pDevice);
 
 		m_CreateInfo = CreateInfo;
 	}

@@ -15,21 +15,6 @@ ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShad
 }
 
 
-VkPipelineShaderStageCreateInfo ShaderModule::GetStageInfo(ShaderStage eStage) const
-{
-	VkPipelineShaderStageCreateInfo		CreateInfo = {};
-	CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	CreateInfo.pNext					= nullptr;
-	CreateInfo.flags					= 0;
-	CreateInfo.stage					= static_cast<VkShaderStageFlagBits>(eStage);
-	CreateInfo.module					= m_hShaderModule;
-	CreateInfo.pName					= "main";
-	CreateInfo.pSpecializationInfo		= nullptr;
-
-	return CreateInfo;
-}
-
-
 std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode)
 {
 	VkShaderModuleCreateInfo		CreateInfo = {};

@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Format.h"
-#include "Handle.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
 
@@ -427,7 +426,8 @@ namespace Vk
 		
 	public:
 
-
+		//!	@brief	Convert to VkPipeline handle.
+		operator VkPipeline() const { return m_hPipeline; }
 
 	private:
 

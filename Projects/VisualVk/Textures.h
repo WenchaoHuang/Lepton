@@ -83,6 +83,7 @@ namespace Vk
 
 
 
+
 	private:
 
 		using Image2D::Create;
@@ -90,7 +91,7 @@ namespace Vk
 		using Image2D::CreateDepthAttachment16;
 		using Image2D::CreateDepthAttachment32;
 		using Image2D::CreateDepthStencilAttachment;
-	};
+	}; 
 
 	/*********************************************************************
 	************************    Texture2DArray    ************************

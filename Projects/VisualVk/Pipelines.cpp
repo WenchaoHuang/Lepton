@@ -3,6 +3,7 @@
 *************************************************************************/
 #include "Framebuffer.h"
 #include "Pipelines.h"
+#include <functional>
 
 using namespace Vk;
 
@@ -66,16 +67,30 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineInfo & CreateInfo)
 {
 	std::vector<VkPipelineShaderStageCreateInfo>		ShaderStageCreateInfos;
 
+	auto GetShaderStageInfo = [](VkShaderModule hModule, ShaderStage eStage) -> VkPipelineShaderStageCreateInfo
+	{
+		VkPipelineShaderStageCreateInfo		CreateInfo = {};
+		CreateInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		CreateInfo.pNext					= nullptr;
+		CreateInfo.flags					= 0;
+		CreateInfo.stage					= static_cast<VkShaderStageFlagBits>(eStage);
+		CreateInfo.module					= hModule;
+		CreateInfo.pName					= "main";
+		CreateInfo.pSpecializationInfo		= nullptr;
+
+		return CreateInfo;
+	};
+
 	if ((CreateInfo.ShaderStages.spVertexShader != nullptr) && CreateInfo.ShaderStages.spVertexShader->IsValid())
-		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spVertexShader->GetStageInfo(ShaderStage::eVertex));
+		ShaderStageCreateInfos.push_back(GetShaderStageInfo(CreateInfo.ShaderStages.spVertexShader->GetHandle(), ShaderStage::eVertex));
 	if ((CreateInfo.ShaderStages.spFragmentShader != nullptr) && CreateInfo.ShaderStages.spFragmentShader->IsValid())
-		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spFragmentShader->GetStageInfo(ShaderStage::eFragment));
+		ShaderStageCreateInfos.push_back(GetShaderStageInfo(CreateInfo.ShaderStages.spFragmentShader->GetHandle(), ShaderStage::eFragment));
 	if ((CreateInfo.ShaderStages.spGeometryShader != nullptr) && CreateInfo.ShaderStages.spGeometryShader->IsValid())
-		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spGeometryShader->GetStageInfo(ShaderStage::eGeometry));
+		ShaderStageCreateInfos.push_back(GetShaderStageInfo(CreateInfo.ShaderStages.spGeometryShader->GetHandle(), ShaderStage::eGeometry));
 	if ((CreateInfo.ShaderStages.spTessControlShader != nullptr) && CreateInfo.ShaderStages.spTessControlShader->IsValid())
-		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spTessControlShader->GetStageInfo(ShaderStage::eTessellationControl));
+		ShaderStageCreateInfos.push_back(GetShaderStageInfo(CreateInfo.ShaderStages.spTessControlShader->GetHandle(), ShaderStage::eTessellationControl));
 	if ((CreateInfo.ShaderStages.spTessEvalutionShader != nullptr) && CreateInfo.ShaderStages.spTessEvalutionShader->IsValid())
-		ShaderStageCreateInfos.push_back(CreateInfo.ShaderStages.spTessEvalutionShader->GetStageInfo(ShaderStage::eTessellationEvaluation));
+		ShaderStageCreateInfos.push_back(GetShaderStageInfo(CreateInfo.ShaderStages.spTessEvalutionShader->GetHandle(), ShaderStage::eTessellationEvaluation));
 
 	VkPipelineVertexInputStateCreateInfo							VertexInputStateCreateInfo = {};
 	VertexInputStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;

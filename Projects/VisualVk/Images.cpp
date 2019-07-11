@@ -36,7 +36,7 @@ VkResult BaseImage<eImageType, eViewType>::Create(Format eFormat,
 	VkImageCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
 	CreateInfo.pNext						= nullptr;
-	CreateInfo.flags						= static_cast<VkSampleCountFlagBits>(eCreateFlags);
+	CreateInfo.flags						= static_cast<VkImageCreateFlags>(eCreateFlags);
 	CreateInfo.imageType					= eImageType;
 	CreateInfo.format						= static_cast<VkFormat>(eFormat);
 	CreateInfo.extent						= Extent;

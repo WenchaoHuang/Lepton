@@ -45,7 +45,7 @@ namespace Vk
 	/**
 	 *	@brief	Bitmask specifying how execution and memory dependencies are formed.
 	 */
-	enum class DependencyFlagBits
+	enum class DependencyFlagBits : VkFlags
 	{
 		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
 		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
