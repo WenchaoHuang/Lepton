@@ -28,48 +28,53 @@ namespace Vk
 	public:
 
 		//!	@brief	Default constructor.
-		Handle() : m_spInnerHandle(nullptr) {}
-
-		//!	@brief	Constructed by Vulkan handle.
-		Handle(VkResource hResource, VkDependency hDependency) : m_spInnerHandle(std::make_shared<InnerHandle>(hResource, hDependency)) {}
+		Handle() : m_spInternalHandle(nullptr) {}
 
 		//!	@brief	Convert to Vulkan resource handle.
-		operator VkResource() const { return (m_spInnerHandle == nullptr) ? VK_NULL_HANDLE : m_spInnerHandle->m_hResource; }
+		operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
 
 		//!	@brief	If resource handle is valid.
-		bool IsValid() const { return (m_spInnerHandle != nullptr) && (m_spInnerHandle->m_hResource != VK_NULL_HANDLE); }
+		bool IsValid() const { return (m_spInternalHandle != nullptr) && (m_spInternalHandle->m_hResource != VK_NULL_HANDLE); }
 
 		//!	@brief	Invalidate current handle.
-		void Invalidate() { m_spInnerHandle.reset(); }
+		void Invalidate() { m_spInternalHandle.reset(); }
+
+	protected:
+
+		//!	@brief	Replace resource handle.
+		void Replace(VkResource hResource, VkDependency hDependency)
+		{
+			m_spInternalHandle = std::make_shared<InternalHandle>(hResource, hDependency);
+		}
 
 	private:
 
 		/*****************************************************************
-		***********************    InnerHandle    ************************
+		**********************    InternalHandle    **********************
 		*****************************************************************/
 
 		/**
-		 *	@brief	Inner handle object, which holds Vulkan handle really.
+		 *	@brief	Internal handle object, which holds Vulkan handle really.
 		 */
-		class InnerHandle
+		class InternalHandle
 		{
 
 		public:
 
 			//!	@brief	Constructed by Vulkan handle.
-			InnerHandle(VkResource hResource, VkDependency hDependency) : m_hResource(hResource), m_hDependency(hDependency) {}
+			InternalHandle(VkResource hResource, VkDependency hDependency) : m_hResource(hResource), m_hDependency(hDependency) {}
 
 			//!	@brief	Call Vulkan API to destroy resource object.
-			~InnerHandle() { if (m_hDependency != VK_NULL_HANDLE) DestroyFn(m_hDependency, m_hResource, nullptr); }
+			~InternalHandle() { if (m_hDependency != VK_NULL_HANDLE) DestroyFn(m_hDependency, m_hResource, nullptr); }
 
 		public:
 
-			const VkResource			m_hResource;
+			const VkResource				m_hResource;
 
-			const VkDependency			m_hDependency;
+			const VkDependency				m_hDependency;
 		};
 
-		std::shared_ptr<InnerHandle>	m_spInnerHandle;
+		std::shared_ptr<InternalHandle>		m_spInternalHandle;
 	};
 
 	/*********************************************************************
@@ -78,4 +83,5 @@ namespace Vk
 
 	using SamplerH			= Handle<VkSampler, VkDevice, vkDestroySampler>;
 	using RenderPassH		= Handle<VkRenderPass, VkDevice, vkDestroyRenderPass>;
+	using ShaderModuleH		= Handle<VkShaderModule, VkDevice, vkDestroyShaderModule>;
 }

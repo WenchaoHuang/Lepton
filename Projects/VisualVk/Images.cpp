@@ -1,6 +1,7 @@
 /*************************************************************************
 *************************    VisualVk_Images    **************************
 *************************************************************************/
+#include "CommandBuffer.h"
 #include "Images.h"
 
 using namespace Vk;
@@ -17,8 +18,8 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 ****************************    BaseImage    *****************************
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
-	:	m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined),
-		m_eSamples(SampleCount::e1), m_MipLevels(0), m_ArrayLayers(0), m_Extent3D({ 0, 0, 0 })
+	:	m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined), m_eImageLayout(ImageLayout::eUndefined),
+		m_eSamples(SampleCount::x1), m_MipLevels(0), m_ArrayLayers(0), m_Extent3D({ 0, 0, 0 })
 {
 
 }
@@ -71,6 +72,8 @@ VkResult BaseImage<eImageType, eViewType>::Create(Format eFormat,
 			m_pDevice->DestroyImage(m_hImage);
 
 			m_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
+
+			m_eImageLayout = ImageLayout::eUndefined;
 
 			m_ArrayLayers = ArrayLayers;
 
@@ -136,11 +139,13 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 
 		m_pDevice->DestroyImageView(m_hImageView);
 
+		m_eImageLayout = ImageLayout::eUndefined;
+
 		m_eFormat = Format::eUndefined;
 
 		m_hImageView = VK_NULL_HANDLE;
 
-		m_eSamples = SampleCount::e1;
+		m_eSamples = SampleCount::x1;
 
 		m_hImage = VK_NULL_HANDLE;
 

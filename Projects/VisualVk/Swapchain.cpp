@@ -26,13 +26,13 @@ Swapchain::Swapchain() : m_hSwapchain(VK_NULL_HANDLE), m_eImageFormat(Format::eU
 
 VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 {
-	uint32_t PresentQueueIndex = m_pPhysDevice->GetPresentQueueFamilyIndex(hSurface);
+	uint32_t PresentQueueIndex = m_pDevice->GetPhysicalDevice()->GetPresentQueueFamilyIndex(hSurface);
+
+	std::vector<VkSurfaceFormatKHR> SurfaceFormats = m_pDevice->GetPhysicalDevice()->GetSurfaceFormats(hSurface);
+
+	std::vector<VkPresentModeKHR> PresentModes = m_pDevice->GetPhysicalDevice()->GetSurfacePresentModes(hSurface);
 
 	if (PresentQueueIndex == VK_INVALID_INDEX)			return VK_ERROR_SURFACE_LOST_KHR;
-
-	std::vector<VkSurfaceFormatKHR> SurfaceFormats = m_pPhysDevice->GetSurfaceFormats(hSurface);
-
-	std::vector<VkPresentModeKHR> PresentModes = m_pPhysDevice->GetSurfacePresentModes(hSurface);
 
 	VkSwapchainCreateInfoKHR				CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -42,7 +42,7 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 	CreateInfo.minImageCount				= bVsync ? 2 : 3;
 	CreateInfo.imageFormat					= VK_FORMAT_B8G8R8A8_UNORM;
 	CreateInfo.imageColorSpace				= VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-	CreateInfo.imageExtent					= m_pPhysDevice->GetSurfaceCapabilities(hSurface).currentExtent;
+	CreateInfo.imageExtent					= m_pDevice->GetPhysicalDevice()->GetSurfaceCapabilities(hSurface).currentExtent;
 	CreateInfo.imageArrayLayers				= 1;
 	CreateInfo.imageUsage					= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 	CreateInfo.imageSharingMode				= VK_SHARING_MODE_EXCLUSIVE;

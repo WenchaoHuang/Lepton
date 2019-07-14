@@ -37,20 +37,6 @@ namespace Vk
 		eStore			= VK_ATTACHMENT_STORE_OP_STORE,
 		eDontCare		= VK_ATTACHMENT_STORE_OP_DONT_CARE,
 	};
-
-	/*********************************************************************
-	**********************    DependencyFlagBits    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask specifying how execution and memory dependencies are formed.
-	 */
-	enum class DependencyFlagBits : VkFlags
-	{
-		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
-		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
-		eDeviceGroup		= VK_DEPENDENCY_DEVICE_GROUP_BIT
-	};
 	
 	/*********************************************************************
 	************************    AccessFlagBits    ************************
@@ -92,6 +78,44 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	*********************    AttachmentReference    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Structure specifying an attachment reference.
+	 */
+	struct AttachmentReference
+	{
+		uint32_t		attachment		= 0;
+		ImageLayout		layout			= ImageLayout::eUndefined;
+	};
+
+	static_assert(sizeof(AttachmentReference) == sizeof(VkAttachmentReference), "struct and wrapper have different size!");
+	
+	/*********************************************************************
+	**********************    SubpassDescription    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Structure specifying a subpass description.
+	 */
+	struct SubpassDescription
+	{
+		const VkFlags					flags						= 0;
+		PipelineBindPoint				pipelineBindPoint			= PipelineBindPoint::eGraphics;
+		uint32_t                        inputAttachmentCount		= 0;
+		const AttachmentReference *		pInputAttachments			= nullptr;
+		uint32_t						colorAttachmentCount		= 0;
+		const AttachmentReference *		pColorAttachments			= nullptr;
+		const AttachmentReference *		pResolveAttachments			= nullptr;
+		const AttachmentReference *		pDepthStencilAttachment		= nullptr;
+		uint32_t						preserveAttachmentCount		= 0;
+		const uint32_t *				pPreserveAttachments		= nullptr;
+	};
+
+	static_assert(sizeof(SubpassDescription) == sizeof(VkSubpassDescription), "struct and wrapper have different size!");
+
+	/*********************************************************************
 	********************    AttachmentDescription    *********************
 	*********************************************************************/
 
@@ -100,8 +124,9 @@ namespace Vk
 	 */
 	struct AttachmentDescription
 	{
+		const VkFlags			flags				= 0;
 		Format					format				= Format::eUndefined;
-		SampleCount				samples				= SampleCount::e1;
+		SampleCount				samples				= SampleCount::x1;
 		AttachmentLoadOp		loadOp				= AttachmentLoadOp::eClear;
 		AttachmentStoreOp		storeOp				= AttachmentStoreOp::eStore;
 		AttachmentLoadOp		stencilLoadOp		= AttachmentLoadOp::eDontCare;
@@ -109,6 +134,8 @@ namespace Vk
 		ImageLayout				initialLayout		= ImageLayout::eUndefined;
 		ImageLayout				finalLayout			= ImageLayout::eUndefined;
 	};
+
+	static_assert(sizeof(AttachmentDescription) == sizeof(VkAttachmentDescription), "struct and wrapper have different size!");
 
 	/*********************************************************************
 	**********************    SubpassDependency    ***********************
@@ -128,36 +155,24 @@ namespace Vk
 		Flags<DependencyFlagBits>		dependencyFlags		= 0;
 	};
 
+	static_assert(sizeof(SubpassDependency) == sizeof(VkSubpassDependency), "struct and wrapper have different size!");
+
 	/*********************************************************************
 	**************************    RenderPass    **************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Base class for Vulkan render pass object.
+	 *	@brief	Vulkan render pass object.
 	 */
-	class RenderPass : private Resource, public RenderPassH
+	class RenderPass : public RenderPassH
 	{
-
-	public:
-
-		//!	@brief	Create render pass object.
-		RenderPass();
-
-		//!	@brief	Destroy render pass object.
-		~RenderPass();
 
 	public:
 
 		//!	@brief	Create a render pass object.
 		VkResult Create(const std::vector<AttachmentDescription> & attachmentDescriptions,
-						const std::vector<VkSubpassDescription> & subpassDescriptions,
+						const std::vector<SubpassDescription> & subpassDescriptions,
 						const std::vector<SubpassDependency> & subpassDependencies);
-
-	private:
-
-		std::vector<SubpassDependency>			m_SubpassDependencies;
-		std::vector<VkSubpassDescription>		m_SubpassDescriptions;
-		std::vector<AttachmentDescription>		m_AttachmentDescriptions;
 	};
 
 	/*********************************************************************
@@ -192,17 +207,15 @@ namespace Vk
 		//!	@brief	Return extent of framebuffer.
 		VkExtent2D GetExtent() const { return m_Extent2D; }
 
-		//!	@brief	Invalidate framebuffer.
+		//!	@brief	Destroy framebuffer object.
 		void Release();
 
 	private:
 
-		VkExtent2D						m_Extent2D;
+		VkExtent2D			m_Extent2D;
 
-		RenderPassH						m_hRenderPass;
+		RenderPassH			m_hRenderPass;
 
-		VkFramebuffer					m_hFramebuffer;
-
-		std::vector<VkImageView>		m_Attachments;
+		VkFramebuffer		m_hFramebuffer;
 	};
 }

@@ -17,7 +17,7 @@ DeviceMemory::DeviceMemory() : m_Bytes(0), m_hMemory(VK_NULL_HANDLE)
 
 VkResult DeviceMemory::Allocate(VkDeviceSize SizeBytes, uint32_t MemoryTypeBits, Flags<MemoryProperty> PropertyFlags)
 {
-	uint32_t MemoryTypeIndex = m_pPhysDevice->GetMemoryTypeIndex(MemoryTypeBits, PropertyFlags);
+	uint32_t MemoryTypeIndex = m_pDevice->GetPhysicalDevice()->GetMemoryTypeIndex(MemoryTypeBits, PropertyFlags);
 
 	if (MemoryTypeIndex == VK_INVALID_INDEX)		return VK_ERROR_FORMAT_NOT_SUPPORTED;
 

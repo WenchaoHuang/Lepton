@@ -30,13 +30,13 @@ namespace Vk
 		//!	@brief	Initialize devices.
 		Resource() : m_pDevice(sm_pLogicalDevice), m_pPhysDevice(sm_pPhysicalDevice) {}
 
-		//!	@brief	Set current physical device and logical device.
-		static void SetDevice(PhysicalDevice * pPhysicalDevice, LogicalDevice * pLogicalDevice)
+		//!	@brief	Set current logical device.
+		static void SetDevice(LogicalDevice * pLogicalDevice)
 		{
-			sm_pPhysicalDevice = pPhysicalDevice;
-
 			sm_pLogicalDevice = pLogicalDevice;
 		}
+
+		static LogicalDevice * GetDevice() { return sm_pLogicalDevice; }
 
 	protected:
 

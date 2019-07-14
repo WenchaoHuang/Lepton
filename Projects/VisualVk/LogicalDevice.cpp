@@ -13,8 +13,10 @@ LogicalDevice::LogicalDevice(VkDevice hDevice,
 							 CommandQueue * pComputeQueue,
 							 CommandQueue * pGraphicsQueue,
 							 CommandQueue * pTransferQueue,
+							 PhysicalDevice * pPhysicalDevice,
 							 std::vector<CommandQueue*> pCommandQueues)
-	: m_hDevice(hDevice), m_pComputeQueue(pComputeQueue), m_pGraphicsQueue(pGraphicsQueue), m_pTransferQueue(pTransferQueue), m_pCommandQueues(pCommandQueues)
+	:	m_hDevice(hDevice), m_pPhysicalDevice(pPhysicalDevice), m_pCommandQueues(pCommandQueues),
+		m_pComputeQueue(pComputeQueue), m_pGraphicsQueue(pGraphicsQueue), m_pTransferQueue(pTransferQueue)
 {
 
 }

@@ -69,25 +69,25 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	*************************    SamplerInfo    **************************
+	*************************    SamplerParam    *************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Sampler information.
+	 *	@brief	Vulkan sampler parameters.
 	 */
-	struct SamplerInfo
+	struct SamplerParam
 	{
-		Filter				magFilter					= Filter::eLinear;
-		Filter				minFilter					= Filter::eLinear;
-		CompareOp			compareOp					= CompareOp::eAlways;
+		Filter				magFilter					= Filter::eNearest;
+		Filter				minFilter					= Filter::eNearest;
+		CompareOp			compareOp					= CompareOp::eNever;
 		MipmapMode			mipmapMode					= MipmapMode::eNearest;
 		AddressMode			addressModeU				= AddressMode::eRepeat;
 		AddressMode			addressModeV				= AddressMode::eRepeat;
 		AddressMode			addressModeW				= AddressMode::eRepeat;
 		BorderColor			borderColor					= BorderColor::eFloatTransparentBlack;
-		VkBool32			unnormalizedCoordinates		= VK_FALSE;
-		VkBool32			anisotropyEnable			= VK_FALSE;
-		VkBool32			compareEnable				= VK_FALSE;
+		Bool32				unnormalizedCoordinates		= eFalse;
+		Bool32				anisotropyEnable			= eFalse;
+		Bool32				compareEnable				= eFalse;
 		float				maxAnisotropy				= 1.0f;
 		float				mipLodBias					= 0.0f;
 		float				minLod						= 0.0f;
@@ -103,21 +103,16 @@ namespace Vk
 	 */
 	class Sampler : private Resource, public SamplerH
 	{
-
 	public:
 
-		//!	@brief	Create sampler object.
-		Sampler();
+		//!	@brief	Return sampler parameters.
+		const SamplerParam & GetParam() const { return m_Param; }
 
-		//!	@brief	Destroy sampler object.
-		~Sampler();
-
-	public:
-
-		VkResult Create(const SamplerInfo & CreateInfo = SamplerInfo());
+		//!	@brief	Create a sampler object.
+		VkResult Create(const SamplerParam & Param = SamplerParam());
 
 	private:
 
-		SamplerInfo			m_CreateInfo;
+		SamplerParam		m_Param;
 	};
 }

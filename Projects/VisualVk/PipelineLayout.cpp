@@ -126,7 +126,7 @@ DescriptorSet::DescriptorSet(VkDescriptorSet hDescriptorSet, VkDescriptorPool hD
 }
 
 
-VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+VkBool32 DescriptorSet::WriteBuffer(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
 {
 	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
 
@@ -157,7 +157,7 @@ VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkB
 }
 
 
-VkBool32 DescriptorSet::Write(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
+VkBool32 DescriptorSet::WriteSampler(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
 {
 	if (m_LayoutBindings.find(DstBinding) == m_LayoutBindings.end())			return VK_FALSE;
 

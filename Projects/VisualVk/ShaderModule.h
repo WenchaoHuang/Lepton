@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
+#include "Handle.h"
 #include "Resource.h"
 
 namespace Vk
@@ -15,36 +15,18 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan shader module object.
 	 */
-	class ShaderModule : private Resource
+	class ShaderModule : public ShaderModuleH
 	{
 
 	public:
 
 		//!	@brief	Create shader module object.
-		ShaderModule(VkShaderModule hShaderModule = VK_NULL_HANDLE);
+		VkResult Create(const char * Path);
 
-		//!	@brief	Destroy shader module object.
-		~ShaderModule() noexcept;
-
-	public:
+		//!	@brief	Create shader module object.
+		VkResult Create(const std::vector<char> & BinaryCode);
 
 		//!	@brief	Read file as binary data.
-		static std::vector<char> ReadBinary(const char * pFileName);
-
-		//!	@brief	Create a new shader module object
-		static std::shared_ptr<ShaderModule> Create(const char * pFileName);
-
-		//!	@brief	Create a new shader module object
-		static std::shared_ptr<ShaderModule> Create(const std::vector<char> & BinaryCode);
-
-		//!	@brief	If shader handle is valid.
-		VkBool32 IsValid() const { return m_hShaderModule != VK_NULL_HANDLE; }
-
-		//!	@brief	Return VkShaderModule handle.
-		VkShaderModule GetHandle() const { return m_hShaderModule; }
-
-	private:
-
-		const VkShaderModule		m_hShaderModule;
+		static std::vector<char> ReadBinary(const char * Path);
 	};
 }

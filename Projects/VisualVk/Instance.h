@@ -36,7 +36,7 @@ namespace Vk
 		//!	@brief	Create a win32 surface.
 		VkSurfaceKHR CreateWin32Surface(HWND hWindow);
 
-		//!	@brief	Return a function pointer for a command.
+		//!	@brief	Return a function pointer for command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const;
 
 		//!	@brief	Return physical devices array.
@@ -48,10 +48,10 @@ namespace Vk
 		//!	@brief	Destroy a debug report callback.
 		void DestroyDebugReportCallback(VkDebugReportCallbackEXT hDebugReportCallback);
 
-		//!	@brief	Return extension properties array.
+		//!	@brief	Return global extension properties.
 		static const std::vector<VkExtensionProperties> & GetExtensionProperties();
 
-		//!	@brief	Return layer properties array.
+		//!	@brief	Return global layer properties array.
 		static const std::vector<VkLayerProperties> & GetLayerProperties();
 
 		//!	@brief	Check if extension is available.

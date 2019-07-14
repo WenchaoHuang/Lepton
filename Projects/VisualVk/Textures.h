@@ -45,9 +45,6 @@ namespace Vk
 	private:
 
 		using Image1D::Create;
-
-
-
 	};
 
 	/*********************************************************************
@@ -87,10 +84,6 @@ namespace Vk
 	private:
 
 		using Image2D::Create;
-		using Image2D::CreateColorAttachment;
-		using Image2D::CreateDepthAttachment16;
-		using Image2D::CreateDepthAttachment32;
-		using Image2D::CreateDepthStencilAttachment;
 	}; 
 
 	/*********************************************************************
@@ -166,7 +159,5 @@ namespace Vk
 	private:
 
 		using Image3D::Create;
-
-
 	};
 }

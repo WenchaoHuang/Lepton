@@ -42,7 +42,7 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 		QueueCreateInfos[i].pQueuePriorities		= &QueuePriority;
 	}
 
-	std::vector<const char*>	pExtensions;
+	std::vector<const char*> pExtensions;
 
 	if (IsExtensionAvailable(VK_KHR_SWAPCHAIN_EXTENSION_NAME))
 	{
@@ -86,7 +86,7 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 		CommandQueue * pGraphicsQueue = (GraphicsQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[GraphicsQueueIndex] : nullptr;
 		CommandQueue * pTransferQueue = (TransferQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[TransferQueueIndex] : nullptr;
 
-		LogicalDevice * pLogicalDevice = new LogicalDevice(hDevice, pComputeQueue, pGraphicsQueue, pTransferQueue, pCommandQueues);
+		LogicalDevice * pLogicalDevice = new LogicalDevice(hDevice, pComputeQueue, pGraphicsQueue, pTransferQueue, this, pCommandQueues);
 
 		m_pLogicalDevices.insert(pLogicalDevice);
 

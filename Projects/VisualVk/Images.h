@@ -40,6 +40,9 @@ namespace Vk
 		//!	@brief	Whether image handle is valid.
 		VkBool32 IsValid() const { return m_hImage != VK_NULL_HANDLE; }
 
+		//!	@brief	Return image layout.
+		ImageLayout GetImageLayout() const { return m_eImageLayout; }
+
 		//!	@brief	Return the count of samples.
 		SampleCount GetSampleCount() const { return m_eSamples; }
 
@@ -79,6 +82,8 @@ namespace Vk
 
 		VkImageView				m_hImageView;
 
+		ImageLayout				m_eImageLayout;
+
 		DeviceMemory			m_DeviceMemory;
 
 		uint32_t				m_ArrayLayers;
@@ -101,7 +106,7 @@ namespace Vk
 		//!	@brief	Create a new image 1D object.
 		VkResult Create(Format eFormat, uint32_t Width, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, 1, SampleCount::e1, UsageFlags);
+			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, 1, SampleCount::x1, UsageFlags);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
 		}
@@ -122,7 +127,7 @@ namespace Vk
 		//!	@brief	Create a new image 1D array object.
 		VkResult Create(Format eFormat, uint32_t Width, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, ArrayLayers, SampleCount::e1, UsageFlags);
+			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, ArrayLayers, SampleCount::x1, UsageFlags);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
 		}
@@ -146,40 +151,6 @@ namespace Vk
 			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 1, eSamples, UsageFlags);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
-		}
-
-	public:
-
-		//!	@brief	Create a new color attachment object.
-		VkResult CreateColorAttachment(Format eFormat, VkExtent2D Extent2D, SampleCount eSamples = SampleCount::e1)
-		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eColorAttachment);
-
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eColor) : eResult;
-		}
-
-		//!	@brief	Create a new 16-bit depth attachment object.
-		VkResult CreateDepthAttachment16(VkExtent2D Extent2D, SampleCount eSamples = SampleCount::e1)
-		{
-			VkResult eResult = BaseImage::Create(Format::eD16Unorm, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
-
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eDepth) : eResult;
-		}
-
-		//!	@brief	Create a new 32-bit depth attachment object.
-		VkResult CreateDepthAttachment32(VkExtent2D Extent2D, SampleCount eSamples = SampleCount::e1)
-		{
-			VkResult eResult = BaseImage::Create(Format::eD32Sfloat, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
-
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eDepth) : eResult;
-		}
-
-		//!	@brief	Create a new depth-stencil attachment object.
-		VkResult CreateDepthStencilAttachment(VkExtent2D Extent2D, SampleCount eSamples = SampleCount::e1)
-		{
-			VkResult eResult = BaseImage::Create(Format::eD24UnormS8Uint, { Extent2D.width, Extent2D.height, 1 }, 1, 1, eSamples, ImageUsage::eDepthStencilAttachment);
-
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(ImageAspect::eDepth | ImageAspect::eStencil) : eResult;
 		}
 	};
 
@@ -219,7 +190,7 @@ namespace Vk
 		//!	@brief	Create a new image cube object.
 		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6, SampleCount::e1, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6, SampleCount::x1, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
 		}
@@ -240,7 +211,7 @@ namespace Vk
 		//!	@brief	Create a new image cube array object.
 		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6 * ArrayLayers, SampleCount::e1, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6 * ArrayLayers, SampleCount::x1, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
 		}
@@ -261,7 +232,7 @@ namespace Vk
 		//!	@brief	Create a new image 3D object.
 		VkResult Create(Format eFormat, VkExtent3D Extent3D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, Extent3D, MipLevels, 1, SampleCount::e1, UsageFlags);
+			VkResult eResult = BaseImage::Create(eFormat, Extent3D, MipLevels, 1, SampleCount::x1, UsageFlags);
 
 			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
 		}

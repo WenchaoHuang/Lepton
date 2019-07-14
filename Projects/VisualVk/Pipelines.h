@@ -161,19 +161,19 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	*********************    GraphicsPipelineInfo    *********************
+	********************    GraphicsPipelineParam    *********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Creating information of Vulkan graphics pipeline.
+	 *	@brief	Vulkan graphics pipeline parameters.
 	 */
-	struct GraphicsPipelineInfo
+	struct GraphicsPipelineParam
 	{
 
 	public:
 
 		//!	@brief	Constructor.
-		GraphicsPipelineInfo();
+		GraphicsPipelineParam();
 
 	private:
 
@@ -187,6 +187,22 @@ namespace Vk
 		using DynamicStateInfo = std::vector<DynamicState>;
 
 		/*****************************************************************
+		*********************    ShaderStagesInfo    *********************
+		*****************************************************************/
+
+		/**
+		 *	@brief	Structure specifying parameters of a newly created pipeline shader stages.
+		 */
+		struct ShaderStagesInfo
+		{
+			ShaderModule		VertexShader;
+			ShaderModule		GeometryShader;
+			ShaderModule		FragmentShader;
+			ShaderModule		TessControlShader;
+			ShaderModule		TessEvalutionShader;
+		};
+
+		/*****************************************************************
 		********************    ViewportStateInfo    *********************
 		*****************************************************************/
 
@@ -197,43 +213,6 @@ namespace Vk
 		{
 			std::vector<VkRect2D>		scissors;
 			std::vector<VkViewport>		viewports;
-		};
-
-		/*****************************************************************
-		*********************    ShaderStagesInfo    *********************
-		*****************************************************************/
-
-		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline shader stages.
-		 */
-		struct ShaderStagesInfo
-		{
-			std::shared_ptr<ShaderModule>		spVertexShader;
-			std::shared_ptr<ShaderModule>		spGeometryShader;
-			std::shared_ptr<ShaderModule>		spFragmentShader;
-			std::shared_ptr<ShaderModule>		spTessControlShader;
-			std::shared_ptr<ShaderModule>		spTessEvalutionShader;
-		};
-
-		/*****************************************************************
-		******************    RasterizationStateInfo    ******************
-		*****************************************************************/
-
-		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline rasterization state.
-		 */
-		struct RasterizationStateInfo
-		{
-			CullMode		cullMode					= CullMode::eNone;
-			FrontFace		frontFace					= FrontFace::eCounterClockwise;
-			PolygonMode		polygonMode					= PolygonMode::eFill;
-			VkBool32		depthClampEnable			= VK_FALSE;
-			VkBool32		rasterizerDiscardEnable		= VK_FALSE;
-			VkBool32		depthBiasEnable				= VK_FALSE;
-			float			depthBiasConstantFactor		= 0.0f;
-			float			depthBiasClamp				= 0.0f;
-			float			depthBiasSlopeFactor		= 0.0f;
-			float			lineWidth					= 1.0f;
 		};
 
 		/*****************************************************************
@@ -263,15 +242,36 @@ namespace Vk
 		 */
 		struct DepthStencilStateInfo
 		{
-			VkBool32			depthTestEnable				= VK_FALSE;
-			VkBool32			depthWriteEnable			= VK_FALSE;
-			VkBool32			depthBoundsTestEnable		= VK_FALSE;
-			VkBool32			stencilTestEnable			= VK_FALSE;
-			CompareOp			depthCompareOp				= CompareOp::eLessOrEqual;
+			Bool32				depthTestEnable				= eFalse;
+			Bool32				depthWriteEnable			= eFalse;
+			Bool32				depthBoundsTestEnable		= eFalse;
+			Bool32				stencilTestEnable			= eFalse;
+			CompareOp			depthCompareOp				= CompareOp::eNever;
 			StencilOpState		front						= {};
 			StencilOpState		back						= {};
 			float				minDepthBounds				= 0.0f;
 			float				maxDepthBounds				= 0.0f;
+		};
+
+		/*****************************************************************
+		******************    RasterizationStateInfo    ******************
+		*****************************************************************/
+
+		/**
+		 *	@brief	Structure specifying parameters of a newly created pipeline rasterization state.
+		 */
+		struct RasterizationStateInfo
+		{
+			CullMode		cullMode					= CullMode::eNone;
+			FrontFace		frontFace					= FrontFace::eCounterClockwise;
+			PolygonMode		polygonMode					= PolygonMode::eFill;
+			Bool32			depthClampEnable			= eFalse;
+			Bool32			rasterizerDiscardEnable		= eFalse;
+			Bool32			depthBiasEnable				= eFalse;
+			float			depthBiasConstantFactor		= 0.0f;
+			float			depthBiasClamp				= 0.0f;
+			float			depthBiasSlopeFactor		= 0.0f;
+			float			lineWidth					= 1.0f;
 		};
 
 		/*****************************************************************
@@ -283,11 +283,47 @@ namespace Vk
 		 */
 		struct MultisampleStateInfo
 		{
-			SampleCount		rasterizationSamples		= SampleCount::e1;
-			VkBool32		alphaToCoverageEnable		= VK_FALSE;
-			VkBool32		sampleShadingEnable			= VK_FALSE;
-			VkBool32		alphaToOneEnable			= VK_FALSE;
+			SampleCount		rasterizationSamples		= SampleCount::x1;
+			Bool32			alphaToCoverageEnable		= eFalse;
+			Bool32			sampleShadingEnable			= eFalse;
+			Bool32			alphaToOneEnable			= eFalse;
 			float			minSampleShading			= 0.0f;
+		};
+
+		/*****************************************************************
+		****************    ColorBlendAttachmentState    *****************
+		*****************************************************************/
+
+		/**
+		 *	@brief	Structure specifying a pipeline color blend attachment state.
+		 */
+		struct ColorBlendAttachmentState
+		{
+			Bool32						blendEnable				= eFalse;
+			BlendFactor					srcColorBlendFactor		= BlendFactor::eZero;
+			BlendFactor					dstColorBlendFactor		= BlendFactor::eZero;
+			BlendOp						colorBlendOp			= BlendOp::eAdd;
+			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
+			BlendFactor					stAlphaBlendFactor		= BlendFactor::eZero;
+			BlendOp						alphaBlendOp			= BlendOp::eAdd;
+			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eRed | ColorComponent::eGreen | ColorComponent::eBlue | ColorComponent::eAlpha;
+		};
+		
+		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "struct and wrapper have different size!");
+
+		/*****************************************************************
+		*******************    ColorBlendStateInfo    ********************
+		*****************************************************************/
+
+		/**
+		 *	@brief	Structure specifying parameters of a newly created pipeline color blend state.
+		 */
+		struct ColorBlendStateInfo
+		{
+			Bool32										logicOpEnable			= eFalse;
+			LogicOp										logicOp					= LogicOp::eNoOp;
+			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
+			std::vector<ColorBlendAttachmentState>		attachments;
 		};
 
 		/*****************************************************************
@@ -314,42 +350,6 @@ namespace Vk
 
 			std::vector<VkVertexInputBindingDescription>		bindingDescriptions;
 			std::vector<VkVertexInputAttributeDescription>		attributeDescriptions;
-		};
-
-		/*****************************************************************
-		****************    ColorBlendAttachmentState    *****************
-		*****************************************************************/
-
-		/**
-		 *	@brief	Structure specifying a pipeline color blend attachment state.
-		 */
-		struct ColorBlendAttachmentState
-		{
-			VkBool32					blendEnable				= VK_FALSE;
-			BlendFactor					srcColorBlendFactor		= BlendFactor::eZero;
-			BlendFactor					dstColorBlendFactor		= BlendFactor::eZero;
-			BlendOp						colorBlendOp			= BlendOp::eAdd;
-			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
-			BlendFactor					stAlphaBlendFactor		= BlendFactor::eZero;
-			BlendOp						alphaBlendOp			= BlendOp::eAdd;
-			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eRed | ColorComponent::eGreen | ColorComponent::eBlue | ColorComponent::eAlpha;
-		};
-		
-		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "struct and wrapper have different size!");
-
-		/*****************************************************************
-		*******************    ColorBlendStateInfo    ********************
-		*****************************************************************/
-
-		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline color blend state.
-		 */
-		struct ColorBlendStateInfo
-		{
-			VkBool32									logicOpEnable			= VK_FALSE;
-			LogicOp										logicOp					= LogicOp::eNoOp;
-			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
-			std::vector<ColorBlendAttachmentState>		attachments;
 		};
 
 	public:
@@ -392,9 +392,9 @@ namespace Vk
 		operator VkPipeline() const { return m_hPipeline; }
 
 		//!	@brief	Create a new graphics pipeline.
-		VkResult Create(const GraphicsPipelineInfo & CreateInfo);
+		VkResult Create(const GraphicsPipelineParam & PipelineParam);
 
-		std::shared_ptr<PipelineLayout> GetLayout() { return m_CreateInfo.spPipelineLayout; }
+		std::shared_ptr<PipelineLayout> GetLayout() { return m_PipelineParam.spPipelineLayout; }
 
 		//!	@brief	Destroy graphics pipeline.
 		void Release() noexcept;
@@ -403,7 +403,7 @@ namespace Vk
 
 		VkPipeline					m_hPipeline;
 
-		GraphicsPipelineInfo		m_CreateInfo;
+		GraphicsPipelineParam		m_PipelineParam;
 	};
 
 	/*********************************************************************

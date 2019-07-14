@@ -5,6 +5,8 @@
 
 #include <set>
 #include <vulkan/vulkan_core.h>
+#include "Flags.h"
+#include "Enum.h"
 
 namespace Vk
 {
@@ -91,14 +93,17 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Free command buffer.
+		VkResult FreeCommandBuffer(CommandBuffer * pCommandBuffer);
+
 		//!	@brief	Allocate a primary command buffer from command pool.
 		CommandBuffer * AllocateCommandBuffer();
 
 		//!	@brief	Reset command pool.
-		VkResult Reset() { return vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT); }
-
-		//!	@brief	Free command buffer.
-		VkResult FreeCommandBuffer(CommandBuffer * pCommandBuffer);
+		VkResult Reset()
+		{
+			return vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+		}
 
 	private:
 
@@ -148,11 +153,11 @@ namespace Vk
 		VkResult Reset(VkCommandBufferResetFlags eResetFlags = 0) { return vkResetCommandBuffer(m_hCommandBuffer, eResetFlags); }
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		VkResult Submit(VkSemaphore hWaitSemaphore, VkPipelineStageFlags eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		VkResult Submit(VkSemaphore hWaitSemaphore, Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
 			m_SubmitInfo.signalSemaphoreCount	= uint32_t(hSignalSemaphore != VK_NULL_HANDLE);
 			m_SubmitInfo.waitSemaphoreCount		= uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
-			m_SubmitInfo.pWaitDstStageMask		= &eWaitDstStageMask;
+			m_SubmitInfo.pWaitDstStageMask		= reinterpret_cast<const VkPipelineStageFlags*>(&eWaitDstStageMask);
 			m_SubmitInfo.pSignalSemaphores		= &hSignalSemaphore;
 			m_SubmitInfo.pWaitSemaphores		= &hWaitSemaphore;
 
@@ -183,14 +188,14 @@ namespace Vk
 		}
 
 		//!	@brief	Copy data from a buffer into an image.
-		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, VkImageLayout eDstImageLayout, uint32_t RegionCount, const VkBufferImageCopy * pRegions)
+		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, uint32_t RegionCount, const VkBufferImageCopy * pRegions)
 		{
-			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, eDstImageLayout, RegionCount, pRegions);
+			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), RegionCount, pRegions);
 		}
 
 		//!	@brief	Insert a memory dependency.
-		void CmdPipelineBarrier(VkPipelineStageFlags SrcStageMask,
-								VkPipelineStageFlags DstStageMask, VkDependencyFlags DependencyFlags,
+		void CmdPipelineBarrier(Flags<PipelineStage> SrcStageMask,
+								Flags<PipelineStage> DstStageMask, Flags<DependencyFlagBits> DependencyFlags,
 								uint32_t MemoryBarrierCount, const VkMemoryBarrier * pMemoryBarriers,
 								uint32_t BufferMemoryBarrierCount, const VkBufferMemoryBarrier * pBufferMemoryBarriers,
 								uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
@@ -201,24 +206,24 @@ namespace Vk
 		}
 
 		//!	@brief	Insert a image memory dependency.
-		void CmdPipelineImageMemoryBarrier(VkPipelineStageFlags SrcStageMask,
-										   VkPipelineStageFlags DstStageMask, VkDependencyFlags DependencyFlags,
+		void CmdPipelineImageMemoryBarrier(Flags<PipelineStage> SrcStageMask,
+										   Flags<PipelineStage> DstStageMask, Flags<DependencyFlagBits> DependencyFlags,
 										   uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
 		{
 			vkCmdPipelineBarrier(m_hCommandBuffer, SrcStageMask, DstStageMask, DependencyFlags, 0, nullptr, 0, nullptr, ImageMemoryBarrierCount, pImageMemoryBarriers);
 		}
 
 		//!	@brief	Clear regions of a color image.
-		void CmdClearColorImage(VkImage hImage, VkImageLayout hImageLayout, const VkClearColorValue * pColor,
+		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue * pColor,
 								uint32_t RangeCount, const VkImageSubresourceRange * pRanges)
 		{
-			vkCmdClearColorImage(m_hCommandBuffer, hImage, hImageLayout, pColor, RangeCount, pRanges);
+			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), pColor, RangeCount, pRanges);
 		}
 
 		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(const VkRenderPassBeginInfo * pRenderPassBegin, VkSubpassContents eContents)
+		void CmdBeginRenderPass(const VkRenderPassBeginInfo * pRenderPassBegin)
 		{
-			vkCmdBeginRenderPass(m_hCommandBuffer, pRenderPassBegin, eContents);
+			vkCmdBeginRenderPass(m_hCommandBuffer, pRenderPassBegin, VK_SUBPASS_CONTENTS_INLINE);
 		}
 
 		//!	@brief	Bind a graphics pipeline object to a command buffer.
@@ -275,19 +280,19 @@ namespace Vk
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSet(VkPipelineBindPoint ePipelineBindPoint, VkPipelineLayout hLayout, VkDescriptorSet hDescriptorSet)
+		void CmdBindDescriptorSet(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hLayout, VkDescriptorSet hDescriptorSet)
 		{
-			vkCmdBindDescriptorSets(m_hCommandBuffer, ePipelineBindPoint, hLayout, 0, 1, &hDescriptorSet, 0, nullptr);
+			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hLayout, 0, 1, &hDescriptorSet, 0, nullptr);
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSets(VkPipelineBindPoint ePipelineBindPoint,
+		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint,
 								   VkPipelineLayout hLayout, uint32_t FirstSet,
 								   uint32_t DescriptorSetCount, const VkDescriptorSet * pDescriptorSets,
 								   uint32_t DynamicOffsetCount, const uint32_t * pDynamicOffsets)
 		{
-			vkCmdBindDescriptorSets(m_hCommandBuffer, ePipelineBindPoint, hLayout, FirstSet,
-									DescriptorSetCount, pDescriptorSets, DynamicOffsetCount, pDynamicOffsets);
+			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hLayout,
+									FirstSet, DescriptorSetCount, pDescriptorSets, DynamicOffsetCount, pDynamicOffsets);
 		}
 
 		//!	@brief	Issue an indexed draw into a command buffer.

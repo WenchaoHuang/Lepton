@@ -21,6 +21,7 @@ VkResult Create##name(const Vk##name##CreateInfo * pCreateInfo, Vk##name * p##na
 namespace Vk
 {
 	class CommandQueue;
+	class PhysicalDevice;
 
 	using VkSwapchainKHRCreateInfo = VkSwapchainCreateInfoKHR;
 
@@ -43,6 +44,7 @@ namespace Vk
 					  CommandQueue * pComputeQueue,
 					  CommandQueue * pGraphicsQueue,
 					  CommandQueue * pTransferQueue,
+					  PhysicalDevice * pPhysicalDevice,
 					  std::vector<CommandQueue*> pCommandQueues);
 
 		//!	@brief	Destroy logical device object.
@@ -64,6 +66,9 @@ namespace Vk
 
 		//!	@brief	Return the pointer to transfer command queue.
 		CommandQueue * GetTransferQueue() const { return m_pTransferQueue; }
+
+		//!	@brief	Return physical device used to create this logical device.
+		PhysicalDevice * GetPhysicalDevice() const { return m_pPhysicalDevice; }
 
 		//!	@brief	Return a device level function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const
@@ -274,6 +279,8 @@ namespace Vk
 		CommandQueue * const				m_pGraphicsQueue;
 
 		CommandQueue * const				m_pTransferQueue;
+
+		PhysicalDevice * const				m_pPhysicalDevice;
 
 		const std::vector<CommandQueue*>	m_pCommandQueues;
 	};

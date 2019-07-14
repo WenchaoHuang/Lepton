@@ -156,10 +156,10 @@ namespace Vk
 		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
 		//!	@brief	Update the contents of descriptor set.
-		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
+		VkBool32 WriteBuffer(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
 
 		//!	@brief	Update the content of descriptor set.
-		VkBool32 Write(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
+		VkBool32 WriteSampler(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
 
 	private:
 

@@ -9,13 +9,7 @@ using namespace Vk;
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-ShaderModule::ShaderModule(VkShaderModule hShaderModule) : m_hShaderModule(hShaderModule)
-{
-
-}
-
-
-std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & BinaryCode)
+VkResult ShaderModule::Create(const std::vector<char> & BinaryCode)
 {
 	VkShaderModuleCreateInfo		CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -26,21 +20,26 @@ std::shared_ptr<ShaderModule> ShaderModule::Create(const std::vector<char> & Bin
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-	sm_pLogicalDevice->CreateShaderModule(&CreateInfo, &hShaderModule);
+	VkResult eResult = Resource::GetDevice()->CreateShaderModule(&CreateInfo, &hShaderModule);
 
-	return std::make_shared<ShaderModule>(hShaderModule);
+	if (eResult == VK_SUCCESS)
+	{
+		ShaderModuleH::Replace(hShaderModule, *Resource::GetDevice());
+	}
+
+	return eResult;
 }
 
 
-std::shared_ptr<ShaderModule> ShaderModule::Create(const char * pFileName)
+VkResult ShaderModule::Create(const char * Path)
 {
-	return ShaderModule::Create(ShaderModule::ReadBinary(pFileName));
+	return ShaderModule::Create(ShaderModule::ReadBinary(Path));
 }
 
 
-std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
+std::vector<char> ShaderModule::ReadBinary(const char * Path)
 {
-	std::ifstream Stream(pFileName, std::ios::ate | std::ios::binary);
+	std::ifstream Stream(Path, std::ios::ate | std::ios::binary);
 
 	std::vector<char> BinaryCode;
 
@@ -56,10 +55,4 @@ std::vector<char> ShaderModule::ReadBinary(const char * pFileName)
 	}
 
 	return BinaryCode;
-}
-
-
-ShaderModule::~ShaderModule()
-{
-	m_pDevice->DestroyShaderModule(m_hShaderModule);
 }

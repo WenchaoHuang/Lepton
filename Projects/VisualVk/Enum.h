@@ -8,6 +8,19 @@
 namespace Vk
 {
 	/*********************************************************************
+	****************************    Bool32    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Vulkan boolean type.
+	 */
+	enum Bool32 : VkBool32
+	{
+		eTrue		= VK_TRUE,
+		eFalse		= VK_FALSE
+	};
+
+	/*********************************************************************
 	*************************    SampleCount    **************************
 	*********************************************************************/
 
@@ -16,13 +29,13 @@ namespace Vk
 	 */
 	enum class SampleCount : VkFlags
 	{
-		e1		= VK_SAMPLE_COUNT_1_BIT,
-		e2		= VK_SAMPLE_COUNT_2_BIT,
-		e4		= VK_SAMPLE_COUNT_4_BIT,
-		e8		= VK_SAMPLE_COUNT_8_BIT,
-		e16		= VK_SAMPLE_COUNT_16_BIT,
-		e32		= VK_SAMPLE_COUNT_32_BIT,
-		e64		= VK_SAMPLE_COUNT_64_BIT
+		x1		= VK_SAMPLE_COUNT_1_BIT,
+		x2		= VK_SAMPLE_COUNT_2_BIT,
+		x4		= VK_SAMPLE_COUNT_4_BIT,
+		x8		= VK_SAMPLE_COUNT_8_BIT,
+		x16		= VK_SAMPLE_COUNT_16_BIT,
+		x32		= VK_SAMPLE_COUNT_32_BIT,
+		x64		= VK_SAMPLE_COUNT_64_BIT
 	};
 
 	/*********************************************************************
@@ -37,6 +50,20 @@ namespace Vk
 		eCompute			= VK_PIPELINE_BIND_POINT_COMPUTE,
 		eGraphics			= VK_PIPELINE_BIND_POINT_GRAPHICS,
 		eRayTracingNV		= VK_PIPELINE_BIND_POINT_RAY_TRACING_NV
+	};
+
+	/*********************************************************************
+	**********************    DependencyFlagBits    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying how execution and memory dependencies are formed.
+	 */
+	enum class DependencyFlagBits : VkFlags
+	{
+		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
+		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
+		eDeviceGroup		= VK_DEPENDENCY_DEVICE_GROUP_BIT
 	};
 
 	/*********************************************************************
@@ -195,7 +222,6 @@ namespace Vk
 		eLessOrEqual		= VK_COMPARE_OP_LESS_OR_EQUAL,
 		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL
 	};
-
 
 	/*********************************************************************
 	**************************    StencilOp    ***************************
