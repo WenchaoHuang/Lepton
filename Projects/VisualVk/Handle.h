@@ -11,7 +11,7 @@ namespace Vk
 	//!	@brief	Template for any Vulkan destroy function.
 	template<typename VkResource, typename VkDependency>
 
-	using PFN_Destroy = void(VKAPI_CALL*)(VkDependency, VkResource, const VkAllocationCallbacks*);
+	using PFN_vkDestroy = void(VKAPI_CALL*)(VkDependency, VkResource, const VkAllocationCallbacks*);
 
 	/*********************************************************************
 	****************************    Handle    ****************************
@@ -20,7 +20,7 @@ namespace Vk
 	/**
 	 *	@brief	Template for Vulkan resource handle.
 	 */
-	template<typename VkResource, typename VkDependency, PFN_Destroy<VkResource, VkDependency> DestroyFn>
+	template<typename VkResource, typename VkDependency, PFN_vkDestroy<VkResource, VkDependency> pfnDestroy>
 
 	class Handle
 	{
@@ -65,7 +65,7 @@ namespace Vk
 			InternalHandle(VkResource hResource, VkDependency hDependency) : m_hResource(hResource), m_hDependency(hDependency) {}
 
 			//!	@brief	Call Vulkan API to destroy resource object.
-			~InternalHandle() { if (m_hDependency != VK_NULL_HANDLE) DestroyFn(m_hDependency, m_hResource, nullptr); }
+			~InternalHandle() { if (m_hDependency != VK_NULL_HANDLE) pfnDestroy(m_hDependency, m_hResource, nullptr); }
 
 		public:
 

@@ -60,15 +60,15 @@ namespace Vk
 
 	private:
 
-		const VkQueue					m_hQueue;
+		const VkQueue				m_hQueue;
 
-		const VkDevice					m_hDevice;
+		const VkDevice				m_hDevice;
 
-		const uint32_t					m_FamilyIdx;
+		const uint32_t				m_FamilyIdx;
 
-		const VkQueueFlags				m_QueueFlags;
-
-		std::set<CommandPool*>			m_pCommandPools;
+		const VkQueueFlags			m_QueueFlags;
+		
+		std::set<CommandPool*>		m_pCommandPools;
 	};
 
 	/*********************************************************************

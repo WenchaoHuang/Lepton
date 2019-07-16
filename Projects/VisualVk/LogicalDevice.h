@@ -20,6 +20,7 @@ VkResult Create##name(const Vk##name##CreateInfo * pCreateInfo, Vk##name * p##na
 
 namespace Vk
 {
+	class CommandPool;
 	class CommandQueue;
 	class PhysicalDevice;
 
@@ -69,6 +70,8 @@ namespace Vk
 
 		//!	@brief	Return physical device used to create this logical device.
 		PhysicalDevice * GetPhysicalDevice() const { return m_pPhysicalDevice; }
+
+		CommandPool * GetStageCommandPool() {}
 
 		//!	@brief	Return a device level function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const
