@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Handle.h"
-#include "Resource.h"
+#include "Context.h"
 
 namespace Vk
 {
@@ -25,6 +25,8 @@ namespace Vk
 
 		//!	@brief	Create shader module object.
 		VkResult Create(const std::vector<char> & BinaryCode);
+
+	private:
 
 		//!	@brief	Read file as binary data.
 		static std::vector<char> ReadBinary(const char * Path);

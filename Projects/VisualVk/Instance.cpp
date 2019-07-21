@@ -27,11 +27,9 @@ Instance::Instance(VkInstance hInstance) : m_hInstance(hInstance)
 
 	vkEnumeratePhysicalDevices(m_hInstance, &PhysicalDeviceCount, hPhysicalDevices.data());
 
-	m_pPhysicalDevices.resize(hPhysicalDevices.size());
-
-	for (size_t i = 0; i < m_pPhysicalDevices.size(); i++)
+	for (size_t i = 0; i < hPhysicalDevices.size(); i++)
 	{
-		m_pPhysicalDevices[i] = new PhysicalDevice(hPhysicalDevices[i]);
+		m_pPhysicalDevices.push_back(new PhysicalDevice(hPhysicalDevices[i]));
 	}
 }
 

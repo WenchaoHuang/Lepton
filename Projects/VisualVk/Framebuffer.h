@@ -3,11 +3,10 @@
 *************************************************************************/
 #pragma once
 
-#include "Enum.h"
+#include "Enums.h"
 #include "Flags.h"
-#include "Format.h"
 #include "Handle.h"
-#include "Resource.h"
+#include "Context.h"
 
 namespace Vk
 {
@@ -182,7 +181,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan frame buffer object.
 	 */
-	class Framebuffer : private Resource
+	class Framebuffer : public FramebufferH
 	{
 
 	public:
@@ -195,9 +194,6 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkFramebuffer handle.
-		operator VkFramebuffer() const { return m_hFramebuffer; }
-
 		//!	@brief	Create a new frame buffer object.
 		VkResult Create(RenderPassH hRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
@@ -208,14 +204,12 @@ namespace Vk
 		VkExtent2D GetExtent() const { return m_Extent2D; }
 
 		//!	@brief	Destroy framebuffer object.
-		void Release();
+		void Invalidate();
 
 	private:
 
-		VkExtent2D			m_Extent2D;
+		VkExtent2D		m_Extent2D;
 
-		RenderPassH			m_hRenderPass;
-
-		VkFramebuffer		m_hFramebuffer;
+		RenderPassH		m_hRenderPass;
 	};
 }

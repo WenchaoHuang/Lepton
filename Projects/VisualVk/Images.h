@@ -3,10 +3,9 @@
 *************************************************************************/
 #pragma once
 
-#include "Enum.h"
+#include "Enums.h"
 #include "Flags.h"
-#include "Format.h"
-#include "Resource.h"
+#include "Context.h"
 #include "DeviceMemory.h"
 
 namespace Vk
@@ -18,7 +17,7 @@ namespace Vk
 	/**
 	 *	@brief	Template for Vulkan image objects.
 	 */
-	template<VkImageType eImageType, VkImageViewType eViewType> class BaseImage : private Resource
+	template<VkImageType eImageType, VkImageViewType eViewType> class BaseImage
 	{
 
 	protected:

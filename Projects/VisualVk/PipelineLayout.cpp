@@ -8,23 +8,7 @@ using namespace Vk;
 /*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
-PipelineLayout::PipelineLayout(VkPipelineLayout hPipelineLayout, VkDescriptorSetLayout hDescriptorSetLayout, const PipelineLayoutInfo & LayoutInfo)
-	: m_hPipelineLayout(hPipelineLayout), m_hDescriptorSetLayout(hDescriptorSetLayout), m_PipelineLayoutInfo(LayoutInfo)
-{
-	m_DescriptorPoolSizes.reserve(m_PipelineLayoutInfo.m_LayoutBindings.size());
-
-	for (auto layoutBinding : m_PipelineLayoutInfo.m_LayoutBindings)
-	{
-		VkDescriptorPoolSize					DescriptorPoolSize = {};
-		DescriptorPoolSize.type					= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
-		DescriptorPoolSize.descriptorCount		= layoutBinding.second.descriptorCount;
-
-		m_DescriptorPoolSizes.push_back(DescriptorPoolSize);
-	}
-}
-
-
-std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo & LayoutInfo)
+VkResult PipelineLayout::Create(const PipelineLayoutInfo & LayoutInfo)
 {
 	std::vector<VkDescriptorSetLayoutBinding> LayoutBindings;
 
@@ -53,7 +37,9 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 
 	VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
 
-	if (sm_pLogicalDevice->CreateDescriptorSetLayout(&DescriptorSetLayoutCreateInfo, &hDescriptorSetLayout) == VK_SUCCESS)
+	VkResult eResult = Context::GetDevice()->CreateDescriptorSetLayout(&DescriptorSetLayoutCreateInfo, &hDescriptorSetLayout);
+
+	if (eResult == VK_SUCCESS)
 	{
 		VkPipelineLayoutCreateInfo							PipelineLayoutCreateInfo = {};
 		PipelineLayoutCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -64,10 +50,36 @@ std::shared_ptr<PipelineLayout> PipelineLayout::Create(const PipelineLayoutInfo 
 		PipelineLayoutCreateInfo.pushConstantRangeCount		= static_cast<uint32_t>(LayoutInfo.m_ConstantRanges.size());
 		PipelineLayoutCreateInfo.pPushConstantRanges		= LayoutInfo.m_ConstantRanges.data();
 
-		sm_pLogicalDevice->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
+		m_hDescriptorSetLayout.Replace(Context::GetDeviceHandle(), hDescriptorSetLayout);
+
+		eResult = Context::GetDevice()->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
+
+		if (eResult == VK_SUCCESS)
+		{
+			m_PipelineLayoutInfo = LayoutInfo;
+
+			PipelineLayoutH::Replace(Context::GetDeviceHandle(), hPipelineLayout);
+
+			m_DescriptorPoolSizes.reserve(m_PipelineLayoutInfo.m_LayoutBindings.size());
+
+			for (auto layoutBinding : m_PipelineLayoutInfo.m_LayoutBindings)
+			{
+				VkDescriptorPoolSize					DescriptorPoolSize = {};
+				DescriptorPoolSize.type					= static_cast<VkDescriptorType>(layoutBinding.second.descriptorType);
+				DescriptorPoolSize.descriptorCount		= layoutBinding.second.descriptorCount;
+
+				m_DescriptorPoolSizes.push_back(DescriptorPoolSize);
+			}
+
+			return eResult;
+		}
 	}
 
-	return std::make_shared<PipelineLayout>(hPipelineLayout, hDescriptorSetLayout, LayoutInfo);
+	m_hDescriptorSetLayout.Invalidate();
+
+	PipelineLayoutH::Invalidate();
+
+	return eResult;
 }
 
 
@@ -87,16 +99,18 @@ std::shared_ptr<DescriptorSet> PipelineLayout::CreateDescriptorSet()
 		CreateInfo.poolSizeCount		= static_cast<uint32_t>(m_DescriptorPoolSizes.size());
 		CreateInfo.pPoolSizes			= m_DescriptorPoolSizes.data();
 
-		if (m_pDevice->CreateDescriptorPool(&CreateInfo, &hDescriptorPool) == VK_SUCCESS)
+		if (Context::GetDevice()->CreateDescriptorPool(&CreateInfo, &hDescriptorPool) == VK_SUCCESS)
 		{
+			VkDescriptorSetLayout				hDescriptorSetLayout = m_hDescriptorSetLayout;
+
 			VkDescriptorSetAllocateInfo			AllocateInfo = {};
 			AllocateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 			AllocateInfo.pNext					= nullptr;
 			AllocateInfo.descriptorPool			= hDescriptorPool;
 			AllocateInfo.descriptorSetCount		= 1;
-			AllocateInfo.pSetLayouts			= &m_hDescriptorSetLayout;
+			AllocateInfo.pSetLayouts			= &hDescriptorSetLayout;
 
-			m_pDevice->AllocateDescriptorSets(&AllocateInfo, &hDescriptorSet);
+			Context::GetDevice()->AllocateDescriptorSets(&AllocateInfo, &hDescriptorSet);
 		}
 	}
 
@@ -105,14 +119,6 @@ std::shared_ptr<DescriptorSet> PipelineLayout::CreateDescriptorSet()
 	spDescriptorSet->m_LayoutBindings = m_PipelineLayoutInfo.m_LayoutBindings;
 
 	return spDescriptorSet;
-}
-
-
-PipelineLayout::~PipelineLayout() noexcept
-{
-	m_pDevice->DestroyPipelineLayout(m_hPipelineLayout);
-
-	m_pDevice->DestroyDescriptorSetLayout(m_hDescriptorSetLayout);
 }
 
 
@@ -151,7 +157,7 @@ VkBool32 DescriptorSet::WriteBuffer(uint32_t DstBinding, uint32_t DstArrayElemen
 	WriteInfo.pBufferInfo			= &BufferInfo;
 	WriteInfo.pTexelBufferView		= nullptr;
 
-	m_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
+	Context::GetDevice()->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
 
 	return VK_TRUE;
 }
@@ -182,7 +188,7 @@ VkBool32 DescriptorSet::WriteSampler(uint32_t DstBinding, uint32_t DstArrayEleme
 	WriteInfo.pBufferInfo			= nullptr;
 	WriteInfo.pTexelBufferView		= nullptr;
 
-	m_pDevice->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
+	Context::GetDevice()->UpdateDescriptorSets(1, &WriteInfo, 0, nullptr);
 
 	return VK_TRUE;
 }
@@ -190,5 +196,5 @@ VkBool32 DescriptorSet::WriteSampler(uint32_t DstBinding, uint32_t DstArrayEleme
 
 DescriptorSet::~DescriptorSet() noexcept
 {
-	m_pDevice->DestroyDescriptorPool(m_hDescriptorPool);
+	Context::GetDevice()->DestroyDescriptorPool(m_hDescriptorPool);
 }

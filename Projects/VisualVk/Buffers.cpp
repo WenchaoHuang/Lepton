@@ -31,25 +31,25 @@ VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateBuffer(&CreateInfo, &hNewBuffer);
+	VkResult eResult = Context::GetDevice()->CreateBuffer(&CreateInfo, &hNewBuffer);
 
 	if (eResult == VK_SUCCESS)
 	{
 		VkMemoryRequirements Requirements;
 
-		m_pDevice->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
+		Context::GetDevice()->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
 
 		eResult = m_Memory.Allocate(Requirements.size, Requirements.memoryTypeBits, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
 
 		if (eResult != VK_SUCCESS)
 		{
-			m_pDevice->DestroyBuffer(hNewBuffer);
+			Context::GetDevice()->DestroyBuffer(hNewBuffer);
 		}
 		else
 		{
 			this->Release();
 
-			m_pDevice->BindBufferMemory(hNewBuffer, m_Memory, 0);
+			Context::GetDevice()->BindBufferMemory(hNewBuffer, m_Memory, 0);
 
 			m_hBuffer = hNewBuffer;
 
@@ -116,7 +116,7 @@ void HostVisibleBuffer::Release() noexcept
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		m_pDevice->DestroyBuffer(m_hBuffer);
+		Context::GetDevice()->DestroyBuffer(m_hBuffer);
 
 		m_hBuffer = VK_NULL_HANDLE;
 
@@ -159,25 +159,25 @@ VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateBuffer(&CreateInfo, &hNewBuffer);
+	VkResult eResult = Context::GetDevice()->CreateBuffer(&CreateInfo, &hNewBuffer);
 
 	if (eResult == VK_SUCCESS)
 	{
 		VkMemoryRequirements Requirements;
 
-		m_pDevice->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
+		Context::GetDevice()->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
 
 		eResult = m_Memory.Allocate(Requirements.size, Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
 
 		if (eResult != VK_SUCCESS)
 		{
-			m_pDevice->DestroyBuffer(hNewBuffer);
+			Context::GetDevice()->DestroyBuffer(hNewBuffer);
 		}
 		else
 		{
 			this->Release();
 
-			m_pDevice->BindBufferMemory(hNewBuffer, m_Memory, 0);
+			Context::GetDevice()->BindBufferMemory(hNewBuffer, m_Memory, 0);
 
 			m_hBuffer = hNewBuffer;
 
@@ -193,7 +193,7 @@ void DeviceLocalBuffer::Release() noexcept
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		m_pDevice->DestroyBuffer(m_hBuffer);
+		Context::GetDevice()->DestroyBuffer(m_hBuffer);
 
 		m_hBuffer = VK_NULL_HANDLE;
 

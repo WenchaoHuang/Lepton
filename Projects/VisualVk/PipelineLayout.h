@@ -4,10 +4,10 @@
 #pragma once
 
 #include <map>
-#include "Enum.h"
+#include "Enums.h"
 #include "Flags.h"
 #include "Handle.h"
-#include "Resource.h"
+#include "Context.h"
 
 namespace Vk
 {
@@ -91,18 +91,8 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan pipeline layout object.
 	 */
-	class PipelineLayout : private Resource
+	class PipelineLayout : public PipelineLayoutH
 	{
-
-	public:
-
-		//!	@brief	Create pipeline layout object.
-		PipelineLayout(VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE,
-					   VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE,
-					   const PipelineLayoutInfo & LayoutInfo = PipelineLayoutInfo());
-
-		//!	@brief	Destroy pipeline layout object.
-		~PipelineLayout() noexcept;
 
 	public:
 
@@ -110,21 +100,13 @@ namespace Vk
 		std::shared_ptr<DescriptorSet> CreateDescriptorSet();
 
 		//!	@brief	Create a new pipeline layout object.
-		static std::shared_ptr<PipelineLayout> Create(const PipelineLayoutInfo & CreateInfo = PipelineLayoutInfo());
-
-		//!	@brief	If pipeline layout handle is valid.
-		VkBool32 IsValid() const { return m_hPipelineLayout != VK_NULL_HANDLE; }
-
-		//!	@brief	Return the VkPipelineLayout handle.
-		VkPipelineLayout GetHandle() const { return m_hPipelineLayout; }
+		VkResult Create(const PipelineLayoutInfo & CreateInfo = PipelineLayoutInfo());
 
 	private:
 
-		const VkPipelineLayout					m_hPipelineLayout;
+		PipelineLayoutInfo						m_PipelineLayoutInfo;
 
-		const PipelineLayoutInfo				m_PipelineLayoutInfo;
-
-		const VkDescriptorSetLayout				m_hDescriptorSetLayout;
+		DescriptorSetLayoutH					m_hDescriptorSetLayout;
 
 		std::vector<VkDescriptorPoolSize>		m_DescriptorPoolSizes;
 	};
@@ -136,7 +118,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan Descriptor set object.
 	 */
-	class DescriptorSet : private Resource
+	class DescriptorSet
 	{
 
 	public:

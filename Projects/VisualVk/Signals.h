@@ -3,7 +3,8 @@
 *************************************************************************/
 #pragma once
 
-#include "Resource.h"
+#include "Handle.h"
+#include "Context.h"
 
 #define VK_DEFAULT_TIMEOUT		100000000000L		//!	100 seconds.
 
@@ -16,7 +17,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan fence object.
 	 */
-	class Fence : private Resource
+	class Fence
 	{
 
 	public:
@@ -36,15 +37,15 @@ namespace Vk
 		VkBool32 IsValid() const { return m_hFence != VK_NULL_HANDLE; }
 
 		//!	@brief	Reset to non-signaled state.
-		VkResult Reset() { return m_pDevice->ResetFences(1, &m_hFence); }
+		VkResult Reset() { return Context::GetDevice()->ResetFences(1, &m_hFence); }
 
 		//!	@brief	Return the status of fence.
-		VkResult GetStatus() { return m_pDevice->GetFenceStatus(m_hFence); }
+		VkResult GetStatus() { return Context::GetDevice()->GetFenceStatus(m_hFence); }
 
 		//!	@brief	Wait for fence to become signaled.
 		VkResult Wait(uint64_t Timeout = VK_DEFAULT_TIMEOUT)
 		{
-			return m_pDevice->WaitForFences(1, &m_hFence, VK_TRUE, Timeout);
+			return Context::GetDevice()->WaitForFences(1, &m_hFence, VK_TRUE, Timeout);
 		}
 
 	private:
@@ -59,7 +60,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan semaphore object.
 	 */
-	class Semaphore : private Resource
+	class Semaphore
 	{
 
 	public:
@@ -90,7 +91,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan event object.
 	 */
-	class Event : private Resource
+	class Event
 	{
 
 	public:
@@ -110,13 +111,13 @@ namespace Vk
 		VkBool32 IsValid() const { return m_hEvent != VK_NULL_HANDLE; }
 
 		//!	@brief	Retrieve the status of event.
-		VkResult GetStatus() { return m_pDevice->GetEventStatus(m_hEvent); }
+		VkResult GetStatus() { return Context::GetDevice()->GetEventStatus(m_hEvent); }
 
 		//!	@brief	Set event to signaled state.
-		VkResult SetSignaled() { return m_pDevice->SetEvent(m_hEvent); }
+		VkResult SetSignaled() { return Context::GetDevice()->SetEvent(m_hEvent); }
 
 		//!	@brief	Reset event to non-signaled state.
-		VkResult Reset() { return m_pDevice->ResetEvent(m_hEvent); }
+		VkResult Reset() { return Context::GetDevice()->ResetEvent(m_hEvent); }
 
 	private:
 

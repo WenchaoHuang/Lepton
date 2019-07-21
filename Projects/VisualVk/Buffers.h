@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Resource.h"
+#include "Context.h"
 #include "DeviceMemory.h"
 
 namespace Vk
@@ -15,7 +15,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan host-visible buffer object.
 	 */
-	class HostVisibleBuffer : private Resource
+	class HostVisibleBuffer
 	{
 
 	public:
@@ -71,7 +71,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan device-local buffer object (device local).
 	 */
-	class DeviceLocalBuffer : private Resource
+	class DeviceLocalBuffer
 	{
 
 	public:

@@ -210,7 +210,7 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineParam & PipelineParam)
 	PipelineCreateInfo.pDepthStencilState							= &DepthStencilStateCreateInfo;
 	PipelineCreateInfo.pColorBlendState								= &ColorBlendStateCreateInfo;
 	PipelineCreateInfo.pDynamicState								= &DynamicStateCreateInfo;
-	PipelineCreateInfo.layout										= (PipelineParam.spPipelineLayout == nullptr) ? VK_NULL_HANDLE : PipelineParam.spPipelineLayout->GetHandle();
+	PipelineCreateInfo.layout										= PipelineParam.hLayout;
 	PipelineCreateInfo.renderPass									= PipelineParam.hRenderPass;
 	PipelineCreateInfo.subpass										= 0;
 	PipelineCreateInfo.basePipelineHandle							= VK_NULL_HANDLE;
@@ -218,7 +218,7 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineParam & PipelineParam)
 
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 
-	if (m_pDevice->CreateGraphicsPipelines(VK_NULL_HANDLE, 1, &PipelineCreateInfo, &hPipeline) == VK_SUCCESS)
+	if (Context::GetDevice()->CreateGraphicsPipelines(VK_NULL_HANDLE, 1, &PipelineCreateInfo, &hPipeline) == VK_SUCCESS)
 	{
 		this->Release();
 
@@ -235,7 +235,7 @@ void GraphicsPipeline::Release() noexcept
 {
 	if (m_hPipeline != VK_NULL_HANDLE)
 	{
-		m_pDevice->DestroyPipeline(m_hPipeline);
+		Context::GetDevice()->DestroyPipeline(m_hPipeline);
 
 		m_PipelineParam = GraphicsPipelineParam();
 

@@ -4,9 +4,9 @@
 #pragma once
 
 #include <set>
-#include <vulkan/vulkan_core.h>
 #include "Flags.h"
-#include "Enum.h"
+#include "Enums.h"
+#include <vulkan/vulkan_core.h>
 
 namespace Vk
 {

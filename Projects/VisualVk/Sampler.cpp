@@ -32,11 +32,11 @@ VkResult Sampler::Create(const SamplerParam & Param)
 
 	VkSampler hSampler = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateSampler(&CreateInfo, &hSampler);
+	VkResult eResult = Context::GetDevice()->CreateSampler(&CreateInfo, &hSampler);
 
 	if (eResult == VK_SUCCESS)
 	{
-		SamplerH::Replace(hSampler, *m_pDevice);
+		SamplerH::Replace(Context::GetDeviceHandle(), hSampler);
 
 		m_Param = Param;
 	}

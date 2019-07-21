@@ -20,11 +20,11 @@ VkResult ShaderModule::Create(const std::vector<char> & BinaryCode)
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-	VkResult eResult = Resource::GetDevice()->CreateShaderModule(&CreateInfo, &hShaderModule);
+	VkResult eResult = Context::GetDevice()->CreateShaderModule(&CreateInfo, &hShaderModule);
 
 	if (eResult == VK_SUCCESS)
 	{
-		ShaderModuleH::Replace(hShaderModule, *Resource::GetDevice());
+		ShaderModuleH::Replace(Context::GetDeviceHandle(), hShaderModule);
 	}
 
 	return eResult;

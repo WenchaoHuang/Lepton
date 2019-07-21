@@ -40,7 +40,7 @@ namespace Vk
 		//!	@brief	Operator: and equal.
 		constexpr void operator&=(const Flags & flags) { m_Mask |= flags.m_Mask; }
 
-		//!	@brief	Convert to VkFlags (for compatibility).
+		//!	@brief	Convert to VkFlags.
 		constexpr operator VkFlags() const { return m_Mask; }
 
 	private:

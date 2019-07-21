@@ -3,8 +3,9 @@
 *************************************************************************/
 #pragma once
 
-#include "Format.h"
-#include "Resource.h"
+#include "Enums.h"
+#include "Handle.h"
+#include "Context.h"
 
 namespace Vk
 {
@@ -15,7 +16,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan swapchain object.
 	 */
-	class Swapchain : private Resource
+	class Swapchain
 	{
 
 	public:
@@ -55,7 +56,7 @@ namespace Vk
 		//!	@brief	Retrieve the index of the next available presentable image.
 		uint32_t AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
-			m_pDevice->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
+			Context::GetDevice()->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
 
 			return m_ImageIndex;
 		}
@@ -75,10 +76,6 @@ namespace Vk
 		std::vector<VkImage>				m_hImages;
 
 		std::vector<VkImageView>			m_hImageViews;
-
-		std::vector<VkPresentModeKHR>		m_PresentModes;
-
-		std::vector<VkSurfaceFormatKHR>		m_SurfaceFormats;
 
 		CommandQueue *						m_pPresentQueue;
 	};

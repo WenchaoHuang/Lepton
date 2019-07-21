@@ -25,11 +25,11 @@ VkResult RenderPass::Create(const std::vector<AttachmentDescription> & attachmen
 
 	VkRenderPass hRenderPass = VK_NULL_HANDLE;
 
-	VkResult eResult = Resource::GetDevice()->CreateRenderPass(&CreateInfo, &hRenderPass);
+	VkResult eResult = Context::GetDevice()->CreateRenderPass(&CreateInfo, &hRenderPass);
 
 	if (eResult == VK_SUCCESS)
 	{
-		RenderPassH::Replace(hRenderPass, *Resource::GetDevice());
+		RenderPassH::Replace(Context::GetDeviceHandle(), hRenderPass);
 	}
 
 	return eResult;
@@ -39,7 +39,7 @@ VkResult RenderPass::Create(const std::vector<AttachmentDescription> & attachmen
 /*************************************************************************
 ***************************    Framebuffer    ****************************
 *************************************************************************/
-Framebuffer::Framebuffer() : m_hFramebuffer(VK_NULL_HANDLE), m_Extent2D({ 0, 0 })
+Framebuffer::Framebuffer() : m_Extent2D({ 0, 0 })
 {
 
 }
@@ -62,13 +62,11 @@ VkResult Framebuffer::Create(RenderPassH hRenderPass, const std::vector<VkImageV
 
 	VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateFramebuffer(&CreateInfo, &hFramebuffer);
+	VkResult eResult = Context::GetDevice()->CreateFramebuffer(&CreateInfo, &hFramebuffer);
 
 	if (eResult == VK_SUCCESS)
 	{
-		this->Release();
-
-		m_hFramebuffer = hFramebuffer;
+		FramebufferH::Replace(Context::GetDeviceHandle(), hFramebuffer);
 
 		m_hRenderPass = hRenderPass;
 
@@ -79,22 +77,17 @@ VkResult Framebuffer::Create(RenderPassH hRenderPass, const std::vector<VkImageV
 }
 
 
-void Framebuffer::Release()
+void Framebuffer::Invalidate()
 {
-	if (m_hFramebuffer != VK_NULL_HANDLE)
-	{
-		m_pDevice->DestroyFramebuffer(m_hFramebuffer);
+	FramebufferH::Invalidate();
 
-		m_hFramebuffer = VK_NULL_HANDLE;
+	m_hRenderPass.Invalidate();
 
-		m_hRenderPass.Invalidate();
-
-		m_Extent2D = { 0, 0 };
-	}
+	m_Extent2D = { 0, 0 };
 }
 
 
 Framebuffer::~Framebuffer()
 {
-	this->Release();
+	
 }

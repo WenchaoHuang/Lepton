@@ -3,9 +3,9 @@
 *************************************************************************/
 #pragma once
 
-#include "Enum.h"
+#include "Enums.h"
 #include "Handle.h"
-#include "Resource.h"
+#include "Context.h"
 
 namespace Vk
 {
@@ -101,15 +101,16 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan sampler object.
 	 */
-	class Sampler : private Resource, public SamplerH
+	class Sampler : public SamplerH
 	{
-	public:
 
-		//!	@brief	Return sampler parameters.
-		const SamplerParam & GetParam() const { return m_Param; }
+	public:
 
 		//!	@brief	Create a sampler object.
 		VkResult Create(const SamplerParam & Param = SamplerParam());
+
+		//!	@brief	Return sampler parameters.
+		const SamplerParam & GetParam() const { return m_Param; }
 
 	private:
 

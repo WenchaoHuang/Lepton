@@ -26,11 +26,7 @@ Swapchain::Swapchain() : m_hSwapchain(VK_NULL_HANDLE), m_eImageFormat(Format::eU
 
 VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 {
-	uint32_t PresentQueueIndex = m_pDevice->GetPhysicalDevice()->GetPresentQueueFamilyIndex(hSurface);
-
-	std::vector<VkSurfaceFormatKHR> SurfaceFormats = m_pDevice->GetPhysicalDevice()->GetSurfaceFormats(hSurface);
-
-	std::vector<VkPresentModeKHR> PresentModes = m_pDevice->GetPhysicalDevice()->GetSurfacePresentModes(hSurface);
+	uint32_t PresentQueueIndex = Context::GetDevice()->GetPhysicalDevice()->GetPresentQueueFamilyIndex(hSurface);
 
 	if (PresentQueueIndex == VK_INVALID_INDEX)			return VK_ERROR_SURFACE_LOST_KHR;
 
@@ -42,7 +38,7 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 	CreateInfo.minImageCount				= bVsync ? 2 : 3;
 	CreateInfo.imageFormat					= VK_FORMAT_B8G8R8A8_UNORM;
 	CreateInfo.imageColorSpace				= VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-	CreateInfo.imageExtent					= m_pDevice->GetPhysicalDevice()->GetSurfaceCapabilities(hSurface).currentExtent;
+	CreateInfo.imageExtent					= Context::GetDevice()->GetPhysicalDevice()->GetSurfaceCapabilities(hSurface).currentExtent;
 	CreateInfo.imageArrayLayers				= 1;
 	CreateInfo.imageUsage					= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 	CreateInfo.imageSharingMode				= VK_SHARING_MODE_EXCLUSIVE;
@@ -56,7 +52,7 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 
 	VkSwapchainKHR hSwapchain = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateSwapchainKHR(&CreateInfo, &hSwapchain);
+	VkResult eResult = Context::GetDevice()->CreateSwapchainKHR(&CreateInfo, &hSwapchain);
 
 	if (eResult == VK_SUCCESS)
 	{
@@ -64,15 +60,11 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 
 		m_hSwapchain = hSwapchain;
 
-		m_PresentModes.swap(PresentModes);
-
-		m_SurfaceFormats.swap(SurfaceFormats);
-
 		m_ImageExtent = CreateInfo.imageExtent;
 
-		m_pDevice->GetSwapchainImages(m_hSwapchain, m_hImages);
+		Context::GetDevice()->GetSwapchainImages(m_hSwapchain, m_hImages);
 
-		m_pPresentQueue = m_pDevice->GetCommandQueue(PresentQueueIndex);
+		m_pPresentQueue = Context::GetDevice()->GetCommandQueue(PresentQueueIndex);
 
 		m_eImageFormat = static_cast<Format>(CreateInfo.imageFormat);
 
@@ -97,7 +89,7 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 			ImageViewCreateInfo.subresourceRange.layerCount			= 1;
 			ImageViewCreateInfo.subresourceRange.levelCount			= 1;
 
-			m_pDevice->CreateImageView(&ImageViewCreateInfo, &m_hImageViews[i]);
+			Context::GetDevice()->CreateImageView(&ImageViewCreateInfo, &m_hImageViews[i]);
 		}
 	}
 
@@ -121,10 +113,10 @@ void Swapchain::Destroy() noexcept
 	{
 		for (size_t i = 0; i < m_hImageViews.size(); i++)
 		{
-			m_pDevice->DestroyImageView(m_hImageViews[i]);
+			Context::GetDevice()->DestroyImageView(m_hImageViews[i]);
 		}
 
-		m_pDevice->DestroySwapchainKHR(m_hSwapchain);
+		Context::GetDevice()->DestroySwapchainKHR(m_hSwapchain);
 
 		m_eImageFormat = Format::eUndefined;
 
@@ -133,10 +125,6 @@ void Swapchain::Destroy() noexcept
 		m_pPresentQueue = nullptr;
 
 		m_ImageExtent = { 0, 0 };
-
-		m_SurfaceFormats.clear();
-
-		m_PresentModes.clear();
 
 		m_hImageViews.clear();
 

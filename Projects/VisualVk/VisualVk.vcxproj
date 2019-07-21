@@ -171,7 +171,7 @@
     <ClCompile Include="PhysicalDevice.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Pipelines.cpp" />
-    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Context.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Signals.cpp" />
@@ -181,9 +181,8 @@
   <ItemGroup>
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="CommandBuffer.h" />
-    <ClInclude Include="Enum.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="Flags.h" />
-    <ClInclude Include="Format.h" />
     <ClInclude Include="Handle.h" />
     <ClInclude Include="PipelineLayout.h" />
     <ClInclude Include="DeviceMemory.h" />
@@ -193,7 +192,7 @@
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Pipelines.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Context.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />

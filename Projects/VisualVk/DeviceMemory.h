@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Flags.h"
-#include "Resource.h"
+#include "Context.h"
 
 namespace Vk
 {
@@ -32,7 +32,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan device memory object.
 	 */
-	class DeviceMemory : private Resource
+	class DeviceMemory
 	{
 
 	public:

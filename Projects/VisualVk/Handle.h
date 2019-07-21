@@ -9,9 +9,9 @@
 namespace Vk
 {
 	//!	@brief	Template for any Vulkan destroy function.
-	template<typename VkResource, typename VkDependency>
+	template<typename VkResource>
 
-	using PFN_vkDestroy = void(VKAPI_CALL*)(VkDependency, VkResource, const VkAllocationCallbacks*);
+	using PFN_vkDestroy = void(VKAPI_CALL*)(VkDevice, VkResource, const VkAllocationCallbacks*);
 
 	/*********************************************************************
 	****************************    Handle    ****************************
@@ -20,8 +20,8 @@ namespace Vk
 	/**
 	 *	@brief	Template for Vulkan resource handle.
 	 */
-	template<typename VkResource, typename VkDependency, PFN_vkDestroy<VkResource, VkDependency> pfnDestroy>
-
+	template<typename VkResource, PFN_vkDestroy<VkResource> pfnDestroy>
+	
 	class Handle
 	{
 
@@ -33,19 +33,14 @@ namespace Vk
 		//!	@brief	Convert to Vulkan resource handle.
 		operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
 
+		//!	@brief	Replace resource handle.
+		void Replace(VkDevice hDevice, VkResource hResource) { m_spInternalHandle = std::make_shared<InternalHandle>(hDevice, hResource); }
+
 		//!	@brief	If resource handle is valid.
 		bool IsValid() const { return (m_spInternalHandle != nullptr) && (m_spInternalHandle->m_hResource != VK_NULL_HANDLE); }
 
 		//!	@brief	Invalidate current handle.
 		void Invalidate() { m_spInternalHandle.reset(); }
-
-	protected:
-
-		//!	@brief	Replace resource handle.
-		void Replace(VkResource hResource, VkDependency hDependency)
-		{
-			m_spInternalHandle = std::make_shared<InternalHandle>(hResource, hDependency);
-		}
 
 	private:
 
@@ -62,16 +57,16 @@ namespace Vk
 		public:
 
 			//!	@brief	Constructed by Vulkan handle.
-			InternalHandle(VkResource hResource, VkDependency hDependency) : m_hResource(hResource), m_hDependency(hDependency) {}
+			InternalHandle(VkDevice hDevice, VkResource hResource) : m_hDevice(hDevice), m_hResource(hResource) {}
 
 			//!	@brief	Call Vulkan API to destroy resource object.
-			~InternalHandle() { if (m_hDependency != VK_NULL_HANDLE) pfnDestroy(m_hDependency, m_hResource, nullptr); }
+			~InternalHandle() { if (m_hDevice != VK_NULL_HANDLE) pfnDestroy(m_hDevice, m_hResource, nullptr); }
 
 		public:
 
-			const VkResource				m_hResource;
+			const VkDevice					m_hDevice;
 
-			const VkDependency				m_hDependency;
+			const VkResource				m_hResource; 
 		};
 
 		std::shared_ptr<InternalHandle>		m_spInternalHandle;
@@ -81,7 +76,10 @@ namespace Vk
 	*************************    Declarations    *************************
 	*********************************************************************/
 
-	using SamplerH			= Handle<VkSampler, VkDevice, vkDestroySampler>;
-	using RenderPassH		= Handle<VkRenderPass, VkDevice, vkDestroyRenderPass>;
-	using ShaderModuleH		= Handle<VkShaderModule, VkDevice, vkDestroyShaderModule>;
+	using SamplerH					= Handle<VkSampler, vkDestroySampler>;
+	using RenderPassH				= Handle<VkRenderPass, vkDestroyRenderPass>;
+	using FramebufferH				= Handle<VkFramebuffer, vkDestroyFramebuffer>;
+	using ShaderModuleH				= Handle<VkShaderModule, vkDestroyShaderModule>;
+	using PipelineLayoutH			= Handle<VkPipelineLayout, vkDestroyPipelineLayout>;
+	using DescriptorSetLayoutH		= Handle<VkDescriptorSetLayout, vkDestroyDescriptorSetLayout>;
 }

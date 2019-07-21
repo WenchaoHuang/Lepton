@@ -3,7 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include "Format.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
 
@@ -365,7 +364,7 @@ namespace Vk
 		TessellationStateInfo					TessellationState;
 		InputAssemblyStateInfo					InputAssemblyState;
 		RasterizationStateInfo					RasterizationState;
-		std::shared_ptr<PipelineLayout>			spPipelineLayout;
+		PipelineLayoutH							hLayout;
 	};
 
 	/*********************************************************************
@@ -375,7 +374,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan graphics pipeline object.
 	 */
-	class GraphicsPipeline : private Resource
+	class GraphicsPipeline
 	{
 
 	public:
@@ -394,7 +393,8 @@ namespace Vk
 		//!	@brief	Create a new graphics pipeline.
 		VkResult Create(const GraphicsPipelineParam & PipelineParam);
 
-		std::shared_ptr<PipelineLayout> GetLayout() { return m_PipelineParam.spPipelineLayout; }
+		//!	@brief	Return pipeline parameters.
+		const GraphicsPipelineParam & GetParam() const { return m_PipelineParam; }
 
 		//!	@brief	Destroy graphics pipeline.
 		void Release() noexcept;
@@ -413,7 +413,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan compute pipeline object.
 	 */
-	class ComputePipeline : private Resource
+	class ComputePipeline
 	{
 
 	public:

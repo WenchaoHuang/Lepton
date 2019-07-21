@@ -53,25 +53,25 @@ VkResult BaseImage<eImageType, eViewType>::Create(Format eFormat,
 
 	VkImage hNewImage = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateImage(&CreateInfo, &hNewImage);
+	VkResult eResult = Context::GetDevice()->CreateImage(&CreateInfo, &hNewImage);
 
 	if (eResult == VK_SUCCESS)
 	{
 		VkMemoryRequirements Requirements;
 
-		m_pDevice->GetImageMemoryRequirements(hNewImage, &Requirements);
+		Context::GetDevice()->GetImageMemoryRequirements(hNewImage, &Requirements);
 
 		eResult = m_DeviceMemory.Allocate(Requirements.size, Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
 
 		if (eResult != VK_SUCCESS)
 		{
-			m_pDevice->DestroyImage(hNewImage);
+			Context::GetDevice()->DestroyImage(hNewImage);
 		}
 		else
 		{
-			m_pDevice->DestroyImage(m_hImage);
+			Context::GetDevice()->DestroyImage(m_hImage);
 
-			m_pDevice->BindImageMemory(hNewImage, m_DeviceMemory, 0);
+			Context::GetDevice()->BindImageMemory(hNewImage, m_DeviceMemory, 0);
 
 			m_eImageLayout = ImageLayout::eUndefined;
 
@@ -116,11 +116,11 @@ template<VkImageType eImageType, VkImageViewType eViewType> VkResult BaseImage<e
 
 	VkImageView hImageView = VK_NULL_HANDLE;
 
-	VkResult eResult = m_pDevice->CreateImageView(&CreateInfo, &hImageView);
+	VkResult eResult = Context::GetDevice()->CreateImageView(&CreateInfo, &hImageView);
 
 	if (eResult == VK_SUCCESS)
 	{
-		m_pDevice->DestroyImageView(m_hImageView);
+		Context::GetDevice()->DestroyImageView(m_hImageView);
 
 		m_hImageView = hImageView;
 	}
@@ -135,9 +135,9 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 	{
 		m_DeviceMemory.Free();
 
-		m_pDevice->DestroyImage(m_hImage);
+		Context::GetDevice()->DestroyImage(m_hImage);
 
-		m_pDevice->DestroyImageView(m_hImageView);
+		Context::GetDevice()->DestroyImageView(m_hImageView);
 
 		m_eImageLayout = ImageLayout::eUndefined;
 
