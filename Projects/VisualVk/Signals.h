@@ -17,7 +17,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan fence object.
 	 */
-	class Fence
+	class Fence : public FenceH
 	{
 
 	public:

@@ -30,8 +30,11 @@ namespace Vk
 		//!	@brief	Default constructor.
 		Handle() : m_spInternalHandle(nullptr) {}
 
+		//!	@brief	Constructed by given resource handle.
+		Handle(VkDevice hDevice, VkResource hResource) : m_spInternalHandle(std::make_shared<InternalHandle>(hDevice, hResource)) {}
+
 		//!	@brief	Convert to Vulkan resource handle.
-		operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
+		constexpr operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
 
 		//!	@brief	Replace resource handle.
 		void Replace(VkDevice hDevice, VkResource hResource) { m_spInternalHandle = std::make_shared<InternalHandle>(hDevice, hResource); }
@@ -76,7 +79,11 @@ namespace Vk
 	*************************    Declarations    *************************
 	*********************************************************************/
 
+	using EventH					= Handle<VkEvent, vkDestroyEvent>;
+	using FenceH					= Handle<VkFence, vkDestroyFence>;
 	using SamplerH					= Handle<VkSampler, vkDestroySampler>;
+	using PipelineH					= Handle<VkPipeline, vkDestroyPipeline>;
+	using SemaphoreH				= Handle<VkSemaphore, vkDestroySemaphore>;
 	using RenderPassH				= Handle<VkRenderPass, vkDestroyRenderPass>;
 	using FramebufferH				= Handle<VkFramebuffer, vkDestroyFramebuffer>;
 	using ShaderModuleH				= Handle<VkShaderModule, vkDestroyShaderModule>;
