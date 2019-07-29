@@ -289,4 +289,23 @@ namespace Vk
 	};
 }
 
+
+namespace Vk2
+{
+
+	class LogicalDevice
+	{
+
+	public:
+
+
+		VkBool32 StartUp();
+
+		void ShutDown();
+
+	private:
+
+	};
+}
+
 #undef VK_DEVICE_OBJECT_CREATE_AND_DESTROY_FUNCTION

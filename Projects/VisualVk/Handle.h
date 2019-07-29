@@ -34,16 +34,21 @@ namespace Vk
 		Handle(VkDevice hDevice, VkResource hResource) : m_spInternalHandle(std::make_shared<InternalHandle>(hDevice, hResource)) {}
 
 		//!	@brief	Convert to Vulkan resource handle.
-		constexpr operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
-
-		//!	@brief	Replace resource handle.
-		void Replace(VkDevice hDevice, VkResource hResource) { m_spInternalHandle = std::make_shared<InternalHandle>(hDevice, hResource); }
+		operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
 
 		//!	@brief	If resource handle is valid.
 		bool IsValid() const { return (m_spInternalHandle != nullptr) && (m_spInternalHandle->m_hResource != VK_NULL_HANDLE); }
 
 		//!	@brief	Invalidate current handle.
 		void Invalidate() { m_spInternalHandle.reset(); }
+
+	protected:
+
+		//!	@brief	Replace resource handle.
+		void Replace(VkDevice hDevice, VkResource hResource)
+		{
+			m_spInternalHandle = std::make_shared<InternalHandle>(hDevice, hResource);
+		}
 
 	private:
 

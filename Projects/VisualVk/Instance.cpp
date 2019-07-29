@@ -174,13 +174,13 @@ const std::vector<VkExtensionProperties> & Instance::GetExtensionProperties()
 }
 
 
-VkBool32 Instance::IsExtensionAvailable(std::string TargetName)
+VkBool32 Instance::IsExtensionAvailable(std::string extensionName)
 {
 	auto & ExtensionProperties = GetExtensionProperties();
 
 	for (size_t i = 0; i < ExtensionProperties.size(); i++)
 	{
-		if (TargetName == ExtensionProperties[i].extensionName)
+		if (extensionName == ExtensionProperties[i].extensionName)
 		{
 			return VK_TRUE;
 		}

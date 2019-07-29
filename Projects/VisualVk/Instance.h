@@ -55,7 +55,7 @@ namespace Vk
 		static const std::vector<VkLayerProperties> & GetLayerProperties();
 
 		//!	@brief	Check if extension is available.
-		static VkBool32 IsExtensionAvailable(std::string TargetName);
+		static VkBool32 IsExtensionAvailable(std::string extensionName);
 
 		//!	@brief	Return the Vulkan instance (singleton).
 		static Instance * GetCurrent();

@@ -50,7 +50,7 @@ VkResult PipelineLayout::Create(const PipelineLayoutInfo & LayoutInfo)
 		PipelineLayoutCreateInfo.pushConstantRangeCount		= static_cast<uint32_t>(LayoutInfo.m_ConstantRanges.size());
 		PipelineLayoutCreateInfo.pPushConstantRanges		= LayoutInfo.m_ConstantRanges.data();
 
-		m_hDescriptorSetLayout.Replace(Context::GetDeviceHandle(), hDescriptorSetLayout);
+		m_hDescriptorSetLayout = DescriptorSetLayoutH(Context::GetDeviceHandle(), hDescriptorSetLayout);
 
 		eResult = Context::GetDevice()->CreatePipelineLayout(&PipelineLayoutCreateInfo, &hPipelineLayout);
 
