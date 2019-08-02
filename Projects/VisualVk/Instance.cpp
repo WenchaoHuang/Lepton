@@ -8,16 +8,16 @@ using namespace Vk;
 
 static Instance * sg_pInstance			= nullptr;
 
-std::vector<VkLayerProperties>			Instance::sm_LayerProperties;
+std::vector<VkLayerProperties>			Instance::sm_AvailableLayers;
 
-std::vector<VkExtensionProperties>		Instance::sm_ExtensionProperties;
+std::vector<VkExtensionProperties>		Instance::sm_AvailableExtensions;
 
-#define VK_INSTANCE_PROC_ADDR(name)		(PFN_##name)GetProcAddress(#name)
+#define VK_INSTANCE_PROC_ADDR(name)		(PFN_##name)vkGetInstanceProcAddr(m_hInstance, #name)
 
 /*************************************************************************
 *****************************    Instance    *****************************
 *************************************************************************/
-Instance::Instance(VkInstance hInstance) : m_hInstance(hInstance)
+Instance::Instance(VkInstance hInstance) : m_hInstance(hInstance), m_hDebugReport(VK_NULL_HANDLE)
 {
 	uint32_t PhysicalDeviceCount = 0;
 
@@ -85,8 +85,7 @@ Instance * Instance::GetCurrent()
 }
 
 
-VkDebugReportCallbackEXT Instance::CreateDebugReportCallback(VkDebugReportFlagsEXT eFlags,
-															 PFN_vkDebugReportCallbackEXT pfnCallback)
+void Instance::RegisterDebugReportCallback(VkDebugReportFlagsEXT eFlags, PFN_vkDebugReportCallbackEXT pfnCallback)
 {
 	VkDebugReportCallbackEXT hDebugReportCallback = VK_NULL_HANDLE;
 
@@ -103,22 +102,30 @@ VkDebugReportCallbackEXT Instance::CreateDebugReportCallback(VkDebugReportFlagsE
 		CreateInfo.pfnCallback					= pfnCallback;
 		CreateInfo.pUserData					= nullptr;
 
-		pfnCreateDebugReportCallback(m_hInstance, &CreateInfo, nullptr, &hDebugReportCallback);
-	}
+		if (pfnCreateDebugReportCallback(m_hInstance, &CreateInfo, nullptr, &hDebugReportCallback) == VK_SUCCESS)
+		{
+			this->UnregisterDebugReportCallback();
 
-	return hDebugReportCallback;
+			m_hDebugReport = hDebugReportCallback;
+		}
+	}
 }
 
 
-void Instance::DestroyDebugReportCallback(VkDebugReportCallbackEXT hDebugReportCallback)
+void Instance::UnregisterDebugReportCallback()
 {
-	PFN_vkDestroyDebugReportCallbackEXT pfnDestroyDebugReportCallback = nullptr;
-
-	pfnDestroyDebugReportCallback = VK_INSTANCE_PROC_ADDR(vkDestroyDebugReportCallbackEXT);
-
-	if (pfnDestroyDebugReportCallback != nullptr)
+	if (m_hDebugReport != VK_NULL_HANDLE)
 	{
-		pfnDestroyDebugReportCallback(m_hInstance, hDebugReportCallback, nullptr);
+		PFN_vkDestroyDebugReportCallbackEXT pfnDestroyDebugReportCallback = nullptr;
+
+		pfnDestroyDebugReportCallback = VK_INSTANCE_PROC_ADDR(vkDestroyDebugReportCallbackEXT);
+
+		if (pfnDestroyDebugReportCallback != nullptr)
+		{
+			pfnDestroyDebugReportCallback(m_hInstance, m_hDebugReport, nullptr);
+
+			m_hDebugReport = VK_NULL_HANDLE;
+		}
 	}
 }
 
@@ -142,51 +149,35 @@ VkSurfaceKHR Instance::CreateWin32Surface(HWND hWindow)
 
 const std::vector<VkLayerProperties> & Instance::GetLayerProperties()
 {
-	if (sm_LayerProperties.empty())
+	if (sm_AvailableLayers.empty())
 	{
 		uint32_t PropertyCount = 0;
 
 		vkEnumerateInstanceLayerProperties(&PropertyCount, nullptr);
 
-		sm_LayerProperties.resize(PropertyCount);
+		sm_AvailableLayers.resize(PropertyCount);
 
-		vkEnumerateInstanceLayerProperties(&PropertyCount, sm_LayerProperties.data());
+		vkEnumerateInstanceLayerProperties(&PropertyCount, sm_AvailableLayers.data());
 	}
 
-	return sm_LayerProperties;
+	return sm_AvailableLayers;
 }
 
 
 const std::vector<VkExtensionProperties> & Instance::GetExtensionProperties()
 {
-	if (sm_ExtensionProperties.empty())
+	if (sm_AvailableExtensions.empty())
 	{
 		uint32_t PropertyCount = 0;
 
 		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, nullptr);
 
-		sm_ExtensionProperties.resize(PropertyCount);
+		sm_AvailableExtensions.resize(PropertyCount);
 
-		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, sm_ExtensionProperties.data());
+		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, sm_AvailableExtensions.data());
 	}
 
-	return sm_ExtensionProperties;
-}
-
-
-VkBool32 Instance::IsExtensionAvailable(std::string extensionName)
-{
-	auto & ExtensionProperties = GetExtensionProperties();
-
-	for (size_t i = 0; i < ExtensionProperties.size(); i++)
-	{
-		if (extensionName == ExtensionProperties[i].extensionName)
-		{
-			return VK_TRUE;
-		}
-	}
-
-	return VK_FALSE;
+	return sm_AvailableExtensions;
 }
 
 
@@ -196,9 +187,46 @@ const std::vector<PhysicalDevice*> & Instance::GetPhysicalDevices() const
 }
 
 
-PFN_vkVoidFunction Instance::GetProcAddress(const char * pName) const
+PhysicalDevice * Instance::GetPhysicalDevice(size_t Index) const
 {
-	return vkGetInstanceProcAddr(m_hInstance, pName);
+	if (Index < m_pPhysicalDevices.size())
+	{
+		return m_pPhysicalDevices[Index];
+	}
+
+	return nullptr;
+}
+
+
+VkBool32 Instance::IsExtensionAvailable(std::string ExtensionName)
+{
+	auto & extensionProperties = GetExtensionProperties();
+
+	for (size_t i = 0; i < extensionProperties.size(); i++)
+	{
+		if (ExtensionName == extensionProperties[i].extensionName)
+		{
+			return VK_TRUE;
+		}
+	}
+
+	return VK_FALSE;
+}
+
+
+VkBool32 Instance::IsLayerAvailable(std::string LayerName)
+{
+	auto & layerProperties = Instance::GetLayerProperties();
+
+	for (size_t i = 0; i < layerProperties.size(); i++)
+	{
+		if (LayerName == layerProperties[i].layerName)
+		{
+			return VK_TRUE;
+		}
+	}
+
+	return VK_FALSE;
 }
 
 
@@ -208,7 +236,7 @@ void Instance::DestroySurface(VkSurfaceKHR hSurface)
 }
 
 
-Instance::~Instance() noexcept
+Instance::~Instance()
 {
 	for (auto pPhysicalDevice : m_pPhysicalDevices)
 	{
@@ -224,7 +252,7 @@ void Instance::Destroy()
 	if (sg_pInstance != nullptr)
 	{
 		delete sg_pInstance;
-	}
 
-	sg_pInstance = nullptr;
+		sg_pInstance = nullptr;
+	}
 }

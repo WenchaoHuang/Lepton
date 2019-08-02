@@ -22,55 +22,64 @@ namespace Vk
 
 	private:
 
-		//!	@brief	Create Vulkan instance object (private).
+		//!	@brief	Create Vulkan instance object.
 		Instance(VkInstance hInstance);
 
-		//!	@brief	Destroy Vulkan instance object (private).
+		//!	@brief	Destroy Vulkan instance object.
 		~Instance() noexcept;
 
 	public:
 
-		//!	@brief	Destroy VkSurfaceKHR object.
-		void DestroySurface(VkSurfaceKHR hSurface);
-
-		//!	@brief	Create a win32 surface.
-		VkSurfaceKHR CreateWin32Surface(HWND hWindow);
-
-		//!	@brief	Return a function pointer for command.
-		PFN_vkVoidFunction GetProcAddress(const char * pName) const;
-
-		//!	@brief	Return physical devices array.
-		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const;
-
-		//!	@brief	Create a debug report callback.
-		VkDebugReportCallbackEXT CreateDebugReportCallback(VkDebugReportFlagsEXT eFlags,
-														   PFN_vkDebugReportCallbackEXT pfnCallback);
-		//!	@brief	Destroy a debug report callback.
-		void DestroyDebugReportCallback(VkDebugReportCallbackEXT hDebugReportCallback);
-
-		//!	@brief	Return global extension properties.
-		static const std::vector<VkExtensionProperties> & GetExtensionProperties();
-
-		//!	@brief	Return global layer properties array.
-		static const std::vector<VkLayerProperties> & GetLayerProperties();
-
-		//!	@brief	Check if extension is available.
-		static VkBool32 IsExtensionAvailable(std::string extensionName);
+		//!	@brief	Destroy the Vulkan instance.
+		static void Destroy();
 
 		//!	@brief	Return the Vulkan instance (singleton).
 		static Instance * GetCurrent();
 
-		//!	@brief	Destroy the Vulkan instance.
-		static void Destroy();
+		//!	@brief	Check if layer is available.
+		static VkBool32 IsLayerAvailable(std::string LayerName);
+
+		//!	@brief	Check if extension is available.
+		static VkBool32 IsExtensionAvailable(std::string ExtensionName);
+
+		//!	@brief	Return global layer properties array.
+		static const std::vector<VkLayerProperties> & GetLayerProperties();
+
+		//!	@brief	Return global extension properties.
+		static const std::vector<VkExtensionProperties> & GetExtensionProperties();
+
+	public:
+
+		//!	@brief	Register debug report callback.
+		void RegisterDebugReportCallback(VkDebugReportFlagsEXT eFlags, PFN_vkDebugReportCallbackEXT pfnCallback);
+
+		//!	@brief	Return physical devices array.
+		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const;
+
+		//!	@brief	Return pointer to physical device.
+		PhysicalDevice * GetPhysicalDevice(size_t Index) const;
+
+		//!	@brief	Create a win32 surface.
+		VkSurfaceKHR CreateWin32Surface(HWND hWindow);
+
+		//!	@brief	Destroy VkSurfaceKHR object.
+		void DestroySurface(VkSurfaceKHR hSurface);
+
+		//!	@brief	Destroy debug report callback.
+		void UnregisterDebugReportCallback();
 
 	private:
 
 		const VkInstance								m_hInstance;
 
+		VkDebugReportCallbackEXT						m_hDebugReport;
+
 		std::vector<PhysicalDevice*>					m_pPhysicalDevices;
 
-		static std::vector<VkLayerProperties>			sm_LayerProperties;
+	private:
 
-		static std::vector<VkExtensionProperties>		sm_ExtensionProperties;
+		static std::vector<VkLayerProperties>			sm_AvailableLayers;
+
+		static std::vector<VkExtensionProperties>		sm_AvailableExtensions;
 	};
 }
