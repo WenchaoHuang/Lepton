@@ -147,6 +147,12 @@ VkSurfaceKHR Instance::CreateWin32Surface(HWND hWindow)
 }
 
 
+const std::vector<PhysicalDevice*> & Instance::GetPhysicalDevices() const
+{
+	return m_pPhysicalDevices;
+}
+
+
 const std::vector<VkLayerProperties> & Instance::GetLayerProperties()
 {
 	if (sm_AvailableLayers.empty())
@@ -181,30 +187,13 @@ const std::vector<VkExtensionProperties> & Instance::GetExtensionProperties()
 }
 
 
-const std::vector<PhysicalDevice*> & Instance::GetPhysicalDevices() const
-{
-	return m_pPhysicalDevices;
-}
-
-
-PhysicalDevice * Instance::GetPhysicalDevice(size_t Index) const
-{
-	if (Index < m_pPhysicalDevices.size())
-	{
-		return m_pPhysicalDevices[Index];
-	}
-
-	return nullptr;
-}
-
-
-VkBool32 Instance::IsExtensionAvailable(std::string ExtensionName)
+VkBool32 Instance::IsExtensionAvailable(std::string extensionName)
 {
 	auto & extensionProperties = GetExtensionProperties();
 
 	for (size_t i = 0; i < extensionProperties.size(); i++)
 	{
-		if (ExtensionName == extensionProperties[i].extensionName)
+		if (extensionName == extensionProperties[i].extensionName)
 		{
 			return VK_TRUE;
 		}
@@ -214,13 +203,13 @@ VkBool32 Instance::IsExtensionAvailable(std::string ExtensionName)
 }
 
 
-VkBool32 Instance::IsLayerAvailable(std::string LayerName)
+VkBool32 Instance::IsLayerAvailable(std::string layerName)
 {
 	auto & layerProperties = Instance::GetLayerProperties();
 
 	for (size_t i = 0; i < layerProperties.size(); i++)
 	{
-		if (LayerName == layerProperties[i].layerName)
+		if (layerName == layerProperties[i].layerName)
 		{
 			return VK_TRUE;
 		}

@@ -29,18 +29,23 @@ namespace Vk
 		friend class Instance;
 
 		//!	@brief	Create physical device object.
-		PhysicalDevice(VkPhysicalDevice hDevice);
+		PhysicalDevice(VkPhysicalDevice hPhysicalDevice);
 
 		//!	@brief	Destroy physical device object.
 		~PhysicalDevice() noexcept;
 
 	public:
 
-		//!	@brief	Create a logical device that has queues on all queue family.
+		operator VkPhysicalDevice() const { return m_hPhysicalDevice; }
+
+		//!	@brief	Create a logical device (not readied).
 		LogicalDevice * CreateLogicalDevice();
 
+		//!	@brief	If device layer is available.
+		VkBool32 IsLayerAvailable(std::string layerName) const;
+
 		//!	@brief	If device extension is available.
-		VkBool32 IsExtensionAvailable(std::string TargetName) const;
+		VkBool32 IsExtensionAvailable(std::string extensionName) const;
 
 		//!	@brief	Destroy a logical device.
 		VkResult DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
@@ -75,23 +80,23 @@ namespace Vk
 		//!	@brief	Find queue family that supported computing, and return the queue family index.
 		uint32_t GetComputeQueueFamilyIndex() const;
 
+		//!	@brief	Return the memory properties.
+		const VkPhysicalDeviceMemoryProperties & GetMemoryProperties() { return m_MemoryProperties; }
+
+		//!	@brief	Return the physical properties.
+		const VkPhysicalDeviceProperties & GetProperties() { return m_Properties; }
+
+		//!	@brief	Return the physical features.
+		const VkPhysicalDeviceFeatures & GetFeatures() { return m_Features; }
+
 		//!	@brief	Return the queue family properties.
 		const std::vector<VkQueueFamilyProperties> & GetQueueFamilyProperties();
 
 		//!	@brief	Return the extension properties.
 		const std::vector<VkExtensionProperties> & GetExtensionProperties();
 
-		//!	@brief	Return the memory properties.
-		const VkPhysicalDeviceMemoryProperties & GetMemoryProperties();
-
 		//!	@brief	Return the layer properties.
 		const std::vector<VkLayerProperties> & GetLayerProperties();
-
-		//!	@brief	Return the physical properties.
-		const VkPhysicalDeviceProperties & GetProperties();
-
-		//!	@brief	Return the physical features.
-		const VkPhysicalDeviceFeatures & GetFeatures();
 
 	private:
 

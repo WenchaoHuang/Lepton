@@ -39,6 +39,22 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	***********************    QueueCapability    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying capabilities of queues in a queue family.
+	 */
+	enum class QueueCapability : VkFlags
+	{
+		eCompute			= VK_QUEUE_COMPUTE_BIT,
+		eGraphics			= VK_QUEUE_GRAPHICS_BIT,
+		eTransfer			= VK_QUEUE_TRANSFER_BIT,
+		eProtected			= VK_QUEUE_PROTECTED_BIT,
+		eSparseBinding		= VK_QUEUE_SPARSE_BINDING_BIT
+	};
+
+	/*********************************************************************
 	**********************    PipelineBindPoint    ***********************
 	*********************************************************************/
 

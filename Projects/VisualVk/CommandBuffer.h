@@ -27,10 +27,8 @@ namespace Vk
 
 		friend class LogicalDevice;
 
-		friend class PhysicalDevice;
-
 		//!	@brief	Create command queue object.
-		CommandQueue(VkDevice hDevice, VkQueue hQueue, uint32_t QueueFamilyIndex, VkQueueFlags eFlags);
+		CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilityFlags, float priority);
 
 		//!	@brief	Destroy command queue object.
 		~CommandQueue() noexcept;
@@ -40,11 +38,14 @@ namespace Vk
 		//!	@brief	Wait for a queue to become idle.
 		void WaitIdle() { vkQueueWaitIdle(m_hQueue); }
 
-		//!	@brief	Return the queue flags.
-		VkQueueFlags GetFlags() const { return m_QueueFlags; }
+		//!	@brief	Return the queue priority.
+		float GetPriority() const { return m_Priority; }
 
 		//!	@brief	Return the queue family index.
-		uint32_t GetFamilyIndex() const { return m_FamilyIdx; }
+		uint32_t GetFamilyIndex() const { return m_FamilyIndex; }
+
+		//!	@brief	If queue is ready to work.
+		VkBool32 IsReady() const { return m_hQueue != VK_NULL_HANDLE; }
 
 		//!	@brief	Create a new command pool object.
 		CommandPool * CreateCommandPool(VkCommandPoolCreateFlags eCreateFlags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
@@ -58,17 +59,24 @@ namespace Vk
 			return vkQueuePresentKHR(m_hQueue, pPresentInfo);
 		}
 
+		VkBool32 Has(QueueCapability eCapability)
+		{
+			return (m_CapabilityFlags & eCapability) != 0;
+		}
+
 	private:
 
-		const VkQueue				m_hQueue;
+		VkQueue							m_hQueue;
 
-		const VkDevice				m_hDevice;
+		VkDevice						m_hDevice;
 
-		const uint32_t				m_FamilyIdx;
+		const float						m_Priority;
 
-		const VkQueueFlags			m_QueueFlags;
+		const uint32_t					m_FamilyIndex;
 		
-		std::set<CommandPool*>		m_pCommandPools;
+		std::set<CommandPool*>			m_pCommandPools;
+
+		const Flags<QueueCapability>	m_CapabilityFlags;
 	};
 
 	/*********************************************************************

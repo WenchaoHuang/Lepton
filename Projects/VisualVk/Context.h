@@ -33,7 +33,10 @@ namespace Vk
 
 		static void SetDevice(LogicalDevice * pLogicalDevice)
 		{
-			sm_pLogicalDevice = pLogicalDevice;
+			if (pLogicalDevice->IsReady())
+			{
+				sm_pLogicalDevice = pLogicalDevice;
+			}
 		}
 
 	private:

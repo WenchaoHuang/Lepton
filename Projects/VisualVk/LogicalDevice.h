@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include <set>
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
@@ -41,12 +42,7 @@ namespace Vk
 		friend class PhysicalDevice;
 
 		//!	@brief	Create logical device object.
-		LogicalDevice(VkDevice hDevice,
-					  CommandQueue * pComputeQueue,
-					  CommandQueue * pGraphicsQueue,
-					  CommandQueue * pTransferQueue,
-					  PhysicalDevice * pPhysicalDevice,
-					  std::vector<CommandQueue*> pCommandQueues);
+		LogicalDevice(PhysicalDevice * pPhysicalDevice);
 
 		//!	@brief	Destroy logical device object.
 		~LogicalDevice() noexcept;
@@ -59,19 +55,18 @@ namespace Vk
 		//!	@brief	Wait for a device to become idle.
 		VkResult WaitIdle() { return vkDeviceWaitIdle(m_hDevice); }
 
-		//!	@brief	Return the pointer to compute command queue.
-		CommandQueue * GetComputeQueue() const { return m_pComputeQueue; }
+		//!	@brief	If device is started up.
+		VkBool32 IsReady() const { return m_hDevice != VK_NULL_HANDLE; }
 
-		//!	@brief	Return the pointer to graphics command queue.
-		CommandQueue * GetGraphicsQueue() const { return m_pGraphicsQueue; }
+		CommandQueue * InstallQueue(uint32_t familyIndex, float priority = 0.0f);
 
-		//!	@brief	Return the pointer to transfer command queue.
-		CommandQueue * GetTransferQueue() const { return m_pTransferQueue; }
+		VkBool32 StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures);
 
-		//!	@brief	Return physical device used to create this logical device.
-		PhysicalDevice * GetPhysicalDevice() const { return m_pPhysicalDevice; }
+		VkBool32 EnableLayer(const char * pLayerName);
 
-		CommandPool * GetStageCommandPool() {}
+		VkBool32 EnableExtension(const char * pExtensionName);
+
+		PhysicalDevice * GetPhysicalDevice() { return m_pPhysicalDevice; }
 
 		//!	@brief	Return a device level function pointer for a command.
 		PFN_vkVoidFunction GetProcAddress(const char * pName) const
@@ -80,11 +75,14 @@ namespace Vk
 		}
 
 		//!	@brief	Return the pointer to command queue.
-		CommandQueue * GetCommandQueue(uint32_t FamilyIndex)
+		CommandQueue * GetCommandQueue(uint32_t familyIndex, uint32_t queueIndex)
 		{
-			if (FamilyIndex < m_pCommandQueues.size())
+			if (familyIndex < m_PerFamilQueues.size())
 			{
-				return m_pCommandQueues[FamilyIndex];
+				if (queueIndex < m_PerFamilQueues[familyIndex].size())
+				{
+					return m_PerFamilQueues[familyIndex][queueIndex];
+				}
 			}
 
 			return nullptr;
@@ -275,36 +273,15 @@ namespace Vk
 
 	private:
 
-		const VkDevice						m_hDevice;
+		VkDevice									m_hDevice;
 
-		CommandQueue * const				m_pComputeQueue;
+		std::set<std::string>						m_EnabledLayers;
 
-		CommandQueue * const				m_pGraphicsQueue;
+		std::set<std::string>						m_EnabledExtensions;
 
-		CommandQueue * const				m_pTransferQueue;
+		PhysicalDevice * const						m_pPhysicalDevice;
 
-		PhysicalDevice * const				m_pPhysicalDevice;
-
-		const std::vector<CommandQueue*>	m_pCommandQueues;
-	};
-}
-
-
-namespace Vk2
-{
-
-	class LogicalDevice
-	{
-
-	public:
-
-
-		VkBool32 StartUp();
-
-		void ShutDown();
-
-	private:
-
+		std::vector<std::vector<CommandQueue*>>		m_PerFamilQueues;
 	};
 }
 

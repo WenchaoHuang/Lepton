@@ -37,10 +37,10 @@ namespace Vk
 		static Instance * GetCurrent();
 
 		//!	@brief	Check if layer is available.
-		static VkBool32 IsLayerAvailable(std::string LayerName);
+		static VkBool32 IsLayerAvailable(std::string layerName);
 
 		//!	@brief	Check if extension is available.
-		static VkBool32 IsExtensionAvailable(std::string ExtensionName);
+		static VkBool32 IsExtensionAvailable(std::string extensionName);
 
 		//!	@brief	Return global layer properties array.
 		static const std::vector<VkLayerProperties> & GetLayerProperties();
@@ -55,9 +55,6 @@ namespace Vk
 
 		//!	@brief	Return physical devices array.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const;
-
-		//!	@brief	Return pointer to physical device.
-		PhysicalDevice * GetPhysicalDevice(size_t Index) const;
 
 		//!	@brief	Create a win32 surface.
 		VkSurfaceKHR CreateWin32Surface(HWND hWindow);

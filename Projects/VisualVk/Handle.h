@@ -86,9 +86,13 @@ namespace Vk
 
 	using EventH					= Handle<VkEvent, vkDestroyEvent>;
 	using FenceH					= Handle<VkFence, vkDestroyFence>;
+	using ImageH					= Handle<VkImage, vkDestroyImage>;
+	using BufferH					= Handle<VkBuffer, vkDestroyBuffer>;
 	using SamplerH					= Handle<VkSampler, vkDestroySampler>;
 	using PipelineH					= Handle<VkPipeline, vkDestroyPipeline>;
 	using SemaphoreH				= Handle<VkSemaphore, vkDestroySemaphore>;
+	using ImageViewH				= Handle<VkImageView, vkDestroyImageView>;
+	using BufferViewH				= Handle<VkBufferView, vkDestroyBufferView>;
 	using RenderPassH				= Handle<VkRenderPass, vkDestroyRenderPass>;
 	using FramebufferH				= Handle<VkFramebuffer, vkDestroyFramebuffer>;
 	using ShaderModuleH				= Handle<VkShaderModule, vkDestroyShaderModule>;

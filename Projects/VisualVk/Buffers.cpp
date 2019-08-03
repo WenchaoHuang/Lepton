@@ -35,7 +35,7 @@ VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 
 	if (eResult == VK_SUCCESS)
 	{
-		VkMemoryRequirements Requirements;
+		VkMemoryRequirements Requirements = {};
 
 		Context::GetDevice()->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
 
@@ -163,7 +163,7 @@ VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 
 	if (eResult == VK_SUCCESS)
 	{
-		VkMemoryRequirements Requirements;
+		VkMemoryRequirements Requirements = {};
 
 		Context::GetDevice()->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
 

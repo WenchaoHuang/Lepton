@@ -8,8 +8,8 @@ using namespace Vk;
 /*************************************************************************
 ***************************    CommandQueue    ***************************
 *************************************************************************/
-CommandQueue::CommandQueue(VkDevice hDevice, VkQueue hQueue, uint32_t QueueFamilyIndex, VkQueueFlags eFlags)
-	: m_hDevice(hDevice), m_hQueue(hQueue), m_FamilyIdx(QueueFamilyIndex), m_QueueFlags(eFlags)
+CommandQueue::CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilityFlags, float priority)
+	: m_hDevice(VK_NULL_HANDLE), m_hQueue(VK_NULL_HANDLE), m_FamilyIndex(familyIndex), m_CapabilityFlags(eCapabilityFlags), m_Priority(priority)
 {
 
 }
@@ -21,7 +21,7 @@ CommandPool * CommandQueue::CreateCommandPool(VkCommandPoolCreateFlags eCreateFl
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
 	CreateInfo.flags				= eCreateFlags;
-	CreateInfo.queueFamilyIndex		= m_FamilyIdx;
+	CreateInfo.queueFamilyIndex		= m_FamilyIndex;
 
 	VkCommandPool hCommandPool = VK_NULL_HANDLE;
 

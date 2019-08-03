@@ -10,7 +10,7 @@ using namespace Vk;
 /*************************************************************************
 **************************    PhysicalDevice    **************************
 *************************************************************************/
-PhysicalDevice::PhysicalDevice(VkPhysicalDevice hDevice) : m_hPhysicalDevice(hDevice)
+PhysicalDevice::PhysicalDevice(VkPhysicalDevice hPhysicalDevice) : m_hPhysicalDevice(hPhysicalDevice)
 {
 	vkGetPhysicalDeviceMemoryProperties(m_hPhysicalDevice, &m_MemoryProperties);
 
@@ -28,72 +28,11 @@ PhysicalDevice::PhysicalDevice(VkPhysicalDevice hDevice) : m_hPhysicalDevice(hDe
 
 LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 {
-	std::vector<VkDeviceQueueCreateInfo> QueueCreateInfos(m_QueueFamilyProperties.size());
+	LogicalDevice * pLogicalDevice = new LogicalDevice(this);
 
-	const float QueuePriority = { 0.0f };
+	m_pLogicalDevices.insert(pLogicalDevice);
 
-	for (size_t i = 0; i < QueueCreateInfos.size(); i++)
-	{
-		QueueCreateInfos[i].sType					= VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-		QueueCreateInfos[i].pNext					= nullptr;
-		QueueCreateInfos[i].flags					= 0;
-		QueueCreateInfos[i].queueFamilyIndex		= static_cast<uint32_t>(i);
-		QueueCreateInfos[i].queueCount				= 1;
-		QueueCreateInfos[i].pQueuePriorities		= &QueuePriority;
-	}
-
-	std::vector<const char*> pExtensions;
-
-	if (IsExtensionAvailable(VK_KHR_SWAPCHAIN_EXTENSION_NAME))
-	{
-		pExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-	}
-
-	VkDeviceCreateInfo								DeviceCreateInfo = {};
-	DeviceCreateInfo.sType							= VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-	DeviceCreateInfo.pNext							= nullptr;
-	DeviceCreateInfo.flags							= 0;
-	DeviceCreateInfo.queueCreateInfoCount			= static_cast<uint32_t>(QueueCreateInfos.size());
-	DeviceCreateInfo.pQueueCreateInfos				= QueueCreateInfos.data();
-	DeviceCreateInfo.enabledLayerCount				= 0;
-	DeviceCreateInfo.ppEnabledLayerNames			= nullptr;
-	DeviceCreateInfo.enabledExtensionCount			= static_cast<uint32_t>(pExtensions.size());
-	DeviceCreateInfo.ppEnabledExtensionNames		= pExtensions.data();
-	DeviceCreateInfo.pEnabledFeatures				= &m_Features;
-
-	VkDevice hDevice = VK_NULL_HANDLE;
-
-	if (vkCreateDevice(m_hPhysicalDevice, &DeviceCreateInfo, nullptr, &hDevice) == VK_SUCCESS)
-	{
-		std::vector<CommandQueue*> pCommandQueues(m_QueueFamilyProperties.size());
-
-		uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
-
-		for (uint32_t i = 0; i < QueueFamilyCount; i++)
-		{
-			VkQueue hQueue = VK_NULL_HANDLE;
-
-			vkGetDeviceQueue(hDevice, i, 0, &hQueue);
-
-			pCommandQueues[i] = new CommandQueue(hDevice, hQueue, i, m_QueueFamilyProperties[i].queueFlags);
-		}
-
-		uint32_t ComputeQueueIndex = this->GetComputeQueueFamilyIndex();
-		uint32_t GraphicsQueueIndex = this->GetGraphicsQueueFamilyIndex();
-		uint32_t TransferQueueIndex = this->GetTransferQueueFamilyIndex();
-
-		CommandQueue * pComputeQueue = (ComputeQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[ComputeQueueIndex] : nullptr;
-		CommandQueue * pGraphicsQueue = (GraphicsQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[GraphicsQueueIndex] : nullptr;
-		CommandQueue * pTransferQueue = (TransferQueueIndex != VK_INVALID_INDEX) ? pCommandQueues[TransferQueueIndex] : nullptr;
-
-		LogicalDevice * pLogicalDevice = new LogicalDevice(hDevice, pComputeQueue, pGraphicsQueue, pTransferQueue, this, pCommandQueues);
-
-		m_pLogicalDevices.insert(pLogicalDevice);
-
-		return pLogicalDevice;
-	}
-
-	return nullptr;
+	return pLogicalDevice;
 }
 
 
@@ -178,9 +117,7 @@ uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPro
 
 uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
 {
-	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
-
-	for (uint32_t i = 0; i < QueueFamilyCount; i++)
+	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
 		if (IsSurfaceSupported(hSurface, i))
 		{
@@ -194,9 +131,7 @@ uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
 
 uint32_t PhysicalDevice::GetGraphicsQueueFamilyIndex() const
 {
-	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
-
-	for (uint32_t i = 0; i < QueueFamilyCount; i++)
+	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
 		if (m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 		{
@@ -210,9 +145,7 @@ uint32_t PhysicalDevice::GetGraphicsQueueFamilyIndex() const
 
 uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 {
-	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
-
-	for (uint32_t i = 0; i < QueueFamilyCount; i++)
+	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
 		//	Find transfer queue but not graphics queue.
 		if ((m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_TRANSFER_BIT) &&
@@ -223,7 +156,7 @@ uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 	}
 
 	//	No matching queue that supported transfer but not graphics, then find transfer queue.
-	for (uint32_t i = 0; i < QueueFamilyCount; i++)
+	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
 		if (m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_TRANSFER_BIT)
 		{
@@ -237,9 +170,7 @@ uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 
 uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 {
-	uint32_t QueueFamilyCount = static_cast<uint32_t>(m_QueueFamilyProperties.size());
-
-	for (uint32_t i = 0; i < QueueFamilyCount; i++)
+	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
 		//	Find computing queue but not graphics queue.
 		if ((m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_COMPUTE_BIT) &&
@@ -250,7 +181,7 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 	}
 
 	//	No matching queue that supported computing but not graphics, then find computing queue.
-	for (uint32_t i = 0; i < QueueFamilyCount; i++)
+	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
 		if (m_QueueFamilyProperties[i].queueFlags & VK_QUEUE_COMPUTE_BIT)
 		{
@@ -313,29 +244,25 @@ const std::vector<VkLayerProperties> & PhysicalDevice::GetLayerProperties()
 }
 
 
-const VkPhysicalDeviceMemoryProperties & PhysicalDevice::GetMemoryProperties()
-{
-	return m_MemoryProperties;
-}
-
-
-const VkPhysicalDeviceProperties & PhysicalDevice::GetProperties()
-{
-	return m_Properties;
-}
-
-
-const VkPhysicalDeviceFeatures & PhysicalDevice::GetFeatures()
-{
-	return m_Features;
-}
-
-
-VkBool32 PhysicalDevice::IsExtensionAvailable(std::string TargetName) const
+VkBool32 PhysicalDevice::IsExtensionAvailable(std::string extensionName) const
 {
 	for (size_t i = 0; i < m_ExtensionProperties.size(); i++)
 	{
-		if (TargetName == m_ExtensionProperties[i].extensionName)
+		if (extensionName == m_ExtensionProperties[i].extensionName)
+		{
+			return VK_TRUE;
+		}
+	}
+
+	return VK_FALSE;
+}
+
+
+VkBool32 PhysicalDevice::IsLayerAvailable(std::string layerName) const
+{
+	for (size_t i = 0; i < m_LayerProperties.size(); i++)
+	{
+		if (layerName == m_LayerProperties[i].layerName)
 		{
 			return VK_TRUE;
 		}

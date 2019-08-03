@@ -64,7 +64,7 @@ VkResult Swapchain::Construct(VkSurfaceKHR hSurface, VkBool32 bVsync)
 
 		Context::GetDevice()->GetSwapchainImages(m_hSwapchain, m_hImages);
 
-		m_pPresentQueue = Context::GetDevice()->GetCommandQueue(PresentQueueIndex);
+		m_pPresentQueue = Context::GetDevice()->GetCommandQueue(PresentQueueIndex, 0);
 
 		m_eImageFormat = static_cast<Format>(CreateInfo.imageFormat);
 
