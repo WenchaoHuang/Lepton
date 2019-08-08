@@ -28,26 +28,26 @@ namespace Vk
 	public:
 
 		//!	@brief	Default constructor.
-		Handle() : m_spInternalHandle(nullptr) {}
+		Handle() : m_spInteriorHandle(nullptr) {}
 
 		//!	@brief	Constructed by given resource handle.
-		Handle(VkDevice hDevice, VkResource hResource) : m_spInternalHandle(std::make_shared<InternalHandle>(hDevice, hResource)) {}
+		Handle(VkDevice hDevice, VkResource hResource) : m_spInteriorHandle(std::make_shared<InternalHandle>(hDevice, hResource)) {}
 
 		//!	@brief	Convert to Vulkan resource handle.
-		operator VkResource() const { return (m_spInternalHandle == nullptr) ? VK_NULL_HANDLE : m_spInternalHandle->m_hResource; }
+		operator VkResource() const { return (m_spInteriorHandle == nullptr) ? VK_NULL_HANDLE : m_spInteriorHandle->m_hResource; }
 
 		//!	@brief	If resource handle is valid.
-		bool IsValid() const { return (m_spInternalHandle != nullptr) && (m_spInternalHandle->m_hResource != VK_NULL_HANDLE); }
+		bool IsValid() const { return (m_spInteriorHandle != nullptr) && (m_spInteriorHandle->m_hResource != VK_NULL_HANDLE); }
 
 		//!	@brief	Invalidate current handle.
-		void Invalidate() { m_spInternalHandle.reset(); }
+		void Invalidate() { m_spInteriorHandle.reset(); }
 
 	protected:
 
 		//!	@brief	Replace resource handle.
 		void Replace(VkDevice hDevice, VkResource hResource)
 		{
-			m_spInternalHandle = std::make_shared<InternalHandle>(hDevice, hResource);
+			m_spInteriorHandle = std::make_shared<InternalHandle>(hDevice, hResource);
 		}
 
 	private:
@@ -77,7 +77,7 @@ namespace Vk
 			const VkResource				m_hResource; 
 		};
 
-		std::shared_ptr<InternalHandle>		m_spInternalHandle;
+		std::shared_ptr<InternalHandle>		m_spInteriorHandle;
 	};
 
 	/*********************************************************************
