@@ -86,10 +86,8 @@ VkBool32 LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeature
 
 CommandQueue * LogicalDevice::InstallQueue(uint32_t familyIndex, float priority)
 {
-	if (m_hDevice == VK_NULL_HANDLE)
-	{
+	if (m_hDevice != VK_NULL_HANDLE)							return nullptr;
 
-	}
 	auto & QueueFamilyProperties = m_pPhysicalDevice->GetQueueFamilyProperties();
 
 	if (familyIndex >= QueueFamilyProperties.size())			return nullptr;
@@ -155,6 +153,8 @@ LogicalDevice::~LogicalDevice() noexcept
 {
 	if (m_hDevice != VK_NULL_HANDLE)
 	{
+		this->WaitIdle();
+
 		for (auto & pQueues : m_PerFamilQueues)
 		{
 			for (size_t i = 0; i < pQueues.size(); i++)
@@ -162,8 +162,6 @@ LogicalDevice::~LogicalDevice() noexcept
 				delete pQueues[i];
 			}
 		}
-
-		this->WaitIdle();
 
 		vkDestroyDevice(m_hDevice, nullptr);
 	}

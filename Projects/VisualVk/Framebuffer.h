@@ -197,6 +197,9 @@ namespace Vk
 		//!	@brief	Create a new frame buffer object.
 		VkResult Create(RenderPassH hRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
 
+
+		void BeginRenderPass(CommandBuffer * pCommandBuffer, VkRect2D RenderArea, uint32_t clearValueCount, const VkClearValue * pClearValues);
+
 		//!	@brief	Return render pass handle.
 		RenderPassH GetRenderPass() const { return m_hRenderPass; }
 

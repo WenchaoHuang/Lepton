@@ -1,6 +1,7 @@
 /*************************************************************************
 ***********************    VisualVk_Framebuffer    ***********************
 *************************************************************************/
+#include "CommandBuffer.h"
 #include "Framebuffer.h"
 
 using namespace Vk;
@@ -74,6 +75,21 @@ VkResult Framebuffer::Create(RenderPassH hRenderPass, const std::vector<VkImageV
 	}
 
 	return eResult;
+}
+
+
+void Framebuffer::BeginRenderPass(CommandBuffer * pCommandBuffer, VkRect2D RenderArea, uint32_t clearValueCount, const VkClearValue * pClearValues)
+{
+	VkRenderPassBeginInfo			BeginInfo = {};
+	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	BeginInfo.pNext					= nullptr;
+	BeginInfo.renderPass			= m_hRenderPass;
+	BeginInfo.framebuffer			= (*this);
+	BeginInfo.renderArea			= RenderArea;
+	BeginInfo.clearValueCount		= clearValueCount;
+	BeginInfo.pClearValues			= pClearValues;
+
+	pCommandBuffer->CmdBeginRenderPass(&BeginInfo);
 }
 
 
