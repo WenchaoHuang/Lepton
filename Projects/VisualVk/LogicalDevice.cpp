@@ -24,8 +24,8 @@ VkBool32 LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeature
 	std::vector<const char*>						pEnabledLayers;
 	std::vector<const char*>						pEnabledExtensions;
 
-	for (auto & iter : m_EnabledLayers)				pEnabledLayers.push_back(iter.c_str());
-	for (auto & iter : m_EnabledExtensions)			pEnabledExtensions.push_back(iter.c_str());
+	for (auto iter : m_EnabledLayers)				pEnabledLayers.push_back(iter);
+	for (auto iter : m_EnabledExtensions)			pEnabledExtensions.push_back(iter);
 
 	std::vector<std::vector<float>>					Priorities(m_PerFamilQueues.size());
 	std::vector<VkDeviceQueueCreateInfo>			QueueCreateInfos;

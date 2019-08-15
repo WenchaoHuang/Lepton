@@ -28,25 +28,25 @@ namespace Vk
 		//!	@brief	Constructed by a given bitmask.
 		constexpr Flags(BitType bit) : m_Mask(static_cast<VkFlags>(bit)) {}
 
-		//!	@brief	Operator: or.
+		//!	@brief	Bitwise operator: or.
 		constexpr friend Flags operator|(BitType bit, Flags flags) { return static_cast<VkFlags>(bit) | flags.m_Mask; }
 
-		//!	@brief	Operator: and.
+		//!	@brief	Bitwise operator: and.
 		 constexpr friend Flags operator&(BitType bit, Flags flags) { return static_cast<VkFlags>(bit) & flags.m_Mask; }
 
-		//!	@brief	Operator: or.
+		//!	@brief	Bitwise operator: or.
 		constexpr Flags operator|(Flags flags) const { return Flags(m_Mask | flags.m_Mask); }
 
-		//!	@brief	Operator: and.
+		//!	@brief	Bitwise operator: and.
 		constexpr Flags operator&(Flags flags) const { return Flags(m_Mask & flags.m_Mask); }
 
-		//!	@brief	Operator: or equal.
+		//!	@brief	Bitwise operator: or equal.
 		constexpr void operator|=(Flags flags) { m_Mask |= flags.m_Mask; }
 
-		//!	@brief	Operator: and equal.
+		//!	@brief	Bitwise operator: and equal.
 		constexpr void operator&=(Flags flags) { m_Mask |= flags.m_Mask; }
 
-		//!	@brief	Operator: inverse.
+		//!	@brief	Bitwise operator: inverse.
 		constexpr Flags operator~() const { return Flags(~m_Mask); }
 
 		//!	@brief	Convert to VkFlags.

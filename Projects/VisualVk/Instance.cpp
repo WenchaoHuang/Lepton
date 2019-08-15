@@ -8,6 +8,10 @@ using namespace Vk;
 
 static Instance * sg_pInstance			= nullptr;
 
+std::set<const char*>					Instance::sm_EnabledLayers;
+
+std::set<const char*>					Instance::sm_EnabledExtensions;
+
 std::vector<VkLayerProperties>			Instance::sm_AvailableLayers;
 
 std::vector<VkExtensionProperties>		Instance::sm_AvailableExtensions;
@@ -36,24 +40,19 @@ Instance::Instance(VkInstance hInstance) : m_hInstance(hInstance), m_hDebugRepor
 
 Instance * Instance::GetCurrent()
 {
-	if (sg_pInstance != nullptr)	return sg_pInstance;
+	if (sg_pInstance != nullptr)			return sg_pInstance;
 
-	std::vector<const char*>		pLayers;
-	std::vector<const char*>		pExtensions;
+	std::vector<const char*>				pLayers;
+	std::vector<const char*>				pExtensions;
 
-	if (IsExtensionAvailable(VK_KHR_SURFACE_EXTENSION_NAME))
-		pExtensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-
-	if (IsExtensionAvailable(VK_KHR_WIN32_SURFACE_EXTENSION_NAME))
-		pExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-#if defined(_DEBUG)
-	if (IsExtensionAvailable(VK_EXT_DEBUG_REPORT_EXTENSION_NAME))
-		pExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
-
-	pLayers.push_back("VK_LAYER_LUNARG_standard_validation");
-
-	Instance::GetLayerProperties();
-#endif
+	for (auto extension : sm_EnabledExtensions)
+	{
+		pExtensions.push_back(extension);
+	}
+	for (auto layer : sm_EnabledLayers)
+	{
+		pLayers.push_back(layer);
+	}
 
 	VkApplicationInfo						AppInfo = {};
 	AppInfo.sType							= VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -147,9 +146,20 @@ VkSurfaceKHR Instance::CreateWin32Surface(HWND hWindow)
 }
 
 
-const std::vector<PhysicalDevice*> & Instance::GetPhysicalDevices() const
+const std::vector<VkExtensionProperties> & Instance::GetExtensionProperties()
 {
-	return m_pPhysicalDevices;
+	if (sm_AvailableExtensions.empty())
+	{
+		uint32_t PropertyCount = 0;
+
+		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, nullptr);
+
+		sm_AvailableExtensions.resize(PropertyCount);
+
+		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, sm_AvailableExtensions.data());
+	}
+
+	return sm_AvailableExtensions;
 }
 
 
@@ -167,23 +177,6 @@ const std::vector<VkLayerProperties> & Instance::GetLayerProperties()
 	}
 
 	return sm_AvailableLayers;
-}
-
-
-const std::vector<VkExtensionProperties> & Instance::GetExtensionProperties()
-{
-	if (sm_AvailableExtensions.empty())
-	{
-		uint32_t PropertyCount = 0;
-
-		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, nullptr);
-
-		sm_AvailableExtensions.resize(PropertyCount);
-
-		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, sm_AvailableExtensions.data());
-	}
-
-	return sm_AvailableExtensions;
 }
 
 
@@ -216,6 +209,66 @@ VkBool32 Instance::IsLayerAvailable(std::string layerName)
 	}
 
 	return VK_FALSE;
+}
+
+
+VkBool32 Instance::IsExtensionEnabled(std::string extensionName)
+{
+	for (auto iter : sm_EnabledExtensions)
+	{
+		if (extensionName == iter)
+		{
+			return VK_TRUE;
+		}
+	}
+
+	return VK_FALSE;
+}
+
+
+void Instance::EnableExtension(std::string extensionName)
+{
+	Instance::GetExtensionProperties();
+
+	for (auto & iter : sm_AvailableExtensions)
+	{
+		if (extensionName == iter.extensionName)
+		{
+			sm_EnabledExtensions.insert(iter.extensionName);
+
+			return;
+		}
+	}
+}
+
+
+VkBool32 Instance::IsLayerEnabled(std::string layerName)
+{
+	for (auto iter : sm_EnabledLayers)
+	{
+		if (layerName == iter)
+		{
+			return VK_TRUE;
+		}
+	}
+
+	return VK_FALSE;
+}
+
+
+void Instance::EnableLayer(std::string layerName)
+{
+	Instance::GetLayerProperties();
+
+	for (auto & iter : sm_AvailableLayers)
+	{
+		if (layerName == iter.layerName)
+		{
+			sm_EnabledLayers.insert(iter.layerName);
+
+			return;
+		}
+	}
 }
 
 

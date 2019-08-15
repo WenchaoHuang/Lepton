@@ -110,11 +110,11 @@ namespace Vk
 
 		VkPhysicalDeviceProperties					m_Properties;
 
-		std::vector<VkLayerProperties>				m_LayerProperties;
+		std::vector<VkLayerProperties>				m_AvailableLayers;
 
 		VkPhysicalDeviceMemoryProperties			m_MemoryProperties;
 
-		std::vector<VkExtensionProperties>			m_ExtensionProperties;
+		std::vector<VkExtensionProperties>			m_AvailableExtensions;
 
 		std::vector<VkQueueFamilyProperties>		m_QueueFamilyProperties;
 	};

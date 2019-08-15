@@ -212,43 +212,43 @@ const std::vector<VkQueueFamilyProperties> & PhysicalDevice::GetQueueFamilyPrope
 
 const std::vector<VkExtensionProperties> & PhysicalDevice::GetExtensionProperties()
 {
-	if (m_ExtensionProperties.empty())
+	if (m_AvailableExtensions.empty())
 	{
 		uint32_t PropertyCount = 0;
 
 		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &PropertyCount, nullptr);
 
-		m_ExtensionProperties.resize(PropertyCount);
+		m_AvailableExtensions.resize(PropertyCount);
 
-		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &PropertyCount, m_ExtensionProperties.data());
+		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &PropertyCount, m_AvailableExtensions.data());
 	}
 
-	return m_ExtensionProperties;
+	return m_AvailableExtensions;
 }
 
 
 const std::vector<VkLayerProperties> & PhysicalDevice::GetLayerProperties()
 {
-	if (m_LayerProperties.empty())
+	if (m_AvailableLayers.empty())
 	{
 		uint32_t PropertyCount = 0;
 
 		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &PropertyCount, nullptr);
 
-		m_LayerProperties.resize(PropertyCount);
+		m_AvailableLayers.resize(PropertyCount);
 
-		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &PropertyCount, m_LayerProperties.data());
+		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &PropertyCount, m_AvailableLayers.data());
 	}
 
-	return m_LayerProperties;
+	return m_AvailableLayers;
 }
 
 
 VkBool32 PhysicalDevice::IsExtensionAvailable(std::string extensionName) const
 {
-	for (size_t i = 0; i < m_ExtensionProperties.size(); i++)
+	for (size_t i = 0; i < m_AvailableExtensions.size(); i++)
 	{
-		if (extensionName == m_ExtensionProperties[i].extensionName)
+		if (extensionName == m_AvailableExtensions[i].extensionName)
 		{
 			return VK_TRUE;
 		}
@@ -260,9 +260,9 @@ VkBool32 PhysicalDevice::IsExtensionAvailable(std::string extensionName) const
 
 VkBool32 PhysicalDevice::IsLayerAvailable(std::string layerName) const
 {
-	for (size_t i = 0; i < m_LayerProperties.size(); i++)
+	for (size_t i = 0; i < m_AvailableLayers.size(); i++)
 	{
-		if (layerName == m_LayerProperties[i].layerName)
+		if (layerName == m_AvailableLayers[i].layerName)
 		{
 			return VK_TRUE;
 		}

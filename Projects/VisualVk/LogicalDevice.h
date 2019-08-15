@@ -275,9 +275,9 @@ namespace Vk
 
 		VkDevice									m_hDevice;
 
-		std::set<std::string>						m_EnabledLayers;
+		std::set<const char*>						m_EnabledLayers;
 
-		std::set<std::string>						m_EnabledExtensions;
+		std::set<const char*>						m_EnabledExtensions;
 
 		PhysicalDevice * const						m_pPhysicalDevice;
 
