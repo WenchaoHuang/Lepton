@@ -262,12 +262,12 @@ namespace Vk
 			CullMode		cullMode					= CullMode::eNone;
 			FrontFace		frontFace					= FrontFace::eCounterClockwise;
 			PolygonMode		polygonMode					= PolygonMode::eFill;
+			Bool32			depthBiasEnable				= eFalse;
 			Bool32			depthClampEnable			= eFalse;
 			Bool32			rasterizerDiscardEnable		= eFalse;
-			Bool32			depthBiasEnable				= eFalse;
 			float			depthBiasConstantFactor		= 0.0f;
-			float			depthBiasClamp				= 0.0f;
 			float			depthBiasSlopeFactor		= 0.0f;
+			float			depthBiasClamp				= 0.0f;
 			float			lineWidth					= 1.0f;
 		};
 
