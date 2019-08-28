@@ -114,6 +114,6 @@ namespace Vk
 
 	private:
 
-		SamplerParam		m_Param;
+		SamplerParam			m_Param;
 	};
 }
