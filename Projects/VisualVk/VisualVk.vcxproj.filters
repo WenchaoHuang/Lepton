@@ -168,5 +168,8 @@
     <ClInclude Include="CommandBuffer.h">
       <Filter>2. Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Result.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

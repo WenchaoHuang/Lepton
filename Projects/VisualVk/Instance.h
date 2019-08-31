@@ -6,6 +6,7 @@
 #include <set>
 #include <vector>
 #include <vulkan/vulkan.h>
+#include "Result.h"
 
 namespace Vk
 {
@@ -16,81 +17,86 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan instance object (singleton).
+	 *	@brief	Vulkan instance object.
 	 */
 	class Instance
 	{
 
-	private:
+	public:
 
-		//!	@brief	Create Vulkan instance object.
-		Instance(VkInstance hInstance);
+		//!	@brief	Create Vulkan instance object (not ready).
+		Instance();
+
+		//!	@brief	Vulkan instance object is non-copyable.
+		Instance(const Instance&) = delete;
+
+		//!	@brief	Vulkan instance object is non-assignable.
+		void operator=(const Instance&) = delete;
 
 		//!	@brief	Destroy Vulkan instance object.
-		~Instance() noexcept;
+		~Instance();
 
 	public:
-
-		//!	@brief	Destroy the Vulkan instance.
-		static void Destroy();
-
-		//!	@brief	Return the Vulkan instance (singleton).
-		static Instance * GetCurrent();
-
-		//!	@brief	Enable validation layer.
-		static void EnableLayer(std::string layerName);
-
-		//!	@brief	If validation layer enabled.
-		static VkBool32 IsLayerEnabled(std::string layerName);
 
 		//!	@brief	Check if validation layer is available.
-		static VkBool32 IsLayerAvailable(std::string layerName);
-
-		//!	@brief	Enable extension.
-		static void EnableExtension(std::string extensionName);
-
-		//!	@brief	If extension enabled.
-		static VkBool32 IsExtensionEnabled(std::string extensionName);
+		static bool IsLayerAvilable(std::string layerName);
 
 		//!	@brief	Check if extension is available.
-		static VkBool32 IsExtensionAvailable(std::string extensionName);
+		static bool IsExtensionAvilable(std::string extensionName);
 
-		//!	@brief	Return global layer properties array.
-		static const std::vector<VkLayerProperties> & GetLayerProperties();
+		//!	@brief	Return array of available validation layers.
+		static const std::vector<VkLayerProperties> & GetAvailableLayers();
 
-		//!	@brief	Return global extension properties.
-		static const std::vector<VkExtensionProperties> & GetExtensionProperties();
+		//!	@brief	Return array of available extensions.
+		static const std::vector<VkExtensionProperties> & GetAvailableExtensions();
 
 	public:
 
-		//!	@brief	Register debug report callback.
-		void RegisterDebugReportCallback(VkDebugReportFlagsEXT eFlags, PFN_vkDebugReportCallbackEXT pfnCallback);
+		//!	@brief	Invalidate instance.
+		void Invalidate();
 
-		//!	@brief	Return physical devices array.
-		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }
+		//!	@brief	Validate instance object.
+		Result Validate();
 
-		//!	@brief	Create a win32 surface.
-		VkSurfaceKHR CreateWin32Surface(HWND hWindow);
+		//!	@brief	If Vulkan handle is valid.
+		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
 
-		//!	@brief	Destroy VkSurfaceKHR object.
+		//!	@brief	Enable validation layer (in preparation stage).
+		bool EnableLayer(std::string layerName);
+
+		//!	@brief	Enable extension (in preparation stage).
+		bool EnableExtension(std::string extensionName);
+
+		//!	@brief	Check if validation layer had already enabled.
+		bool IsLayerEnabled(std::string layerName) const;
+
+		//!	@brief	Check if extension had already enabled.
+		bool IsExtensionEnabled(std::string extensionName) const;
+
+		//!	@brief	Destroy a VkSurfaceKHR object.
 		void DestroySurface(VkSurfaceKHR hSurface);
 
-		//!	@brief	Destroy debug report callback.
-		void UnregisterDebugReportCallback();
+		//!	@brief	Create a slink:VkSurfaceKHR object for an Win32 native window.
+		VkSurfaceKHR CreateSurface(HWND hWindow);
 
 	private:
 
-		const VkInstance								m_hInstance;
+		//!	@brief	Return a function pointer for a command.
+		PFN_vkVoidFunction GetProcAddr(const char * pName);
 
-		VkDebugReportCallbackEXT						m_hDebugReport;
+	private:
+
+		VkInstance										m_hInstance;
+
+		std::set<VkSurfaceKHR>							m_hSurfaces;
 
 		std::vector<PhysicalDevice*>					m_pPhysicalDevices;
 
 	private:
 
-		static std::set<const char*>					sm_EnabledLayers;
+		std::set<const char*>							m_EnabledLayers;
 
-		static std::set<const char*>					sm_EnabledExtensions;
+		std::set<const char*>							m_EnabledExtensions;
 
 		static std::vector<VkLayerProperties>			sm_AvailableLayers;
 

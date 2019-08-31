@@ -6,130 +6,75 @@
 
 using namespace Vk;
 
-static Instance * sg_pInstance			= nullptr;
-
-std::set<const char*>					Instance::sm_EnabledLayers;
-
-std::set<const char*>					Instance::sm_EnabledExtensions;
-
 std::vector<VkLayerProperties>			Instance::sm_AvailableLayers;
-
 std::vector<VkExtensionProperties>		Instance::sm_AvailableExtensions;
-
-#define VK_INSTANCE_PROC_ADDR(name)		(PFN_##name)vkGetInstanceProcAddr(m_hInstance, #name)
 
 /*************************************************************************
 *****************************    Instance    *****************************
 *************************************************************************/
-Instance::Instance(VkInstance hInstance) : m_hInstance(hInstance), m_hDebugReport(VK_NULL_HANDLE)
+Instance::Instance() : m_hInstance(VK_NULL_HANDLE)
 {
-	uint32_t PhysicalDeviceCount = 0;
 
-	vkEnumeratePhysicalDevices(m_hInstance, &PhysicalDeviceCount, nullptr);
-
-	std::vector<VkPhysicalDevice> hPhysicalDevices(PhysicalDeviceCount);
-
-	vkEnumeratePhysicalDevices(m_hInstance, &PhysicalDeviceCount, hPhysicalDevices.data());
-
-	for (size_t i = 0; i < hPhysicalDevices.size(); i++)
-	{
-		m_pPhysicalDevices.push_back(new PhysicalDevice(hPhysicalDevices[i]));
-	}
 }
 
 
-Instance * Instance::GetCurrent()
+Result Instance::Validate()
 {
-	if (sg_pInstance != nullptr)			return sg_pInstance;
-
-	std::vector<const char*>				pLayers;
-	std::vector<const char*>				pExtensions;
-
-	for (auto extension : sm_EnabledExtensions)
+	if (m_hInstance == VK_NULL_HANDLE)
 	{
-		pExtensions.push_back(extension);
-	}
-	for (auto layer : sm_EnabledLayers)
-	{
-		pLayers.push_back(layer);
-	}
+		std::vector<const char*>					pLayers;
+		std::vector<const char*>					pExtensions;
 
-	VkApplicationInfo						AppInfo = {};
-	AppInfo.sType							= VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	AppInfo.pNext							= nullptr;
-	AppInfo.pEngineName						= "VisualVk";
-	AppInfo.pApplicationName				= "VisualVk";
-	AppInfo.applicationVersion				= VK_MAKE_VERSION(1, 0, 0);
-	AppInfo.engineVersion					= VK_MAKE_VERSION(1, 0, 0);
-	AppInfo.apiVersion						= VK_API_VERSION_1_0;
+		for (auto iter : m_EnabledLayers)			pLayers.push_back(iter);
+		for (auto iter : m_EnabledExtensions)		pExtensions.push_back(iter);
 
-	VkInstanceCreateInfo					CreateInfo = {};
-	CreateInfo.sType						= VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	CreateInfo.pNext						= nullptr;
-	CreateInfo.flags						= 0;
-	CreateInfo.pApplicationInfo				= &AppInfo;
-	CreateInfo.enabledExtensionCount		= static_cast<uint32_t>(pExtensions.size());
-	CreateInfo.ppEnabledExtensionNames		= pExtensions.data();
-	CreateInfo.enabledLayerCount			= static_cast<uint32_t>(pLayers.size());
-	CreateInfo.ppEnabledLayerNames			= pLayers.data();
+		VkApplicationInfo							AppInfo = {};
+		AppInfo.sType								= VK_STRUCTURE_TYPE_APPLICATION_INFO;
+		AppInfo.pNext								= nullptr;
+		AppInfo.pEngineName							= "VisualVk";
+		AppInfo.pApplicationName					= "VisualVk";
+		AppInfo.applicationVersion					= VK_MAKE_VERSION(1, 0, 0);
+		AppInfo.engineVersion						= VK_MAKE_VERSION(1, 0, 0);
+		AppInfo.apiVersion							= VK_API_VERSION_1_0;
 
-	VkInstance hInstance = VK_NULL_HANDLE;
+		VkInstanceCreateInfo						CreateInfo = {};
+		CreateInfo.sType							= VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+		CreateInfo.pNext							= nullptr;
+		CreateInfo.flags							= 0;
+		CreateInfo.pApplicationInfo					= &AppInfo;
+		CreateInfo.enabledExtensionCount			= static_cast<uint32_t>(pExtensions.size());
+		CreateInfo.ppEnabledExtensionNames			= pExtensions.data();
+		CreateInfo.enabledLayerCount				= static_cast<uint32_t>(pLayers.size());
+		CreateInfo.ppEnabledLayerNames				= pLayers.data();
 
-	if (vkCreateInstance(&CreateInfo, nullptr, &hInstance) == VK_SUCCESS)
-	{
-		sg_pInstance = new Instance(hInstance);
-	}
+		VkResult eResult = vkCreateInstance(&CreateInfo, nullptr, &m_hInstance);
 
-	return sg_pInstance;
-}
-
-
-void Instance::RegisterDebugReportCallback(VkDebugReportFlagsEXT eFlags, PFN_vkDebugReportCallbackEXT pfnCallback)
-{
-	VkDebugReportCallbackEXT hDebugReportCallback = VK_NULL_HANDLE;
-
-	PFN_vkCreateDebugReportCallbackEXT pfnCreateDebugReportCallback = nullptr;
-
-	pfnCreateDebugReportCallback = VK_INSTANCE_PROC_ADDR(vkCreateDebugReportCallbackEXT);
-
-	if (pfnCreateDebugReportCallback != nullptr)
-	{
-		VkDebugReportCallbackCreateInfoEXT		CreateInfo = {};
-		CreateInfo.sType						= VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-		CreateInfo.pNext						= nullptr;
-		CreateInfo.flags						= eFlags;
-		CreateInfo.pfnCallback					= pfnCallback;
-		CreateInfo.pUserData					= nullptr;
-
-		if (pfnCreateDebugReportCallback(m_hInstance, &CreateInfo, nullptr, &hDebugReportCallback) == VK_SUCCESS)
+		if (eResult == VK_SUCCESS)
 		{
-			this->UnregisterDebugReportCallback();
+			uint32_t physicalDeviceCount = 0;
 
-			m_hDebugReport = hDebugReportCallback;
+			vkEnumeratePhysicalDevices(m_hInstance, &physicalDeviceCount, nullptr);
+
+			std::vector<VkPhysicalDevice> hPhysicalDevices(physicalDeviceCount);
+
+			vkEnumeratePhysicalDevices(m_hInstance, &physicalDeviceCount, hPhysicalDevices.data());
+
+			m_pPhysicalDevices.resize(physicalDeviceCount);
+
+			for (size_t i = 0; i < hPhysicalDevices.size(); i++)
+			{
+				m_pPhysicalDevices[i] = new PhysicalDevice(hPhysicalDevices[i]);
+			}
 		}
+
+		return static_cast<Result>(eResult);
 	}
+
+	return Result::eSuccess;
 }
 
 
-void Instance::UnregisterDebugReportCallback()
-{
-	if (m_hDebugReport != VK_NULL_HANDLE)
-	{
-		PFN_vkDestroyDebugReportCallbackEXT pfnDestroyDebugReportCallback = nullptr;
-
-		pfnDestroyDebugReportCallback = VK_INSTANCE_PROC_ADDR(vkDestroyDebugReportCallbackEXT);
-
-		if (pfnDestroyDebugReportCallback != nullptr)
-		{
-			pfnDestroyDebugReportCallback(m_hInstance, m_hDebugReport, nullptr);
-
-			m_hDebugReport = VK_NULL_HANDLE;
-		}
-	}
-}
-
-
-VkSurfaceKHR Instance::CreateWin32Surface(HWND hWindow)
+VkSurfaceKHR Instance::CreateSurface(HWND hWindow)
 {
 	VkWin32SurfaceCreateInfoKHR		CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
@@ -140,161 +85,204 @@ VkSurfaceKHR Instance::CreateWin32Surface(HWND hWindow)
 
 	VkSurfaceKHR hSurface = VK_NULL_HANDLE;
 
-	vkCreateWin32SurfaceKHR(m_hInstance, &CreateInfo, nullptr, &hSurface);
+	if (m_hInstance != VK_NULL_HANDLE)
+	{
+		if (vkCreateWin32SurfaceKHR(m_hInstance, &CreateInfo, nullptr, &hSurface) == VK_SUCCESS)
+		{
+			m_hSurfaces.insert(hSurface);
+		}
+	}
 
 	return hSurface;
 }
 
 
-const std::vector<VkExtensionProperties> & Instance::GetExtensionProperties()
+void Instance::DestroySurface(VkSurfaceKHR hSurface)
+{
+	if (m_hSurfaces.erase(hSurface) != 0)
+	{
+		vkDestroySurfaceKHR(m_hInstance, hSurface, nullptr);
+	}
+}
+
+
+const std::vector<VkExtensionProperties> & Instance::GetAvailableExtensions()
 {
 	if (sm_AvailableExtensions.empty())
 	{
-		uint32_t PropertyCount = 0;
+		uint32_t propertyCount = 0;
 
-		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, nullptr);
+		vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, nullptr);
 
-		sm_AvailableExtensions.resize(PropertyCount);
+		sm_AvailableExtensions.resize(propertyCount);
 
-		vkEnumerateInstanceExtensionProperties(nullptr, &PropertyCount, sm_AvailableExtensions.data());
+		vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, sm_AvailableExtensions.data());
 	}
 
 	return sm_AvailableExtensions;
 }
 
 
-const std::vector<VkLayerProperties> & Instance::GetLayerProperties()
+const std::vector<VkLayerProperties> & Instance::GetAvailableLayers()
 {
 	if (sm_AvailableLayers.empty())
 	{
-		uint32_t PropertyCount = 0;
+		uint32_t propertyCount = 0;
 
-		vkEnumerateInstanceLayerProperties(&PropertyCount, nullptr);
+		vkEnumerateInstanceLayerProperties(&propertyCount, nullptr);
 
-		sm_AvailableLayers.resize(PropertyCount);
+		sm_AvailableLayers.resize(propertyCount);
 
-		vkEnumerateInstanceLayerProperties(&PropertyCount, sm_AvailableLayers.data());
+		vkEnumerateInstanceLayerProperties(&propertyCount, sm_AvailableLayers.data());
 	}
 
 	return sm_AvailableLayers;
 }
 
 
-VkBool32 Instance::IsExtensionAvailable(std::string extensionName)
+bool Instance::IsExtensionAvilable(std::string extensionName)
 {
-	auto & extensionProperties = GetExtensionProperties();
+	auto & AvailableExtensions = Instance::GetAvailableExtensions();
 
-	for (size_t i = 0; i < extensionProperties.size(); i++)
+	for (size_t i = 0; i < AvailableExtensions.size(); i++)
 	{
-		if (extensionName == extensionProperties[i].extensionName)
+		if (extensionName == AvailableExtensions[i].extensionName)
 		{
-			return VK_TRUE;
+			return true;
 		}
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 
-VkBool32 Instance::IsLayerAvailable(std::string layerName)
+bool Instance::IsLayerAvilable(std::string layerName)
 {
-	auto & layerProperties = Instance::GetLayerProperties();
+	auto & AvailableLayers = Instance::GetAvailableLayers();
 
-	for (size_t i = 0; i < layerProperties.size(); i++)
+	for (size_t i = 0; i < AvailableLayers.size(); i++)
 	{
-		if (layerName == layerProperties[i].layerName)
+		if (layerName == AvailableLayers[i].layerName)
 		{
-			return VK_TRUE;
+			return true;
 		}
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 
-VkBool32 Instance::IsExtensionEnabled(std::string extensionName)
+bool Instance::IsExtensionEnabled(std::string extensionName)const
 {
-	for (auto iter : sm_EnabledExtensions)
+	for (auto iter : m_EnabledExtensions)
 	{
 		if (extensionName == iter)
 		{
-			return VK_TRUE;
+			return true;
 		}
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 
-void Instance::EnableExtension(std::string extensionName)
+bool Instance::IsLayerEnabled(std::string layerName) const
 {
-	Instance::GetExtensionProperties();
-
-	for (auto & iter : sm_AvailableExtensions)
-	{
-		if (extensionName == iter.extensionName)
-		{
-			sm_EnabledExtensions.insert(iter.extensionName);
-
-			return;
-		}
-	}
-}
-
-
-VkBool32 Instance::IsLayerEnabled(std::string layerName)
-{
-	for (auto iter : sm_EnabledLayers)
+	for (auto iter : m_EnabledLayers)
 	{
 		if (layerName == iter)
 		{
-			return VK_TRUE;
+			return true;
 		}
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 
-void Instance::EnableLayer(std::string layerName)
+bool Instance::EnableExtension(std::string extensionName)
 {
-	Instance::GetLayerProperties();
-
-	for (auto & iter : sm_AvailableLayers)
+	if (m_hInstance == VK_NULL_HANDLE)
 	{
-		if (layerName == iter.layerName)
-		{
-			sm_EnabledLayers.insert(iter.layerName);
+		auto & AvailableExtensions = Instance::GetAvailableExtensions();
 
-			return;
+		for (size_t i = 0; i < AvailableExtensions.size(); i++)
+		{
+			if (extensionName == AvailableExtensions[i].extensionName)
+			{
+				m_EnabledExtensions.insert(AvailableExtensions[i].extensionName);
+
+				return true;
+			}
 		}
 	}
+
+	return false;
 }
 
 
-void Instance::DestroySurface(VkSurfaceKHR hSurface)
+bool Instance::EnableLayer(std::string layerName)
 {
-	vkDestroySurfaceKHR(m_hInstance, hSurface, nullptr);
+	if (m_hInstance == VK_NULL_HANDLE)
+	{
+		auto & AvailableLayers = Instance::GetAvailableLayers();
+
+		for (size_t i = 0; i < AvailableLayers.size(); i++)
+		{
+			if (layerName == AvailableLayers[i].layerName)
+			{
+				m_EnabledLayers.insert(AvailableLayers[i].layerName);
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+PFN_vkVoidFunction Instance::GetProcAddr(const char * pName)
+{
+	if (m_hInstance != VK_NULL_HANDLE)
+	{
+		return vkGetInstanceProcAddr(m_hInstance, pName);
+	}
+
+	return nullptr;
+}
+
+
+void Instance::Invalidate()
+{
+	if (m_hInstance != VK_NULL_HANDLE)
+	{
+		for (auto hSurfae : m_hSurfaces)
+		{
+			vkDestroySurfaceKHR(m_hInstance, hSurfae, nullptr);
+		}
+
+		for (size_t i = 0; i < m_pPhysicalDevices.size(); i++)
+		{
+			delete m_pPhysicalDevices[i];
+		}
+
+		vkDestroyInstance(m_hInstance, nullptr);
+
+		m_hInstance = VK_NULL_HANDLE;
+
+		m_EnabledExtensions.clear();
+
+		m_pPhysicalDevices.clear();
+
+		m_EnabledLayers.clear();
+
+		m_hSurfaces.clear();
+	}
 }
 
 
 Instance::~Instance()
 {
-	for (auto pPhysicalDevice : m_pPhysicalDevices)
-	{
-		delete pPhysicalDevice;
-	}
-
-	vkDestroyInstance(m_hInstance, nullptr);
-}
-
-
-void Instance::Destroy()
-{
-	if (sg_pInstance != nullptr)
-	{
-		delete sg_pInstance;
-
-		sg_pInstance = nullptr;
-	}
+	this->Invalidate();
 }

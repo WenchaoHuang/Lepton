@@ -13,7 +13,7 @@ using namespace Vk;
 *************************************************************************/
 LogicalDevice::LogicalDevice(PhysicalDevice * pPhysicalDevice) : m_pPhysicalDevice(pPhysicalDevice)
 {
-	m_PerFamilQueues.resize(m_pPhysicalDevice->GetQueueFamilyProperties().size());
+	m_PerFamilQueues.resize(m_pPhysicalDevice->GetQueueFamilies().size());
 }
 
 
@@ -88,7 +88,7 @@ CommandQueue * LogicalDevice::InstallQueue(uint32_t familyIndex, float priority)
 {
 	if (m_hDevice != VK_NULL_HANDLE)							return nullptr;
 
-	auto & QueueFamilyProperties = m_pPhysicalDevice->GetQueueFamilyProperties();
+	auto & QueueFamilyProperties = m_pPhysicalDevice->GetQueueFamilies();
 
 	if (familyIndex >= QueueFamilyProperties.size())			return nullptr;
 

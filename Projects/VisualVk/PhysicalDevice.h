@@ -6,6 +6,7 @@
 #include <set>
 #include <vector>
 #include <vulkan/vulkan_core.h>
+#include "Result.h"
 
 #define VK_INVALID_INDEX			UINT32_MAX
 
@@ -38,17 +39,17 @@ namespace Vk
 
 		operator VkPhysicalDevice() const { return m_hPhysicalDevice; }
 
-		//!	@brief	Create a logical device (not readied).
+		//!	@brief	Create a logical device (not ready).
 		LogicalDevice * CreateLogicalDevice();
 
 		//!	@brief	If device layer is available.
-		VkBool32 IsLayerAvailable(std::string layerName) const;
+		bool IsLayerAvailable(std::string layerName) const;
 
 		//!	@brief	If device extension is available.
-		VkBool32 IsExtensionAvailable(std::string extensionName) const;
+		bool IsExtensionAvailable(std::string extensionName) const;
 
 		//!	@brief	Destroy a logical device.
-		VkResult DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
+		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
 
 		//!	@brief	Return the format properties.
 		VkFormatProperties GetFormatProperties(VkFormat eFormat) const;
@@ -63,10 +64,10 @@ namespace Vk
 		std::vector<VkPresentModeKHR> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	If present surface is supported by specify queue family.
-		VkBool32 IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t QueueFamilyIndex) const;
+		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
 
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const;
+		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const;
 
 		//!	@brief	Find queue family that supported presentation, and return the queue family index.
 		uint32_t GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const;
@@ -89,33 +90,35 @@ namespace Vk
 		//!	@brief	Return the physical features.
 		const VkPhysicalDeviceFeatures & GetFeatures() { return m_Features; }
 
+
+
 		//!	@brief	Return the queue family properties.
-		const std::vector<VkQueueFamilyProperties> & GetQueueFamilyProperties();
+		const std::vector<VkQueueFamilyProperties> & GetQueueFamilies() const;
 
 		//!	@brief	Return the extension properties.
-		const std::vector<VkExtensionProperties> & GetExtensionProperties();
+		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
 
 		//!	@brief	Return the layer properties.
-		const std::vector<VkLayerProperties> & GetLayerProperties();
+		const std::vector<VkLayerProperties> & GetAvailableLayers() const;
 
 	private:
 
-		const VkPhysicalDevice			m_hPhysicalDevice;
+		const VkPhysicalDevice					m_hPhysicalDevice;
 
-		std::set<LogicalDevice*>		m_pLogicalDevices;
+		std::set<LogicalDevice*>				m_pLogicalDevices;
 
 	private:
 
-		VkPhysicalDeviceFeatures					m_Features;
+		mutable VkPhysicalDeviceFeatures					m_Features;
 
-		VkPhysicalDeviceProperties					m_Properties;
+		mutable VkPhysicalDeviceProperties					m_Properties;
 
-		std::vector<VkLayerProperties>				m_AvailableLayers;
+		mutable std::vector<VkLayerProperties>				m_AvailableLayers;
 
-		VkPhysicalDeviceMemoryProperties			m_MemoryProperties;
+		mutable VkPhysicalDeviceMemoryProperties			m_MemoryProperties;
 
-		std::vector<VkExtensionProperties>			m_AvailableExtensions;
+		mutable std::vector<VkExtensionProperties>			m_AvailableExtensions;
 
-		std::vector<VkQueueFamilyProperties>		m_QueueFamilyProperties;
+		mutable std::vector<VkQueueFamilyProperties>		m_QueueFamilyProperties;
 	};
 }

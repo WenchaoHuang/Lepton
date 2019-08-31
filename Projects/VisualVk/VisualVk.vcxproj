@@ -193,6 +193,7 @@
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Pipelines.h" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />

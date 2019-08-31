@@ -12,7 +12,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Template for Vulkan bitmask.
+	 *	@brief	Template for Vulkan enumeration bitmask.
 	 */
 	template<typename BitType> class Flags
 	{
@@ -28,25 +28,25 @@ namespace Vk
 		//!	@brief	Constructed by a given bitmask.
 		constexpr Flags(BitType bit) : m_Mask(static_cast<VkFlags>(bit)) {}
 
-		//!	@brief	Bitwise operator: or.
+		//!	@brief	Bitwise operation: BitType | Flags.
 		constexpr friend Flags operator|(BitType bit, Flags flags) { return static_cast<VkFlags>(bit) | flags.m_Mask; }
 
-		//!	@brief	Bitwise operator: and.
-		 constexpr friend Flags operator&(BitType bit, Flags flags) { return static_cast<VkFlags>(bit) & flags.m_Mask; }
+		//!	@brief	Bitwise operation: BitType & Flags.
+		constexpr friend Flags operator&(BitType bit, Flags flags) { return static_cast<VkFlags>(bit) & flags.m_Mask; }
 
-		//!	@brief	Bitwise operator: or.
+		//!	@brief	Bitwise operation: Flags | Flags.
 		constexpr Flags operator|(Flags flags) const { return Flags(m_Mask | flags.m_Mask); }
 
-		//!	@brief	Bitwise operator: and.
+		//!	@brief	Bitwise operation: Flags & Flags.
 		constexpr Flags operator&(Flags flags) const { return Flags(m_Mask & flags.m_Mask); }
 
-		//!	@brief	Bitwise operator: or equal.
+		//!	@brief	Bitwise operation: Flags |= Flags.
 		constexpr void operator|=(Flags flags) { m_Mask |= flags.m_Mask; }
 
-		//!	@brief	Bitwise operator: and equal.
-		constexpr void operator&=(Flags flags) { m_Mask |= flags.m_Mask; }
+		//!	@brief	Bitwise operation: Flags &= Flags.
+		constexpr void operator&=(Flags flags) { m_Mask &= flags.m_Mask; }
 
-		//!	@brief	Bitwise operator: inverse.
+		//!	@brief	Bitwise operation: ~Flags.
 		constexpr Flags operator~() const { return Flags(~m_Mask); }
 
 		//!	@brief	Convert to VkFlags.
@@ -58,19 +58,22 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	**************************    Operators    ***************************
+	**********************    Bitwise operators    ***********************
 	*********************************************************************/
 
+	//!	@brief	Bitwise operation: BitType & BitType.
 	template<typename BitType> constexpr Flags<BitType> operator&(BitType a, BitType b)
 	{
 		return Flags<BitType>(static_cast<VkFlags>(a) & static_cast<VkFlags>(b));
 	}
 
+	//!	@brief	Bitwise operation: BitType | BitType.
 	template<typename BitType> constexpr Flags<BitType> operator|(BitType a, BitType b)
 	{
 		return Flags<BitType>(static_cast<VkFlags>(a) | static_cast<VkFlags>(b));
 	}
 
+	//!	@brief	Bitwise operation: ~BitType.
 	template<typename BitType> constexpr Flags<BitType> operator~(BitType a)
 	{
 		return Flags<BitType>(~static_cast<VkFlags>(a));

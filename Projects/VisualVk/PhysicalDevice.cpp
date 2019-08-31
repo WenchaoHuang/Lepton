@@ -18,11 +18,11 @@ PhysicalDevice::PhysicalDevice(VkPhysicalDevice hPhysicalDevice) : m_hPhysicalDe
 
 	vkGetPhysicalDeviceFeatures(m_hPhysicalDevice, &m_Features);
 
-	this->GetQueueFamilyProperties();
+	this->GetAvailableExtensions();
 
-	this->GetExtensionProperties();
+	this->GetAvailableLayers();
 
-	this->GetLayerProperties();
+	this->GetQueueFamilies();
 }
 
 
@@ -36,27 +36,46 @@ LogicalDevice * PhysicalDevice::CreateLogicalDevice()
 }
 
 
-VkBool32 PhysicalDevice::IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t QueueFamilyIndex) const
+Result PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
 {
-	VkBool32 IsSupported = VK_FALSE;
+	if (m_pLogicalDevices.erase(pLogicalDevice) != 0)
+	{
+		delete pLogicalDevice;
 
-	if (QueueFamilyIndex >= m_QueueFamilyProperties.size())			return VK_FALSE;
+		return Result::eSuccess;
+	}
 
-	vkGetPhysicalDeviceSurfaceSupportKHR(m_hPhysicalDevice, QueueFamilyIndex, hSurface, &IsSupported);
+	return Result::eErrorInvalidExternalHandle;
+}
 
-	return IsSupported;
+
+bool PhysicalDevice::IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const
+{
+	VkBool32 isSupported = VK_FALSE;
+
+	if ((hSurface != VK_NULL_HANDLE) && (queueFamilyIndex < m_QueueFamilyProperties.size()))
+	{
+		vkGetPhysicalDeviceSurfaceSupportKHR(m_hPhysicalDevice, queueFamilyIndex, hSurface, &isSupported);
+	}
+
+	return isSupported == VK_TRUE;
 }
 
 
 std::vector<VkPresentModeKHR> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
 {
-	uint32_t PresentModeCount = 0;
+	uint32_t presentModeCount = 0;
 
-	vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &PresentModeCount, nullptr);
+	std::vector<VkPresentModeKHR> PresentModes;
 
-	std::vector<VkPresentModeKHR> PresentModes(PresentModeCount);
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &presentModeCount, nullptr);
 
-	vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &PresentModeCount, PresentModes.data());
+		PresentModes.resize(presentModeCount);
+
+		vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &presentModeCount, PresentModes.data());
+	}
 
 	return PresentModes;
 }
@@ -66,11 +85,16 @@ std::vector<VkSurfaceFormatKHR> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR h
 {
 	uint32_t SurfaceFormatCount = 0;
 
-	vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &SurfaceFormatCount, nullptr);
+	std::vector<VkSurfaceFormatKHR> SurfaceFormats;
 
-	std::vector<VkSurfaceFormatKHR> SurfaceFormats(SurfaceFormatCount);
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &SurfaceFormatCount, nullptr);
 
-	vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &SurfaceFormatCount, SurfaceFormats.data());
+		SurfaceFormats.resize(SurfaceFormatCount);
+
+		vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &SurfaceFormatCount, SurfaceFormats.data());
+	}
 
 	return SurfaceFormats;
 }
@@ -78,9 +102,12 @@ std::vector<VkSurfaceFormatKHR> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR h
 
 VkSurfaceCapabilitiesKHR PhysicalDevice::GetSurfaceCapabilities(VkSurfaceKHR hSurface) const
 {
-	VkSurfaceCapabilitiesKHR SurfaceCapabilities;
+	VkSurfaceCapabilitiesKHR SurfaceCapabilities = {};
 
-	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_hPhysicalDevice, hSurface, &SurfaceCapabilities);
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_hPhysicalDevice, hSurface, &SurfaceCapabilities);
+	}
 
 	return SurfaceCapabilities;
 }
@@ -88,7 +115,7 @@ VkSurfaceCapabilitiesKHR PhysicalDevice::GetSurfaceCapabilities(VkSurfaceKHR hSu
 
 VkFormatProperties PhysicalDevice::GetFormatProperties(VkFormat eFormat) const
 {
-	VkFormatProperties FormatProperties;
+	VkFormatProperties FormatProperties = {};
 
 	vkGetPhysicalDeviceFormatProperties(m_hPhysicalDevice, eFormat, &FormatProperties);
 
@@ -119,7 +146,7 @@ uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
 {
 	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
 	{
-		if (IsSurfaceSupported(hSurface, i))
+		if (this->IsSurfaceSupported(hSurface, i))
 		{
 			return i;
 		}
@@ -193,95 +220,86 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 }
 
 
-const std::vector<VkQueueFamilyProperties> & PhysicalDevice::GetQueueFamilyProperties()
+const std::vector<VkQueueFamilyProperties> & PhysicalDevice::GetQueueFamilies() const
 {
 	if (m_QueueFamilyProperties.empty())
 	{
-		uint32_t QueueFamilyPropertyCount = 0;
+		uint32_t propertyCount = 0;
 
-		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &QueueFamilyPropertyCount, nullptr);
+		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &propertyCount, nullptr);
 
-		m_QueueFamilyProperties.resize(QueueFamilyPropertyCount);
+		m_QueueFamilyProperties.resize(propertyCount);
 
-		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &QueueFamilyPropertyCount, m_QueueFamilyProperties.data());
+		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &propertyCount, m_QueueFamilyProperties.data());
 	}
 
 	return m_QueueFamilyProperties;
 }
 
 
-const std::vector<VkExtensionProperties> & PhysicalDevice::GetExtensionProperties()
+const std::vector<VkExtensionProperties> & PhysicalDevice::GetAvailableExtensions() const
 {
 	if (m_AvailableExtensions.empty())
 	{
-		uint32_t PropertyCount = 0;
+		uint32_t propertyCount = 0;
 
-		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &PropertyCount, nullptr);
+		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &propertyCount, nullptr);
 
-		m_AvailableExtensions.resize(PropertyCount);
+		m_AvailableExtensions.resize(propertyCount);
 
-		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &PropertyCount, m_AvailableExtensions.data());
+		vkEnumerateDeviceExtensionProperties(m_hPhysicalDevice, nullptr, &propertyCount, m_AvailableExtensions.data());
 	}
 
 	return m_AvailableExtensions;
 }
 
 
-const std::vector<VkLayerProperties> & PhysicalDevice::GetLayerProperties()
+const std::vector<VkLayerProperties> & PhysicalDevice::GetAvailableLayers() const
 {
 	if (m_AvailableLayers.empty())
 	{
-		uint32_t PropertyCount = 0;
+		uint32_t propertyCount = 0;
 
-		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &PropertyCount, nullptr);
+		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &propertyCount, nullptr);
 
-		m_AvailableLayers.resize(PropertyCount);
+		m_AvailableLayers.resize(propertyCount);
 
-		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &PropertyCount, m_AvailableLayers.data());
+		vkEnumerateDeviceLayerProperties(m_hPhysicalDevice, &propertyCount, m_AvailableLayers.data());
 	}
 
 	return m_AvailableLayers;
 }
 
 
-VkBool32 PhysicalDevice::IsExtensionAvailable(std::string extensionName) const
+bool PhysicalDevice::IsExtensionAvailable(std::string extensionName) const
 {
-	for (size_t i = 0; i < m_AvailableExtensions.size(); i++)
+	auto & AvailableExtensions = this->GetAvailableExtensions();
+
+	for (size_t i = 0; i < AvailableExtensions.size(); i++)
 	{
-		if (extensionName == m_AvailableExtensions[i].extensionName)
+		if (extensionName == AvailableExtensions[i].extensionName)
 		{
-			return VK_TRUE;
+			return true;
 		}
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 
-VkBool32 PhysicalDevice::IsLayerAvailable(std::string layerName) const
+bool PhysicalDevice::IsLayerAvailable(std::string layerName) const
 {
-	for (size_t i = 0; i < m_AvailableLayers.size(); i++)
+	auto & AvailableLayers = this->GetAvailableLayers();
+
+	for (size_t i = 0; i < AvailableLayers.size(); i++)
 	{
-		if (layerName == m_AvailableLayers[i].layerName)
+		if (layerName == AvailableLayers[i].layerName)
 		{
-			return VK_TRUE;
+			return true;
 		}
 	}
 
-	return VK_FALSE;
-}
-
-
-VkResult PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
-{
-	if (m_pLogicalDevices.erase(pLogicalDevice) != 0)
-	{
-		delete pLogicalDevice;
-
-		return VK_SUCCESS;
-	}
-
-	return VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	return false;
 }
 
 
