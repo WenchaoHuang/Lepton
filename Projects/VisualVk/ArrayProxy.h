@@ -57,7 +57,7 @@ namespace Vk
 
 	private:
 
-		const Type *		m_Ptr;
+		Type * const		m_Ptr;
 
 		const uint32_t		m_Count;
 	};
