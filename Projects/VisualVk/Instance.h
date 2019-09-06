@@ -58,9 +58,6 @@ namespace Vk
 		//!	@brief	Validate instance object.
 		Result Validate();
 
-		//!	@brief	If Vulkan handle is valid.
-		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
-
 		//!	@brief	Enable validation layer (in preparation stage).
 		bool EnableLayer(std::string layerName);
 
@@ -73,10 +70,16 @@ namespace Vk
 		//!	@brief	Check if extension had already enabled.
 		bool IsExtensionEnabled(std::string extensionName) const;
 
+		//!	@brief	Return array of physical devices.
+		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const;
+
+		//!	@brief	If Vulkan handle is valid.
+		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
+
 		//!	@brief	Destroy a VkSurfaceKHR object.
 		void DestroySurface(VkSurfaceKHR hSurface);
 
-		//!	@brief	Create a slink:VkSurfaceKHR object for an Win32 native window.
+		//!	@brief	Create a VkSurfaceKHR object for an Win32 native window.
 		VkSurfaceKHR CreateSurface(HWND hWindow);
 
 	private:

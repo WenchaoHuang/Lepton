@@ -110,13 +110,13 @@ const std::vector<VkExtensionProperties> & Instance::GetAvailableExtensions()
 {
 	if (sm_AvailableExtensions.empty())
 	{
-		uint32_t propertyCount = 0;
+		uint32_t extensionCount = 0;
 
-		vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, nullptr);
+		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 
-		sm_AvailableExtensions.resize(propertyCount);
+		sm_AvailableExtensions.resize(extensionCount);
 
-		vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, sm_AvailableExtensions.data());
+		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, sm_AvailableExtensions.data());
 	}
 
 	return sm_AvailableExtensions;
@@ -127,13 +127,13 @@ const std::vector<VkLayerProperties> & Instance::GetAvailableLayers()
 {
 	if (sm_AvailableLayers.empty())
 	{
-		uint32_t propertyCount = 0;
+		uint32_t layerCount = 0;
 
-		vkEnumerateInstanceLayerProperties(&propertyCount, nullptr);
+		vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
-		sm_AvailableLayers.resize(propertyCount);
+		sm_AvailableLayers.resize(layerCount);
 
-		vkEnumerateInstanceLayerProperties(&propertyCount, sm_AvailableLayers.data());
+		vkEnumerateInstanceLayerProperties(&layerCount, sm_AvailableLayers.data());
 	}
 
 	return sm_AvailableLayers;
@@ -242,6 +242,12 @@ bool Instance::EnableLayer(std::string layerName)
 }
 
 
+const std::vector<PhysicalDevice*> & Instance::GetPhysicalDevices() const
+{
+	return m_pPhysicalDevices;
+}
+
+
 PFN_vkVoidFunction Instance::GetProcAddr(const char * pName)
 {
 	if (m_hInstance != VK_NULL_HANDLE)
@@ -257,11 +263,6 @@ void Instance::Invalidate()
 {
 	if (m_hInstance != VK_NULL_HANDLE)
 	{
-		for (auto hSurfae : m_hSurfaces)
-		{
-			vkDestroySurfaceKHR(m_hInstance, hSurfae, nullptr);
-		}
-
 		for (size_t i = 0; i < m_pPhysicalDevices.size(); i++)
 		{
 			delete m_pPhysicalDevices[i];

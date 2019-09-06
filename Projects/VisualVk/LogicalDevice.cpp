@@ -63,7 +63,7 @@ VkBool32 LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeature
 
 	VkDevice hDevice = VK_NULL_HANDLE;
 
-	VkResult eResult = vkCreateDevice(*m_pPhysicalDevice, &DeviceCreateInfo, nullptr, &hDevice);
+	VkResult eResult = vkCreateDevice(m_pPhysicalDevice->m_hPhysicalDevice, &DeviceCreateInfo, nullptr, &hDevice);
 
 	if (eResult == VK_NULL_HANDLE)
 	{

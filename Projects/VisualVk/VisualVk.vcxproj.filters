@@ -109,6 +109,7 @@
     <ClCompile Include="CommandBuffer.cpp">
       <Filter>2. Commands</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Instance.h">
@@ -169,6 +170,9 @@
       <Filter>2. Commands</Filter>
     </ClInclude>
     <ClInclude Include="Result.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayProxy.h">
       <Filter>0. Wrappers</Filter>
     </ClInclude>
   </ItemGroup>

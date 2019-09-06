@@ -5,6 +5,7 @@
 
 #include "Enums.h"
 #include "Handle.h"
+#include "Result.h"
 #include "Context.h"
 
 namespace Vk
@@ -107,10 +108,14 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a sampler object.
-		VkResult Create(const SamplerParam & Param = SamplerParam());
+		Result Create(const SamplerParam & Param = SamplerParam());
 
 		//!	@brief	Return sampler parameters.
 		const SamplerParam & GetParam() const { return m_Param; }
+
+		Result SetMagFilter(Filter eMagFilter);
+
+		Result SetMinFilter(Filter eMinFilter);
 
 	private:
 

@@ -6,6 +6,8 @@
 #include <set>
 #include <vector>
 #include <vulkan/vulkan_core.h>
+
+#include "Enums.h"
 #include "Result.h"
 
 #define VK_INVALID_INDEX			UINT32_MAX
@@ -29,6 +31,9 @@ namespace Vk
 		//!	@brief	Only created by Instance.
 		friend class Instance;
 
+		//!	@brief	Open to logical device.
+		friend class LogicalDevice;
+
 		//!	@brief	Create physical device object.
 		PhysicalDevice(VkPhysicalDevice hPhysicalDevice);
 
@@ -36,8 +41,6 @@ namespace Vk
 		~PhysicalDevice() noexcept;
 
 	public:
-
-		operator VkPhysicalDevice() const { return m_hPhysicalDevice; }
 
 		//!	@brief	Create a logical device (not ready).
 		LogicalDevice * CreateLogicalDevice();
@@ -51,6 +54,33 @@ namespace Vk
 		//!	@brief	Destroy a logical device.
 		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
 
+		//!	@brief	If present surface is supported by specify queue family.
+		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
+
+		//!	@brief	Return the surface present modes.
+		std::vector<PresentMode> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
+
+		//!	@brief	Return array of available extensions.
+		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
+
+		//!	@brief	Return array of available validation layers.
+		const std::vector<VkLayerProperties> & GetAvailableLayers() const;
+
+
+
+
+
+		//!	@brief	Return the memory properties.
+		const VkPhysicalDeviceMemoryProperties & GetMemoryProperties() const { return m_MemoryProperties; }
+
+		//!	@brief	Return the physical properties.
+		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties; }
+
+		//!	@brief	Return the physical features.
+		const VkPhysicalDeviceFeatures & GetFeatures() const { return m_Features; }
+
+
+
 		//!	@brief	Return the format properties.
 		VkFormatProperties GetFormatProperties(VkFormat eFormat) const;
 
@@ -59,12 +89,6 @@ namespace Vk
 
 		//!	@brief	Return the surface formats.
 		std::vector<VkSurfaceFormatKHR> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
-
-		//!	@brief	Return the surface present modes.
-		std::vector<VkPresentModeKHR> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
-
-		//!	@brief	If present surface is supported by specify queue family.
-		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
 
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
 		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const;
@@ -81,25 +105,11 @@ namespace Vk
 		//!	@brief	Find queue family that supported computing, and return the queue family index.
 		uint32_t GetComputeQueueFamilyIndex() const;
 
-		//!	@brief	Return the memory properties.
-		const VkPhysicalDeviceMemoryProperties & GetMemoryProperties() { return m_MemoryProperties; }
-
-		//!	@brief	Return the physical properties.
-		const VkPhysicalDeviceProperties & GetProperties() { return m_Properties; }
-
-		//!	@brief	Return the physical features.
-		const VkPhysicalDeviceFeatures & GetFeatures() { return m_Features; }
-
 
 
 		//!	@brief	Return the queue family properties.
 		const std::vector<VkQueueFamilyProperties> & GetQueueFamilies() const;
 
-		//!	@brief	Return the extension properties.
-		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
-
-		//!	@brief	Return the layer properties.
-		const std::vector<VkLayerProperties> & GetAvailableLayers() const;
 
 	private:
 

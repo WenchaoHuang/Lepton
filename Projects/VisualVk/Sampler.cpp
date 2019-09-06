@@ -8,7 +8,7 @@ using namespace Vk;
 /*************************************************************************
 *****************************    Sampler    ******************************
 *************************************************************************/
-VkResult Sampler::Create(const SamplerParam & Param)
+Result Sampler::Create(const SamplerParam & Param)
 {
 	VkSamplerCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -41,5 +41,25 @@ VkResult Sampler::Create(const SamplerParam & Param)
 		m_Param = Param;
 	}
 
-	return eResult;
+	return static_cast<Result>(eResult);
+}
+
+
+Result Sampler::SetMagFilter(Filter eMagFilter)
+{
+	SamplerParam Param = m_Param;
+
+	Param.magFilter = eMagFilter;
+
+	return this->Create(Param);
+}
+
+
+Result Sampler::SetMinFilter(Filter eMinFilter)
+{
+	SamplerParam Param = m_Param;
+
+	Param.minFilter = eMinFilter;
+
+	return this->Create(Param);
 }

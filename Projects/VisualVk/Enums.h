@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_core.h>
 
 namespace Vk
@@ -52,6 +53,23 @@ namespace Vk
 		eTransfer			= VK_QUEUE_TRANSFER_BIT,
 		eProtected			= VK_QUEUE_PROTECTED_BIT,
 		eSparseBinding		= VK_QUEUE_SPARSE_BINDING_BIT
+	};
+
+	/*********************************************************************
+	*************************    PresentMode    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Presentation mode supported for a surface.
+	 */
+	enum class PresentMode
+	{
+		eFIFO							= VK_PRESENT_MODE_FIFO_KHR,
+		eMailbox						= VK_PRESENT_MODE_MAILBOX_KHR,
+		eImmediate						= VK_PRESENT_MODE_IMMEDIATE_KHR,
+		eFIFORelaxed					= VK_PRESENT_MODE_FIFO_RELAXED_KHR,
+		eSharedDemandRefresh			= VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR,
+		eSharedContinuousRefresh		= VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR
 	};
 
 	/*********************************************************************
