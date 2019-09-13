@@ -4,8 +4,7 @@
 #pragma once
 
 #include <set>
-#include <vector>
-#include <vulkan/vulkan_core.h>
+#include "Vulkan.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 																						\
@@ -21,10 +20,6 @@ VkResult Create##name(const Vk##name##CreateInfo * pCreateInfo, Vk##name * p##na
 
 namespace Vk
 {
-	class CommandPool;
-	class CommandQueue;
-	class PhysicalDevice;
-
 	using VkSwapchainKHRCreateInfo = VkSwapchainCreateInfoKHR;
 
 	/*********************************************************************
@@ -60,7 +55,7 @@ namespace Vk
 
 		CommandQueue * InstallQueue(uint32_t familyIndex, float priority = 0.0f);
 
-		VkBool32 StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures);
+		VkBool32 StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures = nullptr);
 
 		VkBool32 EnableLayer(const char * pLayerName);
 

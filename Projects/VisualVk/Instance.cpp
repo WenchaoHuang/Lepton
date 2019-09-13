@@ -18,16 +18,10 @@ Instance::Instance() : m_hInstance(VK_NULL_HANDLE)
 }
 
 
-Result Instance::Validate()
+Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const char*> pLayers)
 {
 	if (m_hInstance == VK_NULL_HANDLE)
 	{
-		std::vector<const char*>					pLayers;
-		std::vector<const char*>					pExtensions;
-
-		for (auto iter : m_EnabledLayers)			pLayers.push_back(iter);
-		for (auto iter : m_EnabledExtensions)		pExtensions.push_back(iter);
-
 		VkApplicationInfo							AppInfo = {};
 		AppInfo.sType								= VK_STRUCTURE_TYPE_APPLICATION_INFO;
 		AppInfo.pNext								= nullptr;
@@ -42,9 +36,9 @@ Result Instance::Validate()
 		CreateInfo.pNext							= nullptr;
 		CreateInfo.flags							= 0;
 		CreateInfo.pApplicationInfo					= &AppInfo;
-		CreateInfo.enabledExtensionCount			= static_cast<uint32_t>(pExtensions.size());
+		CreateInfo.enabledExtensionCount			= pExtensions.size();
 		CreateInfo.ppEnabledExtensionNames			= pExtensions.data();
-		CreateInfo.enabledLayerCount				= static_cast<uint32_t>(pLayers.size());
+		CreateInfo.enabledLayerCount				= pLayers.size();
 		CreateInfo.ppEnabledLayerNames				= pLayers.data();
 
 		VkResult eResult = vkCreateInstance(&CreateInfo, nullptr, &m_hInstance);
@@ -63,7 +57,7 @@ Result Instance::Validate()
 
 			for (size_t i = 0; i < hPhysicalDevices.size(); i++)
 			{
-				m_pPhysicalDevices[i] = new PhysicalDevice(hPhysicalDevices[i]);
+				m_pPhysicalDevices[i] = new PhysicalDevice(this, hPhysicalDevices[i]);
 			}
 		}
 
@@ -172,82 +166,6 @@ bool Instance::IsLayerAvilable(std::string layerName)
 }
 
 
-bool Instance::IsExtensionEnabled(std::string extensionName)const
-{
-	for (auto iter : m_EnabledExtensions)
-	{
-		if (extensionName == iter)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-bool Instance::IsLayerEnabled(std::string layerName) const
-{
-	for (auto iter : m_EnabledLayers)
-	{
-		if (layerName == iter)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-bool Instance::EnableExtension(std::string extensionName)
-{
-	if (m_hInstance == VK_NULL_HANDLE)
-	{
-		auto & AvailableExtensions = Instance::GetAvailableExtensions();
-
-		for (size_t i = 0; i < AvailableExtensions.size(); i++)
-		{
-			if (extensionName == AvailableExtensions[i].extensionName)
-			{
-				m_EnabledExtensions.insert(AvailableExtensions[i].extensionName);
-
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
-bool Instance::EnableLayer(std::string layerName)
-{
-	if (m_hInstance == VK_NULL_HANDLE)
-	{
-		auto & AvailableLayers = Instance::GetAvailableLayers();
-
-		for (size_t i = 0; i < AvailableLayers.size(); i++)
-		{
-			if (layerName == AvailableLayers[i].layerName)
-			{
-				m_EnabledLayers.insert(AvailableLayers[i].layerName);
-
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
-const std::vector<PhysicalDevice*> & Instance::GetPhysicalDevices() const
-{
-	return m_pPhysicalDevices;
-}
-
-
 PFN_vkVoidFunction Instance::GetProcAddr(const char * pName)
 {
 	if (m_hInstance != VK_NULL_HANDLE)
@@ -259,7 +177,7 @@ PFN_vkVoidFunction Instance::GetProcAddr(const char * pName)
 }
 
 
-void Instance::Invalidate()
+void Instance::Destroy()
 {
 	if (m_hInstance != VK_NULL_HANDLE)
 	{
@@ -272,11 +190,7 @@ void Instance::Invalidate()
 
 		m_hInstance = VK_NULL_HANDLE;
 
-		m_EnabledExtensions.clear();
-
 		m_pPhysicalDevices.clear();
-
-		m_EnabledLayers.clear();
 
 		m_hSurfaces.clear();
 	}
@@ -285,5 +199,5 @@ void Instance::Invalidate()
 
 Instance::~Instance()
 {
-	this->Invalidate();
+	this->Destroy();
 }

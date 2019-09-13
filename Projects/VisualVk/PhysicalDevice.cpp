@@ -10,7 +10,7 @@ using namespace Vk;
 /*************************************************************************
 **************************    PhysicalDevice    **************************
 *************************************************************************/
-PhysicalDevice::PhysicalDevice(VkPhysicalDevice hPhysicalDevice) : m_hPhysicalDevice(hPhysicalDevice)
+PhysicalDevice::PhysicalDevice(Instance * pInstance, VkPhysicalDevice hPhysicalDevice) : m_pInstance(pInstance), m_hPhysicalDevice(hPhysicalDevice)
 {
 	vkGetPhysicalDeviceMemoryProperties(m_hPhysicalDevice, &m_MemoryProperties);
 

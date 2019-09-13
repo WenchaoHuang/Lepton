@@ -5,13 +5,11 @@
 
 #include <set>
 #include <vector>
+#include "Vulkan.h"
 #include <vulkan/vulkan.h>
-#include "Result.h"
 
 namespace Vk
 {
-	class PhysicalDevice;
-
 	/*********************************************************************
 	***************************    Instance    ***************************
 	*********************************************************************/
@@ -21,17 +19,12 @@ namespace Vk
 	 */
 	class Instance
 	{
+		VK_NONCOPYABLE(Instance)
 
 	public:
 
 		//!	@brief	Create Vulkan instance object (not ready).
 		Instance();
-
-		//!	@brief	Vulkan instance object is non-copyable.
-		Instance(const Instance&) = delete;
-
-		//!	@brief	Vulkan instance object is non-assignable.
-		void operator=(const Instance&) = delete;
 
 		//!	@brief	Destroy Vulkan instance object.
 		~Instance();
@@ -52,35 +45,26 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Invalidate instance.
-		void Invalidate();
-
-		//!	@brief	Validate instance object.
-		Result Validate();
-
-		//!	@brief	Enable validation layer (in preparation stage).
-		bool EnableLayer(std::string layerName);
-
-		//!	@brief	Enable extension (in preparation stage).
-		bool EnableExtension(std::string extensionName);
-
-		//!	@brief	Check if validation layer had already enabled.
-		bool IsLayerEnabled(std::string layerName) const;
-
-		//!	@brief	Check if extension had already enabled.
-		bool IsExtensionEnabled(std::string extensionName) const;
-
-		//!	@brief	Return array of physical devices.
-		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const;
+		//!	@brief	Return Vulkan type of this object.
+		operator VkInstance() const { return m_hInstance; }
 
 		//!	@brief	If Vulkan handle is valid.
 		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
 
+		//!	@brief	Create a new instance object.
+		Result Create(ArrayProxy<const char*> extensions = nullptr, ArrayProxy<const char*> layers = nullptr);
+
+		//!	@brief	Return array of physical devices.
+		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }
+
 		//!	@brief	Destroy a VkSurfaceKHR object.
 		void DestroySurface(VkSurfaceKHR hSurface);
 
-		//!	@brief	Create a VkSurfaceKHR object for an Win32 native window.
+		//!	@brief	Create a VkSurfaceKHR object for native Win32 window.
 		VkSurfaceKHR CreateSurface(HWND hWindow);
+
+		//!	@brief	Destory instance.
+		void Destroy();
 
 	private:
 
@@ -94,12 +78,6 @@ namespace Vk
 		std::set<VkSurfaceKHR>							m_hSurfaces;
 
 		std::vector<PhysicalDevice*>					m_pPhysicalDevices;
-
-	private:
-
-		std::set<const char*>							m_EnabledLayers;
-
-		std::set<const char*>							m_EnabledExtensions;
 
 		static std::vector<VkLayerProperties>			sm_AvailableLayers;
 

@@ -4,15 +4,10 @@
 #pragma once
 
 #include <set>
-#include "Flags.h"
-#include "Enums.h"
-#include <vulkan/vulkan_core.h>
+#include "Vulkan.h"
 
 namespace Vk
 {
-	class CommandPool;
-	class CommandBuffer;
-
 	/*********************************************************************
 	*************************    CommandQueue    *************************
 	*********************************************************************/

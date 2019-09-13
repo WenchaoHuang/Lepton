@@ -4,18 +4,10 @@
 #pragma once
 
 #include <set>
-#include <vector>
-#include <vulkan/vulkan_core.h>
-
-#include "Enums.h"
-#include "Result.h"
-
-#define VK_INVALID_INDEX			UINT32_MAX
+#include "Vulkan.h"
 
 namespace Vk
 {
-	class LogicalDevice;
-
 	/*********************************************************************
 	************************    PhysicalDevice    ************************
 	*********************************************************************/
@@ -31,16 +23,17 @@ namespace Vk
 		//!	@brief	Only created by Instance.
 		friend class Instance;
 
-		//!	@brief	Open to logical device.
-		friend class LogicalDevice;
-
 		//!	@brief	Create physical device object.
-		PhysicalDevice(VkPhysicalDevice hPhysicalDevice);
+		PhysicalDevice(Instance * pInstance, VkPhysicalDevice hPhysicalDevice);
 
 		//!	@brief	Destroy physical device object.
 		~PhysicalDevice() noexcept;
 
 	public:
+
+		operator VkPhysicalDevice() const { return m_hPhysicalDevice; }
+
+		Instance * GetInstance() { return m_pInstance; }
 
 		//!	@brief	Create a logical device (not ready).
 		LogicalDevice * CreateLogicalDevice();
@@ -112,6 +105,8 @@ namespace Vk
 
 
 	private:
+
+		Instance * const						m_pInstance;
 
 		const VkPhysicalDevice					m_hPhysicalDevice;
 
