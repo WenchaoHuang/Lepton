@@ -3,10 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include <set>
-#include <vector>
 #include "Vulkan.h"
-#include <vulkan/vulkan.h>
 
 namespace Vk
 {
@@ -31,6 +28,9 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Return Vulkan type of this object.
+		operator VkInstance() const { return m_hInstance; }
+
 		//!	@brief	Check if validation layer is available.
 		static bool IsLayerAvilable(std::string layerName);
 
@@ -45,37 +45,21 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return Vulkan type of this object.
-		operator VkInstance() const { return m_hInstance; }
-
-		//!	@brief	If Vulkan handle is valid.
-		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
-
 		//!	@brief	Create a new instance object.
 		Result Create(ArrayProxy<const char*> extensions = nullptr, ArrayProxy<const char*> layers = nullptr);
 
 		//!	@brief	Return array of physical devices.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }
 
-		//!	@brief	Destroy a VkSurfaceKHR object.
-		void DestroySurface(VkSurfaceKHR hSurface);
+		//!	@brief	If Vulkan handle is valid.
+		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
 
-		//!	@brief	Create a VkSurfaceKHR object for native Win32 window.
-		VkSurfaceKHR CreateSurface(HWND hWindow);
-
-		//!	@brief	Destory instance.
+		//!	@brief	Destroy instance object.
 		void Destroy();
 
 	private:
 
-		//!	@brief	Return a function pointer for a command.
-		PFN_vkVoidFunction GetProcAddr(const char * pName);
-
-	private:
-
 		VkInstance										m_hInstance;
-
-		std::set<VkSurfaceKHR>							m_hSurfaces;
 
 		std::vector<PhysicalDevice*>					m_pPhysicalDevices;
 

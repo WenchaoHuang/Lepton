@@ -13,11 +13,11 @@
     <Filter Include="1. Context\1. PhysicalDevice">
       <UniqueIdentifier>{5253d1d7-ee48-413f-8bfe-8018e65696e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Command">
-      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0. Wrapper">
       <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\3. CommandBuffer">
+      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,7 +32,7 @@
       <Filter>1. Context\2. LogicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="CommandBuffer.cpp">
-      <Filter>2. Command</Filter>
+      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -58,7 +58,7 @@
       <Filter>1. Context\2. LogicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="CommandBuffer.h">
-      <Filter>2. Command</Filter>
+      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>0. Wrapper</Filter>

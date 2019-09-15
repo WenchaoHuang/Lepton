@@ -20,6 +20,7 @@ namespace Vk
 
 	private:
 
+		//!	@brief	Created by logical device only.
 		friend class LogicalDevice;
 
 		//!	@brief	Create command queue object.
@@ -30,34 +31,32 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Wait for a queue to become idle.
-		void WaitIdle() { vkQueueWaitIdle(m_hQueue); }
+		//!	@brief	Return Vulkan type of this object.
+		operator VkQueue() const { return m_hQueue; }
 
 		//!	@brief	Return the queue priority.
 		float GetPriority() const { return m_Priority; }
+
+		//!	@brief	Wait for a queue to become idle.
+		void WaitIdle() const { vkQueueWaitIdle(m_hQueue); }
 
 		//!	@brief	Return the queue family index.
 		uint32_t GetFamilyIndex() const { return m_FamilyIndex; }
 
 		//!	@brief	If queue is ready to work.
-		VkBool32 IsReady() const { return m_hQueue != VK_NULL_HANDLE; }
+		bool IsReady() const { return m_hQueue != VK_NULL_HANDLE; }
+
+		//!	@brief	If this queue has the specify capability.
+		bool Has(QueueCapability eCapability) const { return (m_CapabilityFlags & eCapability) != 0; }
 
 		//!	@brief	Create a new command pool object.
-		CommandPool * CreateCommandPool(VkCommandPoolCreateFlags eCreateFlags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
-
-		//!	@brief	Destroy a command pool object.
-		VkResult DestroyCommandPool(CommandPool * pCommandPool);
+		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
 
 		//!	@brief	Queue an image for presentation.
-		VkResult Present(const VkPresentInfoKHR * pPresentInfo)
-		{
-			return vkQueuePresentKHR(m_hQueue, pPresentInfo);
-		}
+		Result Present(const VkPresentInfoKHR * pPresentInfo) { return static_cast<Result>(vkQueuePresentKHR(m_hQueue, pPresentInfo)); }
 
-		VkBool32 Has(QueueCapability eCapability)
-		{
-			return (m_CapabilityFlags & eCapability) != 0;
-		}
+		//!	@brief	Destroy a command pool object.
+		Result DestroyCommandPool(CommandPool * pCommandPool);
 
 	private:
 
@@ -68,7 +67,7 @@ namespace Vk
 		const float						m_Priority;
 
 		const uint32_t					m_FamilyIndex;
-		
+
 		std::set<CommandPool*>			m_pCommandPools;
 
 		const Flags<QueueCapability>	m_CapabilityFlags;
@@ -86,6 +85,7 @@ namespace Vk
 
 	private:
 
+		//!	@brief	Created by command queue only.
 		friend class CommandQueue;
 
 		//!	@brief	Create command pool object.
@@ -96,27 +96,27 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Free command buffer.
-		VkResult FreeCommandBuffer(CommandBuffer * pCommandBuffer);
-
-		//!	@brief	Allocate a primary command buffer from command pool.
-		CommandBuffer * AllocateCommandBuffer();
+		//!	@brief	Return Vulkan type of this object.
+		operator VkCommandPool() const { return m_hCommandPool; }
 
 		//!	@brief	Reset command pool.
-		VkResult Reset()
-		{
-			return vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
-		}
+		Result Reset() { return static_cast<Result>(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
+
+		//!	@brief	Free command buffer.
+		Result FreeCommandBuffer(CommandBuffer * pCommandBuffer);
+
+		//!	@brief	Allocate a primary command buffer from command pool.
+		CommandBuffer * AllocatePrimaryCommandBuffer();
 
 	private:
 
-		const VkQueue				m_hQueue;
+		const VkQueue					m_hQueue;
 
-		const VkDevice				m_hDevice;
+		const VkDevice					m_hDevice;
 
-		const VkCommandPool			m_hCommandPool;
+		const VkCommandPool				m_hCommandPool;
 
-		std::set<CommandBuffer*>	m_pCommandBuffers;
+		std::set<CommandBuffer*>		m_pCommandBuffers;
 	};
 
 	/*********************************************************************
@@ -131,6 +131,7 @@ namespace Vk
 
 	private:
 
+		//!	@brief	Created by command pool only.
 		friend class CommandPool;
 
 		//!	@brief	Create command buffer object.
@@ -140,6 +141,9 @@ namespace Vk
 		~CommandBuffer() noexcept;
 
 	public:
+
+		//!	@brief	Return Vulkan type of this object.
+		operator VkCommandBuffer() const { return m_hCommandBuffer; }
 
 		//!	@brief	Finish recording command buffer.
 		VkResult EndRecord() { return vkEndCommandBuffer(m_hCommandBuffer); }

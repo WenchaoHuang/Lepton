@@ -49,70 +49,6 @@ Result PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
 }
 
 
-bool PhysicalDevice::IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const
-{
-	VkBool32 isSupported = VK_FALSE;
-
-	if ((hSurface != VK_NULL_HANDLE) && (queueFamilyIndex < m_QueueFamilyProperties.size()))
-	{
-		vkGetPhysicalDeviceSurfaceSupportKHR(m_hPhysicalDevice, queueFamilyIndex, hSurface, &isSupported);
-	}
-
-	return isSupported == VK_TRUE;
-}
-
-
-std::vector<PresentMode> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
-{
-	uint32_t presentModeCount = 0;
-
-	std::vector<PresentMode> PresentModes;
-
-	if (hSurface != VK_NULL_HANDLE)
-	{
-		vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &presentModeCount, nullptr);
-
-		PresentModes.resize(presentModeCount);
-
-		vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &presentModeCount, reinterpret_cast<VkPresentModeKHR*>(PresentModes.data()));
-	}
-
-	return PresentModes;
-}
-
-
-std::vector<VkSurfaceFormatKHR> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR hSurface) const
-{
-	uint32_t SurfaceFormatCount = 0;
-
-	std::vector<VkSurfaceFormatKHR> SurfaceFormats;
-
-	if (hSurface != VK_NULL_HANDLE)
-	{
-		vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &SurfaceFormatCount, nullptr);
-
-		SurfaceFormats.resize(SurfaceFormatCount);
-
-		vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &SurfaceFormatCount, SurfaceFormats.data());
-	}
-
-	return SurfaceFormats;
-}
-
-
-VkSurfaceCapabilitiesKHR PhysicalDevice::GetSurfaceCapabilities(VkSurfaceKHR hSurface) const
-{
-	VkSurfaceCapabilitiesKHR SurfaceCapabilities = {};
-
-	if (hSurface != VK_NULL_HANDLE)
-	{
-		vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_hPhysicalDevice, hSurface, &SurfaceCapabilities);
-	}
-
-	return SurfaceCapabilities;
-}
-
-
 VkFormatProperties PhysicalDevice::GetFormatProperties(VkFormat eFormat) const
 {
 	VkFormatProperties FormatProperties = {};
@@ -123,11 +59,11 @@ VkFormatProperties PhysicalDevice::GetFormatProperties(VkFormat eFormat) const
 }
 
 
-uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const
+uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> ePropertyFlags) const
 {
 	for (uint32_t i = 0; i < m_MemoryProperties.memoryTypeCount; i++)
 	{
-		if ((MemoryTypeBits & 0x00000001u) == 0x00000001u)
+		if ((memoryTypeBits & 0x0001u) == 0x0001u)
 		{
 			if ((m_MemoryProperties.memoryTypes[i].propertyFlags & ePropertyFlags) == ePropertyFlags)
 			{
@@ -135,24 +71,27 @@ uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t MemoryTypeBits, VkMemoryPro
 			}
 		}
 
-		MemoryTypeBits >>= 1;
+		memoryTypeBits >>= 1;
 	}
 
 	return VK_INVALID_INDEX;
 }
 
 
-uint32_t PhysicalDevice::GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const
+const std::vector<VkQueueFamilyProperties> & PhysicalDevice::GetQueueFamilies() const
 {
-	for (uint32_t i = 0; i < m_QueueFamilyProperties.size(); i++)
+	if (m_QueueFamilyProperties.empty())
 	{
-		if (this->IsSurfaceSupported(hSurface, i))
-		{
-			return i;
-		}
+		uint32_t familyCount = 0;
+
+		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &familyCount, nullptr);
+
+		m_QueueFamilyProperties.resize(familyCount);
+
+		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &familyCount, m_QueueFamilyProperties.data());
 	}
 
-	return VK_INVALID_INDEX;
+	return m_QueueFamilyProperties;
 }
 
 
@@ -217,23 +156,6 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 	}
 
 	return VK_INVALID_INDEX;
-}
-
-
-const std::vector<VkQueueFamilyProperties> & PhysicalDevice::GetQueueFamilies() const
-{
-	if (m_QueueFamilyProperties.empty())
-	{
-		uint32_t familyCount = 0;
-
-		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &familyCount, nullptr);
-
-		m_QueueFamilyProperties.resize(familyCount);
-
-		vkGetPhysicalDeviceQueueFamilyProperties(m_hPhysicalDevice, &familyCount, m_QueueFamilyProperties.data());
-	}
-
-	return m_QueueFamilyProperties;
 }
 
 

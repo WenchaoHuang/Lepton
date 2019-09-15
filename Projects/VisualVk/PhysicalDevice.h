@@ -20,7 +20,7 @@ namespace Vk
 
 	private:
 
-		//!	@brief	Only created by Instance.
+		//!	@brief	Created by instance only.
 		friend class Instance;
 
 		//!	@brief	Create physical device object.
@@ -31,63 +31,32 @@ namespace Vk
 
 	public:
 
+		//!	@brief	Return pointer to its parent object.
+		Instance * GetInstance() const { return m_pInstance; }
+
+		//!	@brief	Return Vulkan type of this object.
 		operator VkPhysicalDevice() const { return m_hPhysicalDevice; }
-
-		Instance * GetInstance() { return m_pInstance; }
-
-		//!	@brief	Create a logical device (not ready).
-		LogicalDevice * CreateLogicalDevice();
-
-		//!	@brief	If device layer is available.
-		bool IsLayerAvailable(std::string layerName) const;
-
-		//!	@brief	If device extension is available.
-		bool IsExtensionAvailable(std::string extensionName) const;
-
-		//!	@brief	Destroy a logical device.
-		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
-
-		//!	@brief	If present surface is supported by specify queue family.
-		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
-
-		//!	@brief	Return the surface present modes.
-		std::vector<PresentMode> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
-
-		//!	@brief	Return array of available extensions.
-		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
 
 		//!	@brief	Return array of available validation layers.
 		const std::vector<VkLayerProperties> & GetAvailableLayers() const;
 
+		//!	@brief	Return the queue family properties.
+		const std::vector<VkQueueFamilyProperties> & GetQueueFamilies() const;
 
-
-
-
-		//!	@brief	Return the memory properties.
-		const VkPhysicalDeviceMemoryProperties & GetMemoryProperties() const { return m_MemoryProperties; }
-
-		//!	@brief	Return the physical properties.
-		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties; }
+		//!	@brief	Return array of available extensions.
+		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
 
 		//!	@brief	Return the physical features.
 		const VkPhysicalDeviceFeatures & GetFeatures() const { return m_Features; }
 
+		//!	@brief	Return the physical properties.
+		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties; }
 
-
-		//!	@brief	Return the format properties.
-		VkFormatProperties GetFormatProperties(VkFormat eFormat) const;
-
-		//!	@brief	Return the surface capabilities.
-		VkSurfaceCapabilitiesKHR GetSurfaceCapabilities(VkSurfaceKHR hSurface) const;
-
-		//!	@brief	Return the surface formats.
-		std::vector<VkSurfaceFormatKHR> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
+		//!	@brief	Return set of logical devices.
+		const std::set<LogicalDevice*> GetLogicalDevices() const { return m_pLogicalDevices; }
 
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, VkMemoryPropertyFlags ePropertyFlags) const;
-
-		//!	@brief	Find queue family that supported presentation, and return the queue family index.
-		uint32_t GetPresentQueueFamilyIndex(VkSurfaceKHR hSurface) const;
+		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> ePropertyFlags) const;
 
 		//!	@brief	Find queue family that supported graphics, and return the queue family index.
 		uint32_t GetGraphicsQueueFamilyIndex() const;
@@ -98,11 +67,20 @@ namespace Vk
 		//!	@brief	Find queue family that supported computing, and return the queue family index.
 		uint32_t GetComputeQueueFamilyIndex() const;
 
+		//!	@brief	Return the format properties.
+		VkFormatProperties GetFormatProperties(VkFormat eFormat) const;
 
+		//!	@brief	Destroy a existed logical device.
+		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);
 
-		//!	@brief	Return the queue family properties.
-		const std::vector<VkQueueFamilyProperties> & GetQueueFamilies() const;
+		//!	@brief	Check if device extension is available.
+		bool IsExtensionAvailable(std::string extensionName) const;
 
+		//!	@brief	Check if device layer is available.
+		bool IsLayerAvailable(std::string layerName) const;
+
+		//!	@brief	Create a logical device (not ready).
+		LogicalDevice * CreateLogicalDevice();
 
 	private:
 

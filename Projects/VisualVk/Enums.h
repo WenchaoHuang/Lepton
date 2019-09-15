@@ -18,7 +18,7 @@ namespace Vk
 	enum Bool32 : VkBool32
 	{
 		eTrue		= VK_TRUE,
-		eFalse		= VK_FALSE
+		eFalse		= VK_FALSE,
 	};
 
 	/*********************************************************************
@@ -36,7 +36,7 @@ namespace Vk
 		x8		= VK_SAMPLE_COUNT_8_BIT,
 		x16		= VK_SAMPLE_COUNT_16_BIT,
 		x32		= VK_SAMPLE_COUNT_32_BIT,
-		x64		= VK_SAMPLE_COUNT_64_BIT
+		x64		= VK_SAMPLE_COUNT_64_BIT,
 	};
 
 	/*********************************************************************
@@ -52,7 +52,37 @@ namespace Vk
 		eGraphics			= VK_QUEUE_GRAPHICS_BIT,
 		eTransfer			= VK_QUEUE_TRANSFER_BIT,
 		eProtected			= VK_QUEUE_PROTECTED_BIT,
-		eSparseBinding		= VK_QUEUE_SPARSE_BINDING_BIT
+		eSparseBinding		= VK_QUEUE_SPARSE_BINDING_BIT,
+	};
+
+	/*********************************************************************
+	*******************    CommandPoolUsageBehavior    *******************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying usage behavior for a command pool.
+	 */
+	enum class CommandPoolUsageBehavior : VkFlags
+	{
+		eTransient				= VK_COMMAND_POOL_CREATE_TRANSIENT_BIT,
+		eProtected				= VK_COMMAND_POOL_CREATE_PROTECTED_BIT,
+		eResetCommandBuffer		= VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+	};
+
+	/*********************************************************************
+	************************    MemoryProperty    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying properties for a memory type.
+	 */
+	enum class MemoryProperty
+	{
+		eHostCached				= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
+		eHostVisible			= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+		eDeviceLocal			= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+		eHostCoherent			= VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		eLazilyAllocated		= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT,
 	};
 
 	/*********************************************************************
@@ -69,7 +99,7 @@ namespace Vk
 		eImmediate						= VK_PRESENT_MODE_IMMEDIATE_KHR,
 		eFIFORelaxed					= VK_PRESENT_MODE_FIFO_RELAXED_KHR,
 		eSharedDemandRefresh			= VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR,
-		eSharedContinuousRefresh		= VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR
+		eSharedContinuousRefresh		= VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR,
 	};
 
 	/*********************************************************************
@@ -83,7 +113,7 @@ namespace Vk
 	{
 		eCompute			= VK_PIPELINE_BIND_POINT_COMPUTE,
 		eGraphics			= VK_PIPELINE_BIND_POINT_GRAPHICS,
-		eRayTracingNV		= VK_PIPELINE_BIND_POINT_RAY_TRACING_NV
+		eRayTracingNV		= VK_PIPELINE_BIND_POINT_RAY_TRACING_NV,
 	};
 
 	/*********************************************************************
@@ -97,7 +127,7 @@ namespace Vk
 	{
 		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
 		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
-		eDeviceGroup		= VK_DEPENDENCY_DEVICE_GROUP_BIT
+		eDeviceGroup		= VK_DEPENDENCY_DEVICE_GROUP_BIT,
 	};
 
 	/*********************************************************************
@@ -124,7 +154,7 @@ namespace Vk
 		eAnyHitNV					= VK_SHADER_STAGE_ANY_HIT_BIT_NV,
 		eMissNV						= VK_SHADER_STAGE_MISS_BIT_NV,
 		eTaskNV						= VK_SHADER_STAGE_TASK_BIT_NV,
-		eMeshNV						= VK_SHADER_STAGE_MESH_BIT_NV
+		eMeshNV						= VK_SHADER_STAGE_MESH_BIT_NV,
 	};
 
 	/*********************************************************************
@@ -161,7 +191,7 @@ namespace Vk
 		eRayTracingShaderNV					= VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_NV,
 		eCommandProcessNVX					= VK_PIPELINE_STAGE_COMMAND_PROCESS_BIT_NVX,
 		eTaskShaderNV						= VK_PIPELINE_STAGE_TASK_SHADER_BIT_NV,
-		eMeshShaderNV						= VK_PIPELINE_STAGE_MESH_SHADER_BIT_NV
+		eMeshShaderNV						= VK_PIPELINE_STAGE_MESH_SHADER_BIT_NV,
 	};
 
 	/*********************************************************************
@@ -182,7 +212,7 @@ namespace Vk
 		eTransientAttachment		= VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT,
 		eDepthStencilAttachment		= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
 		eFragmentDensityMapEXT		= VK_IMAGE_USAGE_FRAGMENT_DENSITY_MAP_BIT_EXT,
-		eShadingRateImageNV			= VK_IMAGE_USAGE_SHADING_RATE_IMAGE_BIT_NV
+		eShadingRateImageNV			= VK_IMAGE_USAGE_SHADING_RATE_IMAGE_BIT_NV,
 	};
 
 	/*********************************************************************
@@ -207,7 +237,7 @@ namespace Vk
 		eMemoryPlane0EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT_EXT,
 		eMemoryPlane1EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_1_BIT_EXT,
 		eMemoryPlane2EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_2_BIT_EXT,
-		eMemoryPlane3EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_3_BIT_EXT
+		eMemoryPlane3EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_3_BIT_EXT,
 	};
 
 	/*********************************************************************
@@ -235,7 +265,7 @@ namespace Vk
 		eFragmentDensityMapOptimalEXT					= VK_IMAGE_LAYOUT_FRAGMENT_DENSITY_MAP_OPTIMAL_EXT,
 		eShadingRateOptimalNV							= VK_IMAGE_LAYOUT_SHADING_RATE_OPTIMAL_NV,
 		eSharedPresentKHR								= VK_IMAGE_LAYOUT_SHARED_PRESENT_KHR,
-		ePresentSrcKHR									= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+		ePresentSrcKHR									= VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
 	};
 
 	/*********************************************************************
@@ -254,7 +284,7 @@ namespace Vk
 		eGreater			= VK_COMPARE_OP_GREATER,
 		eNotEqual			= VK_COMPARE_OP_NOT_EQUAL,
 		eLessOrEqual		= VK_COMPARE_OP_LESS_OR_EQUAL,
-		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL
+		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL,
 	};
 
 	/*********************************************************************
@@ -273,7 +303,7 @@ namespace Vk
 		eIncrementAndWrap		= VK_STENCIL_OP_INCREMENT_AND_WRAP,
 		eDecrementAndWrap		= VK_STENCIL_OP_DECREMENT_AND_WRAP,
 		eIncrementAndClamp		= VK_STENCIL_OP_INCREMENT_AND_CLAMP,
-		eDecrementAndClamp		= VK_STENCIL_OP_DECREMENT_AND_CLAMP
+		eDecrementAndClamp		= VK_STENCIL_OP_DECREMENT_AND_CLAMP,
 	};
 
 	/*********************************************************************
@@ -300,7 +330,7 @@ namespace Vk
 		eOrInverted			= VK_LOGIC_OP_OR_INVERTED,
 		eAndReverse			= VK_LOGIC_OP_AND_REVERSE,
 		eAndInverted		= VK_LOGIC_OP_AND_INVERTED,
-		eCopyInverted		= VK_LOGIC_OP_COPY_INVERTED
+		eCopyInverted		= VK_LOGIC_OP_COPY_INVERTED,
 	};
 
 	/*********************************************************************
@@ -362,7 +392,7 @@ namespace Vk
 		eSrcEXT						= VK_BLEND_OP_SRC_EXT,
 		eDstEXT						= VK_BLEND_OP_DST_EXT,
 		eXorEXT						= VK_BLEND_OP_XOR_EXT,
-		eRedEXT						= VK_BLEND_OP_RED_EXT
+		eRedEXT						= VK_BLEND_OP_RED_EXT,
 	};
 
 	/*********************************************************************
@@ -473,6 +503,6 @@ namespace Vk
 		eD32Sfloat					= VK_FORMAT_D32_SFLOAT,
 		eD16UnormS8Uint				= VK_FORMAT_D16_UNORM_S8_UINT,
 		eD24UnormS8Uint				= VK_FORMAT_D24_UNORM_S8_UINT,
-		eD32SfloatS8Uint			= VK_FORMAT_D32_SFLOAT_S8_UINT
+		eD32SfloatS8Uint			= VK_FORMAT_D32_SFLOAT_S8_UINT,
 	};
 }

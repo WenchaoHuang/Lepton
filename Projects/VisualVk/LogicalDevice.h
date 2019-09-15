@@ -34,6 +34,7 @@ namespace Vk
 
 	private:
 
+		//!	@brief	Created by physical device only.
 		friend class PhysicalDevice;
 
 		//!	@brief	Create logical device object.
@@ -44,7 +45,7 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkDevice handle.
+		//!	@brief	Return Vulkan type of this object.
 		operator VkDevice() const { return m_hDevice; }
 
 		//!	@brief	Wait for a device to become idle.
@@ -62,12 +63,6 @@ namespace Vk
 		VkBool32 EnableExtension(const char * pExtensionName);
 
 		PhysicalDevice * GetPhysicalDevice() { return m_pPhysicalDevice; }
-
-		//!	@brief	Return a device level function pointer for a command.
-		PFN_vkVoidFunction GetProcAddress(const char * pName) const
-		{
-			return vkGetDeviceProcAddr(m_hDevice, pName);
-		}
 
 		//!	@brief	Return the pointer to command queue.
 		CommandQueue * GetCommandQueue(uint32_t familyIndex, uint32_t queueIndex)

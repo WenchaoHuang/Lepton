@@ -15,12 +15,12 @@ CommandQueue::CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabil
 }
 
 
-CommandPool * CommandQueue::CreateCommandPool(VkCommandPoolCreateFlags eCreateFlags)
+CommandPool * CommandQueue::CreateCommandPool(Flags<CommandPoolUsageBehavior> eBehaviors)
 {
 	VkCommandPoolCreateInfo			CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= eCreateFlags;
+	CreateInfo.flags				= eBehaviors;
 	CreateInfo.queueFamilyIndex		= m_FamilyIndex;
 
 	VkCommandPool hCommandPool = VK_NULL_HANDLE;
@@ -38,16 +38,16 @@ CommandPool * CommandQueue::CreateCommandPool(VkCommandPoolCreateFlags eCreateFl
 }
 
 
-VkResult CommandQueue::DestroyCommandPool(CommandPool * pCommandPool)
+Result CommandQueue::DestroyCommandPool(CommandPool * pCommandPool)
 {
 	if (m_pCommandPools.erase(pCommandPool) != 0)
 	{
 		delete pCommandPool;
 
-		return VK_SUCCESS;
+		return Result::eSuccess;
 	}
 
-	return VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	return Result::eErrorInvalidExternalHandle;
 }
 
 
@@ -70,7 +70,7 @@ CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommna
 }
 
 
-CommandBuffer * CommandPool::AllocateCommandBuffer()
+CommandBuffer * CommandPool::AllocatePrimaryCommandBuffer()
 {
 	VkCommandBufferAllocateInfo			AllocateInfo = {};
 	AllocateInfo.sType					= VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -94,7 +94,7 @@ CommandBuffer * CommandPool::AllocateCommandBuffer()
 }
 
 
-VkResult CommandPool::FreeCommandBuffer(CommandBuffer * pCommandBuffer)
+Result CommandPool::FreeCommandBuffer(CommandBuffer * pCommandBuffer)
 {
 	if (m_pCommandBuffers.erase(pCommandBuffer) != 0)
 	{
@@ -106,10 +106,10 @@ VkResult CommandPool::FreeCommandBuffer(CommandBuffer * pCommandBuffer)
 
 		delete pCommandBuffer;
 
-		return VK_SUCCESS;
+		return Result::eSuccess;
 	}
 
-	return VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	return Result::eErrorInvalidExternalHandle;
 }
 
 
