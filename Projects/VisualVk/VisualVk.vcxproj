@@ -166,6 +166,7 @@
     <ClCompile Include="LogicalDevice.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicalDevice.cpp" />
+    <ClCompile Include="Win32Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayProxy.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Vulkan.h" />
+    <ClInclude Include="Win32Surface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,6 +15,4 @@ int main()
 
 	Instance	instance;
 	instance.Create(pExtensions, pLayers);
-
-	auto & a = instance.GetPhysicalDevices();
 }
