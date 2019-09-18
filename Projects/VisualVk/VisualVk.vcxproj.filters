@@ -10,20 +10,23 @@
     <Filter Include="2. Resources">
       <UniqueIdentifier>{3032cb43-4fe8-4607-b73b-e0bc05acec6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Context\4. CommandBuffer">
-      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Context\3. PhysicalDevice">
-      <UniqueIdentifier>{5253d1d7-ee48-413f-8bfe-8018e65696e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Context\1. Win32Surface">
-      <UniqueIdentifier>{85a54d54-3019-4abe-98a7-b36b6c2e046c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. Context\2. LogicalDevice">
-      <UniqueIdentifier>{431e0f31-c504-4600-a8fe-aaa20f92c53f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0. Wrappers">
       <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\1. Win32Surface">
+      <UniqueIdentifier>{85a54d54-3019-4abe-98a7-b36b6c2e046c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\1. LogicalDevice">
+      <UniqueIdentifier>{431e0f31-c504-4600-a8fe-aaa20f92c53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\2. PhysicalDevice">
+      <UniqueIdentifier>{5253d1d7-ee48-413f-8bfe-8018e65696e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\3. CommandBuffer">
+      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\0. Swapchain">
+      <UniqueIdentifier>{ae5d22d0-bcc1-4655-8ed7-e1b05e84d988}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,16 +35,16 @@
       <Filter>1. Context\0. Instance</Filter>
     </ClCompile>
     <ClCompile Include="PhysicalDevice.cpp">
-      <Filter>1. Context\3. PhysicalDevice</Filter>
+      <Filter>1. Context\2. PhysicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="LogicalDevice.cpp">
-      <Filter>1. Context\2. LogicalDevice</Filter>
+      <Filter>1. Context\1. LogicalDevice</Filter>
     </ClCompile>
     <ClCompile Include="CommandBuffer.cpp">
-      <Filter>1. Context\4. CommandBuffer</Filter>
+      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Win32Surface.cpp">
-      <Filter>1. Context\1. Win32Surface</Filter>
+      <Filter>2. Resources\1. Win32Surface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,19 +64,19 @@
       <Filter>0. Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="PhysicalDevice.h">
-      <Filter>1. Context\3. PhysicalDevice</Filter>
+      <Filter>1. Context\2. PhysicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="LogicalDevice.h">
-      <Filter>1. Context\2. LogicalDevice</Filter>
+      <Filter>1. Context\1. LogicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="CommandBuffer.h">
-      <Filter>1. Context\4. CommandBuffer</Filter>
+      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>0. Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="Win32Surface.h">
-      <Filter>1. Context\1. Win32Surface</Filter>
+      <Filter>2. Resources\1. Win32Surface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

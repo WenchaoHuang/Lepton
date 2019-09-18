@@ -18,7 +18,7 @@
 																		\
 ClassName(const ClassName&) = delete;									\
 																		\
-void operator=(const ClassName&) = delete;								\
+ClassName & operator=(const ClassName&) = delete;						\
 
 /*************************************************************************
 *****************************    VisualVk    *****************************
@@ -32,4 +32,7 @@ namespace Vk
 	class CommandPool;
 	class CommandQueue;
 	class CommandBuffer;
+
+	class Swapchain;
+	class Win32Surface;
 }

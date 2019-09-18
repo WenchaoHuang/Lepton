@@ -4,7 +4,7 @@
 #pragma once
 
 #include <vulkan/vulkan_core.h>
-
+#include <vulkan/vulkan.hpp>
 namespace Vk
 {
 	/*********************************************************************
@@ -66,6 +66,67 @@ namespace Vk
 		eTransient				= VK_COMMAND_POOL_CREATE_TRANSIENT_BIT,
 		eProtected				= VK_COMMAND_POOL_CREATE_PROTECTED_BIT,
 		eResetCommandBuffer		= VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+	};
+
+	/*********************************************************************
+	**************************    ColorSpace    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	 Supported color space of the presentation engine.
+	 */
+	enum class ColorSpace
+	{
+		eSrgbNonlinear					= VK_COLOR_SPACE_SRGB_NONLINEAR_KHR,
+		eExtendedSrgbNonlinearEXT		= VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT,
+		eDisplayP3NonlinearEXT			= VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT,
+		eExtendedSrgbLinearEXT			= VK_COLOR_SPACE_EXTENDED_SRGB_LINEAR_EXT,
+		eAdobergbNonlinearEXT			= VK_COLOR_SPACE_ADOBERGB_NONLINEAR_EXT,
+		eDciP3NonlinearEXT				= VK_COLOR_SPACE_DCI_P3_NONLINEAR_EXT,
+		eBt709NonlinearEXT				= VK_COLOR_SPACE_BT709_NONLINEAR_EXT,
+		eAdobergbLinearEXT				= VK_COLOR_SPACE_ADOBERGB_LINEAR_EXT,
+		eBt2020LinearEXT				= VK_COLOR_SPACE_BT2020_LINEAR_EXT,
+		eDciP3LinearEXT					= VK_COLOR_SPACE_DCI_P3_LINEAR_EXT,
+		eBt709LinearEXT					= VK_COLOR_SPACE_BT709_LINEAR_EXT,
+		eHdr10St2084EXT					= VK_COLOR_SPACE_HDR10_ST2084_EXT,
+		eDolbyvisionEXT					= VK_COLOR_SPACE_DOLBYVISION_EXT,
+		ePassThroughEXT					= VK_COLOR_SPACE_PASS_THROUGH_EXT,
+		eHdr10HlgEXT					= VK_COLOR_SPACE_HDR10_HLG_EXT,
+	};
+
+	/*********************************************************************
+	********************    PresentationTransform    *********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Presentation transforms supported on a device.
+	 */
+	enum class PresentationTransform : VkFlags
+	{
+		eInherit						= VK_SURFACE_TRANSFORM_INHERIT_BIT_KHR,
+		eIdentity						= VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
+		eRotate90						= VK_SURFACE_TRANSFORM_ROTATE_90_BIT_KHR,
+		eRotate180						= VK_SURFACE_TRANSFORM_ROTATE_180_BIT_KHR,
+		eRotate270						= VK_SURFACE_TRANSFORM_ROTATE_270_BIT_KHR,
+		eHorizontalMirror				= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_BIT_KHR,
+		eHorizontalMirrorRotate90		= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_90_BIT_KHR,
+		eHorizontalMirrorRotate180		= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_180_BIT_KHR,
+		eHorizontalMirrorRotate270		= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_270_BIT_KHR,
+	};
+
+	/*********************************************************************
+	********************    AlphaCompositingMmode    *********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Alpha compositing modes supported on a device.
+	 */
+	enum class AlphaCompositingMmode : VkFlags
+	{
+		eOpaque				= VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+		eInherit			= VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR,
+		ePreMultiplied		= VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR,
+		ePostMultiplied		= VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR,
 	};
 
 	/*********************************************************************
