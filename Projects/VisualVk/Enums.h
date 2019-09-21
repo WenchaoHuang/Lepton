@@ -3,8 +3,8 @@
 *************************************************************************/
 #pragma once
 
-#include <vulkan/vulkan_core.h>
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan.h>
+
 namespace Vk
 {
 	/*********************************************************************
@@ -394,6 +394,65 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	****************************    Filter    ****************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify filters used for texture lookups.
+	 */
+	enum class Filter
+	{
+		eLinear			= VK_FILTER_LINEAR,
+		eNearest		= VK_FILTER_NEAREST,
+	};
+
+	/*********************************************************************
+	**************************    MipmapMode    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify mipmap mode used for texture lookups.
+	 */
+	enum class MipmapMode
+	{
+		eLinear			= VK_SAMPLER_MIPMAP_MODE_LINEAR,
+		eNearest		= VK_SAMPLER_MIPMAP_MODE_NEAREST,
+	};
+
+	/*********************************************************************
+	*************************    AddressMode    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify behavior of sampling with texture coordinates outside an image.
+	 */
+	enum class AddressMode
+	{
+		eRepeat					= VK_SAMPLER_ADDRESS_MODE_REPEAT,
+		eClampToEdge			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
+		eClampToBorder			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER,
+		eMirroredRepeat			= VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT,
+		eMirrorClampToEdge		= VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE,
+	};
+
+	/*********************************************************************
+	*************************    BorderColor    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify border color used for texture lookups.
+	 */
+	enum class BorderColor
+	{
+		eIntOpaqueWhite				= VK_BORDER_COLOR_INT_OPAQUE_WHITE,
+		eIntOpaqueBlack				= VK_BORDER_COLOR_INT_OPAQUE_BLACK,
+		eFloatOpaqueWhite			= VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE,
+		eFloatOpaqueBlack			= VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK,
+		eIntTransparentBlack		= VK_BORDER_COLOR_INT_TRANSPARENT_BLACK,
+		eFloatTransparentBlack		= VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK,
+	};
+
+	/*********************************************************************
 	***************************    BlendOp    ****************************
 	*********************************************************************/
 
@@ -453,6 +512,72 @@ namespace Vk
 		eDstEXT						= VK_BLEND_OP_DST_EXT,
 		eXorEXT						= VK_BLEND_OP_XOR_EXT,
 		eRedEXT						= VK_BLEND_OP_RED_EXT,
+	};
+
+	/*********************************************************************
+	***********************    AttachmentLoadOp    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify how contents of an attachment are treated at the beginning of a subpass.
+	 */
+	enum class AttachmentLoadOp
+	{
+		eLoad			= VK_ATTACHMENT_LOAD_OP_LOAD,
+		eClear			= VK_ATTACHMENT_LOAD_OP_CLEAR,
+		eDontCare		= VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+	};
+
+	/*********************************************************************
+	**********************    AttachmentStoreOp    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify how contents of an attachment are treated at the end of a subpass.
+	 */
+	enum class AttachmentStoreOp
+	{
+		eStore			= VK_ATTACHMENT_STORE_OP_STORE,
+		eDontCare		= VK_ATTACHMENT_STORE_OP_DONT_CARE,
+	};
+
+	/*********************************************************************
+	************************    AccessFlagBits    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying memory access types that will participate in a memory dependency.
+	 */
+	enum class AccessFlagBits : VkFlags
+	{
+		eHostRead								= VK_ACCESS_HOST_READ_BIT,
+		eHostWrite								= VK_ACCESS_HOST_WRITE_BIT,
+		eIndexRead								= VK_ACCESS_INDEX_READ_BIT,
+		eShaderRead								= VK_ACCESS_SHADER_READ_BIT,
+		eMemoryRead								= VK_ACCESS_MEMORY_READ_BIT,
+		eUniformRead							= VK_ACCESS_UNIFORM_READ_BIT,
+		eMemoryWrite							= VK_ACCESS_MEMORY_WRITE_BIT,
+		eShaderWrite							= VK_ACCESS_SHADER_WRITE_BIT,
+		eTransferRead							= VK_ACCESS_TRANSFER_READ_BIT,
+		eTransferWrite							= VK_ACCESS_TRANSFER_WRITE_BIT,
+		eIndirectCommandRead					= VK_ACCESS_INDIRECT_COMMAND_READ_BIT,
+		eVertexAttributeRead					= VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT,
+		eInputAttachmentRead					= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT,
+		eColorAttachmentRead					= VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
+		eColorAttachmentWrite					= VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+		eTransformFeedbackWriteEXT				= VK_ACCESS_TRANSFORM_FEEDBACK_WRITE_BIT_EXT,
+		eDepthStencilAttachmentRead				= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT,
+		eDepthStencilAttachmentWrite			= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
+		eColorAttachmentReadNoncoherentEXT		= VK_ACCESS_COLOR_ATTACHMENT_READ_NONCOHERENT_BIT_EXT,
+		eTransformFeedbackCounterWriteEXT		= VK_ACCESS_TRANSFORM_FEEDBACK_COUNTER_WRITE_BIT_EXT,
+		eTransformFeedbackCounterReadEXT		= VK_ACCESS_TRANSFORM_FEEDBACK_COUNTER_READ_BIT_EXT,
+		eAccelerationStructureWriteNV			= VK_ACCESS_ACCELERATION_STRUCTURE_WRITE_BIT_NV,
+		eConditionalRenderingReadEXT			= VK_ACCESS_CONDITIONAL_RENDERING_READ_BIT_EXT,
+		eAccelerationStructureReadNV			= VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_NV,
+		eFragmentDensityMapReadEXT				= VK_ACCESS_FRAGMENT_DENSITY_MAP_READ_BIT_EXT,
+		eCommandProcessWriteNVX					= VK_ACCESS_COMMAND_PROCESS_WRITE_BIT_NVX,
+		eShadingRateImageReadNV					= VK_ACCESS_SHADING_RATE_IMAGE_READ_BIT_NV,
+		eCommandProcessReadNVX					= VK_ACCESS_COMMAND_PROCESS_READ_BIT_NVX,
 	};
 
 	/*********************************************************************

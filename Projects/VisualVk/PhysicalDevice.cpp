@@ -159,6 +159,72 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 }
 
 
+std::vector<SurfaceFormat> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR hSurface) const
+{
+	std::vector<SurfaceFormat> SurfaceFormats;
+
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		uint32_t surfaceFormatCount = 0;
+
+		vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &surfaceFormatCount, nullptr);
+
+		SurfaceFormats.resize(surfaceFormatCount);
+
+		vkGetPhysicalDeviceSurfaceFormatsKHR(m_hPhysicalDevice, hSurface, &surfaceFormatCount, reinterpret_cast<VkSurfaceFormatKHR*>(SurfaceFormats.data()));
+	}
+
+	return SurfaceFormats;
+}
+
+
+std::vector<PresentMode> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
+{
+	std::vector<PresentMode> PresentModes;
+
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		uint32_t presentModeCount = 0;
+
+		vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &presentModeCount, nullptr);
+
+		PresentModes.resize(presentModeCount);
+
+		vkGetPhysicalDeviceSurfacePresentModesKHR(m_hPhysicalDevice, hSurface, &presentModeCount, reinterpret_cast<VkPresentModeKHR*>(PresentModes.data()));
+	}
+
+	return PresentModes;
+}
+
+
+SurfaceCapabilities PhysicalDevice::GetSurfaceCapabilities(VkSurfaceKHR hSurface) const
+{
+	SurfaceCapabilities capabilities;
+
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_hPhysicalDevice, hSurface, reinterpret_cast<VkSurfaceCapabilitiesKHR*>(&capabilities));
+	}
+
+	return capabilities;
+}
+
+
+bool PhysicalDevice::IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const
+{
+	if (hSurface != VK_NULL_HANDLE)
+	{
+		VkBool32 isSupported = VK_FALSE;
+
+		vkGetPhysicalDeviceSurfaceSupportKHR(m_hPhysicalDevice, queueFamilyIndex, hSurface, &isSupported);
+
+		return isSupported == VK_TRUE;
+	}
+
+	return false;
+}
+
+
 const std::vector<VkExtensionProperties> & PhysicalDevice::GetAvailableExtensions() const
 {
 	if (m_AvailableExtensions.empty())

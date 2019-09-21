@@ -3,72 +3,10 @@
 *************************************************************************/
 #pragma once
 
-#include "Enums.h"
-#include "Handle.h"
-#include "Result.h"
-#include "Context.h"
+#include "Vulkan.h"
 
 namespace Vk
 {
-	/*********************************************************************
-	****************************    Filter    ****************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Specify filters used for texture lookups.
-	 */
-	enum class Filter
-	{
-		eLinear			= VK_FILTER_LINEAR,
-		eNearest		= VK_FILTER_NEAREST,
-	};
-
-	/*********************************************************************
-	**************************    MipmapMode    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Specify mipmap mode used for texture lookups.
-	 */
-	enum class MipmapMode
-	{
-		eLinear			= VK_SAMPLER_MIPMAP_MODE_LINEAR,
-		eNearest		= VK_SAMPLER_MIPMAP_MODE_NEAREST
-	};
-
-	/*********************************************************************
-	*************************    AddressMode    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Specify behavior of sampling with texture coordinates outside an image.
-	 */
-	enum class AddressMode
-	{
-		eRepeat					= VK_SAMPLER_ADDRESS_MODE_REPEAT,
-		eClampToEdge			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
-		eClampToBorder			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER,
-		eMirroredRepeat			= VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT,
-		eMirrorClampToEdge		= VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE
-	};
-
-	/*********************************************************************
-	*************************    BorderColor    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Specify border color used for texture lookups.
-	 */
-	enum class BorderColor
-	{
-		eIntOpaqueWhite				= VK_BORDER_COLOR_INT_OPAQUE_WHITE,
-		eIntOpaqueBlack				= VK_BORDER_COLOR_INT_OPAQUE_BLACK,
-		eFloatOpaqueWhite			= VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE,
-		eFloatOpaqueBlack			= VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK,
-		eIntTransparentBlack		= VK_BORDER_COLOR_INT_TRANSPARENT_BLACK,
-		eFloatTransparentBlack		= VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK
-	};
-
 	/*********************************************************************
 	*************************    SamplerParam    *************************
 	*********************************************************************/
@@ -100,25 +38,36 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan sampler object.
+	 *	@brief	Wrapper for Vulkan sampler object.
 	 */
-	class Sampler : public SamplerH
+	class Sampler
 	{
+		VK_UNIQUE_RESOURCE(Sampler)
 
 	public:
 
-		//!	@brief	Create a sampler object.
-		Result Create(const SamplerParam & Param = SamplerParam());
+		//!	@brief	Create sampler object.
+		Sampler();
+
+		//!	@brief	Create and initialize immediately.
+		explicit Sampler(VkDevice hDevice, const SamplerParam & Param = SamplerParam());
+
+		//!	@brief	Destroy sampler object.
+		~Sampler();
+
+	public:
 
 		//!	@brief	Return sampler parameters.
-		const SamplerParam & GetParam() const { return m_Param; }
+		const SamplerParam & GetParam() const { return m_Parameter; }
 
-		Result SetMagFilter(Filter eMagFilter);
+		//!	@brief	Create a new sampler object.
+		Result Create(VkDevice hDevice, const SamplerParam & Param = SamplerParam());
 
-		Result SetMinFilter(Filter eMinFilter);
+		//!	@brief	Destroy the sampler.
+		void Destroy();
 
 	private:
 
-		SamplerParam			m_Param;
+		SamplerParam		m_Parameter;
 	};
 }

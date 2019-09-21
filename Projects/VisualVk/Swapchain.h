@@ -3,21 +3,22 @@
 *************************************************************************/
 #pragma once
 
-#include "Enums.h"
-#include "Handle.h"
-#include "Context.h"
+#include "Vulkan.h"
 
 namespace Vk
 {
+	typedef VkSwapchainKHR		VkSwapchain;
+
 	/*********************************************************************
 	**************************    Swapchain    ***************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan swapchain object.
+	 *	@brief	Wrapper for Vulkan swapchain object.
 	 */
 	class Swapchain
 	{
+		VK_UNIQUE_RESOURCE(Swapchain)
 
 	public:
 
@@ -29,54 +30,39 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Destroy the swapchain.
-		void Destroy() noexcept;
-
 		//!	@brief	Queue an image for presentation.
-		VkResult Present(VkSemaphore hWaitSemaphore);
+		Result Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> waitSemaphores = nullptr);
 
-		//!	@brief	Return the format of swapchain images.
-		Format GetImageFormat() const { return m_eImageFormat; }
-
-		//!	@brief	Return the extent of swapchain images.
-		VkExtent2D GetImageExtent() const { return m_ImageExtent; }
-
-		//!	@brief	Construct swapchain.
-		VkResult Construct(VkSurfaceKHR hSurface, VkBool32 bVsync);
-
-		//!	@brief	If swapchain handle is valid.
-		VkBool32 IsValid() const { return m_hSwapchain != VK_NULL_HANDLE; }
-
-		//!	@brief	Return the swapchain images.
-		const std::vector<VkImage> & GetImages() const { return m_hImages; }
-
-		//!	@brief	Return the swapchain image views.
-		const std::vector<VkImageView> & GetImageViews() const { return m_hImageViews; }
+		//!	@brief	Reconstruct swap-chain.
+		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, Extent2D imageExtent, uint32_t minImageCount);
 
 		//!	@brief	Retrieve the index of the next available presentable image.
-		uint32_t AcquireNextImage(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE)
-		{
-			Context::GetDevice()->AcquireNextImage(m_hSwapchain, UINT64_MAX, hSemaphore, hFence, &m_ImageIndex);
+		uint32_t AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence, uint64_t timeout = VK_DEFAULT_TIMEOUT);
 
-			return m_ImageIndex;
-		}
+		//!	@brief	Return swap-chain image-view handles.
+		const std::vector<VkImageView> & GetImageViews() const { return m_hImageViews; }
+
+		//!	@brief	Return swap-chain image handles.
+		const std::vector<VkImage> & GetImages() const { return m_hImages; }
+
+		//!	@brief	Return last presentation result.
+		Result GetPresentResult() const { return m_Result; }
+
+		//!	@brief	Destroy the swap-chain object.
+		void Destroy();
 
 	private:
 
-		uint32_t							m_ImageIndex;
+		Result							m_Result;
 
-		Format								m_eImageFormat;
+		uint32_t						m_ImageIndex;
 
-		VkExtent2D							m_ImageExtent;
+		Extent2D						m_ImageExtent;
 
-		VkSwapchainKHR						m_hSwapchain;
+		VkPresentInfoKHR				m_PresentInfo;
 
-		VkPresentInfoKHR					m_PresentInfo;
+		std::vector<VkImageView>		m_hImageViews;
 
-		std::vector<VkImage>				m_hImages;
-
-		std::vector<VkImageView>			m_hImageViews;
-
-		CommandQueue *						m_pPresentQueue;
+		std::vector<VkImage>			m_hImages; 
 	};
 }

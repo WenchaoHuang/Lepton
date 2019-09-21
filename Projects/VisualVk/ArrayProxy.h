@@ -5,7 +5,7 @@
 
 #include <array>
 #include <vector>
-#include <vulkan/vulkan_core.h>
+#include <vulkan/vulkan.h>
 
 namespace Vk
 {

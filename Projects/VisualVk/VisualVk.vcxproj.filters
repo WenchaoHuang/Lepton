@@ -13,9 +13,6 @@
     <Filter Include="0. Wrappers">
       <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\1. Win32Surface">
-      <UniqueIdentifier>{85a54d54-3019-4abe-98a7-b36b6c2e046c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Context\1. LogicalDevice">
       <UniqueIdentifier>{431e0f31-c504-4600-a8fe-aaa20f92c53f}</UniqueIdentifier>
     </Filter>
@@ -25,8 +22,35 @@
     <Filter Include="1. Context\3. CommandBuffer">
       <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\0. Swapchain">
+    <Filter Include="2. Resources\0. Signals">
+      <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\1. Buffers">
+      <UniqueIdentifier>{f304ef35-6e04-4752-8c35-6e8c5d79a643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\2. Images">
+      <UniqueIdentifier>{4cbbbcff-f018-4389-acd6-a5c4d6caf1c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\3. Sampler">
+      <UniqueIdentifier>{70159800-4b33-40af-9a07-e9d07b76c4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\5. Swapchain">
       <UniqueIdentifier>{ae5d22d0-bcc1-4655-8ed7-e1b05e84d988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\4. Pipelines">
+      <UniqueIdentifier>{bb636acc-ce26-4b55-985c-93b0152190de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\7. Win32Surface">
+      <UniqueIdentifier>{85a54d54-3019-4abe-98a7-b36b6c2e046c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\8. DeviceMemory">
+      <UniqueIdentifier>{bbefa902-6376-42c1-bbba-1ab39c798526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\9. ShaderModule">
+      <UniqueIdentifier>{b44ea248-a3e3-4813-a519-3185ec6158d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\6. Framebuffer">
+      <UniqueIdentifier>{5275c891-e9a0-46cb-82ff-63ac4dcef833}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,7 +68,16 @@
       <Filter>1. Context\3. CommandBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Win32Surface.cpp">
-      <Filter>2. Resources\1. Win32Surface</Filter>
+      <Filter>2. Resources\7. Win32Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="Swapchain.cpp">
+      <Filter>2. Resources\5. Swapchain</Filter>
+    </ClCompile>
+    <ClCompile Include="Signals.cpp">
+      <Filter>2. Resources\0. Signals</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>2. Resources\3. Sampler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +109,16 @@
       <Filter>0. Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="Win32Surface.h">
-      <Filter>2. Resources\1. Win32Surface</Filter>
+      <Filter>2. Resources\7. Win32Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="Swapchain.h">
+      <Filter>2. Resources\5. Swapchain</Filter>
+    </ClInclude>
+    <ClInclude Include="Signals.h">
+      <Filter>2. Resources\0. Signals</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>2. Resources\3. Sampler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

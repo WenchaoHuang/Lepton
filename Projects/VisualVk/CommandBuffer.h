@@ -53,7 +53,7 @@ namespace Vk
 		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
 
 		//!	@brief	Queue an image for presentation.
-		Result Present(const VkPresentInfoKHR * pPresentInfo) { return static_cast<Result>(vkQueuePresentKHR(m_hQueue, pPresentInfo)); }
+		Result Present(const VkPresentInfoKHR * pPresentInfo) { return VK_RESULT_CAST(vkQueuePresentKHR(m_hQueue, pPresentInfo)); }
 
 		//!	@brief	Destroy a command pool object.
 		Result DestroyCommandPool(CommandPool * pCommandPool);
@@ -100,7 +100,7 @@ namespace Vk
 		operator VkCommandPool() const { return m_hCommandPool; }
 
 		//!	@brief	Reset command pool.
-		Result Reset() { return static_cast<Result>(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
+		Result Reset() { return VK_RESULT_CAST(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
 
 		//!	@brief	Free command buffer.
 		Result FreeCommandBuffer(CommandBuffer * pCommandBuffer);

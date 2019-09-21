@@ -3,8 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Handle.h"
-#include "Context.h"
+#include "Vulkan.h"
 
 namespace Vk
 {
@@ -15,7 +14,7 @@ namespace Vk
 	/**
 	 *	@brief	Vulkan shader module object.
 	 */
-	class ShaderModule : public ShaderModuleH
+	class ShaderModule
 	{
 
 	public:

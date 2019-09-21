@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Vulkan.h"
-#include <vulkan/vulkan.h>
 
 namespace Vk
 {

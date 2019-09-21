@@ -33,9 +33,9 @@ namespace Vk
 	{
 		uint32_t							minImageCount				= 0;
 		uint32_t							maxImageCount				= 0;
-		VkExtent2D							currentExtent				= { 0, 0 };
-		VkExtent2D							minImageExtent				= { 0, 0 };
-		VkExtent2D							maxImageExtent				= { 0, 0 };
+		Extent2D							currentExtent				= 0;
+		Extent2D							minImageExtent				= 0;
+		Extent2D							maxImageExtent				= 0;
 		uint32_t							maxImageArrayLayers			= 0;
 		Flags<PresentationTransform>		supportedTransforms			= 0;
 		PresentationTransform				currentTransform			= PresentationTransform::eIdentity;
@@ -50,7 +50,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan win32 surface object.
+	 *	@brief	Wrapper for Vulkan win32 surface object.
 	 */
 	class Win32Surface
 	{
@@ -61,6 +61,9 @@ namespace Vk
 		//!	@brief	Create win32 surface object.
 		Win32Surface();
 
+		//!	@brief	Create and initialize immediately.
+		explicit Win32Surface(VkInstance hInstance, HWND hWindow);
+
 		//!	@brief	Destroy win32 surface object.
 		~Win32Surface();
 
@@ -69,34 +72,19 @@ namespace Vk
 		//!	@brief	Return Vulkan type of this object.
 		operator VkSurfaceKHR() const { return m_hSurface; }
 
+		//!	@brief	If Vulkan handle is valid.
 		bool IsValid() const { return m_hSurface != VK_NULL_HANDLE; }
 
-		Result Create(PhysicalDevice * pPhysicalDevicem, HWND hWindow);
+		//!	@brief	Create a new Win32 surface object.
+		Result Create(VkInstance hInstance, HWND hWindow);
 
-		const std::vector<PresentMode> & GetAvailablePresentModes() const;
-
-		const std::vector<SurfaceFormat> & GetAvailableSurfaceFormats() const;
-
-		bool IsQueueFamilySupported(uint32_t queueFamilyIndex) const;
-
-		bool IsSurfaceFormatAvailable(SurfaceFormat eFormat) const;
-
-		bool IsPresentModeSupported(PresentMode eMode) const;
-
-		const SurfaceCapabilities & GetCapabilities() const;
-
+		//!	@brief	Destroy the surface.
 		void Destroy();
 		
 	private:
 
-		VkSurfaceKHR							m_hSurface;
+		VkInstance			m_hInstance;
 
-		PhysicalDevice *						m_pPhysicalDevice;
-
-		mutable SurfaceCapabilities				m_SurfaceCapabilities;
-
-		mutable std::vector<PresentMode>		m_AvailablePresentModes;
-
-		mutable std::vector<SurfaceFormat>		m_AvailableSurfaceFormats;
+		VkSurfaceKHR		m_hSurface;
 	};
 }

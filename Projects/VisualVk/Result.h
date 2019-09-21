@@ -3,8 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include <string>
-#include <vulkan/vulkan_core.h>
+#include <vulkan/vulkan.h>
 
 namespace Vk
 {
@@ -62,7 +61,7 @@ namespace Vk
 	/**
 	 *	@brief	Convert result to string.
 	 */
-	inline std::string to_string(Result eValue)
+	inline const char * to_string(Result eValue)
 	{
 		switch (eValue)
 		{

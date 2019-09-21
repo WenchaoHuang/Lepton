@@ -9,31 +9,66 @@ using namespace Vk;
 /*************************************************************************
 ****************************    RenderPass    ****************************
 *************************************************************************/
-VkResult RenderPass::Create(const std::vector<AttachmentDescription> & attachmentDescriptions,
-							const std::vector<SubpassDescription> & subpassDescriptions,
-							const std::vector<SubpassDependency> & subpassDependencies)
+RenderPass::RenderPass() : m_hDevice(VK_NULL_HANDLE), m_hRenderPass(VK_NULL_HANDLE)
 {
-	VkRenderPassCreateInfo			CreateInfo = {};
-	CreateInfo.sType				= VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= 0;
-	CreateInfo.attachmentCount		= static_cast<uint32_t>(attachmentDescriptions.size());
-	CreateInfo.pAttachments			= reinterpret_cast<const VkAttachmentDescription*>(attachmentDescriptions.data());
-	CreateInfo.subpassCount			= static_cast<uint32_t>(subpassDescriptions.size());
-	CreateInfo.pSubpasses			= reinterpret_cast<const VkSubpassDescription*>(subpassDescriptions.data());
-	CreateInfo.dependencyCount		= static_cast<uint32_t>(subpassDependencies.size());
-	CreateInfo.pDependencies		= reinterpret_cast<const VkSubpassDependency*>(subpassDependencies.data());
 
-	VkRenderPass hRenderPass = VK_NULL_HANDLE;
+}
 
-	VkResult eResult = Context::GetDevice()->CreateRenderPass(&CreateInfo, &hRenderPass);
 
-	if (eResult == VK_SUCCESS)
+Result RenderPass::Create(VkDevice hDevice, 
+						  ArrayProxy<const AttachmentDescription> attachmentDescriptions,
+						  ArrayProxy<const SubpassDescription> subpassDescriptions,
+						  ArrayProxy<const SubpassDependency> subpassDependencies)
+{
+	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+
+	if (hDevice != VK_NULL_HANDLE)
 	{
-		RenderPassH::Replace(Context::GetDeviceHandle(), hRenderPass);
+		VkRenderPassCreateInfo			CreateInfo = {};
+		CreateInfo.sType				= VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+		CreateInfo.pNext				= nullptr;
+		CreateInfo.flags				= 0;
+		CreateInfo.attachmentCount		= attachmentDescriptions.size();
+		CreateInfo.pAttachments			= reinterpret_cast<const VkAttachmentDescription*>(attachmentDescriptions.data());
+		CreateInfo.subpassCount			= subpassDescriptions.size();
+		CreateInfo.pSubpasses			= reinterpret_cast<const VkSubpassDescription*>(subpassDescriptions.data());
+		CreateInfo.dependencyCount		= subpassDependencies.size();
+		CreateInfo.pDependencies		= reinterpret_cast<const VkSubpassDependency*>(subpassDependencies.data());
+
+		VkRenderPass hRenderPass = VK_NULL_HANDLE;
+
+		eResult = vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass);
+
+		if (eResult == VK_SUCCESS)
+		{
+			this->Destroy();
+
+			m_hDevice = hDevice;
+
+			m_hRenderPass = hRenderPass;
+		}
 	}
 
-	return eResult;
+	return static_cast<Result>(eResult);
+}
+
+
+void RenderPass::Destroy()
+{
+	if (m_hRenderPass != VK_NULL_HANDLE)
+	{
+		vkDestroyRenderPass(m_hDevice, m_hRenderPass, nullptr);
+
+		m_hRenderPass = VK_NULL_HANDLE;
+
+		m_hDevice = VK_NULL_HANDLE;
+	}
+}
+
+
+RenderPass::~RenderPass()
+{
+	this->Destroy();
 }
 
 

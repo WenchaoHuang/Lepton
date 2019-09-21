@@ -3,37 +3,20 @@
 *************************************************************************/
 #pragma once
 
-#include "Flags.h"
-#include "Context.h"
+#include "Vulkan.h"
 
 namespace Vk
 {
-	/*********************************************************************
-	************************    MemoryProperty    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask specifying properties for a memory type.
-	 */
-	enum class MemoryProperty : VkFlags
-	{
-		eProtected				= VK_MEMORY_PROPERTY_PROTECTED_BIT,
-		eHostCached				= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
-		eDeviceLocal			= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-		eHostVisible			= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-		eHostCoherent			= VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		eLazilyAllocated		= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT
-	};
-
 	/*********************************************************************
 	*************************    DeviceMemory    *************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan device memory object.
+	 *	@brief	Wrapper for Vulkan device memory object.
 	 */
 	class DeviceMemory
 	{
+		VK_NONCOPYABLE(DeviceMemory)
 
 	public:
 

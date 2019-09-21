@@ -3,10 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Handle.h"
-#include "Context.h"
-
-#define VK_DEFAULT_TIMEOUT			100000000000L		//!	100 seconds.
+#include "Vulkan.h"
 
 namespace Vk
 {
@@ -15,42 +12,41 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan fence object.
+	 *	@brief	Wrapper for Vulkan fence object.
 	 */
-	class Fence : public FenceH
+	class Fence
 	{
+		VK_UNIQUE_RESOURCE(Fence)
 
 	public:
 
 		//!	@brief	Create fence object.
 		Fence();
 
+		//!	@brief	Create and initialize immediately.
+		explicit Fence(VkDevice hDevice);
+
 		//!	@brief	Destroy fence object.
 		~Fence();
 
 	public:
 
-		//!	@brief	Convert to VkFence handle.
-		operator VkFence() const { return m_hFence; }
-
-		//!	@brief	If fence handle is valid.
-		VkBool32 IsValid() const { return m_hFence != VK_NULL_HANDLE; }
+		//!	@brief	Create a new fence object.
+		Result Create(VkDevice hDevice);
 
 		//!	@brief	Reset to non-signaled state.
-		VkResult Reset() { return Context::GetDevice()->ResetFences(1, &m_hFence); }
+		Result Reset() { return VK_RESULT_CAST(vkResetFences(m_hDevice, 1, &m_hFence)); }
 
 		//!	@brief	Return the status of fence.
-		VkResult GetStatus() { return Context::GetDevice()->GetFenceStatus(m_hFence); }
+		Result GetStatus() const { return VK_RESULT_CAST(vkGetFenceStatus(m_hDevice, m_hFence)); }
 
 		//!	@brief	Wait for fence to become signaled.
-		VkResult Wait(uint64_t Timeout = VK_DEFAULT_TIMEOUT)
+		Result Wait(uint64_t timeout = VK_DEFAULT_TIMEOUT) const
 		{
-			return Context::GetDevice()->WaitForFences(1, &m_hFence, VK_TRUE, Timeout);
+			return VK_RESULT_CAST(vkWaitForFences(m_hDevice, 1, &m_hFence, VK_TRUE, timeout));
 		}
-
-	private:
-
-		VkFence		m_hFence;
+		//!	@brief	Destroy the fence.
+		void Destroy();
 	};
 
 	/*********************************************************************
@@ -58,30 +54,30 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan semaphore object.
+	 *	@brief	Wrapper for Vulkan semaphore object.
 	 */
 	class Semaphore
 	{
+		VK_UNIQUE_RESOURCE(Semaphore)
 
 	public:
 
 		//!	@brief	Create semaphore object.
 		Semaphore();
 
+		//!	@brief	Create and initialize immediately.
+		explicit Semaphore(VkDevice hDevice);
+
 		//!	@brief	Destroy semaphore object.
 		~Semaphore();
 
 	public:
 
-		//!	@brief	Convert to VkSemaphore handle.
-		operator VkSemaphore() const { return m_hSemaphore; }
+		//!	@brief	Create a new semaphore object.
+		Result Create(VkDevice hDevice);
 
-		//!	@brief	If semaphore handle is valid.
-		VkBool32 IsValid() const { return m_hSemaphore != VK_NULL_HANDLE; }
-
-	private:
-
-		VkSemaphore		m_hSemaphore;
+		//!	@brief	Destroy the semaphore.
+		void Destroy();
 	};
 
 	/*********************************************************************
@@ -89,38 +85,38 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan event object.
+	 *	@brief	Wrapper for Vulkan event object.
 	 */
 	class Event
 	{
+		VK_UNIQUE_RESOURCE(Event)
 
 	public:
 
 		//!	@brief	Create event object.
 		Event();
 
+		//!	@brief	Create and initialize immediately.
+		explicit Event(VkDevice hDevice);
+
 		//!	@brief	Destroy event object.
 		~Event();
 
 	public:
 
-		//!	@brief	Convert to VkEvent handle.
-		operator VkEvent() const { return m_hEvent; }
-
-		//!	@brief	If event handle is valid.
-		VkBool32 IsValid() const { return m_hEvent != VK_NULL_HANDLE; }
-
-		//!	@brief	Retrieve the status of event.
-		VkResult GetStatus() { return Context::GetDevice()->GetEventStatus(m_hEvent); }
-
-		//!	@brief	Set event to signaled state.
-		VkResult SetSignaled() { return Context::GetDevice()->SetEvent(m_hEvent); }
+		//!	@brief	Create a new event object.
+		Result Create(VkDevice hDevice);
 
 		//!	@brief	Reset event to non-signaled state.
-		VkResult Reset() { return Context::GetDevice()->ResetEvent(m_hEvent); }
+		Result Reset() { return VK_RESULT_CAST(vkResetEvent(m_hDevice, m_hEvent)); }
 
-	private:
+		//!	@brief	Set event to signaled state.
+		Result SetSignaled() { return VK_RESULT_CAST(vkSetEvent(m_hDevice, m_hEvent)); }
 
-		VkEvent		m_hEvent;
+		//!	@brief	Retrieve the status of event.
+		Result GetStatus() const { return VK_RESULT_CAST(vkGetEventStatus(m_hDevice, m_hEvent)); }
+
+		//!	@brief	Destroy the event.
+		void Destroy();
 	};
 }

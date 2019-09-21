@@ -17,9 +17,9 @@ LogicalDevice::LogicalDevice(PhysicalDevice * pPhysicalDevice) : m_pPhysicalDevi
 }
 
 
-VkBool32 LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures)
+Result LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures)
 {
-	if (m_hDevice != VK_NULL_HANDLE)				return VK_SUCCESS;
+	if (m_hDevice != VK_NULL_HANDLE)				return Result::eSuccess;
 
 	std::vector<const char*>						pEnabledLayers;
 	std::vector<const char*>						pEnabledExtensions;
@@ -80,13 +80,13 @@ VkBool32 LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeature
 		m_hDevice = hDevice;
 	}
 
-	return eResult;
+	return VK_RESULT_CAST(eResult);
 }
 
 
 CommandQueue * LogicalDevice::InstallQueue(uint32_t familyIndex, float priority)
 {
-	if (m_hDevice != VK_NULL_HANDLE)							return nullptr;
+	if (m_hDevice != VK_NULL_HANDLE)				return nullptr;
 
 	auto & QueueFamilyProperties = m_pPhysicalDevice->GetQueueFamilies();
 
@@ -104,18 +104,6 @@ CommandQueue * LogicalDevice::InstallQueue(uint32_t familyIndex, float priority)
 	}
 
 	return nullptr;
-}
-
-
-VkResult LogicalDevice::GetSwapchainImages(VkSwapchainKHR hSwapchain, std::vector<VkImage> & hSwapchainImages)
-{
-	uint32_t SwapchainImageCount = 0;
-
-	vkGetSwapchainImagesKHR(m_hDevice, hSwapchain, &SwapchainImageCount, nullptr);
-
-	hSwapchainImages.resize(SwapchainImageCount);
-
-	return vkGetSwapchainImagesKHR(m_hDevice, hSwapchain, &SwapchainImageCount, hSwapchainImages.data());
 }
 
 

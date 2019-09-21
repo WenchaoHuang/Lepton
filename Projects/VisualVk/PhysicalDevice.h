@@ -5,6 +5,7 @@
 
 #include <set>
 #include "Vulkan.h"
+#include "Win32Surface.h"
 
 namespace Vk
 {
@@ -43,20 +44,32 @@ namespace Vk
 		//!	@brief	Return the queue family properties.
 		const std::vector<VkQueueFamilyProperties> & GetQueueFamilies() const;
 
-		//!	@brief	Return array of available extensions.
-		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
+		//!	@brief	Query surface capabilities.
+		SurfaceCapabilities GetSurfaceCapabilities(VkSurfaceKHR hSurface) const;
 
-		//!	@brief	Return the physical features.
-		const VkPhysicalDeviceFeatures & GetFeatures() const { return m_Features; }
+		//!	@brief	Get color formats supported by the surface.
+		std::vector<SurfaceFormat> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
 
-		//!	@brief	Return the physical properties.
-		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties; }
+		//!	@brief	Query supported presentation modes.
+		std::vector<PresentMode> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
+
+		//!	@brief	Query if presentation is supported.
+		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
+
+		//!	@brief	Get the index of a memory type that has all the requested property bits set.
+		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> ePropertyFlags) const;
 
 		//!	@brief	Return set of logical devices.
 		const std::set<LogicalDevice*> GetLogicalDevices() const { return m_pLogicalDevices; }
 
-		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> ePropertyFlags) const;
+		//!	@brief	Return the physical properties.
+		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties; }
+
+		//!	@brief	Return the physical features.
+		const VkPhysicalDeviceFeatures & GetFeatures() const { return m_Features; }
+
+		//!	@brief	Return array of available extensions.
+		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
 
 		//!	@brief	Find queue family that supported graphics, and return the queue family index.
 		uint32_t GetGraphicsQueueFamilyIndex() const;

@@ -66,7 +66,7 @@ Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const ch
 		}
 	}
 
-	return static_cast<Result>(eResult);
+	return VK_RESULT_CAST(eResult);
 }
 
 
