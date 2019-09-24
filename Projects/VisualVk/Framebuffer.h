@@ -76,13 +76,13 @@ namespace Vk
 	 */
 	struct SubpassDependency
 	{
-		uint32_t						srcSubpass			= 0;
-		uint32_t						dstSubpass			= 0;
-		Flags<PipelineStage>			srcStageMask		= 0;
-		Flags<PipelineStage>			dstStageMask		= 0;
-		Flags<AccessFlagBits>			srcAccessMask		= 0;
-		Flags<AccessFlagBits>			dstAccessMask		= 0;
-		Flags<DependencyFlagBits>		dependencyFlags		= 0;
+		uint32_t					srcSubpass			= 0;
+		uint32_t					dstSubpass			= 0;
+		Flags<PipelineStage>		srcStageMask		= 0;
+		Flags<PipelineStage>		dstStageMask		= 0;
+		Flags<MemoryAccess>			srcAccessMask		= 0;
+		Flags<MemoryAccess>			dstAccessMask		= 0;
+		Flags<MemoryDependency>		dependencyFlags		= 0;
 	};
 
 	static_assert(sizeof(SubpassDependency) == sizeof(VkSubpassDependency), "Struct and wrapper have different size!");
@@ -102,6 +102,12 @@ namespace Vk
 
 		//!	@brief	Create render pass object.
 		RenderPass();
+
+		//!	@brief	Create and initialize immediately.
+		explicit RenderPass(VkDevice hDevice,
+							ArrayProxy<const AttachmentDescription> attachmentDescriptions,
+							ArrayProxy<const SubpassDescription> subpassDescriptions,
+							ArrayProxy<const SubpassDependency> subpassDependencies);
 
 		//!	@brief	Destroy render pass object.
 		~RenderPass();
@@ -127,35 +133,37 @@ namespace Vk
 	 */
 	class Framebuffer
 	{
-		VK_NONCOPYABLE(Framebuffer)
+		VK_UNIQUE_RESOURCE(Framebuffer)
 
 	public:
 
 		//!	@brief	Create framebuffer object.
 		Framebuffer();
 
+		//!	@brief	Create and initialize immediately.
+		explicit Framebuffer(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent);
+
 		//!	@brief	Destroy framebuffer object.
 		~Framebuffer();
 
 	public:
 
-		//!	@brief	Create a new frame buffer object.
-		VkResult Create(RenderPassH hRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D);
-
-
-		void BeginRenderPass(CommandBuffer * pCommandBuffer, VkRect2D RenderArea, uint32_t clearValueCount, const VkClearValue * pClearValues);
+		//!	@brief	Create a new framebuffer object.
+		Result Create(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent);
 
 		//!	@brief	Return render pass handle.
-		RenderPassH GetRenderPass() const { return m_hRenderPass; }
+		VkRenderPass GetRenderPassHandle() const { return m_hRenderPass; }
 
-		//!	@brief	Return extent of framebuffer.
-		VkExtent2D GetExtent() const { return m_Extent2D; }
+		//!	@brief	Return extent of the framebuffer.
+		Extent2D Extent() const { return m_Extent; }
 
-		//!	@brief	Destroy framebuffer object.
-		void Invalidate();
+		//!	@brief	Destroy the framebuffer.
+		void Destroy();
 
 	private:
 
-		
+		Extent2D			m_Extent;
+
+		VkRenderPass		m_hRenderPass;
 	};
 }

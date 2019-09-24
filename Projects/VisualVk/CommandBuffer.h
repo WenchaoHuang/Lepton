@@ -32,7 +32,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		operator VkQueue() const { return m_hQueue; }
+		VkQueue GetHandle() const { return m_hQueue; }
 
 		//!	@brief	Return the queue priority.
 		float GetPriority() const { return m_Priority; }
@@ -97,7 +97,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		operator VkCommandPool() const { return m_hCommandPool; }
+		VkCommandPool GetHandle() const { return m_hCommandPool; }
 
 		//!	@brief	Reset command pool.
 		Result Reset() { return VK_RESULT_CAST(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
@@ -143,7 +143,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		operator VkCommandBuffer() const { return m_hCommandBuffer; }
+		VkCommandBuffer GetHandle() const { return m_hCommandBuffer; }
 
 		//!	@brief	Finish recording command buffer.
 		VkResult EndRecord() { return vkEndCommandBuffer(m_hCommandBuffer); }
@@ -202,7 +202,7 @@ namespace Vk
 
 		//!	@brief	Insert a memory dependency.
 		void CmdPipelineBarrier(Flags<PipelineStage> SrcStageMask,
-								Flags<PipelineStage> DstStageMask, Flags<DependencyFlagBits> DependencyFlags,
+								Flags<PipelineStage> DstStageMask, Flags<MemoryDependency> DependencyFlags,
 								uint32_t MemoryBarrierCount, const VkMemoryBarrier * pMemoryBarriers,
 								uint32_t BufferMemoryBarrierCount, const VkBufferMemoryBarrier * pBufferMemoryBarriers,
 								uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
@@ -214,7 +214,7 @@ namespace Vk
 
 		//!	@brief	Insert a image memory dependency.
 		void CmdPipelineImageMemoryBarrier(Flags<PipelineStage> SrcStageMask,
-										   Flags<PipelineStage> DstStageMask, Flags<DependencyFlagBits> DependencyFlags,
+										   Flags<PipelineStage> DstStageMask, Flags<MemoryDependency> DependencyFlags,
 										   uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
 		{
 			vkCmdPipelineBarrier(m_hCommandBuffer, SrcStageMask, DstStageMask, DependencyFlags, 0, nullptr, 0, nullptr, ImageMemoryBarrierCount, pImageMemoryBarriers);

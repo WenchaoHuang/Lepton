@@ -36,7 +36,7 @@ namespace Vk
 		Instance * GetInstance() const { return m_pInstance; }
 
 		//!	@brief	Return Vulkan type of this object.
-		operator VkPhysicalDevice() const { return m_hPhysicalDevice; }
+		VkPhysicalDevice GetHandle() const { return m_hPhysicalDevice; }
 
 		//!	@brief	Return array of available validation layers.
 		const std::vector<VkLayerProperties> & GetAvailableLayers() const;

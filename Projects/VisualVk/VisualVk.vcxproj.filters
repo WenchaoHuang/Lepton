@@ -79,6 +79,12 @@
     <ClCompile Include="Sampler.cpp">
       <Filter>2. Resources\3. Sampler</Filter>
     </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>2. Resources\6. Framebuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceMemory.cpp">
+      <Filter>2. Resources\8. DeviceMemory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Flags.h">
@@ -119,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>2. Resources\3. Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>2. Resources\6. Framebuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceMemory.h">
+      <Filter>2. Resources\8. DeviceMemory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -94,14 +94,14 @@ namespace Vk
 		eHdr10HlgEXT					= VK_COLOR_SPACE_HDR10_HLG_EXT,
 	};
 
-	/*********************************************************************
-	********************    PresentationTransform    *********************
+	/**********************************************************************
+	**********************    SurfaceTransform    ***********************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Presentation transforms supported on a device.
 	 */
-	enum class PresentationTransform : VkFlags
+	enum class SurfaceTransform : VkFlags
 	{
 		eInherit						= VK_SURFACE_TRANSFORM_INHERIT_BIT_KHR,
 		eIdentity						= VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
@@ -177,13 +177,13 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	**********************    DependencyFlagBits    **********************
+	***********************    MemoryDependency    ***********************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Bitmask specifying how execution and memory dependencies are formed.
 	 */
-	enum class DependencyFlagBits : VkFlags
+	enum class MemoryDependency : VkFlags
 	{
 		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
 		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
@@ -542,13 +542,13 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	************************    AccessFlagBits    ************************
+	*************************    MemoryAccess    *************************
 	*********************************************************************/
 
 	/**
 	 *	@brief	Bitmask specifying memory access types that will participate in a memory dependency.
 	 */
-	enum class AccessFlagBits : VkFlags
+	enum class MemoryAccess : VkFlags
 	{
 		eHostRead								= VK_ACCESS_HOST_READ_BIT,
 		eHostWrite								= VK_ACCESS_HOST_WRITE_BIT,

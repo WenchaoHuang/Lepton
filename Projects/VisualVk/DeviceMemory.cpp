@@ -1,7 +1,6 @@
 /*************************************************************************
 **********************    VisualVk_DeviceMemory    ***********************
 *************************************************************************/
-#include "PhysicalDevice.h"
 #include "DeviceMemory.h"
 
 using namespace Vk;
@@ -9,124 +8,97 @@ using namespace Vk;
 /*************************************************************************
 ***************************    DeviceMemory    ***************************
 *************************************************************************/
-DeviceMemory::DeviceMemory() : m_Bytes(0), m_hMemory(VK_NULL_HANDLE)
+DeviceMemory::DeviceMemory() : m_hDevice(VK_NULL_HANDLE), m_hDeviceMemory(VK_NULL_HANDLE), m_SizeBytes(0)
 {
 
 }
 
 
-VkResult DeviceMemory::Allocate(VkDeviceSize SizeBytes, uint32_t MemoryTypeBits, Flags<MemoryProperty> PropertyFlags)
+DeviceMemory::DeviceMemory(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex) : DeviceMemory()
 {
-	uint32_t MemoryTypeIndex = Context::GetDevice()->GetPhysicalDevice()->GetMemoryTypeIndex(MemoryTypeBits, PropertyFlags);
-
-	if (MemoryTypeIndex == VK_INVALID_INDEX)		return VK_ERROR_FORMAT_NOT_SUPPORTED;
-
-	VkMemoryAllocateInfo				AllocateInfo = {};
-	AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-	AllocateInfo.pNext					= nullptr;
-	AllocateInfo.allocationSize			= SizeBytes;
-	AllocateInfo.memoryTypeIndex		= MemoryTypeIndex;
-
-	VkDeviceMemory hMemory = VK_NULL_HANDLE;
-
-	VkResult eResult = Context::GetDevice()->AllocateMemory(&AllocateInfo, &hMemory);
-
-	if (eResult == VK_SUCCESS)
-	{
-		this->Free();
-
-		m_hMemory = hMemory;
-
-		m_Bytes = SizeBytes;
-	}
-
-	return eResult;
+	this->Allocate(hDevice, allocationSize, memoryTypeIndex);
 }
 
 
-VkResult DeviceMemory::Map(void ** ppData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex)
 {
-	if (m_hMemory == VK_NULL_HANDLE)
+	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+
+	if (hDevice != VK_NULL_HANDLE)
 	{
-		return VK_ERROR_INVALID_EXTERNAL_HANDLE;
+		VkMemoryAllocateInfo				AllocateInfo = {};
+		AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+		AllocateInfo.pNext					= nullptr;
+		AllocateInfo.allocationSize			= allocationSize;
+		AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
+
+		VkDeviceMemory hMemory = VK_NULL_HANDLE;
+
+		eResult = vkAllocateMemory(hDevice, &AllocateInfo, nullptr, &hMemory);
+
+		if (eResult == VK_SUCCESS)
+		{
+			this->Free();
+
+			m_hDevice = hDevice;
+
+			m_hDeviceMemory = hMemory;
+
+			m_SizeBytes = allocationSize;
+		}
 	}
-	else if (OffsetBytes + SizeBytes > m_Bytes)
-	{
-		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	}
-	else
-	{
-		return Context::GetDevice()->MapMemory(m_hMemory, OffsetBytes, SizeBytes, ppData);
-	}
+
+	return VK_RESULT_CAST(eResult);
 }
 
 
-VkResult DeviceMemory::Invalidate(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+Result DeviceMemory::Invalidate(VkDeviceSize offset, VkDeviceSize size)
 {
-	if (m_hMemory == VK_NULL_HANDLE)
-	{
-		return VK_ERROR_INVALID_EXTERNAL_HANDLE;
-	}
-	else if (OffsetBytes + SizeBytes > m_Bytes)
-	{
-		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	}
-	else
-	{
-		VkMappedMemoryRange		MemoryRange;
-		MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-		MemoryRange.pNext		= nullptr;
-		MemoryRange.memory		= m_hMemory;
-		MemoryRange.offset		= OffsetBytes;
-		MemoryRange.size		= SizeBytes;
+	VkMappedMemoryRange		MemoryRange = {};
+	MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+	MemoryRange.pNext		= nullptr;
+	MemoryRange.memory		= m_hDeviceMemory;
+	MemoryRange.offset		= offset;
+	MemoryRange.size		= size;
 
-		return Context::GetDevice()->InvalidateMappedMemoryRanges(1, &MemoryRange);
-	}
+	return VK_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_hDevice, 1, &MemoryRange));
 }
 
 
-VkResult DeviceMemory::Flush(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+Result DeviceMemory::Flush(VkDeviceSize offset, VkDeviceSize size)
 {
-	if (m_hMemory == VK_NULL_HANDLE)
-	{
-		return VK_ERROR_INVALID_EXTERNAL_HANDLE;
-	}
-	else if (OffsetBytes + SizeBytes > m_Bytes)
-	{
-		return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	}
-	else
-	{
-		VkMappedMemoryRange		MemoryRange;
-		MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-		MemoryRange.pNext		= nullptr;
-		MemoryRange.memory		= m_hMemory;
-		MemoryRange.offset		= OffsetBytes;
-		MemoryRange.size		= SizeBytes;
+	VkMappedMemoryRange		MemoryRange = {};
+	MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+	MemoryRange.pNext		= nullptr;
+	MemoryRange.memory		= m_hDeviceMemory;
+	MemoryRange.offset		= offset;
+	MemoryRange.size		= size;
 
-		return Context::GetDevice()->FlushMappedMemoryRanges(1, &MemoryRange);
-	}
+	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_hDevice, 1, &MemoryRange));
 }
 
 
-void DeviceMemory::Unmap() noexcept
+VkDeviceSize DeviceMemory::GetCommitment() const
 {
-	if (m_hMemory != VK_NULL_HANDLE)
-	{
-		Context::GetDevice()->UnmapMemory(m_hMemory);
-	}
+	VkDeviceSize committedMemoryInBytes = 0;
+
+	vkGetDeviceMemoryCommitment(m_hDevice, m_hDeviceMemory, &committedMemoryInBytes);
+
+	return committedMemoryInBytes;
 }
 
 
-void DeviceMemory::Free() noexcept
+void DeviceMemory::Free()
 {
-	if (m_hMemory != VK_NULL_HANDLE)
+	if (m_hDeviceMemory != VK_NULL_HANDLE)
 	{
-		Context::GetDevice()->FreeMemory(m_hMemory);
+		vkFreeMemory(m_hDevice, m_hDeviceMemory, nullptr);
 
-		m_hMemory = VK_NULL_HANDLE;
+		m_hDeviceMemory = VK_NULL_HANDLE;
 
-		m_Bytes = 0;
+		m_hDevice = VK_NULL_HANDLE;
+
+		m_SizeBytes = 0;
 	}
 }
 

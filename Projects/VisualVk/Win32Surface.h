@@ -37,8 +37,8 @@ namespace Vk
 		Extent2D							minImageExtent				= 0;
 		Extent2D							maxImageExtent				= 0;
 		uint32_t							maxImageArrayLayers			= 0;
-		Flags<PresentationTransform>		supportedTransforms			= 0;
-		PresentationTransform				currentTransform			= PresentationTransform::eIdentity;
+		Flags<SurfaceTransform>		supportedTransforms			= 0;
+		SurfaceTransform				currentTransform			= SurfaceTransform::eIdentity;
 		Flags<AlphaCompositingMmode>		supportedCompositeAlpha		= 0;
 		Flags<ImageUsage>					supportedUsageFlags			= 0;
 	};

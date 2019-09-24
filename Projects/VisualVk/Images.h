@@ -3,9 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include "Enums.h"
-#include "Flags.h"
-#include "Context.h"
 #include "DeviceMemory.h"
 
 namespace Vk
@@ -19,6 +16,7 @@ namespace Vk
 	 */
 	template<VkImageType eImageType, VkImageViewType eViewType> class BaseImage
 	{
+		VK_NONCOPYABLE(BaseImage)
 
 	protected:
 
@@ -37,7 +35,7 @@ namespace Vk
 		operator VkImageView() const { return m_hImageView; }
 
 		//!	@brief	Whether image handle is valid.
-		VkBool32 IsValid() const { return m_hImage != VK_NULL_HANDLE; }
+		bool IsValid() const { return m_hImage != VK_NULL_HANDLE; }
 
 		//!	@brief	Return image layout.
 		ImageLayout GetImageLayout() const { return m_eImageLayout; }
@@ -52,7 +50,7 @@ namespace Vk
 		uint32_t GetMipLevels() const { return m_MipLevels; }
 
 		//!	@brief	Return the image extent.
-		VkExtent3D GetExtent() const { return m_Extent3D; }
+		Extent3D GetExtent() const { return m_Extent3D; }
 
 		//!	@brief	Return the image format.
 		Format GetFormat() const { return m_eFormat; }
@@ -63,31 +61,33 @@ namespace Vk
 	protected:
 
 		//!	@brief	Create a new image object.
-		VkResult Create(Format eFormat, VkExtent3D Extent3D,uint32_t MipLevels, uint32_t ArrayLayers,
-						SampleCount eSamples, Flags<ImageUsage> UsageFlags, VkImageCreateFlags eCreateFlags = 0);
+		Result Create(VkDevice hDevice, Format eFormat, Extent3D extent, uint32_t mipLevels, uint32_t arrayLayers,
+					  SampleCount eSamples, Flags<ImageUsage> usageFlags, VkImageCreateFlags eCreateFlags = 0);
 
 		//!	@brief	Create a new image view object.
-		VkResult CreateView(Flags<ImageAspect> AspectFlags);
+		Result CreateView(Flags<ImageAspect> aspectFlags);
 
 	private:
 
-		VkImage					m_hImage;
+		VkImage				m_hImage;
 
-		Format					m_eFormat;
+		VkDevice			m_hDevice;
 
-		VkExtent3D				m_Extent3D;
+		Format				m_eFormat;
 
-		SampleCount				m_eSamples;
+		Extent3D			m_Extent3D;
 
-		VkImageView				m_hImageView;
+		SampleCount			m_eSamples;
 
-		ImageLayout				m_eImageLayout;
+		VkImageView			m_hImageView;
 
-		DeviceMemory			m_DeviceMemory;
+		ImageLayout			m_eImageLayout;
 
-		uint32_t				m_ArrayLayers;
+		DeviceMemory		m_DeviceMemory;
 
-		uint32_t				m_MipLevels;
+		uint32_t			m_ArrayLayers;
+
+		uint32_t			m_MipLevels;
 	};
 
 	/*********************************************************************

@@ -162,6 +162,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CommandBuffer.cpp" />
+    <ClCompile Include="DeviceMemory.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="LogicalDevice.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -174,8 +176,10 @@
   <ItemGroup>
     <ClInclude Include="ArrayProxy.h" />
     <ClInclude Include="CommandBuffer.h" />
+    <ClInclude Include="DeviceMemory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Flags.h" />
+    <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="LogicalDevice.h" />
     <ClInclude Include="PhysicalDevice.h" />

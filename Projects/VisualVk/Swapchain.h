@@ -45,6 +45,9 @@ namespace Vk
 		//!	@brief	Return swap-chain image handles.
 		const std::vector<VkImage> & GetImages() const { return m_hImages; }
 
+		//!	@brief	Return extent of swap-chain image.
+		Extent2D GetImageExtent() const { return m_ImageExtent; }
+
 		//!	@brief	Return last presentation result.
 		Result GetPresentResult() const { return m_Result; }
 

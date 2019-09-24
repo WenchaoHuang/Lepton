@@ -41,10 +41,8 @@ namespace Vk
 		Result GetStatus() const { return VK_RESULT_CAST(vkGetFenceStatus(m_hDevice, m_hFence)); }
 
 		//!	@brief	Wait for fence to become signaled.
-		Result Wait(uint64_t timeout = VK_DEFAULT_TIMEOUT) const
-		{
-			return VK_RESULT_CAST(vkWaitForFences(m_hDevice, 1, &m_hFence, VK_TRUE, timeout));
-		}
+		Result Wait(uint64_t timeout = VK_DEFAULT_TIMEOUT) const { return VK_RESULT_CAST(vkWaitForFences(m_hDevice, 1, &m_hFence, VK_TRUE, timeout)); }
+
 		//!	@brief	Destroy the fence.
 		void Destroy();
 	};

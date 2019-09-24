@@ -15,6 +15,15 @@ RenderPass::RenderPass() : m_hDevice(VK_NULL_HANDLE), m_hRenderPass(VK_NULL_HAND
 }
 
 
+RenderPass::RenderPass(VkDevice hDevice,
+					   ArrayProxy<const AttachmentDescription> attachmentDescriptions,
+					   ArrayProxy<const SubpassDescription> subpassDescriptions,
+					   ArrayProxy<const SubpassDependency> subpassDependencies) : RenderPass()
+{
+	this->Create(hDevice, attachmentDescriptions, subpassDescriptions, subpassDependencies);
+}
+
+
 Result RenderPass::Create(VkDevice hDevice, 
 						  ArrayProxy<const AttachmentDescription> attachmentDescriptions,
 						  ArrayProxy<const SubpassDescription> subpassDescriptions,
@@ -75,70 +84,75 @@ RenderPass::~RenderPass()
 /*************************************************************************
 ***************************    Framebuffer    ****************************
 *************************************************************************/
-Framebuffer::Framebuffer() : m_Extent2D({ 0, 0 })
+Framebuffer::Framebuffer() : m_hDevice(VK_NULL_HANDLE), m_hFramebuffer(VK_NULL_HANDLE), m_hRenderPass(VK_NULL_HANDLE), m_Extent(0)
 {
 
 }
 
 
-VkResult Framebuffer::Create(RenderPassH hRenderPass, const std::vector<VkImageView> & Attachments, VkExtent2D Extent2D)
+Framebuffer::Framebuffer(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent) : Framebuffer()
 {
-	if (!hRenderPass.IsValid())		return VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	this->Create(renderPass, attachments, extent);
+}
 
-	VkFramebufferCreateInfo			CreateInfo = {};
-	CreateInfo.sType				= VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= 0;
-	CreateInfo.renderPass			= hRenderPass;
-	CreateInfo.attachmentCount		= static_cast<uint32_t>(Attachments.size());
-	CreateInfo.pAttachments			= Attachments.data();
-	CreateInfo.width				= Extent2D.width;
-	CreateInfo.height				= Extent2D.height;
-	CreateInfo.layers				= 1;
 
-	VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
+Result Framebuffer::Create(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent)
+{
+	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
 
-	VkResult eResult = Context::GetDevice()->CreateFramebuffer(&CreateInfo, &hFramebuffer);
-
-	if (eResult == VK_SUCCESS)
+	if (renderPass.IsValid())
 	{
-		FramebufferH::Replace(Context::GetDeviceHandle(), hFramebuffer);
+		VkFramebufferCreateInfo			CreateInfo = {};
+		CreateInfo.sType				= VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		CreateInfo.pNext				= nullptr;
+		CreateInfo.flags				= 0;
+		CreateInfo.renderPass			= renderPass;
+		CreateInfo.attachmentCount		= attachments.size();
+		CreateInfo.pAttachments			= attachments.data();
+		CreateInfo.width				= extent.width;
+		CreateInfo.height				= extent.height;
+		CreateInfo.layers				= 1;
 
-		m_hRenderPass = hRenderPass;
+		VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 
-		m_Extent2D = Extent2D;
+		eResult = vkCreateFramebuffer(renderPass.GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer);
+
+		if (eResult == VK_SUCCESS)
+		{
+			this->Destroy();
+
+			m_Extent = extent;
+
+			m_hRenderPass = renderPass;
+
+			m_hFramebuffer = hFramebuffer;
+
+			m_hDevice = renderPass.GetDeviceHandle();
+		}
 	}
 
-	return eResult;
+	return VK_RESULT_CAST(eResult);
 }
 
 
-void Framebuffer::BeginRenderPass(CommandBuffer * pCommandBuffer, VkRect2D RenderArea, uint32_t clearValueCount, const VkClearValue * pClearValues)
+void Framebuffer::Destroy()
 {
-	VkRenderPassBeginInfo			BeginInfo = {};
-	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-	BeginInfo.pNext					= nullptr;
-	BeginInfo.renderPass			= m_hRenderPass;
-	BeginInfo.framebuffer			= (*this);
-	BeginInfo.renderArea			= RenderArea;
-	BeginInfo.clearValueCount		= clearValueCount;
-	BeginInfo.pClearValues			= pClearValues;
+	if (m_hFramebuffer != VK_NULL_HANDLE)
+	{
+		vkDestroyFramebuffer(m_hDevice, m_hFramebuffer, nullptr);
 
-	pCommandBuffer->CmdBeginRenderPass(&BeginInfo);
-}
+		m_hFramebuffer = VK_NULL_HANDLE;
 
+		m_hRenderPass = VK_NULL_HANDLE;
 
-void Framebuffer::Invalidate()
-{
-	FramebufferH::Invalidate();
+		m_hDevice = VK_NULL_HANDLE;
 
-	m_hRenderPass.Invalidate();
-
-	m_Extent2D = { 0, 0 };
+		m_Extent = { 0, 0 };
+	}
 }
 
 
 Framebuffer::~Framebuffer()
 {
-	
+	this->Destroy();
 }

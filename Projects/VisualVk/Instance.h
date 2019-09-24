@@ -28,8 +28,11 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return Vulkan type of this object.
+		//!	@brief	Convert to VkInstance.
 		operator VkInstance() const { return m_hInstance; }
+
+		//!	@brief	Return Vulkan type of this object.
+		VkInstance GetHandle() const { return m_hInstance; }
 
 		//!	@brief	Check if validation layer is available.
 		static bool IsLayerAvilable(std::string layerName);

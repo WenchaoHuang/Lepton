@@ -102,7 +102,7 @@ namespace Vk
 
 		constexpr Extent2D() : width(0), height(0) {}
 		constexpr Extent2D(uint32_t v0) : width(v0), height(v0) {}
-		constexpr Extent2D(uint32_t v1, uint32_t v2) : width(v1), height(v2) {}
+		constexpr Extent2D(uint32_t w, uint32_t h) : width(w), height(h) {}
 
 		constexpr bool operator==(const Extent2D & rhs) const { return (width == rhs.width) && (height == rhs.height); }
 		constexpr bool operator!=(const Extent2D & rhs) const { return (width != rhs.width) || (height != rhs.height); }
@@ -111,6 +111,31 @@ namespace Vk
 	};
 
 	static_assert(sizeof(Extent2D) == sizeof(VkExtent2D), "Struct and wrapper have different size!");
+
+	/*********************************************************************
+	***************************    Extent3D    ***************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Structure specifying a three-dimensional extent.
+	 */
+	struct Extent3D
+	{
+		uint32_t	width;
+		uint32_t	height;
+		uint32_t	depth;
+
+		constexpr Extent3D() : width(0), height(0), depth(0) {}
+		constexpr Extent3D(uint32_t v0) : width(v0), height(v0), depth(0) {}
+		constexpr Extent3D(uint32_t w, uint32_t h, uint32_t d) : width(w), height(h), depth(d) {}
+
+		constexpr bool operator==(const Extent3D & rhs) const { return (width == rhs.width) && (height == rhs.height) && (depth == rhs.depth); }
+		constexpr bool operator!=(const Extent3D & rhs) const { return (width != rhs.width) || (height != rhs.height) || (depth != rhs.depth); }
+
+		constexpr operator VkExtent3D() const { return { width, height, depth }; }
+	};
+
+	static_assert(sizeof(Extent3D) == sizeof(VkExtent3D), "Struct and wrapper have different size!");
 
 	/*********************************************************************
 	****************************    Rect2D    ****************************

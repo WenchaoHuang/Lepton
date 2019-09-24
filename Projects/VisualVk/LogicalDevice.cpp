@@ -63,7 +63,7 @@ Result LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures)
 
 	VkDevice hDevice = VK_NULL_HANDLE;
 
-	VkResult eResult = vkCreateDevice(*m_pPhysicalDevice, &DeviceCreateInfo, nullptr, &hDevice);
+	VkResult eResult = vkCreateDevice(m_pPhysicalDevice->GetHandle(), &DeviceCreateInfo, nullptr, &hDevice);
 
 	if (eResult == VK_NULL_HANDLE)
 	{

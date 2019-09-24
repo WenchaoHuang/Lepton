@@ -34,7 +34,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		operator VkDevice() const { return m_hDevice; }
+		VkDevice GetHandle() const { return m_hDevice; }
 
 		//!	@brief	If device is started up.
 		bool IsReady() const { return m_hDevice != VK_NULL_HANDLE; }
