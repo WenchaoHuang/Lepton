@@ -8,7 +8,7 @@ using namespace Vk;
 /*************************************************************************
 ****************************    Swapchain    *****************************
 *************************************************************************/
-Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE), m_ImageIndex(0), m_Result(Result::eSuccess)
+Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE), m_ImageIndex(0), m_Result(Result::eSuccess), m_ImageExtent({ 0, 0 })
 { 
 	m_PresentInfo.sType						= VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	m_PresentInfo.pNext						= nullptr;
@@ -21,7 +21,7 @@ Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE)
 }
 
 
-Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, Extent2D imageExtent, uint32_t minImageCount)
+Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
 {
 	if (hDevice == VK_NULL_HANDLE)			return Result::eErrorInvalidExternalHandle;
 	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidExternalHandle;
@@ -138,11 +138,11 @@ void Swapchain::Destroy()
 
 		m_hDevice = VK_NULL_HANDLE;
 
+		m_ImageExtent = { 0, 0 };
+
 		m_hImageViews.clear();
 
 		m_hImages.clear();
-
-		m_ImageExtent = 0;
 
 		m_ImageIndex = 0;
 	}

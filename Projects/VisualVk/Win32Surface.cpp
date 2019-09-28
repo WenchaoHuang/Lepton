@@ -40,9 +40,9 @@ Result Win32Surface::Create(VkInstance hInstance, HWND hWindow)
 	{
 		this->Destroy();
 
-		m_hSurface = hSurface;
-
 		m_hInstance = hInstance;
+
+		m_hSurface = hSurface;
 	}
 
 	return VK_RESULT_CAST(eResult);

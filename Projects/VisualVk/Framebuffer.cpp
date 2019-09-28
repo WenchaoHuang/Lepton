@@ -1,7 +1,6 @@
 /*************************************************************************
 ***********************    VisualVk_Framebuffer    ***********************
 *************************************************************************/
-#include "CommandBuffer.h"
 #include "Framebuffer.h"
 
 using namespace Vk;
@@ -52,9 +51,9 @@ Result RenderPass::Create(VkDevice hDevice,
 		{
 			this->Destroy();
 
-			m_hDevice = hDevice;
-
 			m_hRenderPass = hRenderPass;
+
+			m_hDevice = hDevice;
 		}
 	}
 
@@ -84,29 +83,29 @@ RenderPass::~RenderPass()
 /*************************************************************************
 ***************************    Framebuffer    ****************************
 *************************************************************************/
-Framebuffer::Framebuffer() : m_hDevice(VK_NULL_HANDLE), m_hFramebuffer(VK_NULL_HANDLE), m_hRenderPass(VK_NULL_HANDLE), m_Extent(0)
+Framebuffer::Framebuffer() : m_hDevice(VK_NULL_HANDLE), m_hFramebuffer(VK_NULL_HANDLE), m_spRenderPass(nullptr), m_Extent({ 0, 0 })
 {
-
+	
 }
 
 
-Framebuffer::Framebuffer(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent) : Framebuffer()
+Framebuffer::Framebuffer(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent) : Framebuffer()
 {
-	this->Create(renderPass, attachments, extent);
+	this->Create(spRenderPass, attachments, extent);
 }
 
 
-Result Framebuffer::Create(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent)
+Result Framebuffer::Create(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent)
 {
 	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
 
-	if (renderPass.IsValid())
+	if ((spRenderPass != nullptr) && spRenderPass->IsValid())
 	{
 		VkFramebufferCreateInfo			CreateInfo = {};
 		CreateInfo.sType				= VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		CreateInfo.pNext				= nullptr;
 		CreateInfo.flags				= 0;
-		CreateInfo.renderPass			= renderPass;
+		CreateInfo.renderPass			= spRenderPass->GetHandle();
 		CreateInfo.attachmentCount		= attachments.size();
 		CreateInfo.pAttachments			= attachments.data();
 		CreateInfo.width				= extent.width;
@@ -115,19 +114,19 @@ Result Framebuffer::Create(const RenderPass & renderPass, ArrayProxy<const VkIma
 
 		VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 
-		eResult = vkCreateFramebuffer(renderPass.GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer);
+		eResult = vkCreateFramebuffer(spRenderPass->GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer);
 
 		if (eResult == VK_SUCCESS)
 		{
 			this->Destroy();
 
-			m_Extent = extent;
-
-			m_hRenderPass = renderPass;
+			m_hDevice = spRenderPass->GetDeviceHandle();
 
 			m_hFramebuffer = hFramebuffer;
 
-			m_hDevice = renderPass.GetDeviceHandle();
+			m_spRenderPass = spRenderPass;
+
+			m_Extent = extent;
 		}
 	}
 
@@ -143,9 +142,9 @@ void Framebuffer::Destroy()
 
 		m_hFramebuffer = VK_NULL_HANDLE;
 
-		m_hRenderPass = VK_NULL_HANDLE;
-
 		m_hDevice = VK_NULL_HANDLE;
+
+		m_spRenderPass = nullptr;
 
 		m_Extent = { 0, 0 };
 	}

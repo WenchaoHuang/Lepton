@@ -1,5 +1,5 @@
 /*************************************************************************
-**********************    VisualVk_CommandBuffer    **********************
+************************    VisualVk_Commands    *************************
 *************************************************************************/
 #pragma once
 
@@ -17,11 +17,9 @@ namespace Vk
 	 */
 	class CommandQueue
 	{
+		friend class LogicalDevice;
 
 	private:
-
-		//!	@brief	Created by logical device only.
-		friend class LogicalDevice;
 
 		//!	@brief	Create command queue object.
 		CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilityFlags, float priority);
@@ -82,11 +80,9 @@ namespace Vk
 	 */
 	class CommandPool
 	{
+		friend class CommandQueue;
 
 	private:
-
-		//!	@brief	Created by command queue only.
-		friend class CommandQueue;
 
 		//!	@brief	Create command pool object.
 		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool);
@@ -128,11 +124,9 @@ namespace Vk
 	 */
 	class CommandBuffer
 	{
+		friend class CommandPool;
 
 	private:
-
-		//!	@brief	Created by command pool only.
-		friend class CommandPool;
 
 		//!	@brief	Create command buffer object.
 		CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer);

@@ -1,29 +1,38 @@
 /*************************************************************************
 *************************    VisualVk_Buffers    *************************
 *************************************************************************/
+
 #include "Buffers.h"
+#include "LogicalDevice.h"
+#include "PhysicalDevice.h"
 
 using namespace Vk;
 
 /*************************************************************************
 ************************    HostVisibleBuffer    *************************
 *************************************************************************/
-HostVisibleBuffer::HostVisibleBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
+HostVisibleBuffer::HostVisibleBuffer() : m_hDevice(VK_NULL_HANDLE), m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
 {
 
 }
 
 
-VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
+HostVisibleBuffer::HostVisibleBuffer(LogicalDevice * pLogicalDevice, VkDeviceSize size) : HostVisibleBuffer()
 {
-	if (SizeBytes == 0)						return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	else if (SizeBytes == m_Bytes)			return VK_SUCCESS;
+	this->Create(pLogicalDevice, size);
+}
+
+
+Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize size)
+{
+	if (size == 0)							return Result::eErrorOutOfDeviceMemory;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
 
 	VkBufferCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	CreateInfo.pNext						= nullptr;
 	CreateInfo.flags						= 0;
-	CreateInfo.size							= SizeBytes;
+	CreateInfo.size							= size;
 	CreateInfo.usage						= 0x00001FFF;		//!	For all usages.
 	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount		= 0;
@@ -31,29 +40,33 @@ VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	VkResult eResult = Context::GetDevice()->CreateBuffer(&CreateInfo, &hNewBuffer);
+	Result eResult = VK_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
 		VkMemoryRequirements Requirements = {};
 
-		Context::GetDevice()->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
+		vkGetBufferMemoryRequirements(pLogicalDevice->GetHandle(), hNewBuffer, &Requirements);
 
-		eResult = m_Memory.Allocate(Requirements.size, Requirements.memoryTypeBits, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
+		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryTypeBits, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
 
-		if (eResult != VK_SUCCESS)
+		eResult = m_Memory.Allocate(pLogicalDevice->GetHandle(), Requirements.size, memoryTypeIndex);
+
+		if (eResult != Result::eSuccess)
 		{
-			Context::GetDevice()->DestroyBuffer(hNewBuffer);
+			vkDestroyBuffer(pLogicalDevice->GetHandle(), hNewBuffer, nullptr);
 		}
 		else
 		{
-			this->Release();
+			this->Destroy();
 
-			Context::GetDevice()->BindBufferMemory(hNewBuffer, m_Memory, 0);
+			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
+
+			m_hDevice = pLogicalDevice->GetHandle();
 
 			m_hBuffer = hNewBuffer;
 
-			m_Bytes = SizeBytes;
+			m_Bytes = size;
 		}
 	}
 
@@ -61,15 +74,15 @@ VkResult HostVisibleBuffer::Create(VkDeviceSize SizeBytes)
 }
 
 
-VkResult HostVisibleBuffer::Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+Result HostVisibleBuffer::Write(const void * pHostData, VkDeviceSize offset, VkDeviceSize size)
 {
 	void * pBufferData = nullptr;
 
-	VkResult eResult = m_Memory.Map(&pBufferData, OffsetBytes, SizeBytes);
+	Result eResult = m_Memory.Map(&pBufferData, offset, size);
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
-		std::memcpy(pBufferData, pHostData, static_cast<size_t>(SizeBytes));
+		std::memcpy(pBufferData, pHostData, static_cast<size_t>(size));
 
 		m_Memory.Unmap();
 	}
@@ -78,15 +91,15 @@ VkResult HostVisibleBuffer::Write(const void * pHostData, VkDeviceSize OffsetByt
 }
 
 
-VkResult HostVisibleBuffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+Result HostVisibleBuffer::Read(void * pHostData, VkDeviceSize offset, VkDeviceSize size)
 {
 	void * pBufferData = nullptr;
 
-	VkResult eResult = m_Memory.Map(&pBufferData, OffsetBytes, SizeBytes);
+	Result eResult = m_Memory.Map(&pBufferData, offset, size);
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
-		std::memcpy(pHostData, pBufferData, static_cast<size_t>(SizeBytes));
+		std::memcpy(pHostData, pBufferData, static_cast<size_t>(size));
 
 		m_Memory.Unmap();
 	}
@@ -95,15 +108,15 @@ VkResult HostVisibleBuffer::Read(void * pHostData, VkDeviceSize OffsetBytes, VkD
 }
 
 
-VkResult HostVisibleBuffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes)
+Result HostVisibleBuffer::SetZero(VkDeviceSize offset, VkDeviceSize size)
 {
 	void * pBufferData = nullptr;
 
-	VkResult eResult = m_Memory.Map(&pBufferData, OffsetBytes, SizeBytes);
+	Result eResult = m_Memory.Map(&pBufferData, offset, size);
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
-		std::memset(pBufferData, 0, static_cast<size_t>(SizeBytes));
+		std::memset(pBufferData, 0, static_cast<size_t>(size));
 
 		m_Memory.Unmap();
 	}
@@ -112,11 +125,13 @@ VkResult HostVisibleBuffer::SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeB
 }
 
 
-void HostVisibleBuffer::Release() noexcept
+void HostVisibleBuffer::Destroy()
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		Context::GetDevice()->DestroyBuffer(m_hBuffer);
+		vkDestroyBuffer(m_hDevice, m_hBuffer, nullptr);
+
+		m_hDevice = VK_NULL_HANDLE;
 
 		m_hBuffer = VK_NULL_HANDLE;
 
@@ -129,29 +144,29 @@ void HostVisibleBuffer::Release() noexcept
 
 HostVisibleBuffer::~HostVisibleBuffer()
 {
-	this->Release();
+	this->Destroy();
 }
 
 
 /*************************************************************************
 ************************    DeviceLocalBuffer    *************************
 *************************************************************************/
-DeviceLocalBuffer::DeviceLocalBuffer() : m_Bytes(0), m_hBuffer(VK_NULL_HANDLE)
+DeviceLocalBuffer::DeviceLocalBuffer() : m_hDevice(VK_NULL_HANDLE), m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
 {
 
 }
 
 
-VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
+Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize size)
 {
-	if (SizeBytes == 0)						return VK_ERROR_OUT_OF_DEVICE_MEMORY;
-	else if (SizeBytes == m_Bytes)			return VK_SUCCESS;
+	if (size == 0)							return Result::eErrorOutOfDeviceMemory;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
 
 	VkBufferCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	CreateInfo.pNext						= nullptr;
 	CreateInfo.flags						= 0;
-	CreateInfo.size							= SizeBytes;
+	CreateInfo.size							= size;
 	CreateInfo.usage						= 0x00001FFF;		//!	For all usages.
 	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount		= 0;
@@ -159,29 +174,33 @@ VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	VkResult eResult = Context::GetDevice()->CreateBuffer(&CreateInfo, &hNewBuffer);
+	Result eResult = VK_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
 		VkMemoryRequirements Requirements = {};
 
-		Context::GetDevice()->GetBufferMemoryRequirements(hNewBuffer, &Requirements);
+		vkGetBufferMemoryRequirements(pLogicalDevice->GetHandle(), hNewBuffer, &Requirements);
 
-		eResult = m_Memory.Allocate(Requirements.size, Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
+		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
 
-		if (eResult != VK_SUCCESS)
+		eResult = m_Memory.Allocate(pLogicalDevice->GetHandle(), Requirements.size, memoryTypeIndex);
+
+		if (eResult != Result::eSuccess)
 		{
-			Context::GetDevice()->DestroyBuffer(hNewBuffer);
+			vkDestroyBuffer(pLogicalDevice->GetHandle(), hNewBuffer, nullptr);
 		}
 		else
 		{
-			this->Release();
+			this->Destroy();
 
-			Context::GetDevice()->BindBufferMemory(hNewBuffer, m_Memory, 0);
+			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
+
+			m_hDevice = pLogicalDevice->GetHandle();
 
 			m_hBuffer = hNewBuffer;
 
-			m_Bytes = SizeBytes;
+			m_Bytes = size;
 		}
 	}
 
@@ -189,11 +208,13 @@ VkResult DeviceLocalBuffer::Create(VkDeviceSize SizeBytes)
 }
 
 
-void DeviceLocalBuffer::Release() noexcept
+void DeviceLocalBuffer::Destroy()
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		Context::GetDevice()->DestroyBuffer(m_hBuffer);
+		vkDestroyBuffer(m_hDevice, m_hBuffer, nullptr);
+
+		m_hDevice = VK_NULL_HANDLE;
 
 		m_hBuffer = VK_NULL_HANDLE;
 
@@ -206,5 +227,5 @@ void DeviceLocalBuffer::Release() noexcept
 
 DeviceLocalBuffer::~DeviceLocalBuffer()
 {
-	this->Release();
+	this->Destroy();
 }

@@ -54,11 +54,11 @@ Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 		{
 			this->Destroy();
 
-			m_Parameter = Param;
+			m_hSampler = hSampler;
 
 			m_hDevice = hDevice;
 
-			m_hSampler = hSampler;
+			m_Parameter = Param;
 		}
 	}
 

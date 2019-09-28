@@ -19,9 +19,6 @@
     <Filter Include="1. Context\2. PhysicalDevice">
       <UniqueIdentifier>{5253d1d7-ee48-413f-8bfe-8018e65696e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. Context\3. CommandBuffer">
-      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2. Resources\0. Signals">
       <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,12 @@
     <Filter Include="2. Resources\6. Framebuffer">
       <UniqueIdentifier>{5275c891-e9a0-46cb-82ff-63ac4dcef833}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Resources\10. PipelineLayout">
+      <UniqueIdentifier>{31e182d7-9735-439b-8269-8520c6713011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3. Commands">
+      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -63,9 +66,6 @@
     </ClCompile>
     <ClCompile Include="LogicalDevice.cpp">
       <Filter>1. Context\1. LogicalDevice</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandBuffer.cpp">
-      <Filter>1. Context\3. CommandBuffer</Filter>
     </ClCompile>
     <ClCompile Include="Win32Surface.cpp">
       <Filter>2. Resources\7. Win32Surface</Filter>
@@ -84,6 +84,24 @@
     </ClCompile>
     <ClCompile Include="DeviceMemory.cpp">
       <Filter>2. Resources\8. DeviceMemory</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderModule.cpp">
+      <Filter>2. Resources\9. ShaderModule</Filter>
+    </ClCompile>
+    <ClCompile Include="Images.cpp">
+      <Filter>2. Resources\2. Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers.cpp">
+      <Filter>2. Resources\1. Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipelines.cpp">
+      <Filter>2. Resources\4. Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="PipelineLayout.cpp">
+      <Filter>2. Resources\10. PipelineLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands.cpp">
+      <Filter>3. Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +126,6 @@
     <ClInclude Include="LogicalDevice.h">
       <Filter>1. Context\1. LogicalDevice</Filter>
     </ClInclude>
-    <ClInclude Include="CommandBuffer.h">
-      <Filter>1. Context\3. CommandBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>0. Wrappers</Filter>
     </ClInclude>
@@ -131,6 +146,24 @@
     </ClInclude>
     <ClInclude Include="DeviceMemory.h">
       <Filter>2. Resources\8. DeviceMemory</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderModule.h">
+      <Filter>2. Resources\9. ShaderModule</Filter>
+    </ClInclude>
+    <ClInclude Include="Images.h">
+      <Filter>2. Resources\2. Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers.h">
+      <Filter>2. Resources\1. Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipelines.h">
+      <Filter>2. Resources\4. Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineLayout.h">
+      <Filter>2. Resources\10. PipelineLayout</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands.h">
+      <Filter>3. Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

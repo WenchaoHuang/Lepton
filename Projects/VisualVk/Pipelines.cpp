@@ -1,16 +1,19 @@
 /*************************************************************************
 ************************    VisualVk_Pipelines    ************************
 *************************************************************************/
-#include "Framebuffer.h"
-#include "Pipelines.h"
+
 #include <functional>
+#include "Pipelines.h"
+#include "Framebuffer.h"
+#include "ShaderModule.h"
+#include "PipelineLayout.h"
 
 using namespace Vk;
 
 /*************************************************************************
 **********************    GraphicsPipelineParam    ***********************
 *************************************************************************/
-GraphicsPipelineParam::GraphicsPipelineParam() : InputAssemblyState(PrimitiveTopology::eTriangleList), TessellationState(0)
+GraphicsPipelineParam::GraphicsPipelineParam() : inputAssemblyState(PrimitiveTopology::eTriangleList), tessellationState(0)
 {
 
 }
@@ -57,143 +60,156 @@ void GraphicsPipelineParam::VertexInputStateInfo::SetBinding(uint32_t Binding, u
 /*************************************************************************
 *************************    GraphicsPipeline    *************************
 *************************************************************************/
-GraphicsPipeline::GraphicsPipeline() : m_hPipeline(VK_NULL_HANDLE)
+GraphicsPipeline::GraphicsPipeline() : m_hGraphicsPipeline(VK_NULL_HANDLE)
 {
 
 }
 
 
-VkResult GraphicsPipeline::Create(const GraphicsPipelineParam & PipelineParam)
+GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineParam & Param) : GraphicsPipeline()
 {
+	this->Create(Param);
+}
+
+
+Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
+{
+	if ((Param.spRenderPass == nullptr) || !Param.spRenderPass->IsValid() ||
+		(Param.spPipelineLayout == nullptr) || !Param.spPipelineLayout->IsValid() ||
+		 Param.spRenderPass->GetDeviceHandle() != Param.spPipelineLayout->GetDeviceHandle())
+	{
+		return Result::eErrorInvalidExternalHandle;
+	}
+
 	std::vector<VkPipelineShaderStageCreateInfo>		ShaderStageCreateInfos;
 
-	auto GetShaderStageInfo = [](VkShaderModule hModule, ShaderStage eStage) -> VkPipelineShaderStageCreateInfo
+	auto pfnGetShaderStageInfo = [](VkShaderModule hModule, ShaderStage eStage) -> VkPipelineShaderStageCreateInfo
 	{
-		VkPipelineShaderStageCreateInfo			PipelineParam = {};
-		PipelineParam.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		PipelineParam.pNext						= nullptr;
-		PipelineParam.flags						= 0;
-		PipelineParam.stage						= static_cast<VkShaderStageFlagBits>(eStage);
-		PipelineParam.module					= hModule;
-		PipelineParam.pName						= "main";
-		PipelineParam.pSpecializationInfo		= nullptr;
+		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
+		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+		ShaderStageCreateInfo.pNext						= nullptr;
+		ShaderStageCreateInfo.flags						= 0;
+		ShaderStageCreateInfo.stage						= static_cast<VkShaderStageFlagBits>(eStage);
+		ShaderStageCreateInfo.module					= hModule;
+		ShaderStageCreateInfo.pName						= "main";
+		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
 
-		return PipelineParam;
+		return ShaderStageCreateInfo;
 	};
 
-	if (PipelineParam.ShaderStages.VertexShader.IsValid())
-		ShaderStageCreateInfos.push_back(GetShaderStageInfo(PipelineParam.ShaderStages.VertexShader, ShaderStage::eVertex));
-	if (PipelineParam.ShaderStages.FragmentShader.IsValid())
-		ShaderStageCreateInfos.push_back(GetShaderStageInfo(PipelineParam.ShaderStages.FragmentShader, ShaderStage::eFragment));
-	if (PipelineParam.ShaderStages.GeometryShader.IsValid())
-		ShaderStageCreateInfos.push_back(GetShaderStageInfo(PipelineParam.ShaderStages.GeometryShader, ShaderStage::eGeometry));
-	if (PipelineParam.ShaderStages.TessControlShader.IsValid())
-		ShaderStageCreateInfos.push_back(GetShaderStageInfo(PipelineParam.ShaderStages.TessControlShader, ShaderStage::eTessellationControl));
-	if (PipelineParam.ShaderStages.TessEvalutionShader.IsValid())
-		ShaderStageCreateInfos.push_back(GetShaderStageInfo(PipelineParam.ShaderStages.TessEvalutionShader, ShaderStage::eTessellationEvaluation));
+	if ((Param.shaderStages.spVertexShader != nullptr) && Param.shaderStages.spVertexShader->IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spVertexShader->GetHandle(), ShaderStage::eVertex));
+	if ((Param.shaderStages.spFragmentShader != nullptr) && Param.shaderStages.spFragmentShader->IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spFragmentShader->GetHandle(), ShaderStage::eFragment));
+	if ((Param.shaderStages.spGeometryShader != nullptr) && Param.shaderStages.spGeometryShader->IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spGeometryShader->GetHandle(), ShaderStage::eGeometry));
+	if ((Param.shaderStages.spTessControlShader != nullptr) && Param.shaderStages.spTessControlShader->IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spTessControlShader->GetHandle(), ShaderStage::eTessellationControl));
+	if ((Param.shaderStages.spTessEvalutionShader != nullptr) && Param.shaderStages.spTessEvalutionShader->IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spTessEvalutionShader->GetHandle(), ShaderStage::eTessellationEvaluation));
 
 	VkPipelineVertexInputStateCreateInfo							VertexInputStateCreateInfo = {};
 	VertexInputStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 	VertexInputStateCreateInfo.pNext								= nullptr;
 	VertexInputStateCreateInfo.flags								= 0;
-	VertexInputStateCreateInfo.vertexBindingDescriptionCount		= static_cast<uint32_t>(PipelineParam.VertexInputState.bindingDescriptions.size());
-	VertexInputStateCreateInfo.pVertexBindingDescriptions			= PipelineParam.VertexInputState.bindingDescriptions.data();
-	VertexInputStateCreateInfo.vertexAttributeDescriptionCount		= static_cast<uint32_t>(PipelineParam.VertexInputState.attributeDescriptions.size());
-	VertexInputStateCreateInfo.pVertexAttributeDescriptions			= PipelineParam.VertexInputState.attributeDescriptions.data();
+	VertexInputStateCreateInfo.vertexBindingDescriptionCount		= static_cast<uint32_t>(Param.vertexInputState.bindingDescriptions.size());
+	VertexInputStateCreateInfo.pVertexBindingDescriptions			= Param.vertexInputState.bindingDescriptions.data();
+	VertexInputStateCreateInfo.vertexAttributeDescriptionCount		= static_cast<uint32_t>(Param.vertexInputState.attributeDescriptions.size());
+	VertexInputStateCreateInfo.pVertexAttributeDescriptions			= Param.vertexInputState.attributeDescriptions.data();
 
 	VkPipelineInputAssemblyStateCreateInfo							InputAssemblyStateCreateInfo = {};
 	InputAssemblyStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
 	InputAssemblyStateCreateInfo.pNext								= nullptr;
 	InputAssemblyStateCreateInfo.flags								= 0;
-	InputAssemblyStateCreateInfo.topology							= static_cast<VkPrimitiveTopology>(PipelineParam.InputAssemblyState);
+	InputAssemblyStateCreateInfo.topology							= static_cast<VkPrimitiveTopology>(Param.inputAssemblyState);
 	InputAssemblyStateCreateInfo.primitiveRestartEnable				= VK_FALSE;
 
 	VkPipelineTessellationStateCreateInfo							TessellationStateCreateInfo = {};
 	TessellationStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_TESSELLATION_STATE_CREATE_INFO;
 	TessellationStateCreateInfo.pNext								= nullptr;
 	TessellationStateCreateInfo.flags								= 0;
-	TessellationStateCreateInfo.patchControlPoints					= PipelineParam.TessellationState;
+	TessellationStateCreateInfo.patchControlPoints					= Param.tessellationState;
 
 	VkPipelineViewportStateCreateInfo								ViewportStateCreateInfo = {};
 	ViewportStateCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
 	ViewportStateCreateInfo.pNext									= nullptr;
 	ViewportStateCreateInfo.flags									= 0;
-	ViewportStateCreateInfo.viewportCount							= static_cast<uint32_t>(PipelineParam.ViewportState.viewports.size());
-	ViewportStateCreateInfo.pViewports								= PipelineParam.ViewportState.viewports.data();
-	ViewportStateCreateInfo.scissorCount							= static_cast<uint32_t>(PipelineParam.ViewportState.scissors.size());
-	ViewportStateCreateInfo.pScissors								= PipelineParam.ViewportState.scissors.data();
+	ViewportStateCreateInfo.viewportCount							= static_cast<uint32_t>(Param.viewportState.viewports.size());
+	ViewportStateCreateInfo.pViewports								= Param.viewportState.viewports.data();
+	ViewportStateCreateInfo.scissorCount							= static_cast<uint32_t>(Param.viewportState.scissors.size());
+	ViewportStateCreateInfo.pScissors								= Param.viewportState.scissors.data();
 
 	VkPipelineRasterizationStateCreateInfo							RasterizationStateCreateInfo = {};
 	RasterizationStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 	RasterizationStateCreateInfo.pNext								= nullptr;
 	RasterizationStateCreateInfo.flags								= 0;
-	RasterizationStateCreateInfo.depthClampEnable					= PipelineParam.RasterizationState.depthClampEnable;
-	RasterizationStateCreateInfo.rasterizerDiscardEnable			= PipelineParam.RasterizationState.rasterizerDiscardEnable;
-	RasterizationStateCreateInfo.polygonMode						= static_cast<VkPolygonMode>(PipelineParam.RasterizationState.polygonMode);
-	RasterizationStateCreateInfo.cullMode							= static_cast<VkCullModeFlags>(PipelineParam.RasterizationState.cullMode);
-	RasterizationStateCreateInfo.frontFace							= static_cast<VkFrontFace>(PipelineParam.RasterizationState.frontFace);
-	RasterizationStateCreateInfo.depthBiasEnable					= PipelineParam.RasterizationState.depthBiasEnable;
-	RasterizationStateCreateInfo.depthBiasConstantFactor			= PipelineParam.RasterizationState.depthBiasConstantFactor;
-	RasterizationStateCreateInfo.depthBiasClamp						= PipelineParam.RasterizationState.depthBiasClamp;
-	RasterizationStateCreateInfo.depthBiasSlopeFactor				= PipelineParam.RasterizationState.depthBiasSlopeFactor;
-	RasterizationStateCreateInfo.lineWidth							= PipelineParam.RasterizationState.lineWidth;
+	RasterizationStateCreateInfo.depthClampEnable					= Param.rasterizationState.depthClampEnable;
+	RasterizationStateCreateInfo.rasterizerDiscardEnable			= Param.rasterizationState.rasterizerDiscardEnable;
+	RasterizationStateCreateInfo.polygonMode						= static_cast<VkPolygonMode>(Param.rasterizationState.polygonMode);
+	RasterizationStateCreateInfo.cullMode							= static_cast<VkCullModeFlags>(Param.rasterizationState.cullMode);
+	RasterizationStateCreateInfo.frontFace							= static_cast<VkFrontFace>(Param.rasterizationState.frontFace);
+	RasterizationStateCreateInfo.depthBiasEnable					= Param.rasterizationState.depthBiasEnable;
+	RasterizationStateCreateInfo.depthBiasConstantFactor			= Param.rasterizationState.depthBiasConstantFactor;
+	RasterizationStateCreateInfo.depthBiasClamp						= Param.rasterizationState.depthBiasClamp;
+	RasterizationStateCreateInfo.depthBiasSlopeFactor				= Param.rasterizationState.depthBiasSlopeFactor;
+	RasterizationStateCreateInfo.lineWidth							= Param.rasterizationState.lineWidth;
 
 	VkPipelineMultisampleStateCreateInfo							MultisampleStateCreateInfo = {};
 	MultisampleStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
 	MultisampleStateCreateInfo.pNext								= nullptr;
 	MultisampleStateCreateInfo.flags								= 0;
-	MultisampleStateCreateInfo.rasterizationSamples					= static_cast<VkSampleCountFlagBits>(PipelineParam.MultisampleState.rasterizationSamples);
-	MultisampleStateCreateInfo.sampleShadingEnable					= PipelineParam.MultisampleState.sampleShadingEnable;
-	MultisampleStateCreateInfo.minSampleShading						= PipelineParam.MultisampleState.minSampleShading;
+	MultisampleStateCreateInfo.rasterizationSamples					= static_cast<VkSampleCountFlagBits>(Param.multisampleState.rasterizationSamples);
+	MultisampleStateCreateInfo.sampleShadingEnable					= Param.multisampleState.sampleShadingEnable;
+	MultisampleStateCreateInfo.minSampleShading						= Param.multisampleState.minSampleShading;
 	MultisampleStateCreateInfo.pSampleMask							= nullptr;
-	MultisampleStateCreateInfo.alphaToCoverageEnable				= PipelineParam.MultisampleState.alphaToCoverageEnable;
-	MultisampleStateCreateInfo.alphaToOneEnable						= PipelineParam.MultisampleState.alphaToOneEnable;
+	MultisampleStateCreateInfo.alphaToCoverageEnable				= Param.multisampleState.alphaToCoverageEnable;
+	MultisampleStateCreateInfo.alphaToOneEnable						= Param.multisampleState.alphaToOneEnable;
 
 	VkPipelineDepthStencilStateCreateInfo							DepthStencilStateCreateInfo = {};
 	DepthStencilStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
 	DepthStencilStateCreateInfo.pNext								= nullptr;
 	DepthStencilStateCreateInfo.flags								= 0;
-	DepthStencilStateCreateInfo.depthTestEnable						= PipelineParam.DepthStencilState.depthTestEnable;
-	DepthStencilStateCreateInfo.depthWriteEnable					= PipelineParam.DepthStencilState.depthWriteEnable;
-	DepthStencilStateCreateInfo.depthCompareOp						= static_cast<VkCompareOp>(PipelineParam.DepthStencilState.depthCompareOp);
-	DepthStencilStateCreateInfo.depthBoundsTestEnable				= PipelineParam.DepthStencilState.depthBoundsTestEnable;
-	DepthStencilStateCreateInfo.stencilTestEnable					= PipelineParam.DepthStencilState.stencilTestEnable;
-	DepthStencilStateCreateInfo.front.failOp						= static_cast<VkStencilOp>(PipelineParam.DepthStencilState.front.failOp);
-	DepthStencilStateCreateInfo.front.passOp						= static_cast<VkStencilOp>(PipelineParam.DepthStencilState.front.passOp);
-	DepthStencilStateCreateInfo.front.depthFailOp					= static_cast<VkStencilOp>(PipelineParam.DepthStencilState.front.depthFailOp);
-	DepthStencilStateCreateInfo.front.compareOp						= static_cast<VkCompareOp>(PipelineParam.DepthStencilState.front.compareOp);
-	DepthStencilStateCreateInfo.front.compareMask					= PipelineParam.DepthStencilState.front.compareMask;
-	DepthStencilStateCreateInfo.front.writeMask						= PipelineParam.DepthStencilState.front.writeMask;
-	DepthStencilStateCreateInfo.front.reference						= PipelineParam.DepthStencilState.front.reference;
-	DepthStencilStateCreateInfo.back.failOp							= static_cast<VkStencilOp>(PipelineParam.DepthStencilState.back.failOp);
-	DepthStencilStateCreateInfo.back.passOp							= static_cast<VkStencilOp>(PipelineParam.DepthStencilState.back.passOp);
-	DepthStencilStateCreateInfo.back.depthFailOp					= static_cast<VkStencilOp>(PipelineParam.DepthStencilState.back.depthFailOp);
-	DepthStencilStateCreateInfo.back.compareOp						= static_cast<VkCompareOp>(PipelineParam.DepthStencilState.back.compareOp);
-	DepthStencilStateCreateInfo.back.compareMask					= PipelineParam.DepthStencilState.back.compareMask;
-	DepthStencilStateCreateInfo.back.writeMask						= PipelineParam.DepthStencilState.back.writeMask;
-	DepthStencilStateCreateInfo.back.reference						= PipelineParam.DepthStencilState.back.reference;
-	DepthStencilStateCreateInfo.minDepthBounds						= PipelineParam.DepthStencilState.minDepthBounds;
-	DepthStencilStateCreateInfo.maxDepthBounds						= PipelineParam.DepthStencilState.maxDepthBounds;
+	DepthStencilStateCreateInfo.depthTestEnable						= Param.depthStencilState.depthTestEnable;
+	DepthStencilStateCreateInfo.depthWriteEnable					= Param.depthStencilState.depthWriteEnable;
+	DepthStencilStateCreateInfo.depthCompareOp						= static_cast<VkCompareOp>(Param.depthStencilState.depthCompareOp);
+	DepthStencilStateCreateInfo.depthBoundsTestEnable				= Param.depthStencilState.depthBoundsTestEnable;
+	DepthStencilStateCreateInfo.stencilTestEnable					= Param.depthStencilState.stencilTestEnable;
+	DepthStencilStateCreateInfo.front.failOp						= static_cast<VkStencilOp>(Param.depthStencilState.front.failOp);
+	DepthStencilStateCreateInfo.front.passOp						= static_cast<VkStencilOp>(Param.depthStencilState.front.passOp);
+	DepthStencilStateCreateInfo.front.depthFailOp					= static_cast<VkStencilOp>(Param.depthStencilState.front.depthFailOp);
+	DepthStencilStateCreateInfo.front.compareOp						= static_cast<VkCompareOp>(Param.depthStencilState.front.compareOp);
+	DepthStencilStateCreateInfo.front.compareMask					= Param.depthStencilState.front.compareMask;
+	DepthStencilStateCreateInfo.front.writeMask						= Param.depthStencilState.front.writeMask;
+	DepthStencilStateCreateInfo.front.reference						= Param.depthStencilState.front.reference;
+	DepthStencilStateCreateInfo.back.failOp							= static_cast<VkStencilOp>(Param.depthStencilState.back.failOp);
+	DepthStencilStateCreateInfo.back.passOp							= static_cast<VkStencilOp>(Param.depthStencilState.back.passOp);
+	DepthStencilStateCreateInfo.back.depthFailOp					= static_cast<VkStencilOp>(Param.depthStencilState.back.depthFailOp);
+	DepthStencilStateCreateInfo.back.compareOp						= static_cast<VkCompareOp>(Param.depthStencilState.back.compareOp);
+	DepthStencilStateCreateInfo.back.compareMask					= Param.depthStencilState.back.compareMask;
+	DepthStencilStateCreateInfo.back.writeMask						= Param.depthStencilState.back.writeMask;
+	DepthStencilStateCreateInfo.back.reference						= Param.depthStencilState.back.reference;
+	DepthStencilStateCreateInfo.minDepthBounds						= Param.depthStencilState.minDepthBounds;
+	DepthStencilStateCreateInfo.maxDepthBounds						= Param.depthStencilState.maxDepthBounds;
 
 	VkPipelineColorBlendStateCreateInfo								ColorBlendStateCreateInfo = {};
 	ColorBlendStateCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
 	ColorBlendStateCreateInfo.pNext									= nullptr;
 	ColorBlendStateCreateInfo.flags									= 0;
-	ColorBlendStateCreateInfo.logicOpEnable							= PipelineParam.ColorBlendState.logicOpEnable;
-	ColorBlendStateCreateInfo.logicOp								= static_cast<VkLogicOp>(PipelineParam.ColorBlendState.logicOp);
-	ColorBlendStateCreateInfo.attachmentCount						= static_cast<uint32_t>(PipelineParam.ColorBlendState.attachments.size());
-	ColorBlendStateCreateInfo.pAttachments							= reinterpret_cast<const VkPipelineColorBlendAttachmentState*>(PipelineParam.ColorBlendState.attachments.data());
-	ColorBlendStateCreateInfo.blendConstants[0]						= PipelineParam.ColorBlendState.blendConstants[0];
-	ColorBlendStateCreateInfo.blendConstants[1]						= PipelineParam.ColorBlendState.blendConstants[1];
-	ColorBlendStateCreateInfo.blendConstants[2]						= PipelineParam.ColorBlendState.blendConstants[2];
-	ColorBlendStateCreateInfo.blendConstants[3]						= PipelineParam.ColorBlendState.blendConstants[3];
+	ColorBlendStateCreateInfo.logicOpEnable							= Param.colorBlendState.logicOpEnable;
+	ColorBlendStateCreateInfo.logicOp								= static_cast<VkLogicOp>(Param.colorBlendState.logicOp);
+	ColorBlendStateCreateInfo.attachmentCount						= static_cast<uint32_t>(Param.colorBlendState.attachments.size());
+	ColorBlendStateCreateInfo.pAttachments							= reinterpret_cast<const VkPipelineColorBlendAttachmentState*>(Param.colorBlendState.attachments.data());
+	ColorBlendStateCreateInfo.blendConstants[0]						= Param.colorBlendState.blendConstants[0];
+	ColorBlendStateCreateInfo.blendConstants[1]						= Param.colorBlendState.blendConstants[1];
+	ColorBlendStateCreateInfo.blendConstants[2]						= Param.colorBlendState.blendConstants[2];
+	ColorBlendStateCreateInfo.blendConstants[3]						= Param.colorBlendState.blendConstants[3];
 
 	VkPipelineDynamicStateCreateInfo								DynamicStateCreateInfo = {};
 	DynamicStateCreateInfo.sType									= VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
 	DynamicStateCreateInfo.pNext									= nullptr;
 	DynamicStateCreateInfo.flags									= 0;
-	DynamicStateCreateInfo.dynamicStateCount						= static_cast<uint32_t>(PipelineParam.DynamicStates.size());
-	DynamicStateCreateInfo.pDynamicStates							= reinterpret_cast<const VkDynamicState*>(PipelineParam.DynamicStates.data());
+	DynamicStateCreateInfo.dynamicStateCount						= static_cast<uint32_t>(Param.dynamicStates.size());
+	DynamicStateCreateInfo.pDynamicStates							= reinterpret_cast<const VkDynamicState*>(Param.dynamicStates.data());
 
 	VkGraphicsPipelineCreateInfo									PipelineCreateInfo = {};
 	PipelineCreateInfo.sType										= VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -210,41 +226,77 @@ VkResult GraphicsPipeline::Create(const GraphicsPipelineParam & PipelineParam)
 	PipelineCreateInfo.pDepthStencilState							= &DepthStencilStateCreateInfo;
 	PipelineCreateInfo.pColorBlendState								= &ColorBlendStateCreateInfo;
 	PipelineCreateInfo.pDynamicState								= &DynamicStateCreateInfo;
-	PipelineCreateInfo.layout										= PipelineParam.hLayout;
-	PipelineCreateInfo.renderPass									= PipelineParam.hRenderPass;
+	PipelineCreateInfo.layout										= Param.spPipelineLayout->GetHandle();
+	PipelineCreateInfo.renderPass									= Param.spRenderPass->GetHandle();
 	PipelineCreateInfo.subpass										= 0;
 	PipelineCreateInfo.basePipelineHandle							= VK_NULL_HANDLE;
 	PipelineCreateInfo.basePipelineIndex							= 0;
 
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 
-	if (Context::GetDevice()->CreateGraphicsPipelines(VK_NULL_HANDLE, 1, &PipelineCreateInfo, &hPipeline) == VK_SUCCESS)
+	VkResult eResult = vkCreateGraphicsPipelines(Param.spRenderPass->GetDeviceHandle(), VK_NULL_HANDLE, 1, &PipelineCreateInfo, nullptr, &hPipeline);
+
+	if (eResult == VK_SUCCESS)
 	{
-		this->Release();
+		this->Destroy();
 
-		m_hPipeline = hPipeline;
+		m_hDevice = Param.spRenderPass->GetDeviceHandle();
 
-		m_PipelineParam = PipelineParam;
+		m_hGraphicsPipeline = hPipeline;
+
+		m_Parameter = Param;
 	}
 
-	return VK_SUCCESS;
+	return VK_RESULT_CAST(eResult);
 }
 
 
-void GraphicsPipeline::Release() noexcept
+void GraphicsPipeline::Destroy()
 {
-	if (m_hPipeline != VK_NULL_HANDLE)
+	if (m_hGraphicsPipeline != VK_NULL_HANDLE)
 	{
-		Context::GetDevice()->DestroyPipeline(m_hPipeline);
+		vkDestroyPipeline(m_hDevice, m_hGraphicsPipeline, nullptr);
 
-		m_PipelineParam = GraphicsPipelineParam();
+		m_Parameter = GraphicsPipelineParam();
 
-		m_hPipeline = VK_NULL_HANDLE;
+		m_hGraphicsPipeline = VK_NULL_HANDLE;
+
+		m_hDevice = VK_NULL_HANDLE;
 	}
 }
 
 
 GraphicsPipeline::~GraphicsPipeline()
 {
-	this->Release();
+	this->Destroy();
+}
+
+
+/*************************************************************************
+*************************    ComputePipeline    **************************
+*************************************************************************/
+ComputePipeline::ComputePipeline() : m_hDevice(VK_NULL_HANDLE), m_hComputePipeline(VK_NULL_HANDLE)
+{
+
+}
+
+
+ComputePipeline::~ComputePipeline()
+{
+
+}
+
+
+/*************************************************************************
+************************    RayTracingPipeline    ************************
+*************************************************************************/
+RayTracingPipeline::RayTracingPipeline() : m_hDevice(VK_NULL_HANDLE), m_hRayTracingPipeline(VK_NULL_HANDLE)
+{
+
+}
+
+
+RayTracingPipeline::~RayTracingPipeline()
+{
+
 }

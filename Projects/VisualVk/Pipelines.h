@@ -3,159 +3,14 @@
 *************************************************************************/
 #pragma once
 
-#include "ShaderModule.h"
-#include "PipelineLayout.h"
+#include <memory>
+#include "Vulkan.h"
 
 namespace Vk
 {
-	/*********************************************************************
-	************************    ColorComponent    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask controlling which components are written to the framebuffer.
-	 */
-	enum class ColorComponent : VkFlags
-	{
-		eRed		= VK_COLOR_COMPONENT_R_BIT,
-		eBlue		= VK_COLOR_COMPONENT_B_BIT,
-		eGreen		= VK_COLOR_COMPONENT_G_BIT,
-		eAlpha		= VK_COLOR_COMPONENT_A_BIT
-	};
-
-	/*********************************************************************
-	***********************    VertexInputRate    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Specify rate at which vertex attributes are pulled from buffers.
-	 */
-	enum class VertexInputRate
-	{
-		eVertex			= VK_VERTEX_INPUT_RATE_VERTEX,
-		eInstance		= VK_VERTEX_INPUT_RATE_INSTANCE
-	};
-
-	/*********************************************************************
-	**************************    FrontFace    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Interpret polygon front-facing orientation.
-	 */
-	enum class FrontFace
-	{
-		eClockwise				= VK_FRONT_FACE_CLOCKWISE,
-		eCounterClockwise		= VK_FRONT_FACE_COUNTER_CLOCKWISE
-	};
-
-	/*********************************************************************
-	***************************    CullMode    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask controlling triangle culling.
-	 */
-	enum class CullMode
-	{
-		eNone				= VK_CULL_MODE_NONE,
-		eBack				= VK_CULL_MODE_BACK_BIT,
-		eFront				= VK_CULL_MODE_FRONT_BIT,
-		eFrontAndBack		= VK_CULL_MODE_FRONT_AND_BACK
-	};
-
-	/*********************************************************************
-	*************************    PolygonMode    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Control polygon rasterization mode.
-	 */
-	enum class PolygonMode
-	{
-		eFill					= VK_POLYGON_MODE_FILL,
-		eLine					= VK_POLYGON_MODE_LINE,
-		ePoint					= VK_POLYGON_MODE_POINT,
-		eFillRectangleNV		= VK_POLYGON_MODE_FILL_RECTANGLE_NV
-	};
-
-	/*********************************************************************
-	**********************    PrimitiveTopology    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Supported primitive topologies.
-	 */
-	enum class PrimitiveTopology
-	{
-		eLineList						= VK_PRIMITIVE_TOPOLOGY_LINE_LIST,
-		ePointList						= VK_PRIMITIVE_TOPOLOGY_POINT_LIST,
-		eLineStrip						= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP,
-		ePatchList						= VK_PRIMITIVE_TOPOLOGY_PATCH_LIST,
-		eTriangleFan					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN,
-		eTriangleList					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
-		eTriangleStrip					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP,
-		eLineListWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_LIST_WITH_ADJACENCY,
-		eLineStripWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP_WITH_ADJACENCY,
-		eTriangleListWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST_WITH_ADJACENCY,
-		eTriangleStripWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_WITH_ADJACENCY
-	};
-
-	/*********************************************************************
-	*************************    BlendFactor    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Framebuffer blending factors.
-	 */
-	enum class BlendFactor
-	{
-		eOne						= VK_BLEND_FACTOR_ONE,
-		eZero						= VK_BLEND_FACTOR_ZERO,
-		eSrcColor					= VK_BLEND_FACTOR_SRC_COLOR,
-		eDstColor					= VK_BLEND_FACTOR_DST_COLOR,
-		eSrcAlpha					= VK_BLEND_FACTOR_SRC_ALPHA,
-		eDstAlpha					= VK_BLEND_FACTOR_DST_ALPHA,
-		eSrc1Color					= VK_BLEND_FACTOR_SRC1_COLOR,
-		eSrc1Alpha					= VK_BLEND_FACTOR_SRC1_ALPHA,
-		eConstantColor				= VK_BLEND_FACTOR_CONSTANT_COLOR,
-		eConstantAlpha				= VK_BLEND_FACTOR_CONSTANT_ALPHA,
-		eSrcAlphaSaturate			= VK_BLEND_FACTOR_SRC_ALPHA_SATURATE,
-		eOneMinusSrcColor			= VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR,
-		eOneMinusDstColor			= VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR,
-		eOneMinusSrcAlpha			= VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
-		eOneMinusDstAlpha			= VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA,
-		eOneMinusSrc1Color			= VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR,
-		eOneMinusSrc1Alpha			= VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA,
-		eOneMinusConstantColor		= VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR,
-		eOneMinusConstantAlpha		= VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA
-	};
-
-	/*********************************************************************
-	*************************    DynamicState    *************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Indicate which dynamic state is taken from dynamic state commands.
-	 */
-	enum class DynamicState
-	{
-		eScissor							= VK_DYNAMIC_STATE_SCISSOR,
-		eViewport							= VK_DYNAMIC_STATE_VIEWPORT,
-		eLineWidth							= VK_DYNAMIC_STATE_LINE_WIDTH,
-		eDepthBias							= VK_DYNAMIC_STATE_DEPTH_BIAS,
-		eDepthBounds						= VK_DYNAMIC_STATE_DEPTH_BOUNDS,
-		eBlendConstants						= VK_DYNAMIC_STATE_BLEND_CONSTANTS,
-		eStencilWriteMask					= VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
-		eStencilReference					= VK_DYNAMIC_STATE_STENCIL_REFERENCE,
-		eStencilCompareMask					= VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
-		eViewportShadingRatePaletteNV		= VK_DYNAMIC_STATE_VIEWPORT_SHADING_RATE_PALETTE_NV,
-		eViewportCoarseSampleOrderNV		= VK_DYNAMIC_STATE_VIEWPORT_COARSE_SAMPLE_ORDER_NV,
-		eDiscardRectangleEXT				= VK_DYNAMIC_STATE_DISCARD_RECTANGLE_EXT,
-		eSampleLocationsEXT					= VK_DYNAMIC_STATE_SAMPLE_LOCATIONS_EXT,
-		eViewportWScalingNV					= VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_NV,
-		eExclusiveScissorNV					= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV
-	};
+	typedef VkPipeline		VkComputePipeline;
+	typedef VkPipeline		VkGraphicsPipeline;
+	typedef VkPipeline		VkRayTracingPipeline;
 
 	/*********************************************************************
 	********************    GraphicsPipelineParam    *********************
@@ -192,11 +47,11 @@ namespace Vk
 		 */
 		struct ShaderStagesInfo
 		{
-			ShaderModule		VertexShader;
-			ShaderModule		GeometryShader;
-			ShaderModule		FragmentShader;
-			ShaderModule		TessControlShader;
-			ShaderModule		TessEvalutionShader;
+			std::shared_ptr<ShaderModule>		spVertexShader;
+			std::shared_ptr<ShaderModule>		spGeometryShader;
+			std::shared_ptr<ShaderModule>		spFragmentShader;
+			std::shared_ptr<ShaderModule>		spTessControlShader;
+			std::shared_ptr<ShaderModule>		spTessEvalutionShader;
 		};
 
 		/*****************************************************************
@@ -301,12 +156,12 @@ namespace Vk
 			BlendFactor					dstColorBlendFactor		= BlendFactor::eZero;
 			BlendOp						colorBlendOp			= BlendOp::eAdd;
 			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
-			BlendFactor					stAlphaBlendFactor		= BlendFactor::eZero;
+			BlendFactor					dstAlphaBlendFactor		= BlendFactor::eZero;
 			BlendOp						alphaBlendOp			= BlendOp::eAdd;
 			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eRed | ColorComponent::eGreen | ColorComponent::eBlue | ColorComponent::eAlpha;
 		};
 		
-		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "struct and wrapper have different size!");
+		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "Struct and wrapper have different size!");
 
 		/*****************************************************************
 		*******************    ColorBlendStateInfo    ********************
@@ -332,16 +187,15 @@ namespace Vk
 		 */
 		class VertexInputStateInfo
 		{
+			friend class GraphicsPipeline;
 
 		public:
 
-			friend class GraphicsPipeline;
-
 			//!	@brief	Specify vertex attribute location.
-			void SetLocation(uint32_t Location, uint32_t Binding, Format eFormat, uint32_t Offset);
+			void SetLocation(uint32_t location, uint32_t binding, Format eFormat, uint32_t offset);
 
 			//!	@brief	Specify vertex input binding.
-			void SetBinding(uint32_t Binding, uint32_t Stride, VertexInputRate eInputRate = VertexInputRate::eVertex);
+			void SetBinding(uint32_t binding, uint32_t stride, VertexInputRate eInputRate = VertexInputRate::eVertex);
 
 		private:
 
@@ -351,18 +205,18 @@ namespace Vk
 
 	public:
 
-		RenderPassH								hRenderPass;
-		ShaderStagesInfo						ShaderStages;
-		DynamicStateInfo						DynamicStates;
-		ViewportStateInfo						ViewportState;
-		ColorBlendStateInfo						ColorBlendState;
-		VertexInputStateInfo					VertexInputState;
-		MultisampleStateInfo					MultisampleState;
-		DepthStencilStateInfo					DepthStencilState;
-		TessellationStateInfo					TessellationState;
-		InputAssemblyStateInfo					InputAssemblyState;
-		RasterizationStateInfo					RasterizationState;
-		PipelineLayoutH							hLayout;
+		ShaderStagesInfo							shaderStages;
+		DynamicStateInfo							dynamicStates;
+		ViewportStateInfo							viewportState;
+		ColorBlendStateInfo							colorBlendState;
+		VertexInputStateInfo						vertexInputState;
+		MultisampleStateInfo						multisampleState;
+		DepthStencilStateInfo						depthStencilState;
+		TessellationStateInfo						tessellationState;
+		InputAssemblyStateInfo						inputAssemblyState;
+		RasterizationStateInfo						rasterizationState;
+		std::shared_ptr<const PipelineLayout>		spPipelineLayout;
+		std::shared_ptr<const RenderPass>			spRenderPass;
 	};
 
 	/*********************************************************************
@@ -370,38 +224,37 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan graphics pipeline object.
+	 *	@brief	Wrapper for Vulkan graphics pipeline object.
 	 */
 	class GraphicsPipeline
 	{
+		VK_UNIQUE_RESOURCE(GraphicsPipeline)
 
 	public:
 
 		//!	@brief	Create graphics pipeline object.
 		GraphicsPipeline();
 
+		//!	@brief	Create and initialize immediately.
+		explicit GraphicsPipeline(const GraphicsPipelineParam & Param);
+
 		//!	@brief	Destroy graphics pipeline object.
 		~GraphicsPipeline();
 
 	public:
 
-		//!	@brief	Convert to VkPipeline handle.
-		operator VkPipeline() const { return m_hPipeline; }
-
 		//!	@brief	Create a new graphics pipeline.
-		VkResult Create(const GraphicsPipelineParam & PipelineParam);
+		Result Create(const GraphicsPipelineParam & Param);
 
 		//!	@brief	Return pipeline parameters.
-		const GraphicsPipelineParam & GetParam() const { return m_PipelineParam; }
+		const GraphicsPipelineParam & GetParam() const { return m_Parameter; }
 
-		//!	@brief	Destroy graphics pipeline.
-		void Release() noexcept;
+		//!	@brief	Destroy the graphics pipeline.
+		void Destroy();
 
 	private:
 
-		VkPipeline					m_hPipeline;
-
-		GraphicsPipelineParam		m_PipelineParam;
+		GraphicsPipelineParam		m_Parameter;
 	};
 
 	/*********************************************************************
@@ -409,26 +262,46 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan compute pipeline object.
+	 *	@brief	Wrapper for Vulkan compute pipeline object.
 	 */
 	class ComputePipeline
 	{
+		VK_UNIQUE_RESOURCE(ComputePipeline)
 
 	public:
 
 		//!	@brief	Create compute pipeline object.
-		ComputePipeline() {}
+		ComputePipeline();
 
 		//!	@brief	Destroy compute pipeline object.
-		~ComputePipeline() {}
-		
+		~ComputePipeline();
+
 	public:
 
-		//!	@brief	Convert to VkPipeline handle.
-		operator VkPipeline() const { return m_hPipeline; }
 
-	private:
+	};
 
-		VkPipeline			m_hPipeline;
+	/*********************************************************************
+	**********************    RayTracingPipeline    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Wrapper for Vulkan ray tracing pipeline object.
+	 */
+	class RayTracingPipeline
+	{
+		VK_UNIQUE_RESOURCE(RayTracingPipeline)
+
+	public:
+
+		//!	@brief	Create ray tracing pipeline object.
+		RayTracingPipeline();
+
+		//!	@brief	Destroy ray tracing pipeline object.
+		~RayTracingPipeline();
+
+	public:
+
+
 	};
 }

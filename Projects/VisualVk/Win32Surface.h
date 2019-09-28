@@ -33,12 +33,12 @@ namespace Vk
 	{
 		uint32_t							minImageCount				= 0;
 		uint32_t							maxImageCount				= 0;
-		Extent2D							currentExtent				= 0;
-		Extent2D							minImageExtent				= 0;
-		Extent2D							maxImageExtent				= 0;
+		VkExtent2D							currentExtent				= { 0, 0 };
+		VkExtent2D							minImageExtent				= { 0, 0 };
+		VkExtent2D							maxImageExtent				= { 0, 0 };
 		uint32_t							maxImageArrayLayers			= 0;
-		Flags<SurfaceTransform>		supportedTransforms			= 0;
-		SurfaceTransform				currentTransform			= SurfaceTransform::eIdentity;
+		Flags<SurfaceTransform>				supportedTransforms			= 0;
+		SurfaceTransform					currentTransform			= SurfaceTransform::eIdentity;
 		Flags<AlphaCompositingMmode>		supportedCompositeAlpha		= 0;
 		Flags<ImageUsage>					supportedUsageFlags			= 0;
 	};

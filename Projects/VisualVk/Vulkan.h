@@ -63,100 +63,12 @@ namespace Vk
 	class Framebuffer;
 	class ShaderModule;
 	class Win32Surface;
-
-	/*********************************************************************
-	***************************    Offset2D    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a two-dimensional offset.
-	 */
-	struct Offset2D
-	{
-		int32_t		x;
-		int32_t		y;
-
-		constexpr Offset2D() : x(0), y(0) {}
-		constexpr Offset2D(int32_t v0) : x(v0), y(v0) {}
-		constexpr Offset2D(int32_t v1, int32_t v2) : x(v1), y(v2) {}
-
-		constexpr bool operator==(const Offset2D & rhs) const { return (x == rhs.x) && (y == rhs.y); }
-		constexpr bool operator!=(const Offset2D & rhs) const { return (x != rhs.x) || (y != rhs.y); }
-
-		constexpr operator VkOffset2D() const { return { x, y }; }
-	};
-
-	static_assert(sizeof(Offset2D) == sizeof(VkOffset2D), "Struct and wrapper have different size!");
-
-	/*********************************************************************
-	***************************    Extent2D    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a two-dimensional extent.
-	 */
-	struct Extent2D
-	{
-		uint32_t	width;
-		uint32_t	height;
-
-		constexpr Extent2D() : width(0), height(0) {}
-		constexpr Extent2D(uint32_t v0) : width(v0), height(v0) {}
-		constexpr Extent2D(uint32_t w, uint32_t h) : width(w), height(h) {}
-
-		constexpr bool operator==(const Extent2D & rhs) const { return (width == rhs.width) && (height == rhs.height); }
-		constexpr bool operator!=(const Extent2D & rhs) const { return (width != rhs.width) || (height != rhs.height); }
-
-		constexpr operator VkExtent2D() const { return { width, height }; }
-	};
-
-	static_assert(sizeof(Extent2D) == sizeof(VkExtent2D), "Struct and wrapper have different size!");
-
-	/*********************************************************************
-	***************************    Extent3D    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a three-dimensional extent.
-	 */
-	struct Extent3D
-	{
-		uint32_t	width;
-		uint32_t	height;
-		uint32_t	depth;
-
-		constexpr Extent3D() : width(0), height(0), depth(0) {}
-		constexpr Extent3D(uint32_t v0) : width(v0), height(v0), depth(0) {}
-		constexpr Extent3D(uint32_t w, uint32_t h, uint32_t d) : width(w), height(h), depth(d) {}
-
-		constexpr bool operator==(const Extent3D & rhs) const { return (width == rhs.width) && (height == rhs.height) && (depth == rhs.depth); }
-		constexpr bool operator!=(const Extent3D & rhs) const { return (width != rhs.width) || (height != rhs.height) || (depth != rhs.depth); }
-
-		constexpr operator VkExtent3D() const { return { width, height, depth }; }
-	};
-
-	static_assert(sizeof(Extent3D) == sizeof(VkExtent3D), "Struct and wrapper have different size!");
-
-	/*********************************************************************
-	****************************    Rect2D    ****************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a two-dimensional subregion.
-	 */
-	struct Rect2D
-	{
-		Offset2D	offset;
-		Extent2D	extent;
-
-		constexpr Rect2D() {}
-		constexpr Rect2D(Offset2D _offset, Extent2D _extent) : offset(_offset), extent(_extent) {}
-
-		constexpr bool operator==(const Rect2D & rhs) const { return (offset == rhs.offset) && (extent == rhs.extent); }
-		constexpr bool operator!=(const Rect2D & rhs) const { return (offset != rhs.offset) || (extent != rhs.extent); }
-
-		constexpr operator VkRect2D() const { return { offset, extent }; }
-	};
-
-	static_assert(sizeof(Rect2D) == sizeof(VkRect2D), "Struct and wrapper have different size!");
+	class DeviceMemory;
+	class DescriptorSet;
+	class PipelineLayout;
+	class ComputePipeline;
+	class GraphicsPipeline;
+	class RayTracingPipeline;
+	class HostVisibleBuffer;
+	class DeviceLocalBuffer;
 }

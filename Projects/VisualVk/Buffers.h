@@ -22,8 +22,8 @@ namespace Vk
 		//!	@brief	Create buffer object.
 		HostVisibleBuffer();
 
-		//!	@brief	Create buffer object and allocate memory.
-		HostVisibleBuffer(VkDeviceSize SizeBytes) : HostVisibleBuffer() { this->Create(SizeBytes); }
+		//!	@brief	Create and initialize immediately.
+		explicit HostVisibleBuffer(LogicalDevice * pLogicalDevice, VkDeviceSize size);
 
 		//!	@brief	Destroy buffer object.
 		~HostVisibleBuffer();
@@ -33,28 +33,30 @@ namespace Vk
 		//!	@brief	Convert to VkBuffer handle.
 		operator VkBuffer() const { return m_hBuffer; }
 
-		//!	@brief	Filling data with 0.
-		VkResult SetZero(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
+		//!	@brief	If buffer handle is valid.
+		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
+
+		//!	@brief	Create a new buffer object.
+		Result Create(LogicalDevice * pLogicalDevice, VkDeviceSize size);
 
 		//!	@brief	Memory copy from device to host.
-		VkResult Read(void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
+		Result Read(void * pHostData, VkDeviceSize offset, VkDeviceSize size);
 
 		//!	@brief	Memory copy from host to device.
-		VkResult Write(const void * pHostData, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
+		Result Write(const void * pHostData, VkDeviceSize offset, VkDeviceSize size);
 
-		//!	@brief	If buffer handle is valid.
-		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
+		//!	@brief	Filling data with 0.
+		Result SetZero(VkDeviceSize offset, VkDeviceSize size);
 
 		//!	@brief	Return the buffer size in bytes.
 		VkDeviceSize Bytes() const { return m_Bytes; }
 
-		//!	@brief	Resize buffer.
-		VkResult Create(VkDeviceSize SizeBytes);
-
-		//!	@brief	Clear buffer.
-		void Release() noexcept;
+		//!	@brief	Destroy the buffer.
+		void Destroy();
 
 	private:
+
+		VkDevice			m_hDevice;
 
 		VkBuffer			m_hBuffer;
 
@@ -87,18 +89,20 @@ namespace Vk
 		operator VkBuffer() const { return m_hBuffer; }
 
 		//!	@brief	If buffer handle is valid.
-		VkBool32 IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
+		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
+
+		//!	@brief	Resize buffer.
+		Result Create(LogicalDevice * pLogicalDevice, VkDeviceSize size);
 
 		//!	@brief	Return the buffer size in bytes.
 		VkDeviceSize Bytes() const { return m_Bytes; }
 
-		//!	@brief	Resize buffer.
-		VkResult Create(VkDeviceSize SizeBytes);
-
-		//!	@brief	Clear buffer.
-		void Release() noexcept;
+		//!	@brief	Destroy the buffer.
+		void Destroy();
 
 	private:
+
+		VkDevice			m_hDevice;
 
 		VkBuffer			m_hBuffer;
 

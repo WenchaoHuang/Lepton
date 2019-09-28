@@ -34,7 +34,7 @@ namespace Vk
 		Result Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> waitSemaphores = nullptr);
 
 		//!	@brief	Reconstruct swap-chain.
-		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, Extent2D imageExtent, uint32_t minImageCount);
+		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount);
 
 		//!	@brief	Retrieve the index of the next available presentable image.
 		uint32_t AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence, uint64_t timeout = VK_DEFAULT_TIMEOUT);
@@ -46,7 +46,7 @@ namespace Vk
 		const std::vector<VkImage> & GetImages() const { return m_hImages; }
 
 		//!	@brief	Return extent of swap-chain image.
-		Extent2D GetImageExtent() const { return m_ImageExtent; }
+		VkExtent2D GetImageExtent() const { return m_ImageExtent; }
 
 		//!	@brief	Return last presentation result.
 		Result GetPresentResult() const { return m_Result; }
@@ -60,7 +60,7 @@ namespace Vk
 
 		uint32_t						m_ImageIndex;
 
-		Extent2D						m_ImageExtent;
+		VkExtent2D						m_ImageExtent;
 
 		VkPresentInfoKHR				m_PresentInfo;
 

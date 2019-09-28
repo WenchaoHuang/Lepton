@@ -3,112 +3,93 @@
 *************************************************************************/
 #pragma once
 
+#include <set>
 #include <map>
-#include "Enums.h"
-#include "Flags.h"
-#include "Handle.h"
-#include "Context.h"
+#include "Vulkan.h"
 
 namespace Vk
 {
-	class DescriptorSet;
-
 	/*********************************************************************
-	************************    DescriptorType    ************************
+	*********************    DescriptorSetLayout    **********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specifies the type of a descriptor in a descriptor set.
+	 *	@brief	Structure specifying a descriptor.
 	 */
-	enum class DescriptorType
+	struct Descriptor
 	{
-		eSampler						= VK_DESCRIPTOR_TYPE_SAMPLER,
-		eSampledImage					= VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE,
-		eStorageImage					= VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
-		eUniformBuffer					= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-		eStorageBuffer					= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
-		eInputAttachment				= VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT,
-		eStorageTexelBuffer				= VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER,
-		eUniformTexelBuffer				= VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER,
-		eCombinedImageSampler			= VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-		eUniformBufferDynamic			= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
-		eStorageBufferDynamic			= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
-		eAccelerationStructureNV		= VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_NV,
-		eInlineUniformBlockEXT			= VK_DESCRIPTOR_TYPE_INLINE_UNIFORM_BLOCK_EXT
+		Flags<ShaderStage>		stageFlags				= ShaderStage::eAllGraphics;
+		DescriptorType			descriptorType			= DescriptorType::eSampler;
+		uint32_t				descriptorCount			= 1;
 	};
 
+	typedef std::map<uint32_t, Descriptor>		DescriptorSetLayout;
+
 	/*********************************************************************
-	******************    DescriptorSetLayoutBinding    ******************
+	**********************    PushConstantRange    ***********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Descriptor set layout binding object.
+	 *	@brief	Structure specifying a push constant range.
 	 */
-	struct LayoutBinding
+	struct PushConstantRange
 	{
-		Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
-		DescriptorType			descriptorType		= DescriptorType::eSampler;
-		uint32_t				descriptorCount		= 1;
+		Flags<ShaderStage>		stageFlags		= ShaderStage::eAllGraphics;
+		uint32_t				offset			= 0;
+		uint32_t				size			= 0;
 	};
 
-	/*********************************************************************
-	**********************    PipelineLayoutInfo    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Creating information of Vulkan pipeline layout object.
-	 */
-	class PipelineLayoutInfo
-	{
-
-	public:
-
-		friend class PipelineLayout;
-
-		//!	@brief	Specify push constant range.
-		void PushConstantRange(Flags<ShaderStage> StageFlags, uint32_t OffsetBytes, uint32_t SizeBytes)
-		{
-			m_ConstantRanges.push_back({ StageFlags, OffsetBytes, SizeBytes });
-		}
-		
-		//!	@brief	Specify descriptor set layout binding.
-		template<uint32_t Binding> void SetBinding(Flags<ShaderStage> StageFlags, DescriptorType eDescriptorType, uint32_t DescriptorCount)
-		{
-			m_LayoutBindings[Binding] = { StageFlags, eDescriptorType, DescriptorCount };
-		}
-
-	private:
-
-		std::vector<VkPushConstantRange>		m_ConstantRanges;
-
-		std::map<uint32_t, LayoutBinding>		m_LayoutBindings;
-	};
+	static_assert(sizeof(PushConstantRange) == sizeof(VkPushConstantRange), "Struct and wrapper have different size!");
 
 	/*********************************************************************
 	************************    PipelineLayout    ************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan pipeline layout object.
+	 *	@brief	Wrapper for Vulkan pipeline layout object.
 	 */
-	class PipelineLayout : public PipelineLayoutH
+	class PipelineLayout
 	{
+		VK_UNIQUE_RESOURCE(PipelineLayout)
 
 	public:
 
-		//!	@brief	Create a new descriptor set object.
-		std::shared_ptr<DescriptorSet> CreateDescriptorSet();
+		//!	@brief	Create pipeline layout object.
+		PipelineLayout();
+
+		//!	@brief	Create and initialize immediately.
+		explicit PipelineLayout(VkDevice hDevice,
+								ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts = nullptr,
+								ArrayProxy<const PushConstantRange> pushConstantRanges = nullptr);
+
+		//!	@brief	Destroy pipeline layout object.
+		~PipelineLayout();
+
+	public:
 
 		//!	@brief	Create a new pipeline layout object.
-		VkResult Create(const PipelineLayoutInfo & CreateInfo = PipelineLayoutInfo());
+		Result Create(VkDevice hDevice,
+					  ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts = nullptr,
+					  ArrayProxy<const PushConstantRange> pushConstantRanges = nullptr);
+
+		//!	@brief	Destroy the descriptor set object.
+		Result DestroyDescriptorSet(DescriptorSet * pDescriptorSet);
+
+		//!	@brief	Create a new descriptor set object.
+		DescriptorSet * CreateDescriptorSet();
+
+		//!	@brief	Destroy the pipeline layout.
+		void Destroy();
 
 	private:
 
-		PipelineLayoutInfo						m_PipelineLayoutInfo;
+		std::set<DescriptorSet*>				m_pDescriptorSets;
 
-		DescriptorSetLayoutH					m_hDescriptorSetLayout;
+		std::vector<PushConstantRange>			m_PushConstantRanges;
 
-		std::vector<VkDescriptorPoolSize>		m_DescriptorPoolSizes;
+		std::vector<DescriptorSetLayout>		m_DescriptorSetLayouts;
+
+		std::vector<VkDescriptorSetLayout>		m_hDescriptorSetLayouts;
 	};
 
 	/*********************************************************************
@@ -116,39 +97,31 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan Descriptor set object.
+	 *	@brief	Wrapper for Vulkan descriptor set object.
 	 */
 	class DescriptorSet
 	{
-
-	public:
-
 		friend class PipelineLayout;
 
+	private:
+
 		//!	@brief	Create descriptor set object.
-		DescriptorSet(VkDescriptorSet hDescriptorSet = VK_NULL_HANDLE,
-					  VkDescriptorPool hDescriptorPool = VK_NULL_HANDLE);
+		DescriptorSet(VkDevice hDevice, VkDescriptorPool hDescriptorPool, VkDescriptorSet hDescriptorSet);
 
 		//!	@brief	Destroy descriptor set object.
 		~DescriptorSet() noexcept;
 
 	public:
 
-		//!	@brief	Return the VkDescriptorSet handle.
+		//!	@brief	Return Vulkan type of this object.
 		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
-
-		//!	@brief	Update the contents of descriptor set.
-		VkBool32 WriteBuffer(uint32_t DstBinding, uint32_t DstArrayElement, VkBuffer hBuffer, VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);
-
-		//!	@brief	Update the content of descriptor set.
-		VkBool32 WriteSampler(uint32_t DstBinding, uint32_t DstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
 
 	private:
 
-		const VkDescriptorSet					m_hDescriptorSet;
+		const VkDevice				m_hDevice;
 
-		const VkDescriptorPool					m_hDescriptorPool;
+		const VkDescriptorSet		m_hDescriptorSet;
 
-		std::map<uint32_t, LayoutBinding>		m_LayoutBindings;
+		const VkDescriptorPool		m_hDescriptorPool;
 	};
 }

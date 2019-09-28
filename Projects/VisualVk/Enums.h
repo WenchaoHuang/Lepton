@@ -255,6 +255,179 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	************************    DescriptorType    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specifies the type of a descriptor in a descriptor set.
+	 */
+	enum class DescriptorType
+	{
+		eSampler						= VK_DESCRIPTOR_TYPE_SAMPLER,
+		eSampledImage					= VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE,
+		eStorageImage					= VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
+		eUniformBuffer					= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		eStorageBuffer					= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+		eInputAttachment				= VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT,
+		eStorageTexelBuffer				= VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER,
+		eUniformTexelBuffer				= VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER,
+		eCombinedImageSampler			= VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+		eUniformBufferDynamic			= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
+		eStorageBufferDynamic			= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
+		eInlineUniformBlockEXT			= VK_DESCRIPTOR_TYPE_INLINE_UNIFORM_BLOCK_EXT,
+		eAccelerationStructureNV		= VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_NV,
+	};
+
+	/*********************************************************************
+	************************    ColorComponent    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask controlling which components are written to the framebuffer.
+	 */
+	enum class ColorComponent : VkFlags
+	{
+		eRed		= VK_COLOR_COMPONENT_R_BIT,
+		eBlue		= VK_COLOR_COMPONENT_B_BIT,
+		eGreen		= VK_COLOR_COMPONENT_G_BIT,
+		eAlpha		= VK_COLOR_COMPONENT_A_BIT,
+	};
+
+	/*********************************************************************
+	***********************    VertexInputRate    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify rate at which vertex attributes are pulled from buffers.
+	 */
+	enum class VertexInputRate
+	{
+		eVertex			= VK_VERTEX_INPUT_RATE_VERTEX,
+		eInstance		= VK_VERTEX_INPUT_RATE_INSTANCE,
+	};
+
+	/*********************************************************************
+	**************************    FrontFace    ***************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Interpret polygon front-facing orientation.
+	 */
+	enum class FrontFace
+	{
+		eClockwise				= VK_FRONT_FACE_CLOCKWISE,
+		eCounterClockwise		= VK_FRONT_FACE_COUNTER_CLOCKWISE,
+	};
+
+	/*********************************************************************
+	***************************    CullMode    ***************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask controlling triangle culling.
+	 */
+	enum class CullMode
+	{
+		eNone				= VK_CULL_MODE_NONE,
+		eBack				= VK_CULL_MODE_BACK_BIT,
+		eFront				= VK_CULL_MODE_FRONT_BIT,
+		eFrontAndBack		= VK_CULL_MODE_FRONT_AND_BACK,
+	};
+
+	/*********************************************************************
+	*************************    PolygonMode    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Control polygon rasterization mode.
+	 */
+	enum class PolygonMode
+	{
+		eFill					= VK_POLYGON_MODE_FILL,
+		eLine					= VK_POLYGON_MODE_LINE,
+		ePoint					= VK_POLYGON_MODE_POINT,
+		eFillRectangleNV		= VK_POLYGON_MODE_FILL_RECTANGLE_NV,
+	};
+
+	/*********************************************************************
+	**********************    PrimitiveTopology    ***********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Supported primitive topologies.
+	 */
+	enum class PrimitiveTopology
+	{
+		eLineList						= VK_PRIMITIVE_TOPOLOGY_LINE_LIST,
+		ePointList						= VK_PRIMITIVE_TOPOLOGY_POINT_LIST,
+		eLineStrip						= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP,
+		ePatchList						= VK_PRIMITIVE_TOPOLOGY_PATCH_LIST,
+		eTriangleFan					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN,
+		eTriangleList					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
+		eTriangleStrip					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP,
+		eLineListWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_LIST_WITH_ADJACENCY,
+		eLineStripWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP_WITH_ADJACENCY,
+		eTriangleListWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST_WITH_ADJACENCY,
+		eTriangleStripWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_WITH_ADJACENCY,
+	};
+
+	/*********************************************************************
+	*************************    BlendFactor    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Framebuffer blending factors.
+	 */
+	enum class BlendFactor
+	{
+		eOne						= VK_BLEND_FACTOR_ONE,
+		eZero						= VK_BLEND_FACTOR_ZERO,
+		eSrcColor					= VK_BLEND_FACTOR_SRC_COLOR,
+		eDstColor					= VK_BLEND_FACTOR_DST_COLOR,
+		eSrcAlpha					= VK_BLEND_FACTOR_SRC_ALPHA,
+		eDstAlpha					= VK_BLEND_FACTOR_DST_ALPHA,
+		eSrc1Color					= VK_BLEND_FACTOR_SRC1_COLOR,
+		eSrc1Alpha					= VK_BLEND_FACTOR_SRC1_ALPHA,
+		eConstantColor				= VK_BLEND_FACTOR_CONSTANT_COLOR,
+		eConstantAlpha				= VK_BLEND_FACTOR_CONSTANT_ALPHA,
+		eSrcAlphaSaturate			= VK_BLEND_FACTOR_SRC_ALPHA_SATURATE,
+		eOneMinusSrcColor			= VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR,
+		eOneMinusDstColor			= VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR,
+		eOneMinusSrcAlpha			= VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
+		eOneMinusDstAlpha			= VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA,
+		eOneMinusSrc1Color			= VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR,
+		eOneMinusSrc1Alpha			= VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA,
+		eOneMinusConstantColor		= VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR,
+		eOneMinusConstantAlpha		= VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA,
+	};
+
+	/*********************************************************************
+	*************************    DynamicState    *************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Indicate which dynamic state is taken from dynamic state commands.
+	 */
+	enum class DynamicState
+	{
+		eScissor							= VK_DYNAMIC_STATE_SCISSOR,
+		eViewport							= VK_DYNAMIC_STATE_VIEWPORT,
+		eLineWidth							= VK_DYNAMIC_STATE_LINE_WIDTH,
+		eDepthBias							= VK_DYNAMIC_STATE_DEPTH_BIAS,
+		eDepthBounds						= VK_DYNAMIC_STATE_DEPTH_BOUNDS,
+		eBlendConstants						= VK_DYNAMIC_STATE_BLEND_CONSTANTS,
+		eStencilWriteMask					= VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
+		eStencilReference					= VK_DYNAMIC_STATE_STENCIL_REFERENCE,
+		eStencilCompareMask					= VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
+		eSampleLocationsEXT					= VK_DYNAMIC_STATE_SAMPLE_LOCATIONS_EXT,
+		eViewportWScalingNV					= VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_NV,
+		eExclusiveScissorNV					= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV,
+		eDiscardRectangleEXT				= VK_DYNAMIC_STATE_DISCARD_RECTANGLE_EXT,
+		eViewportCoarseSampleOrderNV		= VK_DYNAMIC_STATE_VIEWPORT_COARSE_SAMPLE_ORDER_NV,
+		eViewportShadingRatePaletteNV		= VK_DYNAMIC_STATE_VIEWPORT_SHADING_RATE_PALETTE_NV,
+	};
+
+	/*********************************************************************
 	**************************    ImageUsage    **************************
 	*********************************************************************/
 

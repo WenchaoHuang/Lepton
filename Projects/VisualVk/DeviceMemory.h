@@ -41,7 +41,7 @@ namespace Vk
 		Result Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex);
 
 		//!	@brief	Map memory into application address space.
-		Result Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size) { return VK_RESULT_CAST(vkMapMemory(m_hDevice, m_hDeviceMemory, offset, size, 0, ppData)); }
+		Result Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size);
 
 		//!	@brief	Flush mapped memory range.
 		Result Flush(VkDeviceSize OffsetBytes, VkDeviceSize SizeBytes);

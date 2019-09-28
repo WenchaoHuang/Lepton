@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include <memory>
 #include "Vulkan.h"
 
 namespace Vk
@@ -141,7 +142,7 @@ namespace Vk
 		Framebuffer();
 
 		//!	@brief	Create and initialize immediately.
-		explicit Framebuffer(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent);
+		explicit Framebuffer(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
 
 		//!	@brief	Destroy framebuffer object.
 		~Framebuffer();
@@ -149,21 +150,21 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new framebuffer object.
-		Result Create(const RenderPass & renderPass, ArrayProxy<const VkImageView> attachments, Extent2D extent);
+		Result Create(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
 
-		//!	@brief	Return render pass handle.
-		VkRenderPass GetRenderPassHandle() const { return m_hRenderPass; }
+		//!	@brief	Return shared pointer to render pass object.
+		std::shared_ptr<const RenderPass> GetRenderPass() const { return m_spRenderPass; }
 
 		//!	@brief	Return extent of the framebuffer.
-		Extent2D Extent() const { return m_Extent; }
+		VkExtent2D Extent() const { return m_Extent; }
 
 		//!	@brief	Destroy the framebuffer.
 		void Destroy();
 
 	private:
 
-		Extent2D			m_Extent;
+		VkExtent2D								m_Extent;
 
-		VkRenderPass		m_hRenderPass;
+		std::shared_ptr<const RenderPass>		m_spRenderPass;
 	};
 }

@@ -40,11 +40,11 @@ Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uin
 		{
 			this->Free();
 
-			m_hDevice = hDevice;
+			m_SizeBytes = allocationSize;
 
 			m_hDeviceMemory = hMemory;
 
-			m_SizeBytes = allocationSize;
+			m_hDevice = hDevice;
 		}
 	}
 
@@ -75,6 +75,12 @@ Result DeviceMemory::Flush(VkDeviceSize offset, VkDeviceSize size)
 	MemoryRange.size		= size;
 
 	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_hDevice, 1, &MemoryRange));
+}
+
+
+Result DeviceMemory::Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size)
+{
+	return VK_RESULT_CAST(vkMapMemory(m_hDevice, m_hDeviceMemory, offset, size, 0, ppData));
 }
 
 

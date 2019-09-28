@@ -161,30 +161,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CommandBuffer.cpp" />
+    <ClCompile Include="Buffers.cpp" />
+    <ClCompile Include="Commands.cpp" />
     <ClCompile Include="DeviceMemory.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="Images.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="LogicalDevice.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicalDevice.cpp" />
+    <ClCompile Include="PipelineLayout.cpp" />
+    <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Sampler.cpp" />
+    <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Win32Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayProxy.h" />
-    <ClInclude Include="CommandBuffer.h" />
+    <ClInclude Include="Buffers.h" />
+    <ClInclude Include="Commands.h" />
     <ClInclude Include="DeviceMemory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Flags.h" />
     <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="Images.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="LogicalDevice.h" />
     <ClInclude Include="PhysicalDevice.h" />
+    <ClInclude Include="PipelineLayout.h" />
+    <ClInclude Include="Pipelines.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Sampler.h" />
+    <ClInclude Include="ShaderModule.h" />
     <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />
     <ClInclude Include="Vulkan.h" />

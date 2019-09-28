@@ -50,19 +50,19 @@ namespace Vk
 		uint32_t GetMipLevels() const { return m_MipLevels; }
 
 		//!	@brief	Return the image extent.
-		Extent3D GetExtent() const { return m_Extent3D; }
+		VkExtent3D GetExtent() const { return m_Extent; }
 
 		//!	@brief	Return the image format.
 		Format GetFormat() const { return m_eFormat; }
 
-		//!	@brief	Release image.
-		void Release() noexcept;
+		//!	@brief	Destroy the image.
+		void Destroy();
 
 	protected:
 
 		//!	@brief	Create a new image object.
-		Result Create(VkDevice hDevice, Format eFormat, Extent3D extent, uint32_t mipLevels, uint32_t arrayLayers,
-					  SampleCount eSamples, Flags<ImageUsage> usageFlags, VkImageCreateFlags eCreateFlags = 0);
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D extent, uint32_t mipLevels,
+					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> usageFlags, VkImageCreateFlags eCreateFlags = 0);
 
 		//!	@brief	Create a new image view object.
 		Result CreateView(Flags<ImageAspect> aspectFlags);
@@ -75,7 +75,7 @@ namespace Vk
 
 		Format				m_eFormat;
 
-		Extent3D			m_Extent3D;
+		VkExtent3D			m_Extent;
 
 		SampleCount			m_eSamples;
 
@@ -95,7 +95,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image 1D object.
+	 *	@brief	Wrapper for Vulkan image 1D object.
 	 */
 	class Image1D : public BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D>
 	{
@@ -103,11 +103,12 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 1D object.
-		VkResult Create(Format eFormat, uint32_t Width, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width,
+					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, 1, SampleCount::x1, UsageFlags);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, 1, SampleCount::x1, usageFlags);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 
@@ -116,7 +117,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image 1D array object.
+	 *	@brief	Wrapper for Vulkan image 1D array object.
 	 */
 	class Image1DArray : public BaseImage<VK_IMAGE_TYPE_1D, VK_IMAGE_VIEW_TYPE_1D_ARRAY>
 	{
@@ -124,11 +125,12 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 1D array object.
-		VkResult Create(Format eFormat, uint32_t Width, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
+					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Width, 1, 1 }, MipLevels, ArrayLayers, SampleCount::x1, UsageFlags);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, arrayLayers, SampleCount::x1, usageFlags);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 
@@ -137,7 +139,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image 2D object.
+	 *	@brief	Wrapper for Vulkan image 2D object.
 	 */
 	class Image2D : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D>
 	{
@@ -145,11 +147,12 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, SampleCount eSamples, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+					  SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 1, eSamples, UsageFlags);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 1, eSamples, usageFlags);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 
@@ -158,7 +161,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image 2D object.
+	 *	@brief	Wrapper for Vulkan image 2D object.
 	 */
 	class Image2DArray : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_2D_ARRAY>
 	{
@@ -166,11 +169,12 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, SampleCount eSamples, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, ArrayLayers, eSamples, UsageFlags);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, arrayLayers, eSamples, usageFlags);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 
@@ -179,7 +183,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image cube object.
+	 *	@brief	Wrapper for Vulkan image cube object.
 	 */
 	class ImageCube : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE>
 	{
@@ -187,11 +191,13 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube object.
-		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent,
+					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6, SampleCount::x1, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 },
+											   mipLevels, 6, SampleCount::x1, usageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 
@@ -200,7 +206,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image cube array object.
+	 *	@brief	Wrapper for Vulkan image cube array object.
 	 */
 	class ImageCubeArray : public BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>
 	{
@@ -208,11 +214,13 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube array object.
-		VkResult Create(Format eFormat, VkExtent2D Extent2D, uint32_t MipLevels, uint32_t ArrayLayers, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, { Extent2D.width, Extent2D.height, 1 }, MipLevels, 6 * ArrayLayers, SampleCount::x1, UsageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels,
+											   6 * arrayLayers, SampleCount::x1, usageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 
@@ -221,7 +229,7 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan image 3D object.
+	 *	@brief	Wrapper for Vulkan image 3D object.
 	 */
 	class Image3D : public BaseImage<VK_IMAGE_TYPE_3D, VK_IMAGE_VIEW_TYPE_3D>
 	{
@@ -229,11 +237,12 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 3D object.
-		VkResult Create(Format eFormat, VkExtent3D Extent3D, uint32_t MipLevels, Flags<ImageUsage> UsageFlags, Flags<ImageAspect> AspectFlags)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D,
+					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
 		{
-			VkResult eResult = BaseImage::Create(eFormat, Extent3D, MipLevels, 1, SampleCount::x1, UsageFlags);
+			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, Extent3D, mipLevels, 1, SampleCount::x1, usageFlags);
 
-			return (eResult == VK_SUCCESS) ? BaseImage::CreateView(AspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
 		}
 	};
 }

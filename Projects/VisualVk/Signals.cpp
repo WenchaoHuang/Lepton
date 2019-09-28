@@ -39,9 +39,9 @@ Result Fence::Create(VkDevice hDevice)
 		{
 			this->Destroy();
 
-			m_hFence = hFence;
-
 			m_hDevice = hDevice;
+
+			m_hFence = hFence;
 		}
 	}
 
@@ -102,9 +102,9 @@ Result Semaphore::Create(VkDevice hDevice)
 		{
 			this->Destroy();
 
-			m_hDevice = hDevice;
-
 			m_hSemaphore = hSemaphore;
+
+			m_hDevice = hDevice;
 		}
 	}
 
@@ -165,9 +165,9 @@ Result Event::Create(VkDevice hDevice)
 		{
 			this->Destroy();
 
-			m_hEvent = hEvent;
-
 			m_hDevice = hDevice;
+
+			m_hEvent = hEvent;
 		}
 	}
 

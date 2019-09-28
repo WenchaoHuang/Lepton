@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include <memory>
 #include "Vulkan.h"
 
 namespace Vk
@@ -12,22 +13,38 @@ namespace Vk
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan shader module object.
+	 *	@brief	Wrapper for Vulkan shader module object.
 	 */
 	class ShaderModule
 	{
+		VK_UNIQUE_RESOURCE(ShaderModule)
 
 	public:
 
 		//!	@brief	Create shader module object.
-		VkResult Create(const char * Path);
+		ShaderModule();
 
-		//!	@brief	Create shader module object.
-		VkResult Create(const std::vector<char> & BinaryCode);
+		//!	@brief	Create and initialize immediately.
+		explicit ShaderModule(VkDevice hDevice, const char * pFilePath);
 
-	private:
+		//!	@brief	Create and initialize immediately.
+		explicit ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv);
 
-		//!	@brief	Read file as binary data.
-		static std::vector<char> ReadBinary(const char * Path);
+		//!	@brief	Destroy shader module object.
+		~ShaderModule();
+
+	public:
+
+		//!	@brief	Read SPIR-V shader.
+		static std::vector<uint32_t> ReadSPIRV(const char * pFilePath);
+
+		//!	@brief	Create a new shader module.
+		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv);
+
+		//!	@brief	Create a new shader module.
+		Result Create(VkDevice hDevice, const char * pFilePath);
+
+		//!	@brief	Destroy the shader module.
+		void Destroy();
 	};
 }

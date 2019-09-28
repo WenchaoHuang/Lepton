@@ -1,58 +1,110 @@
 /*************************************************************************
 **********************    VisualVk_ShaderModule    ***********************
 *************************************************************************/
-#include "ShaderModule.h"
+
 #include <fstream>
+#include "ShaderModule.h"
 
 using namespace Vk;
 
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-VkResult ShaderModule::Create(const std::vector<char> & BinaryCode)
+ShaderModule::ShaderModule() : m_hDevice(VK_NULL_HANDLE), m_hShaderModule(VK_NULL_HANDLE)
 {
-	VkShaderModuleCreateInfo		CreateInfo = {};
-	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= 0;
-	CreateInfo.codeSize				= BinaryCode.size();
-	CreateInfo.pCode				= reinterpret_cast<const uint32_t*>(BinaryCode.data());
 
-	VkShaderModule hShaderModule = VK_NULL_HANDLE;
+}
 
-	VkResult eResult = Context::GetDevice()->CreateShaderModule(&CreateInfo, &hShaderModule);
 
-	if (eResult == VK_SUCCESS)
+ShaderModule::ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv) : ShaderModule()
+{
+	this->Create(hDevice, code_spv);
+}
+
+
+ShaderModule::ShaderModule(VkDevice hDevice, const char * pFilePath) : ShaderModule()
+{
+	this->Create(hDevice, pFilePath);
+}
+
+
+Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
+{
+	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+
+	if ((hDevice != VK_NULL_HANDLE) && !code_spv.empty())
 	{
-		ShaderModuleH::Replace(Context::GetDeviceHandle(), hShaderModule);
+		VkShaderModuleCreateInfo		CreateInfo = {};
+		CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+		CreateInfo.pNext				= nullptr;
+		CreateInfo.flags				= 0;
+		CreateInfo.codeSize				= sizeof(uint32_t) * code_spv.size();
+		CreateInfo.pCode				= code_spv.data();
+
+		VkShaderModule hShaderModule = VK_NULL_HANDLE;
+
+		eResult = vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule);
+
+		if (eResult == VK_SUCCESS)
+		{
+			this->Destroy();
+
+			m_hShaderModule = hShaderModule;
+
+			m_hDevice = hDevice;
+		}
 	}
 
-	return eResult;
+	return VK_RESULT_CAST(eResult);
 }
 
 
-VkResult ShaderModule::Create(const char * Path)
+Result ShaderModule::Create(VkDevice hDevice, const char * pFilePath)
 {
-	return ShaderModule::Create(ShaderModule::ReadBinary(Path));
+	return this->Create(hDevice, ShaderModule::ReadSPIRV(pFilePath));
 }
 
 
-std::vector<char> ShaderModule::ReadBinary(const char * Path)
+std::vector<uint32_t> ShaderModule::ReadSPIRV(const char * pFilePath)
 {
-	std::ifstream Stream(Path, std::ios::ate | std::ios::binary);
+	std::ifstream Stream(pFilePath, std::ios::ate | std::ios::binary);
 
-	std::vector<char> BinaryCode;
+	std::vector<uint32_t> BinaryCode;
 
 	if (Stream.is_open() && Stream.good())
 	{
-		BinaryCode.resize(static_cast<size_t>(Stream.tellg()));
+		size_t sizeBytes = static_cast<size_t>(Stream.tellg());
 
-		Stream.seekg(0);
+		if (sizeBytes % sizeof(uint32_t) == 0)
+		{
+			BinaryCode.resize(sizeBytes / sizeof(uint32_t));
 
-		Stream.read(BinaryCode.data(), BinaryCode.size());
+			Stream.seekg(0);
+
+			Stream.read(reinterpret_cast<char*>(BinaryCode.data()), sizeBytes);
+		}
 
 		Stream.close();
 	}
 
 	return BinaryCode;
+}
+
+
+void ShaderModule::Destroy()
+{
+	if (m_hShaderModule != VK_NULL_HANDLE)
+	{
+		vkDestroyShaderModule(m_hDevice, m_hShaderModule, nullptr);
+
+		m_hShaderModule = VK_NULL_HANDLE;
+
+		m_hDevice = VK_NULL_HANDLE;
+	}
+}
+
+
+ShaderModule::~ShaderModule()
+{
+	this->Destroy();
 }

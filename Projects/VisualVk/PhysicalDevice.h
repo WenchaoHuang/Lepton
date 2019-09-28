@@ -18,11 +18,9 @@ namespace Vk
 	 */
 	class PhysicalDevice
 	{
+		friend class Instance;
 
 	private:
-
-		//!	@brief	Created by instance only.
-		friend class Instance;
 
 		//!	@brief	Create physical device object.
 		PhysicalDevice(Instance * pInstance, VkPhysicalDevice hPhysicalDevice);

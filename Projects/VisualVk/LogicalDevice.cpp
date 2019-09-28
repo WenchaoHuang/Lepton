@@ -1,10 +1,11 @@
 /*************************************************************************
 **********************    VisualVk_LogicalDevice    **********************
 *************************************************************************/
-#include "PhysicalDevice.h"
-#include "LogicalDevice.h"
-#include "CommandBuffer.h"
+
 #include <algorithm>
+#include "Commands.h"
+#include "LogicalDevice.h"
+#include "PhysicalDevice.h"
 
 using namespace Vk;
 
@@ -107,33 +108,33 @@ CommandQueue * LogicalDevice::InstallQueue(uint32_t familyIndex, float priority)
 }
 
 
-VkBool32 LogicalDevice::EnableExtension(const char * pExtensionName)
+bool LogicalDevice::EnableExtension(const char * pExtensionName)
 {
-	if (m_hDevice != VK_NULL_HANDLE)			return VK_FALSE;
+	if (m_hDevice != VK_NULL_HANDLE)			return false;
 
 	if (m_pPhysicalDevice->IsExtensionAvailable(pExtensionName))
 	{
 		m_EnabledExtensions.insert(pExtensionName);
 
-		return VK_TRUE;
+		return true;
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 
-VkBool32 LogicalDevice::EnableLayer(const char * pLayerName)
+bool LogicalDevice::EnableLayer(const char * pLayerName)
 {
-	if (m_hDevice != VK_NULL_HANDLE)		return VK_FALSE;
+	if (m_hDevice != VK_NULL_HANDLE)		return false;
 
 	if (m_pPhysicalDevice->IsLayerAvailable(pLayerName))
 	{
 		m_EnabledLayers.insert(pLayerName);
 
-		return VK_TRUE;
+		return true;
 	}
 
-	return VK_FALSE;
+	return false;
 }
 
 

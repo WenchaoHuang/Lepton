@@ -1,9 +1,10 @@
 /*************************************************************************
 *********************    VisualVk_PhysicalDevice    **********************
 *************************************************************************/
-#include "PhysicalDevice.h"
+
+#include "Commands.h"
 #include "LogicalDevice.h"
-#include "CommandBuffer.h"
+#include "PhysicalDevice.h"
 
 using namespace Vk;
 

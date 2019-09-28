@@ -1,6 +1,10 @@
 
-
 #include "Instance.h"
+#include "LogicalDevice.h"
+#include "PhysicalDevice.h"
+#include "ShaderModule.h"
+#include "PipelineLayout.h"
+#include "Pipelines.h"
 
 using namespace Vk;
 
@@ -15,4 +19,13 @@ int main()
 
 	Instance	instance;
 	instance.Create(pExtensions, pLayers);
+
+	PhysicalDevice * pPhysicalDevice = instance.GetPhysicalDevices()[0];
+	LogicalDevice * pLogicalDevice = pPhysicalDevice->CreateLogicalDevice();
+
+	pLogicalDevice->InstallQueue(0);
+	pLogicalDevice->StartUp();
+
+	PipelineLayout		pipelineLayout(pLogicalDevice->GetHandle());
+	pipelineLayout.Destroy();
 }

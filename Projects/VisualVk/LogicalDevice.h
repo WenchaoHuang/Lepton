@@ -8,8 +8,6 @@
 
 namespace Vk
 {
-	using VkSwapchainKHRCreateInfo = VkSwapchainCreateInfoKHR;
-
 	/*********************************************************************
 	************************    LogicalDevice    *************************
 	*********************************************************************/
@@ -19,11 +17,9 @@ namespace Vk
 	 */
 	class LogicalDevice
 	{
+		friend class PhysicalDevice;
 
 	private:
-
-		//!	@brief	Created by physical device only.
-		friend class PhysicalDevice;
 
 		//!	@brief	Create logical device object.
 		LogicalDevice(PhysicalDevice * pPhysicalDevice);
@@ -46,9 +42,9 @@ namespace Vk
 
 		Result StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures = nullptr);
 
-		VkBool32 EnableLayer(const char * pLayerName);
+		bool EnableLayer(const char * pLayerName);
 
-		VkBool32 EnableExtension(const char * pExtensionName);
+		bool EnableExtension(const char * pExtensionName);
 
 		PhysicalDevice * GetPhysicalDevice() { return m_pPhysicalDevice; }
 
