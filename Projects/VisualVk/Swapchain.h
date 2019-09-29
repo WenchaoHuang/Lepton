@@ -37,7 +37,7 @@ namespace Vk
 		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount);
 
 		//!	@brief	Retrieve the index of the next available presentable image.
-		uint32_t AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence, uint64_t timeout = VK_DEFAULT_TIMEOUT);
+		uint32_t AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE, uint64_t timeout = VK_DEFAULT_TIMEOUT);
 
 		//!	@brief	Return swap-chain image-view handles.
 		const std::vector<VkImageView> & GetImageViews() const { return m_hImageViews; }
