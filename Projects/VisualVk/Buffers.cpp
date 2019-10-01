@@ -11,7 +11,7 @@ using namespace Vk;
 /*************************************************************************
 ************************    HostVisibleBuffer    *************************
 *************************************************************************/
-HostVisibleBuffer::HostVisibleBuffer() : m_hDevice(VK_NULL_HANDLE), m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
+HostVisibleBuffer::HostVisibleBuffer() : m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
 {
 
 }
@@ -61,8 +61,6 @@ Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 			this->Destroy();
 
 			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
-
-			m_hDevice = pLogicalDevice->GetHandle();
 
 			m_hBuffer = hNewBuffer;
 
@@ -129,9 +127,7 @@ void HostVisibleBuffer::Destroy()
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		vkDestroyBuffer(m_hDevice, m_hBuffer, nullptr);
-
-		m_hDevice = VK_NULL_HANDLE;
+		vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
 
 		m_hBuffer = VK_NULL_HANDLE;
 
@@ -151,7 +147,7 @@ HostVisibleBuffer::~HostVisibleBuffer()
 /*************************************************************************
 ************************    DeviceLocalBuffer    *************************
 *************************************************************************/
-DeviceLocalBuffer::DeviceLocalBuffer() : m_hDevice(VK_NULL_HANDLE), m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
+DeviceLocalBuffer::DeviceLocalBuffer() : m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
 {
 
 }
@@ -196,8 +192,6 @@ Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 
 			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
 
-			m_hDevice = pLogicalDevice->GetHandle();
-
 			m_hBuffer = hNewBuffer;
 
 			m_Bytes = size;
@@ -212,9 +206,7 @@ void DeviceLocalBuffer::Destroy()
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		vkDestroyBuffer(m_hDevice, m_hBuffer, nullptr);
-
-		m_hDevice = VK_NULL_HANDLE;
+		vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
 
 		m_hBuffer = VK_NULL_HANDLE;
 

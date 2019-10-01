@@ -69,6 +69,20 @@ namespace Vk
 	};
 
 	/*********************************************************************
+	**********************    CommandBufferUsage    **********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Bitmask specifying usage behavior for command buffer.
+	 */
+	enum CommandBufferUsage
+	{
+		eOneTimeSubmit			= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
+		eSimultaneousUse		= VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT,
+		eRenderPassContinue		= VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT,
+	};
+
+	/*********************************************************************
 	**************************    ColorSpace    **************************
 	*********************************************************************/
 
@@ -464,9 +478,6 @@ namespace Vk
 		ePlane1					= VK_IMAGE_ASPECT_PLANE_1_BIT,
 		ePlane2					= VK_IMAGE_ASPECT_PLANE_2_BIT,
 		eMetadata				= VK_IMAGE_ASPECT_METADATA_BIT,
-		ePlane0KHR				= VK_IMAGE_ASPECT_PLANE_0_BIT_KHR,
-		ePlane1KHR				= VK_IMAGE_ASPECT_PLANE_1_BIT_KHR,
-		ePlane2KHR				= VK_IMAGE_ASPECT_PLANE_2_BIT_KHR,
 		eMemoryPlane0EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT_EXT,
 		eMemoryPlane1EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_1_BIT_EXT,
 		eMemoryPlane2EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_2_BIT_EXT,
@@ -712,6 +723,19 @@ namespace Vk
 	{
 		eStore			= VK_ATTACHMENT_STORE_OP_STORE,
 		eDontCare		= VK_ATTACHMENT_STORE_OP_DONT_CARE,
+	};
+
+	/*********************************************************************
+	***********************    SubpassContents    ************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Specify how commands in the first subpass of a render pass are provided.
+	 */
+	enum class SubpassContents
+	{
+		eInline							= VK_SUBPASS_CONTENTS_INLINE,
+		eSecondaryCommandBuffers		= VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS,
 	};
 
 	/*********************************************************************

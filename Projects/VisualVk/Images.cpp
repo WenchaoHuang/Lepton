@@ -20,8 +20,7 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 ****************************    BaseImage    *****************************
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
-	:	m_hDevice(VK_NULL_HANDLE), m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE),
-		m_eFormat(Format::eUndefined), m_eImageLayout(ImageLayout::eUndefined),
+	:	m_hDevice(VK_NULL_HANDLE), m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined),
 		m_eSamples(SampleCount::x1), m_MipLevels(0), m_ArrayLayers(0)
 {
 	m_Extent = { 0, 0, 0 };
@@ -35,7 +34,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 												uint32_t mipLevels,
 												uint32_t arrayLayers,
 												SampleCount eSamples,
-												Flags<ImageUsage> usageFlags,
+												Flags<ImageUsage> eUsages,
 												VkImageCreateFlags eCreateFlags)
 {
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
@@ -51,7 +50,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 	CreateInfo.arrayLayers					= arrayLayers;
 	CreateInfo.samples						= static_cast<VkSampleCountFlagBits>(eSamples);
 	CreateInfo.tiling						= VK_IMAGE_TILING_OPTIMAL;
-	CreateInfo.usage						= usageFlags;
+	CreateInfo.usage						= eUsages;
 	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount		= 0;
 	CreateInfo.pQueueFamilyIndices			= nullptr;
@@ -81,8 +80,6 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 
 			vkBindImageMemory(pLogicalDevice->GetHandle(), hNewImage, m_DeviceMemory, 0);
 
-			m_eImageLayout = ImageLayout::eUndefined;
-
 			m_hDevice = pLogicalDevice->GetHandle();
 
 			m_ArrayLayers = arrayLayers;
@@ -103,7 +100,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> Result BaseImage<eImageType, eViewType>::CreateView(Flags<ImageAspect> aspectFlags)
+template<VkImageType eImageType, VkImageViewType eViewType> Result BaseImage<eImageType, eViewType>::CreateView(Flags<ImageAspect> eAspects)
 {
 	if (m_hImage == VK_NULL_HANDLE)					return Result::eErrorInvalidExternalHandle;
 
@@ -120,7 +117,7 @@ template<VkImageType eImageType, VkImageViewType eViewType> Result BaseImage<eIm
 	CreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
 	CreateInfo.subresourceRange.baseArrayLayer		= 0;
 	CreateInfo.subresourceRange.baseMipLevel		= 0;
-	CreateInfo.subresourceRange.aspectMask			= aspectFlags;
+	CreateInfo.subresourceRange.aspectMask			= eAspects;
 	CreateInfo.subresourceRange.layerCount			= m_ArrayLayers;
 	CreateInfo.subresourceRange.levelCount			= m_MipLevels;
 
@@ -148,8 +145,6 @@ template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImag
 		vkDestroyImage(m_hDevice, m_hImage, nullptr);
 
 		vkDestroyImageView(m_hDevice, m_hImageView, nullptr);
-
-		m_eImageLayout = ImageLayout::eUndefined;
 
 		m_eFormat = Format::eUndefined;
 

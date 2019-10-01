@@ -38,31 +38,17 @@ namespace Vk
 		//!	@brief	Wait for a device to become idle.
 		Result WaitIdle() { return VK_RESULT_CAST(vkDeviceWaitIdle(m_hDevice)); }
 
-		CommandQueue * InstallQueue(uint32_t familyIndex, float priority = 0.0f);
+		CommandQueue * PreInstallQueue(uint32_t familyIndex, float priority = 0.0f);
 
 		Result StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures = nullptr);
 
-		bool EnableLayer(const char * pLayerName);
-
+		const PhysicalDevice * GetPhysicalDevice() const { return m_pPhysicalDevice; }
+		
+		PhysicalDevice * GetPhysicalDevice() { return m_pPhysicalDevice; }
+		
 		bool EnableExtension(const char * pExtensionName);
 
-		PhysicalDevice * GetPhysicalDevice() { return m_pPhysicalDevice; }
-
-		const PhysicalDevice * GetPhysicalDevice() const { return m_pPhysicalDevice; }
-
-		//!	@brief	Return the pointer to command queue.
-		CommandQueue * GetCommandQueue(uint32_t familyIndex, uint32_t queueIndex)
-		{
-			if (familyIndex < m_PerFamilQueues.size())
-			{
-				if (queueIndex < m_PerFamilQueues[familyIndex].size())
-				{
-					return m_PerFamilQueues[familyIndex][queueIndex];
-				}
-			}
-
-			return nullptr;
-		}
+		bool EnableLayer(const char * pLayerName);
 
 	private:
 

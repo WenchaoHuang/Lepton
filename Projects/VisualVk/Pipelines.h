@@ -205,18 +205,18 @@ namespace Vk
 
 	public:
 
-		ShaderStagesInfo							shaderStages;
-		DynamicStateInfo							dynamicStates;
-		ViewportStateInfo							viewportState;
-		ColorBlendStateInfo							colorBlendState;
-		VertexInputStateInfo						vertexInputState;
-		MultisampleStateInfo						multisampleState;
-		DepthStencilStateInfo						depthStencilState;
-		TessellationStateInfo						tessellationState;
-		InputAssemblyStateInfo						inputAssemblyState;
-		RasterizationStateInfo						rasterizationState;
-		std::shared_ptr<const PipelineLayout>		spPipelineLayout;
-		std::shared_ptr<const RenderPass>			spRenderPass;
+		ShaderStagesInfo					shaderStages;
+		DynamicStateInfo					dynamicStates;
+		ViewportStateInfo					viewportState;
+		ColorBlendStateInfo					colorBlendState;
+		VertexInputStateInfo				vertexInputState;
+		MultisampleStateInfo				multisampleState;
+		DepthStencilStateInfo				depthStencilState;
+		TessellationStateInfo				tessellationState;
+		InputAssemblyStateInfo				inputAssemblyState;
+		RasterizationStateInfo				rasterizationState;
+		std::shared_ptr<PipelineLayout>		spPipelineLayout;
+		std::shared_ptr<RenderPass>			spRenderPass;
 	};
 
 	/*********************************************************************

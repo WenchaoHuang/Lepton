@@ -69,8 +69,11 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Return Vulkan type of this object.
+		//!	@brief	Convert to VkSurfaceKHR.
 		operator VkSurfaceKHR() const { return m_hSurface; }
+
+		//!	@brief	Return Vulkan type of this object.
+		VkSurfaceKHR GetHandle() const { return m_hSurface; }
 
 		//!	@brief	If Vulkan handle is valid.
 		bool IsValid() const { return m_hSurface != VK_NULL_HANDLE; }

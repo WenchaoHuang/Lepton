@@ -30,8 +30,11 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkBuffer handle.
+		//!	@brief	Convert to VkBuffer.
 		operator VkBuffer() const { return m_hBuffer; }
+
+		//!	@brief	Return Vulkan type of this object.
+		VkBuffer GetHandle() const { return m_hBuffer; }
 
 		//!	@brief	If buffer handle is valid.
 		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
@@ -55,8 +58,6 @@ namespace Vk
 		void Destroy();
 
 	private:
-
-		VkDevice			m_hDevice;
 
 		VkBuffer			m_hBuffer;
 
@@ -85,8 +86,11 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkBuffer handle.
+		//!	@brief	Convert to VkBuffer.
 		operator VkBuffer() const { return m_hBuffer; }
+
+		//!	@brief	Return Vulkan type of this object.
+		VkBuffer GetHandle() const { return m_hBuffer; }
 
 		//!	@brief	If buffer handle is valid.
 		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
@@ -101,8 +105,6 @@ namespace Vk
 		void Destroy();
 
 	private:
-
-		VkDevice			m_hDevice;
 
 		VkBuffer			m_hBuffer;
 

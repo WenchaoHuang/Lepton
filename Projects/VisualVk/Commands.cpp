@@ -1,33 +1,35 @@
 /*************************************************************************
 ************************    VisualVk_Commands    *************************
 *************************************************************************/
+
 #include "Commands.h"
+#include "Framebuffer.h"
 
 using namespace Vk;
 
 /*************************************************************************
 ***************************    CommandQueue    ***************************
 *************************************************************************/
-CommandQueue::CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilityFlags, float priority)
-	: m_hDevice(VK_NULL_HANDLE), m_hQueue(VK_NULL_HANDLE), m_FamilyIndex(familyIndex), m_CapabilityFlags(eCapabilityFlags), m_Priority(priority)
+CommandQueue::CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilities, float priority)
+	: m_hDevice(VK_NULL_HANDLE), m_hQueue(VK_NULL_HANDLE), m_FamilyIndex(familyIndex), m_eCapabilities(eCapabilities), m_Priority(priority)
 {
 
 }
 
 
-CommandPool * CommandQueue::CreateCommandPool(Flags<CommandPoolUsageBehavior> eBehaviors)
+CommandPool * CommandQueue::CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors)
 {
 	VkCommandPoolCreateInfo			CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= eBehaviors;
+	CreateInfo.flags				= eUsageBehaviors;
 	CreateInfo.queueFamilyIndex		= m_FamilyIndex;
 
 	VkCommandPool hCommandPool = VK_NULL_HANDLE;
 
 	if (vkCreateCommandPool(m_hDevice, &CreateInfo, nullptr, &hCommandPool) == VK_SUCCESS)
 	{
-		CommandPool * pCommandPool = new CommandPool(m_hDevice, m_hQueue, hCommandPool);
+		CommandPool * pCommandPool = new CommandPool(m_hDevice, m_hQueue, hCommandPool, eUsageBehaviors);
 
 		m_pCommandPools.insert(pCommandPool);
 
@@ -63,8 +65,8 @@ CommandQueue::~CommandQueue() noexcept
 /*************************************************************************
 ***************************    CommandPool    ****************************
 *************************************************************************/
-CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool)
-	: m_hDevice(hDevice), m_hQueue(hQueue), m_hCommandPool(hCommnadPool)
+CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, Flags<CommandPoolUsageBehavior> eUsageBehaviors)
+	: m_hDevice(hDevice), m_hQueue(hQueue), m_hCommandPool(hCommnadPool), m_eUsageBehaviors(eUsageBehaviors)
 {
 
 }
@@ -139,6 +141,22 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 	m_SubmitInfo.pCommandBuffers			= &m_hCommandBuffer;
 	m_SubmitInfo.signalSemaphoreCount		= 0;
 	m_SubmitInfo.pSignalSemaphores			= nullptr;
+}
+
+
+void CommandBuffer::CmdBeginRenderPass(const Framebuffer * pFramebuffer, VkRect2D renderArea,
+									   ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents)
+{
+	VkRenderPassBeginInfo			BeginInfo = {};
+	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	BeginInfo.pNext					= nullptr;
+	BeginInfo.renderPass			= pFramebuffer->GetRenderPass() != nullptr ? pFramebuffer->GetRenderPass()->GetHandle() : VK_NULL_HANDLE;
+	BeginInfo.framebuffer			= pFramebuffer->GetHandle();
+	BeginInfo.renderArea			= renderArea;
+	BeginInfo.clearValueCount		= pClearValues.size();
+	BeginInfo.pClearValues			= reinterpret_cast<const VkClearValue*>(pClearValues.data());
+
+	vkCmdBeginRenderPass(m_hCommandBuffer, &BeginInfo, static_cast<VkSubpassContents>(eContents));
 }
 
 

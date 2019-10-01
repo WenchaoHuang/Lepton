@@ -50,23 +50,23 @@ Result PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
 }
 
 
-VkFormatProperties PhysicalDevice::GetFormatProperties(VkFormat eFormat) const
+VkFormatProperties PhysicalDevice::GetFormatProperties(Format eFormat) const
 {
 	VkFormatProperties FormatProperties = {};
 
-	vkGetPhysicalDeviceFormatProperties(m_hPhysicalDevice, eFormat, &FormatProperties);
+	vkGetPhysicalDeviceFormatProperties(m_hPhysicalDevice, static_cast<VkFormat>(eFormat), &FormatProperties);
 
 	return FormatProperties;
 }
 
 
-uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> ePropertyFlags) const
+uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const
 {
 	for (uint32_t i = 0; i < m_MemoryProperties.memoryTypeCount; i++)
 	{
 		if ((memoryTypeBits & 0x0001u) == 0x0001u)
 		{
-			if ((m_MemoryProperties.memoryTypes[i].propertyFlags & ePropertyFlags) == ePropertyFlags)
+			if ((m_MemoryProperties.memoryTypes[i].propertyFlags & eProperties) == eProperties)
 			{
 				return i;
 			}

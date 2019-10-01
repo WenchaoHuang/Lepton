@@ -9,6 +9,47 @@
 namespace Vk
 {
 	/*********************************************************************
+	********************    ImageSubresourceRange    *********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Structure specifying an image subresource range.
+	 */
+	struct ImageSubresourceRange
+	{
+		Flags<ImageAspect>		aspectMask			= 0;
+		uint32_t				baseMipLevel		= 0;
+		uint32_t				levelCount			= 1;
+		uint32_t				baseArrayLayer		= 0;
+		uint32_t				layerCount			= 1;
+	};
+
+	static_assert(sizeof(ImageSubresourceRange) == sizeof(VkImageSubresourceRange), "Struct and wrapper have different size!");
+
+	/*********************************************************************
+	********************    ImageSubresourceRange    *********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Structure specifying the parameters of an image memory barrier.
+	 */
+	struct ImageMemoryBarrier
+	{
+		const VkStructureType		sType					= VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		const void * const			pNext					= nullptr;
+		Flags<MemoryAccess>			srcAccessMask			= 0;
+		Flags<MemoryAccess>			dstAccessMask			= 0;
+		ImageLayout					oldLayout				= ImageLayout::eUndefined;
+		ImageLayout					newLayout				= ImageLayout::eUndefined;
+		const uint32_t				srcQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
+		const uint32_t				dstQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
+		VkImage						image					= VK_NULL_HANDLE;
+		ImageSubresourceRange		subresourceRange		= {};
+	};
+
+	static_assert(sizeof(ImageMemoryBarrier) == sizeof(VkImageMemoryBarrier), "Struct and wrapper have different size!");
+
+	/*********************************************************************
 	*************************    CommandQueue    *************************
 	*********************************************************************/
 
@@ -22,7 +63,7 @@ namespace Vk
 	private:
 
 		//!	@brief	Create command queue object.
-		CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilityFlags, float priority);
+		CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilities, float priority);
 
 		//!	@brief	Destroy command queue object.
 		~CommandQueue() noexcept;
@@ -45,13 +86,10 @@ namespace Vk
 		bool IsReady() const { return m_hQueue != VK_NULL_HANDLE; }
 
 		//!	@brief	If this queue has the specify capability.
-		bool Has(QueueCapability eCapability) const { return (m_CapabilityFlags & eCapability) != 0; }
+		bool Has(QueueCapability eCapabilities) const { return (m_eCapabilities & eCapabilities) != 0; }
 
 		//!	@brief	Create a new command pool object.
-		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
-
-		//!	@brief	Queue an image for presentation.
-		Result Present(const VkPresentInfoKHR * pPresentInfo) { return VK_RESULT_CAST(vkQueuePresentKHR(m_hQueue, pPresentInfo)); }
+		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
 
 		//!	@brief	Destroy a command pool object.
 		Result DestroyCommandPool(CommandPool * pCommandPool);
@@ -68,7 +106,7 @@ namespace Vk
 
 		std::set<CommandPool*>			m_pCommandPools;
 
-		const Flags<QueueCapability>	m_CapabilityFlags;
+		const Flags<QueueCapability>	m_eCapabilities;
 	};
 
 	/*********************************************************************
@@ -85,7 +123,7 @@ namespace Vk
 	private:
 
 		//!	@brief	Create command pool object.
-		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool);
+		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, Flags<CommandPoolUsageBehavior> eUsageBehaviors);
 
 		//!	@brief	Destroy command pool object.
 		~CommandPool() noexcept;
@@ -106,13 +144,15 @@ namespace Vk
 
 	private:
 
-		const VkQueue					m_hQueue;
+		const VkQueue								m_hQueue;
 
-		const VkDevice					m_hDevice;
+		const VkDevice								m_hDevice;
 
-		const VkCommandPool				m_hCommandPool;
+		const VkCommandPool							m_hCommandPool;
 
-		std::set<CommandBuffer*>		m_pCommandBuffers;
+		std::set<CommandBuffer*>					m_pCommandBuffers;
+		
+		const Flags<CommandPoolUsageBehavior>		m_eUsageBehaviors;
 	};
 
 	/*********************************************************************
@@ -140,21 +180,21 @@ namespace Vk
 		VkCommandBuffer GetHandle() const { return m_hCommandBuffer; }
 
 		//!	@brief	Finish recording command buffer.
-		VkResult EndRecord() { return vkEndCommandBuffer(m_hCommandBuffer); }
+		Result EndRecord() { return VK_RESULT_CAST(vkEndCommandBuffer(m_hCommandBuffer)); }
 
 		//!	@brief	Start recording command buffer.
-		VkResult BeginRecord(VkCommandBufferUsageFlags eUsageFlags = 0)
+		Result BeginRecord(Flags<CommandBufferUsage> eUsages = 0)
 		{
-			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, eUsageFlags, nullptr };
+			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, eUsages, nullptr };
 
-			return vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo);
+			return VK_RESULT_CAST(vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo));
 		}
 
 		//!	@brief	Reset command buffer to the initial state.
-		VkResult Reset(VkCommandBufferResetFlags eResetFlags = 0) { return vkResetCommandBuffer(m_hCommandBuffer, eResetFlags); }
+		Result Reset(VkCommandBufferResetFlags eResetFlags = 0) { return VK_RESULT_CAST(vkResetCommandBuffer(m_hCommandBuffer, eResetFlags)); }
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		VkResult Submit(VkSemaphore hWaitSemaphore, Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		Result Submit(VkSemaphore hWaitSemaphore, Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
 			m_SubmitInfo.signalSemaphoreCount	= uint32_t(hSignalSemaphore != VK_NULL_HANDLE);
 			m_SubmitInfo.waitSemaphoreCount		= uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
@@ -162,11 +202,11 @@ namespace Vk
 			m_SubmitInfo.pSignalSemaphores		= &hSignalSemaphore;
 			m_SubmitInfo.pWaitSemaphores		= &hWaitSemaphore;
 
-			return vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence);
+			return VK_RESULT_CAST(vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence));
 		}
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		VkResult Submit(VkFence hFence = VK_NULL_HANDLE)
+		Result Submit(VkFence hFence = VK_NULL_HANDLE)
 		{
 			m_SubmitInfo.signalSemaphoreCount	= 0;
 			m_SubmitInfo.waitSemaphoreCount		= 0;
@@ -174,174 +214,94 @@ namespace Vk
 			m_SubmitInfo.pSignalSemaphores		= nullptr;
 			m_SubmitInfo.pWaitSemaphores		= nullptr;
 
-			return vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence);
+			return VK_RESULT_CAST(vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence));
 		}
 
 	public:
 
 		//!	@brief	End the current render pass.
-		void CmdEndRenderPass() { vkCmdEndRenderPass(m_hCommandBuffer); }
-
-		//!	@brief	Copy data between buffer regions.
-		void CmdCopyBuffer(VkBuffer hDstBuffer, VkBuffer hSrcBuffer, uint32_t RegionCount, const VkBufferCopy * pRegions)
+		void CmdEndRenderPass()
 		{
-			vkCmdCopyBuffer(m_hCommandBuffer, hSrcBuffer, hDstBuffer, RegionCount, pRegions);
-		}
-
-		//!	@brief	Copy data from a buffer into an image.
-		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, uint32_t RegionCount, const VkBufferImageCopy * pRegions)
-		{
-			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), RegionCount, pRegions);
-		}
-
-		//!	@brief	Insert a memory dependency.
-		void CmdPipelineBarrier(Flags<PipelineStage> SrcStageMask,
-								Flags<PipelineStage> DstStageMask, Flags<MemoryDependency> DependencyFlags,
-								uint32_t MemoryBarrierCount, const VkMemoryBarrier * pMemoryBarriers,
-								uint32_t BufferMemoryBarrierCount, const VkBufferMemoryBarrier * pBufferMemoryBarriers,
-								uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
-		{
-			vkCmdPipelineBarrier(m_hCommandBuffer, SrcStageMask, DstStageMask, DependencyFlags,
-								 MemoryBarrierCount, pMemoryBarriers, BufferMemoryBarrierCount, pBufferMemoryBarriers,
-								 ImageMemoryBarrierCount, pImageMemoryBarriers);
-		}
-
-		//!	@brief	Insert a image memory dependency.
-		void CmdPipelineImageMemoryBarrier(Flags<PipelineStage> SrcStageMask,
-										   Flags<PipelineStage> DstStageMask, Flags<MemoryDependency> DependencyFlags,
-										   uint32_t ImageMemoryBarrierCount, const VkImageMemoryBarrier * pImageMemoryBarriers)
-		{
-			vkCmdPipelineBarrier(m_hCommandBuffer, SrcStageMask, DstStageMask, DependencyFlags, 0, nullptr, 0, nullptr, ImageMemoryBarrierCount, pImageMemoryBarriers);
-		}
-
-		//!	@brief	Clear regions of a color image.
-		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue * pColor,
-								uint32_t RangeCount, const VkImageSubresourceRange * pRanges)
-		{
-			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), pColor, RangeCount, pRanges);
-		}
-
-		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(const VkRenderPassBeginInfo * pRenderPassBegin)
-		{
-			vkCmdBeginRenderPass(m_hCommandBuffer, pRenderPassBegin, VK_SUBPASS_CONTENTS_INLINE);
-		}
-
-		//!	@brief	Bind a graphics pipeline object to a command buffer.
-		void CmdBindGraphicsPipeline(VkPipeline hPipeline)
-		{
-			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, hPipeline);
-		}
-
-		//!	@brief	Bind a compute pipeline object to a command buffer.
-		void CmdBindComputePipeline(VkPipeline hPipeline)
-		{
-			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, hPipeline);
-		}
-
-		//!	@brief	Bind a ray-tracing pipeline object to a command buffer.
-		void CmdBindRayTracingPipeline(VkPipeline hPipeline)
-		{
-			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_RAY_TRACING_NV, hPipeline);
-		}
-
-		//!	@brief	Draw primitives.
-		void CmdDraw(uint32_t VertexCount, uint32_t InstanceCount, uint32_t FirstVertex, uint32_t FirstInstance)
-		{
-			vkCmdDraw(m_hCommandBuffer, VertexCount, InstanceCount, FirstVertex, FirstInstance);
-		}
-
-		//!	@brief	Set the viewport on a command buffer.
-		void CmdSetViewport(VkViewport Viewport) { vkCmdSetViewport(m_hCommandBuffer, 0, 1, &Viewport); }
-
-		//!	@brief	Set the viewport on a command buffer.
-		void CmdSetViewport(float X, float Y, float Width, float Height, float MinDepth = 0.0f, float MaxDepth = 1.0f)
-		{
-			VkViewport Viewport = { X, Y, Width, Height, MinDepth, MaxDepth };
-
-			vkCmdSetViewport(m_hCommandBuffer, 0, 1, &Viewport);
-		}
-
-		//!	@brief	Set the viewports on a command buffer.
-		void CmdSetViewports(uint32_t FirstViewport, uint32_t ViewportCount, const VkViewport * pViewports)
-		{
-			vkCmdSetViewport(m_hCommandBuffer, FirstViewport, ViewportCount, pViewports);
-		}
-
-		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
-		void CmdSetScissor(VkRect2D Scissor) { vkCmdSetScissor(m_hCommandBuffer, 0, 1, &Scissor); }
-
-		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
-		void CmdSetScissor(VkOffset2D Offset, VkExtent2D Extent) { VkRect2D Scissor = { Offset, Extent }; vkCmdSetScissor(m_hCommandBuffer, 0, 1, &Scissor); }
-
-		//!	@brief	Set the dynamic scissors rectangles on a command buffer.
-		void CmdSetScissors(uint32_t FirstScissor, uint32_t ScissorCount, const VkRect2D * pScissors)
-		{
-			vkCmdSetScissor(m_hCommandBuffer, FirstScissor, ScissorCount, pScissors);
-		}
-
-		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSet(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hLayout, VkDescriptorSet hDescriptorSet)
-		{
-			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hLayout, 0, 1, &hDescriptorSet, 0, nullptr);
-		}
-
-		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint,
-								   VkPipelineLayout hLayout, uint32_t FirstSet,
-								   uint32_t DescriptorSetCount, const VkDescriptorSet * pDescriptorSets,
-								   uint32_t DynamicOffsetCount, const uint32_t * pDynamicOffsets)
-		{
-			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hLayout,
-									FirstSet, DescriptorSetCount, pDescriptorSets, DynamicOffsetCount, pDynamicOffsets);
-		}
-
-		//!	@brief	Issue an indexed draw into a command buffer.
-		void CmdDrawIndexed(uint32_t IndexCount, uint32_t InstanceCount, uint32_t FirstIndex = 0, int32_t VertexOffset = 0, uint32_t FirstInstance = 0)
-		{
-			vkCmdDrawIndexed(m_hCommandBuffer, IndexCount, InstanceCount, FirstIndex, VertexOffset, FirstInstance);
-		}
-
-		//!	@brief	Bind vertex buffers to a command buffer.
-		void CmdBindVertexBuffers(uint32_t FirstBinding, uint32_t BindingCount, const VkBuffer * pBuffers, const VkDeviceSize * pOffsets)
-		{
-			vkCmdBindVertexBuffers(m_hCommandBuffer, FirstBinding, BindingCount, pBuffers, pOffsets);
-		}
-
-		//!	@brief	Bind vertex buffer to a command buffer.
-		void CmdBindVertexBuffer(uint32_t Binding, VkBuffer hBuffer, VkDeviceSize Offset = 0)
-		{
-			vkCmdBindVertexBuffers(m_hCommandBuffer, Binding, 1, &hBuffer, &Offset);
-		}
-
-		//!	@brief	Bind an uint16 index buffer to a command buffer.
-		void CmdBindIndexBufferUint16(VkBuffer hBuffer, VkDeviceSize Offset = 0)
-		{
-			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, VK_INDEX_TYPE_UINT16);
-		}
-
-		//!	@brief	Bind an uint32 index buffer to a command buffer.
-		void CmdBindIndexBufferUint32(VkBuffer hBuffer, VkDeviceSize Offset = 0)
-		{
-			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, Offset, VK_INDEX_TYPE_UINT32);
-		}
-		
-		//!	@brief	Execute a secondary command buffer from a primary command buffer.
-		void CmdExecuteCommands(uint32_t CommandBufferCount, const VkCommandBuffer * pCommandBuffers)
-		{
-			vkCmdExecuteCommands(m_hCommandBuffer, CommandBufferCount, pCommandBuffers);
-		}
-
-		//!	@brief	Set the depth bias dynamic state.
-		void CmdSetDepthBias(float DepthBiasConstantFactor, float DepthBiasClamp, float DepthBiasSlopeFactor)
-		{
-			vkCmdSetDepthBias(m_hCommandBuffer, DepthBiasConstantFactor, DepthBiasClamp, DepthBiasSlopeFactor);
+			vkCmdEndRenderPass(m_hCommandBuffer);
 		}
 
 		//!	@brief	Set the dynamic line width state.
-		void CmdSetLineWidth(float LineWidth)
+		void CmdSetLineWidth(float lineWidth)
 		{
-			vkCmdSetLineWidth(m_hCommandBuffer, LineWidth);
+			vkCmdSetLineWidth(m_hCommandBuffer, lineWidth);
+		}
+
+		//!	@brief	Set the values of blend constants.
+		void CmdSetBlendConstants(const float blendConstants[4])
+		{
+			vkCmdSetBlendConstants(m_hCommandBuffer, blendConstants);
+		}
+
+		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
+		void CmdSetScissor(ArrayProxy<const VkRect2D> pScissors, uint32_t firstScissor = 0)
+		{
+			vkCmdSetScissor(m_hCommandBuffer, firstScissor, pScissors.size(), pScissors.data());
+		}
+
+		//!	@brief	Set the viewport on a command buffer.
+		void CmdSetViewport(ArrayProxy<const VkViewport> pViewports, uint32_t firstViewport = 0)
+		{
+			vkCmdSetViewport(m_hCommandBuffer, firstViewport, pViewports.size(), pViewports.data());
+		}
+
+		//!	@brief	Issue an indirect draw into a command buffer.
+		void CmdDrawIndirect(VkBuffer hBuffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride)
+		{
+			vkCmdDrawIndirect(m_hCommandBuffer, hBuffer, offset, drawCount, stride);
+		}
+
+		//!	@brief	Set the depth bias dynamic state.
+		void CmdSetDepthBias(float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor)
+		{
+			vkCmdSetDepthBias(m_hCommandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
+		}
+
+		//!	@brief	Draw primitives.
+		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex = 0, uint32_t firstInstance = 0)
+		{
+			vkCmdDraw(m_hCommandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
+		}
+
+		//!	@brief	Begin a new render pass.
+		void CmdBeginRenderPass(const Framebuffer * pFramebuffer, VkRect2D renderArea,
+								ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
+
+		//!	@brief	Insert a image memory dependency.
+		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask,
+								   Flags<MemoryDependency> dependencyFlags, ArrayProxy<const ImageMemoryBarrier> pImageMemoryBarriers)
+		{
+			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr,
+								 pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
+		}
+
+		//!	@brief	 Update the values of push constants.
+		void CmdPushConstants(VkPipelineLayout hPipelineLayout, Flags<ShaderStage> eStages, uint32_t offset, uint32_t size, const void * pValues)
+		{
+			vkCmdPushConstants(m_hCommandBuffer, hPipelineLayout, eStages, offset, size, pValues);
+		}
+
+		//!	@brief	 Issue an indexed draw into a command buffer.
+		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex = 0, int32_t vertexOffset = 0, uint32_t firstInstance = 0)
+		{
+			vkCmdDrawIndexed(m_hCommandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+		}
+
+		//!	@brief	Clear regions of a color image.
+		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<const ImageSubresourceRange> pRanges)
+		{
+			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), &color,
+								 pRanges.size(), reinterpret_cast<const VkImageSubresourceRange*>(pRanges.data()));
+		}
+
+		//!	@brief	Copy data from a buffer into an image.
+		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const VkBufferImageCopy> pRegions)
+		{
+			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), pRegions.data());
 		}
 
 	private:

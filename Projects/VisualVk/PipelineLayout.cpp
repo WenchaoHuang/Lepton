@@ -8,25 +8,12 @@ using namespace Vk;
 /*************************************************************************
 **************************    PipelineLayout    **************************
 *************************************************************************/
-PipelineLayout::PipelineLayout() : m_hDevice(VK_NULL_HANDLE), m_hPipelineLayout(VK_NULL_HANDLE)
-{
-
-}
-
-
 PipelineLayout::PipelineLayout(VkDevice hDevice,
 							   ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts,
-							   ArrayProxy<const PushConstantRange> pushConstantRanges) : PipelineLayout()
+							   ArrayProxy<const PushConstantRange> pushConstantRanges)
+	: m_hDevice(VK_NULL_HANDLE), m_hPipelineLayout(VK_NULL_HANDLE)
 {
-	this->Create(hDevice, descriptorSetLayouts, pushConstantRanges);
-}
-
-
-Result PipelineLayout::Create(VkDevice hDevice,
-							  ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts,
-							  ArrayProxy<const PushConstantRange> pushConstantRanges)
-{
-	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidExternalHandle;
+	if (hDevice == VK_NULL_HANDLE)		return;
 
 	VkResult eResult = VK_SUCCESS;
 
@@ -88,8 +75,6 @@ Result PipelineLayout::Create(VkDevice hDevice,
 
 		if (eResult == VK_SUCCESS)
 		{
-			this->Destroy();
-
 			for (uint32_t i = 0; i < descriptorSetLayouts.size(); i++)
 			{
 				m_DescriptorSetLayouts.emplace_back(descriptorSetLayouts[i]);
@@ -106,7 +91,7 @@ Result PipelineLayout::Create(VkDevice hDevice,
 
 			m_hDevice = hDevice;
 
-			return Result::eSuccess;
+			return;
 		}
 	}
 
@@ -114,8 +99,6 @@ Result PipelineLayout::Create(VkDevice hDevice,
 	{
 		vkDestroyDescriptorSetLayout(hDevice, hDescriptorSetLayouts[i], nullptr);
 	}
-
-	return VK_RESULT_CAST(eResult);
 }
 
 
@@ -184,7 +167,7 @@ Result PipelineLayout::DestroyDescriptorSet(DescriptorSet * pDescriptor)
 }
 
 
-void PipelineLayout::Destroy()
+PipelineLayout::~PipelineLayout()
 {
 	if (m_hPipelineLayout != VK_NULL_HANDLE)
 	{
@@ -216,12 +199,6 @@ void PipelineLayout::Destroy()
 
 		m_pDescriptorSets.clear();
 	}
-}
-
-
-PipelineLayout::~PipelineLayout()
-{
-	this->Destroy();
 }
 
 

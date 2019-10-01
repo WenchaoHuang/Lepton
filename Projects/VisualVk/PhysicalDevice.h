@@ -55,7 +55,7 @@ namespace Vk
 		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
 
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> ePropertyFlags) const;
+		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const;
 
 		//!	@brief	Return set of logical devices.
 		const std::set<LogicalDevice*> GetLogicalDevices() const { return m_pLogicalDevices; }
@@ -79,7 +79,7 @@ namespace Vk
 		uint32_t GetComputeQueueFamilyIndex() const;
 
 		//!	@brief	Return the format properties.
-		VkFormatProperties GetFormatProperties(VkFormat eFormat) const;
+		VkFormatProperties GetFormatProperties(Format eFormat) const;
 
 		//!	@brief	Destroy a existed logical device.
 		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);

@@ -34,7 +34,7 @@ namespace Vk
 		explicit ArrayProxy(uint32_t count, Type * ptr) : m_Count(count), m_Ptr(ptr) {}
 
 		//!	@brief	Constructed by std::initializer_list.
-		ArrayProxy(std::initializer_list<Type> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
+		ArrayProxy(std::initializer_list<Type> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.end()) {}
 
 		//!	@brief	Constructed by std::array.
 		template<size_t N> ArrayProxy(std::array<Type, N> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
@@ -95,7 +95,7 @@ namespace Vk
 		explicit ArrayProxy(uint32_t count, const Type * ptr) : m_Count(count), m_Ptr(ptr) {}
 
 		//!	@brief	Constructed by std::initializer_list.
-		ArrayProxy(const std::initializer_list<Type> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
+		ArrayProxy(const std::initializer_list<Type> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.end()) {}
 		
 		//!	@brief	Constructed by std::array.
 		template<size_t N> ArrayProxy(const std::array<Type, N> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}

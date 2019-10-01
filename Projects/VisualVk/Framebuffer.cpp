@@ -8,28 +8,12 @@ using namespace Vk;
 /*************************************************************************
 ****************************    RenderPass    ****************************
 *************************************************************************/
-RenderPass::RenderPass() : m_hDevice(VK_NULL_HANDLE), m_hRenderPass(VK_NULL_HANDLE)
-{
-
-}
-
-
 RenderPass::RenderPass(VkDevice hDevice,
 					   ArrayProxy<const AttachmentDescription> attachmentDescriptions,
 					   ArrayProxy<const SubpassDescription> subpassDescriptions,
-					   ArrayProxy<const SubpassDependency> subpassDependencies) : RenderPass()
+					   ArrayProxy<const SubpassDependency> subpassDependencies)
+	: m_hDevice(VK_NULL_HANDLE), m_hRenderPass(VK_NULL_HANDLE)
 {
-	this->Create(hDevice, attachmentDescriptions, subpassDescriptions, subpassDependencies);
-}
-
-
-Result RenderPass::Create(VkDevice hDevice, 
-						  ArrayProxy<const AttachmentDescription> attachmentDescriptions,
-						  ArrayProxy<const SubpassDescription> subpassDescriptions,
-						  ArrayProxy<const SubpassDependency> subpassDependencies)
-{
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
-
 	if (hDevice != VK_NULL_HANDLE)
 	{
 		VkRenderPassCreateInfo			CreateInfo = {};
@@ -45,23 +29,17 @@ Result RenderPass::Create(VkDevice hDevice,
 
 		VkRenderPass hRenderPass = VK_NULL_HANDLE;
 
-		eResult = vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass);
-
-		if (eResult == VK_SUCCESS)
+		if (vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass) == VK_SUCCESS)
 		{
-			this->Destroy();
-
 			m_hRenderPass = hRenderPass;
 
 			m_hDevice = hDevice;
 		}
 	}
-
-	return static_cast<Result>(eResult);
 }
 
 
-void RenderPass::Destroy()
+RenderPass::~RenderPass()
 {
 	if (m_hRenderPass != VK_NULL_HANDLE)
 	{
@@ -74,12 +52,6 @@ void RenderPass::Destroy()
 }
 
 
-RenderPass::~RenderPass()
-{
-	this->Destroy();
-}
-
-
 /*************************************************************************
 ***************************    Framebuffer    ****************************
 *************************************************************************/
@@ -89,13 +61,13 @@ Framebuffer::Framebuffer() : m_hDevice(VK_NULL_HANDLE), m_hFramebuffer(VK_NULL_H
 }
 
 
-Framebuffer::Framebuffer(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent) : Framebuffer()
+Framebuffer::Framebuffer(std::shared_ptr<RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent) : Framebuffer()
 {
 	this->Create(spRenderPass, attachments, extent);
 }
 
 
-Result Framebuffer::Create(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent)
+Result Framebuffer::Create(std::shared_ptr<RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent)
 {
 	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
 

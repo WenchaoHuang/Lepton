@@ -28,17 +28,14 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkImage handle.
+		//!	@brief	Convert to VkImage.
 		operator VkImage() const { return m_hImage; }
 
-		//!	@brief	Convert to VkImageView handle.
+		//!	@brief	Convert to VkImageView.
 		operator VkImageView() const { return m_hImageView; }
 
 		//!	@brief	Whether image handle is valid.
 		bool IsValid() const { return m_hImage != VK_NULL_HANDLE; }
-
-		//!	@brief	Return image layout.
-		ImageLayout GetImageLayout() const { return m_eImageLayout; }
 
 		//!	@brief	Return the count of samples.
 		SampleCount GetSampleCount() const { return m_eSamples; }
@@ -62,10 +59,10 @@ namespace Vk
 
 		//!	@brief	Create a new image object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D extent, uint32_t mipLevels,
-					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> usageFlags, VkImageCreateFlags eCreateFlags = 0);
+					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> eUsages, VkImageCreateFlags eCreateFlags = 0);
 
 		//!	@brief	Create a new image view object.
-		Result CreateView(Flags<ImageAspect> aspectFlags);
+		Result CreateView(Flags<ImageAspect> eAspects);
 
 	private:
 
@@ -80,8 +77,6 @@ namespace Vk
 		SampleCount			m_eSamples;
 
 		VkImageView			m_hImageView;
-
-		ImageLayout			m_eImageLayout;
 
 		DeviceMemory		m_DeviceMemory;
 
@@ -104,11 +99,11 @@ namespace Vk
 
 		//!	@brief	Create a new image 1D object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width,
-					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, 1, SampleCount::x1, usageFlags);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 
@@ -126,11 +121,11 @@ namespace Vk
 
 		//!	@brief	Create a new image 1D array object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
-					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, arrayLayers, SampleCount::x1, usageFlags);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 
@@ -148,11 +143,11 @@ namespace Vk
 
 		//!	@brief	Create a new image 2D object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
-					  SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 1, eSamples, usageFlags);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 
@@ -170,11 +165,11 @@ namespace Vk
 
 		//!	@brief	Create a new image 2D object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
-					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, arrayLayers, eSamples, usageFlags);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 
@@ -192,12 +187,12 @@ namespace Vk
 
 		//!	@brief	Create a new image cube object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent,
-					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 },
 											   mipLevels, 6, SampleCount::x1, usageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 
@@ -215,12 +210,12 @@ namespace Vk
 
 		//!	@brief	Create a new image cube array object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
-					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels,
 											   6 * arrayLayers, SampleCount::x1, usageFlags, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 
@@ -238,11 +233,11 @@ namespace Vk
 
 		//!	@brief	Create a new image 3D object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D,
-					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> aspectFlags)
+					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			Result eResult = BaseImage::Create(pLogicalDevice, eFormat, Extent3D, mipLevels, 1, SampleCount::x1, usageFlags);
 
-			return (eResult == Result::eSuccess) ? BaseImage::CreateView(aspectFlags) : eResult;
+			return (eResult == Result::eSuccess) ? BaseImage::CreateView(eAspects) : eResult;
 		}
 	};
 }

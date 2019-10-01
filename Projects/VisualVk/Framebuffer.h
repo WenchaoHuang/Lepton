@@ -101,9 +101,6 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create render pass object.
-		RenderPass();
-
 		//!	@brief	Create and initialize immediately.
 		explicit RenderPass(VkDevice hDevice,
 							ArrayProxy<const AttachmentDescription> attachmentDescriptions,
@@ -112,17 +109,6 @@ namespace Vk
 
 		//!	@brief	Destroy render pass object.
 		~RenderPass();
-
-	public:
-
-		//!	@brief	Create a new render pass object.
-		Result Create(VkDevice hDevice,
-					  ArrayProxy<const AttachmentDescription> attachmentDescriptions,
-					  ArrayProxy<const SubpassDescription> subpassDescriptions,
-					  ArrayProxy<const SubpassDependency> subpassDependencies);
-
-		//!	@brief	Destroy the render pass.
-		void Destroy();
 	};
 
 	/*********************************************************************
@@ -142,7 +128,7 @@ namespace Vk
 		Framebuffer();
 
 		//!	@brief	Create and initialize immediately.
-		explicit Framebuffer(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
+		explicit Framebuffer(std::shared_ptr<RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
 
 		//!	@brief	Destroy framebuffer object.
 		~Framebuffer();
@@ -150,10 +136,10 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new framebuffer object.
-		Result Create(std::shared_ptr<const RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
+		Result Create(std::shared_ptr<RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
 
 		//!	@brief	Return shared pointer to render pass object.
-		std::shared_ptr<const RenderPass> GetRenderPass() const { return m_spRenderPass; }
+		std::shared_ptr<RenderPass> GetRenderPass() const { return m_spRenderPass; }
 
 		//!	@brief	Return extent of the framebuffer.
 		VkExtent2D Extent() const { return m_Extent; }
@@ -163,8 +149,8 @@ namespace Vk
 
 	private:
 
-		VkExtent2D								m_Extent;
+		VkExtent2D						m_Extent;
 
-		std::shared_ptr<const RenderPass>		m_spRenderPass;
+		std::shared_ptr<RenderPass>		m_spRenderPass;
 	};
 }

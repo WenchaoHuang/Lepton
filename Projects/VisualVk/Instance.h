@@ -49,7 +49,7 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new instance object.
-		Result Create(ArrayProxy<const char*> extensions = nullptr, ArrayProxy<const char*> layers = nullptr);
+		Result Create(ArrayProxy<const char*> pExtensions = nullptr, ArrayProxy<const char*> pLayers = nullptr);
 
 		//!	@brief	Return array of physical devices.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }

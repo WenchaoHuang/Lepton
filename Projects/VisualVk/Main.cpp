@@ -23,9 +23,9 @@ int main()
 	PhysicalDevice * pPhysicalDevice = instance.GetPhysicalDevices()[0];
 	LogicalDevice * pLogicalDevice = pPhysicalDevice->CreateLogicalDevice();
 
-	pLogicalDevice->InstallQueue(0);
+	pLogicalDevice->PreInstallQueue(0);
 	pLogicalDevice->StartUp();
 
 	PipelineLayout		pipelineLayout(pLogicalDevice->GetHandle());
-	pipelineLayout.Destroy();
+//	pipelineLayout.Destroy();
 }

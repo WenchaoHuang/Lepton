@@ -10,28 +10,9 @@ using namespace Vk;
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-ShaderModule::ShaderModule() : m_hDevice(VK_NULL_HANDLE), m_hShaderModule(VK_NULL_HANDLE)
+ShaderModule::ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
+	: m_hDevice(VK_NULL_HANDLE), m_hShaderModule(VK_NULL_HANDLE)
 {
-
-}
-
-
-ShaderModule::ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv) : ShaderModule()
-{
-	this->Create(hDevice, code_spv);
-}
-
-
-ShaderModule::ShaderModule(VkDevice hDevice, const char * pFilePath) : ShaderModule()
-{
-	this->Create(hDevice, pFilePath);
-}
-
-
-Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
-{
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
-
 	if ((hDevice != VK_NULL_HANDLE) && !code_spv.empty())
 	{
 		VkShaderModuleCreateInfo		CreateInfo = {};
@@ -43,25 +24,13 @@ Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_sp
 
 		VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-		eResult = vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule);
-
-		if (eResult == VK_SUCCESS)
+		if (vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule) == VK_SUCCESS)
 		{
-			this->Destroy();
-
 			m_hShaderModule = hShaderModule;
 
 			m_hDevice = hDevice;
 		}
 	}
-
-	return VK_RESULT_CAST(eResult);
-}
-
-
-Result ShaderModule::Create(VkDevice hDevice, const char * pFilePath)
-{
-	return this->Create(hDevice, ShaderModule::ReadSPIRV(pFilePath));
 }
 
 
@@ -91,7 +60,7 @@ std::vector<uint32_t> ShaderModule::ReadSPIRV(const char * pFilePath)
 }
 
 
-void ShaderModule::Destroy()
+ShaderModule::~ShaderModule()
 {
 	if (m_hShaderModule != VK_NULL_HANDLE)
 	{
@@ -101,10 +70,4 @@ void ShaderModule::Destroy()
 
 		m_hDevice = VK_NULL_HANDLE;
 	}
-}
-
-
-ShaderModule::~ShaderModule()
-{
-	this->Destroy();
 }

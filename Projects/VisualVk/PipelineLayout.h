@@ -54,9 +54,6 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create pipeline layout object.
-		PipelineLayout();
-
 		//!	@brief	Create and initialize immediately.
 		explicit PipelineLayout(VkDevice hDevice,
 								ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts = nullptr,
@@ -67,19 +64,11 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Create a new pipeline layout object.
-		Result Create(VkDevice hDevice,
-					  ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts = nullptr,
-					  ArrayProxy<const PushConstantRange> pushConstantRanges = nullptr);
-
 		//!	@brief	Destroy the descriptor set object.
 		Result DestroyDescriptorSet(DescriptorSet * pDescriptorSet);
 
 		//!	@brief	Create a new descriptor set object.
 		DescriptorSet * CreateDescriptorSet();
-
-		//!	@brief	Destroy the pipeline layout.
-		void Destroy();
 
 	private:
 
