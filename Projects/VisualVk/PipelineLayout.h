@@ -68,7 +68,7 @@ namespace Vk
 		Result DestroyDescriptorSet(DescriptorSet * pDescriptorSet);
 
 		//!	@brief	Create a new descriptor set object.
-		DescriptorSet * CreateDescriptorSet();
+		DescriptorSet * CreateDescriptorSet(uint32_t setIndex);
 
 	private:
 
@@ -95,22 +95,29 @@ namespace Vk
 	private:
 
 		//!	@brief	Create descriptor set object.
-		DescriptorSet(VkDevice hDevice, VkDescriptorPool hDescriptorPool, VkDescriptorSet hDescriptorSet);
+		explicit DescriptorSet(VkDevice hDevice,
+							   VkDescriptorPool hDescriptorPool,
+							   VkDescriptorSet hDescriptorSet,
+							   DescriptorSetLayout descriptorSetLayout);
 
 		//!	@brief	Destroy descriptor set object.
-		~DescriptorSet() noexcept;
+		~DescriptorSet();
 
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
 		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
+		void UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
+
 	private:
 
-		const VkDevice				m_hDevice;
+		const VkDevice					m_hDevice;
 
-		const VkDescriptorSet		m_hDescriptorSet;
+		const VkDescriptorSet			m_hDescriptorSet;
 
-		const VkDescriptorPool		m_hDescriptorPool;
+		const VkDescriptorPool			m_hDescriptorPool;
+
+		DescriptorSetLayout				m_DescriptorSetLayout;
 	};
 }

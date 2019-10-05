@@ -13,106 +13,129 @@ PipelineLayout::PipelineLayout(VkDevice hDevice,
 							   ArrayProxy<const PushConstantRange> pushConstantRanges)
 	: m_hDevice(VK_NULL_HANDLE), m_hPipelineLayout(VK_NULL_HANDLE)
 {
-	if (hDevice == VK_NULL_HANDLE)		return;
-
-	VkResult eResult = VK_SUCCESS;
-
-	std::vector<VkDescriptorSetLayout>	hDescriptorSetLayouts;
-
-	for (uint32_t i = 0; i < descriptorSetLayouts.size(); i++)
+	if (hDevice != VK_NULL_HANDLE)
 	{
-		std::vector<VkDescriptorSetLayoutBinding>	layoutBindings;
+		VkResult eResult = VK_SUCCESS;
 
-		layoutBindings.reserve(descriptorSetLayouts.size());
+		std::vector<VkDescriptorSetLayout> hDescriptorSetLayouts;
 
-		for (auto iter : descriptorSetLayouts[i])
+		hDescriptorSetLayouts.reserve(descriptorSetLayouts.size());
+
+		for (uint32_t i = 0; i < descriptorSetLayouts.size(); i++)
 		{
-			VkDescriptorSetLayoutBinding		newBinding = {};
-			newBinding.binding					= iter.first;
-			newBinding.descriptorType			= static_cast<VkDescriptorType>(iter.second.descriptorType);
-			newBinding.descriptorCount			= iter.second.descriptorCount;
-			newBinding.stageFlags				= iter.second.stageFlags;
-			newBinding.pImmutableSamplers		= nullptr;
+			std::vector<VkDescriptorSetLayoutBinding> layoutBindings;
 
-			layoutBindings.push_back(newBinding);
+			layoutBindings.reserve(descriptorSetLayouts.size());
+
+			for (auto iter : descriptorSetLayouts[i])
+			{
+				VkDescriptorSetLayoutBinding		layoutBinding = {};
+				layoutBinding.binding				= iter.first;
+				layoutBinding.descriptorType		= static_cast<VkDescriptorType>(iter.second.descriptorType);
+				layoutBinding.descriptorCount		= iter.second.descriptorCount;
+				layoutBinding.stageFlags			= iter.second.stageFlags;
+				layoutBinding.pImmutableSamplers	= nullptr;
+
+				layoutBindings.emplace_back(layoutBinding);
+			}
+
+			VkDescriptorSetLayoutCreateInfo		CreateInfo = {};
+			CreateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+			CreateInfo.pNext					= nullptr;
+			CreateInfo.flags					= 0;
+			CreateInfo.bindingCount				= static_cast<uint32_t>(layoutBindings.size());
+			CreateInfo.pBindings				= layoutBindings.data();
+
+			VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
+
+			eResult = vkCreateDescriptorSetLayout(hDevice, &CreateInfo, nullptr, &hDescriptorSetLayout);
+
+			if (eResult == VK_SUCCESS)
+			{
+				hDescriptorSetLayouts.emplace_back(hDescriptorSetLayout);
+			}
+			else
+			{
+				break;
+			}
 		}
-
-		VkDescriptorSetLayoutCreateInfo		CreateInfo = {};
-		CreateInfo.sType					= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-		CreateInfo.pNext					= nullptr;
-		CreateInfo.flags					= 0;
-		CreateInfo.bindingCount				= static_cast<uint32_t>(layoutBindings.size());
-		CreateInfo.pBindings				= layoutBindings.data();
-
-		VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
-
-		eResult = vkCreateDescriptorSetLayout(hDevice, &CreateInfo, nullptr, &hDescriptorSetLayout);
 
 		if (eResult == VK_SUCCESS)
 		{
-			hDescriptorSetLayouts.push_back(hDescriptorSetLayout);
-		}
-		else
-		{
-			break;
-		}
-	}
+			VkPipelineLayoutCreateInfo				CreateInfo = {};
+			CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+			CreateInfo.pNext						= nullptr;
+			CreateInfo.flags						= 0;
+			CreateInfo.setLayoutCount				= static_cast<uint32_t>(hDescriptorSetLayouts.size());
+			CreateInfo.pSetLayouts					= hDescriptorSetLayouts.data();
+			CreateInfo.pushConstantRangeCount		= pushConstantRanges.size();
+			CreateInfo.pPushConstantRanges			= reinterpret_cast<const VkPushConstantRange*>(pushConstantRanges.data());
 
-	if (eResult == VK_SUCCESS)
-	{
-		VkPipelineLayoutCreateInfo				CreateInfo = {};
-		CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-		CreateInfo.pNext						= nullptr;
-		CreateInfo.flags						= 0;
-		CreateInfo.setLayoutCount				= static_cast<uint32_t>(hDescriptorSetLayouts.size());
-		CreateInfo.pSetLayouts					= hDescriptorSetLayouts.data();
-		CreateInfo.pushConstantRangeCount		= pushConstantRanges.size();
-		CreateInfo.pPushConstantRanges			= reinterpret_cast<const VkPushConstantRange*>(pushConstantRanges.data());
+			VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
 
-		VkPipelineLayout hPipelineLayout = VK_NULL_HANDLE;
+			eResult = vkCreatePipelineLayout(hDevice, &CreateInfo, nullptr, &hPipelineLayout);
 
-		eResult = vkCreatePipelineLayout(hDevice, &CreateInfo, nullptr, &hPipelineLayout);
-
-		if (eResult == VK_SUCCESS)
-		{
-			for (uint32_t i = 0; i < descriptorSetLayouts.size(); i++)
+			if (eResult == VK_SUCCESS)
 			{
-				m_DescriptorSetLayouts.emplace_back(descriptorSetLayouts[i]);
+				for (uint32_t i = 0; i < descriptorSetLayouts.size(); i++)
+				{
+					m_DescriptorSetLayouts.emplace_back(descriptorSetLayouts[i]);
+				}
+
+				for (uint32_t i = 0; i < pushConstantRanges.size(); i++)
+				{
+					m_PushConstantRanges.emplace_back(static_cast<PushConstantRange>(pushConstantRanges[i]));
+				}
+
+				m_hDescriptorSetLayouts.swap(hDescriptorSetLayouts);
+
+				m_hPipelineLayout = hPipelineLayout;
+
+				m_hDevice = hDevice;
+
+				return;
 			}
-
-			for (uint32_t i = 0; i < pushConstantRanges.size(); i++)
-			{
-				m_PushConstantRanges.emplace_back(static_cast<PushConstantRange>(pushConstantRanges[i]));
-			}
-
-			m_hDescriptorSetLayouts.swap(hDescriptorSetLayouts);
-
-			m_hPipelineLayout = hPipelineLayout;
-
-			m_hDevice = hDevice;
-
-			return;
 		}
-	}
-
-	for (size_t i = 0; i < hDescriptorSetLayouts.size(); i++)
-	{
-		vkDestroyDescriptorSetLayout(hDevice, hDescriptorSetLayouts[i], nullptr);
+		
+		for (size_t i = 0; i < hDescriptorSetLayouts.size(); i++)
+		{
+			vkDestroyDescriptorSetLayout(hDevice, hDescriptorSetLayouts[i], nullptr);
+		}
 	}
 }
 
 
-DescriptorSet * PipelineLayout::CreateDescriptorSet()
+DescriptorSet * PipelineLayout::CreateDescriptorSet(uint32_t setIndex)
 {
-	if (m_hDevice != VK_NULL_HANDLE)
+	if ((m_hDevice != VK_NULL_HANDLE) && (setIndex < m_hDescriptorSetLayouts.size()))
 	{
+		std::map<DescriptorType, uint32_t> descriptorCounts;
+
+		for (auto iter : m_DescriptorSetLayouts[setIndex])
+		{
+			descriptorCounts[iter.second.descriptorType] += iter.second.descriptorCount;
+		}
+
+		std::vector<VkDescriptorPoolSize> poolSizes;
+
+		poolSizes.reserve(descriptorCounts.size());
+
+		for (auto iter : descriptorCounts)
+		{
+			VkDescriptorPoolSize		poolSize;
+			poolSize.type				= static_cast<VkDescriptorType>(iter.first);
+			poolSize.descriptorCount	= iter.second;
+
+			poolSizes.emplace_back(poolSize);
+		}
+
 		VkDescriptorPoolCreateInfo		CreateInfo = {};
 		CreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 		CreateInfo.pNext				= nullptr;
-		CreateInfo.flags				= 0;
+		CreateInfo.flags				= VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 		CreateInfo.maxSets				= 1;
-		CreateInfo.poolSizeCount		;	//!	TODO
-		CreateInfo.pPoolSizes			;	//!	TODO
+		CreateInfo.poolSizeCount		= static_cast<uint32_t>(poolSizes.size());
+		CreateInfo.pPoolSizes			= poolSizes.data();
 
 		VkDescriptorPool hDescriptorPool = VK_NULL_HANDLE;
 
@@ -125,7 +148,7 @@ DescriptorSet * PipelineLayout::CreateDescriptorSet()
 			AllocateInfo.pNext					= nullptr;
 			AllocateInfo.descriptorPool			= hDescriptorPool;
 			AllocateInfo.descriptorSetCount		= 1;
-			AllocateInfo.pSetLayouts			;	//!	TODO
+			AllocateInfo.pSetLayouts			= &m_hDescriptorSetLayouts[setIndex];
 
 			VkDescriptorSet hDescriptorSet = VK_NULL_HANDLE;
 
@@ -137,7 +160,7 @@ DescriptorSet * PipelineLayout::CreateDescriptorSet()
 			}
 			else
 			{
-				DescriptorSet * pDescriptorSet = new DescriptorSet(m_hDevice, hDescriptorPool, hDescriptorSet);
+				DescriptorSet * pDescriptorSet = new DescriptorSet(m_hDevice, hDescriptorPool, hDescriptorSet, m_DescriptorSetLayouts[setIndex]);
 
 				m_pDescriptorSets.insert(pDescriptorSet);
 
@@ -205,14 +228,38 @@ PipelineLayout::~PipelineLayout()
 /*************************************************************************
 **************************    DescriptorSet    ***************************
 *************************************************************************/
-DescriptorSet::DescriptorSet(VkDevice hDevice, VkDescriptorPool hDescriptorPool, VkDescriptorSet hDescriptorSet)
-	: m_hDevice(hDevice), m_hDescriptorPool(hDescriptorPool), m_hDescriptorSet(hDescriptorSet)
+DescriptorSet::DescriptorSet(VkDevice hDevice, VkDescriptorPool hDescriptorPool,
+							 VkDescriptorSet hDescriptorSet, DescriptorSetLayout descriptorSetLayout)
+	: m_hDevice(hDevice), m_hDescriptorPool(hDescriptorPool), m_hDescriptorSet(hDescriptorSet), m_DescriptorSetLayout(descriptorSetLayout)
 {
 
 }
 
 
-DescriptorSet::~DescriptorSet() noexcept
+void DescriptorSet::UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
+{
+	VkDescriptorImageInfo					ImageInfo = {};
+	ImageInfo.sampler						= hSampler;
+	ImageInfo.imageView						= hImageView;
+	ImageInfo.imageLayout					= static_cast<VkImageLayout>(eImageLayout);
+
+	VkWriteDescriptorSet					DescriptorWrite = {};
+	DescriptorWrite.sType					= VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	DescriptorWrite.pNext					= nullptr;
+	DescriptorWrite.dstSet					= m_hDescriptorSet;
+	DescriptorWrite.dstBinding				= dstBinding;
+	DescriptorWrite.dstArrayElement			= dstArrayElement;
+	DescriptorWrite.descriptorCount			= 1;
+	DescriptorWrite.descriptorType			= static_cast<VkDescriptorType>(m_DescriptorSetLayout[dstBinding].descriptorType);
+	DescriptorWrite.pImageInfo				= &ImageInfo;
+	DescriptorWrite.pBufferInfo				= nullptr;
+	DescriptorWrite.pTexelBufferView		= nullptr;
+
+	vkUpdateDescriptorSets(m_hDevice, 1, &DescriptorWrite, 0, nullptr);
+}
+
+
+DescriptorSet::~DescriptorSet()
 {
 
 }

@@ -151,9 +151,9 @@ namespace Vk
 		 */
 		struct ColorBlendAttachmentState
 		{
-			Bool32						blendEnable				= eFalse;
-			BlendFactor					srcColorBlendFactor		= BlendFactor::eZero;
-			BlendFactor					dstColorBlendFactor		= BlendFactor::eZero;
+			Bool32						blendEnable				= eTrue;
+			BlendFactor					srcColorBlendFactor		= BlendFactor::eSrcAlpha;
+			BlendFactor					dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
 			BlendOp						colorBlendOp			= BlendOp::eAdd;
 			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
 			BlendFactor					dstAlphaBlendFactor		= BlendFactor::eZero;
@@ -173,7 +173,7 @@ namespace Vk
 		struct ColorBlendStateInfo
 		{
 			Bool32										logicOpEnable			= eFalse;
-			LogicOp										logicOp					= LogicOp::eNoOp;
+			LogicOp										logicOp					= LogicOp::eClear;
 			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;
 		};

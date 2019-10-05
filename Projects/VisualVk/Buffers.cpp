@@ -58,7 +58,10 @@ Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 		}
 		else
 		{
-			this->Destroy();
+			if (m_hBuffer != VK_NULL_HANDLE)
+			{
+				vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
+			}
 
 			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
 
@@ -188,7 +191,10 @@ Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 		}
 		else
 		{
-			this->Destroy();
+			if (m_hBuffer != VK_NULL_HANDLE)
+			{
+				vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
+			}
 
 			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
 

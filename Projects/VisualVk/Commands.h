@@ -4,7 +4,7 @@
 #pragma once
 
 #include <set>
-#include "Vulkan.h"
+#include "Pipelines.h"
 
 namespace Vk
 {
@@ -302,6 +302,31 @@ namespace Vk
 		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const VkBufferImageCopy> pRegions)
 		{
 			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), pRegions.data());
+		}
+
+		//!	@brief	Bind a graphics pipeline object to a command buffer.
+		void CmdBindPipeline(const GraphicsPipeline * pGraphicsPipeline)
+		{
+			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pGraphicsPipeline->GetHandle());
+		}
+
+		//!	@brief	Binds descriptor sets to a command buffer.
+		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<const VkDescriptorSet> pDescriptorSets)
+		{
+			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint),
+									hPipelineLayout, 0, pDescriptorSets.size(), pDescriptorSets.data(), 0, nullptr);
+		}
+
+		//!	@brief	Bind a vertex buffer to a command buffer.
+		void CmdBindVertexBuffer(VkBuffer hBuffer, VkDeviceSize offset = 0)
+		{
+			vkCmdBindVertexBuffers(m_hCommandBuffer, 0, 1, &hBuffer, &offset);
+		}
+
+		//!	@brief	Bind an index buffer to a command buffer.
+		void CmdBindIndexBuffer(VkBuffer hBuffer, IndexType eIndexType, VkDeviceSize offset = 0)
+		{
+			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, offset, static_cast<VkIndexType>(eIndexType));
 		}
 
 	private:
