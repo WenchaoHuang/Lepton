@@ -21,9 +21,9 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
 	:	m_hDevice(VK_NULL_HANDLE), m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined),
-		m_eSamples(SampleCount::x1), m_MipLevels(0), m_ArrayLayers(0)
+		m_eSamples(SampleCount::x1), m_MipLevels(0), m_ArrayLayers(0), m_Extent({ 0, 0, 0 })
 {
-	m_Extent = { 0, 0, 0 };
+
 }
 
 

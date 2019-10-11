@@ -46,10 +46,10 @@ namespace Vk
 		//!	@brief	Return the number of mip-levels.
 		uint32_t GetMipLevels() const { return m_MipLevels; }
 
-		//!	@brief	Return the image extent.
+		//!	@brief	Return image extent.
 		VkExtent3D GetExtent() const { return m_Extent; }
 
-		//!	@brief	Return the image format.
+		//!	@brief	Return image format.
 		Format GetFormat() const { return m_eFormat; }
 
 		//!	@brief	Destroy the image.

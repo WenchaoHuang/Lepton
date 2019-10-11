@@ -54,6 +54,14 @@ namespace Vk
 	class CommandQueue;
 	class CommandBuffer;
 
+	class Image1D;
+	class Image2D;
+	class Image3D;
+	class ImageCube;
+	class Image1DArray;
+	class Image2DArray;
+	class ImageCubeArray;
+
 	class Event;
 	class Fence;
 	class Sampler;
@@ -68,7 +76,7 @@ namespace Vk
 	class PipelineLayout;
 	class ComputePipeline;
 	class GraphicsPipeline;
-	class RayTracingPipeline;
 	class HostVisibleBuffer;
 	class DeviceLocalBuffer;
+	class RayTracingPipeline;
 }
