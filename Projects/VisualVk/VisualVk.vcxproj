@@ -174,8 +174,8 @@
     <ClCompile Include="Pipelines.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
-    <ClCompile Include="Signals.cpp" />
     <ClCompile Include="Swapchain.cpp" />
+    <ClCompile Include="Sync.cpp" />
     <ClCompile Include="Win32Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,8 +195,8 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShaderModule.h" />
-    <ClInclude Include="Signals.h" />
     <ClInclude Include="Swapchain.h" />
+    <ClInclude Include="Sync.h" />
     <ClInclude Include="Vulkan.h" />
     <ClInclude Include="Win32Surface.h" />
   </ItemGroup>

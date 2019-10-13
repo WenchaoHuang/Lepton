@@ -34,6 +34,9 @@ namespace Vk
 		//!	@brief	Convert to VkImageView.
 		operator VkImageView() const { return m_hImageView; }
 
+		//!	@brief	Return VkImageView of this object.
+		VkImageView GetViewHandle() const { return m_hImageView; }
+
 		//!	@brief	Whether image handle is valid.
 		bool IsValid() const { return m_hImage != VK_NULL_HANDLE; }
 

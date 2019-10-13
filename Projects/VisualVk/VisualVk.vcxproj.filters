@@ -19,9 +19,6 @@
     <Filter Include="1. Context\2. PhysicalDevice">
       <UniqueIdentifier>{5253d1d7-ee48-413f-8bfe-8018e65696e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\0. Signals">
-      <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2. Resources\1. Buffers">
       <UniqueIdentifier>{f304ef35-6e04-4752-8c35-6e8c5d79a643}</UniqueIdentifier>
     </Filter>
@@ -55,6 +52,9 @@
     <Filter Include="3. Commands">
       <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Resources\0. Sync">
+      <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -72,9 +72,6 @@
     </ClCompile>
     <ClCompile Include="Swapchain.cpp">
       <Filter>2. Resources\5. Swapchain</Filter>
-    </ClCompile>
-    <ClCompile Include="Signals.cpp">
-      <Filter>2. Resources\0. Signals</Filter>
     </ClCompile>
     <ClCompile Include="Sampler.cpp">
       <Filter>2. Resources\3. Sampler</Filter>
@@ -102,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="Commands.cpp">
       <Filter>3. Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>2. Resources\0. Sync</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +135,6 @@
     <ClInclude Include="Swapchain.h">
       <Filter>2. Resources\5. Swapchain</Filter>
     </ClInclude>
-    <ClInclude Include="Signals.h">
-      <Filter>2. Resources\0. Signals</Filter>
-    </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>2. Resources\3. Sampler</Filter>
     </ClInclude>
@@ -164,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="Commands.h">
       <Filter>3. Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>2. Resources\0. Sync</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
