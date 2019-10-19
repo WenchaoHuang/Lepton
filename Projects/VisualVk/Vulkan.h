@@ -3,6 +3,7 @@
 *************************************************************************/
 #pragma once
 
+#include <memory>
 #include "Enums.h"
 #include "Flags.h"
 #include "Result.h"

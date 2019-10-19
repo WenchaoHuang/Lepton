@@ -3,8 +3,8 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
-#include "Vulkan.h"
+#include "Framebuffer.h"
+#include "ShaderModule.h"
 
 namespace Vk
 {
@@ -47,11 +47,11 @@ namespace Vk
 		 */
 		struct ShaderStagesInfo
 		{
-			std::shared_ptr<ShaderModule>		spVertexShader;
-			std::shared_ptr<ShaderModule>		spGeometryShader;
-			std::shared_ptr<ShaderModule>		spFragmentShader;
-			std::shared_ptr<ShaderModule>		spTessControlShader;
-			std::shared_ptr<ShaderModule>		spTessEvalutionShader;
+			ShaderModule		VertexShader;
+			ShaderModule		GeometryShader;
+			ShaderModule		FragmentShader;
+			ShaderModule		TessControlShader;
+			ShaderModule		TessEvalutionShader;
 		};
 
 		/*****************************************************************
@@ -205,6 +205,7 @@ namespace Vk
 
 	public:
 
+		RenderPass							renderPass;
 		ShaderStagesInfo					shaderStages;
 		DynamicStateInfo					dynamicStates;
 		ViewportStateInfo					viewportState;
@@ -216,7 +217,6 @@ namespace Vk
 		InputAssemblyStateInfo				inputAssemblyState;
 		RasterizationStateInfo				rasterizationState;
 		std::shared_ptr<PipelineLayout>		spPipelineLayout;
-		std::shared_ptr<RenderPass>			spRenderPass;
 	};
 
 	/*********************************************************************

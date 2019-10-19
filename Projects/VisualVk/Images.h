@@ -8,6 +8,30 @@
 namespace Vk
 {
 	/*********************************************************************
+	**************************    ImageParam    **************************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Vulkan image parameters.
+	 */
+	struct ImageParam
+	{
+		Format					format			= Format::eUndefined;
+		VkExtent3D				extent			= { 0, 0, 0 };
+		uint32_t				mipLevels		= 1;
+		uint32_t				arrayLayers		= 1;
+		SampleCount				samples			= SampleCount::x1;
+		Flags<ImageUsage>		usage			= 0;
+	};
+
+
+
+
+
+
+
+
+	/*********************************************************************
 	**************************    BaseImage    ***************************
 	*********************************************************************/
 
@@ -143,6 +167,16 @@ namespace Vk
 	{
 
 	public:
+
+		//!	@brief	Create a image 2D object.
+		Image2D() {}
+
+		//!	@brief	Create and initialize immediately.
+		explicit Image2D(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+						 SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		{
+			this->Create(pLogicalDevice, eFormat, extent, mipLevels, eSamples, usageFlags, eAspects);
+		}
 
 		//!	@brief	Create a new image 2D object.
 		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,

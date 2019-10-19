@@ -150,7 +150,7 @@ void CommandBuffer::CmdBeginRenderPass(const Framebuffer * pFramebuffer, VkRect2
 	VkRenderPassBeginInfo			BeginInfo = {};
 	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	BeginInfo.pNext					= nullptr;
-	BeginInfo.renderPass			= pFramebuffer->GetRenderPass() != nullptr ? pFramebuffer->GetRenderPass()->GetHandle() : VK_NULL_HANDLE;
+	BeginInfo.renderPass			= pFramebuffer->GetRenderPass();
 	BeginInfo.framebuffer			= pFramebuffer->GetHandle();
 	BeginInfo.renderArea			= renderArea;
 	BeginInfo.clearValueCount		= pClearValues.size();

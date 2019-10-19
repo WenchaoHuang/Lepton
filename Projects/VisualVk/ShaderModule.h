@@ -3,7 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
 #include "Vulkan.h"
 
 namespace Vk
@@ -17,17 +16,47 @@ namespace Vk
 	 */
 	class ShaderModule
 	{
-		VK_UNIQUE_RESOURCE(ShaderModule)
 
 	public:
+
+		//!	@brief	Invalidate this resource handle.
+		void Destroy() { m_spHandle.reset(); }
+
+		//!	@brief	Whether this resource handle is valid.
+		bool IsValid() const { return m_spHandle != nullptr; }
+
+		//!	@brief	Create a new shader module.
+		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv);
+
+		//!	@brief	Convert to VkShaderModule.
+		operator VkShaderModule() const { return (m_spHandle != nullptr) ? m_spHandle->m_hShaderModule : VK_NULL_HANDLE; }
 
 		//!	@brief	Read SPIR-V shader.
 		static std::vector<uint32_t> ReadSPIRV(const char * pFilePath);
 
-		//!	@brief	Create and initialize immediately.
-		explicit ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv);
+	private:
 
-		//!	@brief	Destroy shader module object.
-		~ShaderModule();
+		/**
+		 *	@brief	Unique handle of Vulkan resource.
+		 */
+		struct UniqueHandle
+		{
+			VK_NONCOPYABLE(UniqueHandle)
+
+		public:
+
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(VkDevice, VkShaderModule);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
+
+		public:
+
+			const VkDevice					m_hDevice;
+			const VkShaderModule			m_hShaderModule;
+		};
+
+		std::shared_ptr<UniqueHandle>		m_spHandle;
 	};
 }

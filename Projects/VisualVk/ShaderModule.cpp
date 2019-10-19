@@ -10,9 +10,17 @@ using namespace Vk;
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-ShaderModule::ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
-	: m_hDevice(VK_NULL_HANDLE), m_hShaderModule(VK_NULL_HANDLE)
+ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShaderModule)
+	: m_hDevice(hDevice), m_hShaderModule(hShaderModule)
 {
+
+}
+
+
+Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
+{
+	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+
 	if ((hDevice != VK_NULL_HANDLE) && !code_spv.empty())
 	{
 		VkShaderModuleCreateInfo		CreateInfo = {};
@@ -24,13 +32,15 @@ ShaderModule::ShaderModule(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv
 
 		VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-		if (vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule) == VK_SUCCESS)
-		{
-			m_hShaderModule = hShaderModule;
+		eResult = vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule);
 
-			m_hDevice = hDevice;
+		if (eResult == VK_SUCCESS)
+		{
+			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hShaderModule);
 		}
 	}
+
+	return VK_RESULT_CAST(eResult);
 }
 
 
@@ -60,14 +70,10 @@ std::vector<uint32_t> ShaderModule::ReadSPIRV(const char * pFilePath)
 }
 
 
-ShaderModule::~ShaderModule()
+ShaderModule::UniqueHandle::~UniqueHandle() noexcept
 {
-	if (m_hShaderModule != VK_NULL_HANDLE)
+	if (m_hDevice != VK_NULL_HANDLE)
 	{
 		vkDestroyShaderModule(m_hDevice, m_hShaderModule, nullptr);
-
-		m_hShaderModule = VK_NULL_HANDLE;
-
-		m_hDevice = VK_NULL_HANDLE;
 	}
 }

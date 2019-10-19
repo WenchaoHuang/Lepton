@@ -3,7 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include <memory>
 #include "Vulkan.h"
 
 namespace Vk
@@ -97,18 +96,49 @@ namespace Vk
 	 */
 	class RenderPass
 	{
-		VK_UNIQUE_RESOURCE(RenderPass)
 
 	public:
 
-		//!	@brief	Create and initialize immediately.
-		explicit RenderPass(VkDevice hDevice,
-							ArrayProxy<const AttachmentDescription> attachmentDescriptions,
-							ArrayProxy<const SubpassDescription> subpassDescriptions,
-							ArrayProxy<const SubpassDependency> subpassDependencies);
+		//!	@brief	Invalidate this resource handle.
+		void Destroy() { m_spHandle.reset(); }
 
-		//!	@brief	Destroy render pass object.
-		~RenderPass();
+		//!	@brief	Whether this resource handle is valid.
+		bool IsValid() const { return m_spHandle != nullptr; }
+
+		//!	@brief	Return VkDevice handle.
+		VkDevice GetDeviceHandle() const { return (m_spHandle != nullptr) ? m_spHandle->m_hDevice : VK_NULL_HANDLE; }
+
+		//!	@brief	Create a new render pass object.
+		Result Create(VkDevice hDevice, ArrayProxy<const AttachmentDescription> attachmentDescriptions,
+					  ArrayProxy<const SubpassDescription> subpassDescriptions, ArrayProxy<const SubpassDependency> subpassDependencies);
+
+		//!	@brief	Convert to VkRenderPass.
+		operator VkRenderPass() const { return (m_spHandle != nullptr) ? m_spHandle->m_hRenderPass : VK_NULL_HANDLE; }
+
+	private:
+
+		/**
+		 *	@brief	Unique handle of Vulkan resource.
+		 */
+		struct UniqueHandle
+		{
+			VK_NONCOPYABLE(UniqueHandle)
+
+		public:
+
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(VkDevice, VkRenderPass);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
+
+		public:
+
+			const VkDevice					m_hDevice;
+			const VkRenderPass				m_hRenderPass;
+		};
+
+		std::shared_ptr<UniqueHandle>		m_spHandle;
 	};
 
 	/*********************************************************************
@@ -120,7 +150,7 @@ namespace Vk
 	 */
 	class Framebuffer
 	{
-		VK_UNIQUE_RESOURCE(Framebuffer)
+		VK_NONCOPYABLE(Framebuffer)
 
 	public:
 
@@ -128,29 +158,40 @@ namespace Vk
 		Framebuffer();
 
 		//!	@brief	Create and initialize immediately.
-		explicit Framebuffer(std::shared_ptr<RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
+		explicit Framebuffer(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
 
 		//!	@brief	Destroy framebuffer object.
 		~Framebuffer();
 
 	public:
 
-		//!	@brief	Create a new framebuffer object.
-		Result Create(std::shared_ptr<RenderPass> spRenderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
+		//!	@brief	Convert to VkFramebuffer.
+		operator VkFramebuffer() const { return m_hFramebuffer; }
 
-		//!	@brief	Return shared pointer to render pass object.
-		std::shared_ptr<RenderPass> GetRenderPass() const { return m_spRenderPass; }
+		//!	@brief	Return VkFramebuffer handle.
+		VkFramebuffer GetHandle() const { return m_hFramebuffer; }
+
+		//!	@brief	Whether this framebuffer handle is valid.
+		bool IsValid() const { return m_hFramebuffer != VK_NULL_HANDLE; }
+
+		//!	@brief	Create a new framebuffer object.
+		Result Create(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
+
+		//!	@brief	Return render pass object.
+		RenderPass GetRenderPass() const { return m_RenderPass; }
 
 		//!	@brief	Return extent of the framebuffer.
 		VkExtent2D Extent() const { return m_Extent; }
 
-		//!	@brief	Destroy the framebuffer.
+		//!	@brief	Destroy framebuffer.
 		void Destroy();
 
 	private:
 
-		VkExtent2D						m_Extent;
+		VkExtent2D			m_Extent;
 
-		std::shared_ptr<RenderPass>		m_spRenderPass;
+		RenderPass			m_RenderPass;
+
+		VkFramebuffer		m_hFramebuffer;
 	};
 }

@@ -74,9 +74,9 @@ GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineParam & Param) : Graphi
 
 Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 {
-	if ((Param.spRenderPass == nullptr) || !Param.spRenderPass->IsValid() ||
+	if (!Param.renderPass.IsValid() ||
 		(Param.spPipelineLayout == nullptr) || !Param.spPipelineLayout->IsValid() ||
-		 Param.spRenderPass->GetDeviceHandle() != Param.spPipelineLayout->GetDeviceHandle())
+		 Param.renderPass.GetDeviceHandle() != Param.spPipelineLayout->GetDeviceHandle())
 	{
 		return Result::eErrorInvalidExternalHandle;
 	}
@@ -97,16 +97,16 @@ Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 		return ShaderStageCreateInfo;
 	};
 
-	if ((Param.shaderStages.spVertexShader != nullptr) && Param.shaderStages.spVertexShader->IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spVertexShader->GetHandle(), ShaderStage::eVertex));
-	if ((Param.shaderStages.spFragmentShader != nullptr) && Param.shaderStages.spFragmentShader->IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spFragmentShader->GetHandle(), ShaderStage::eFragment));
-	if ((Param.shaderStages.spGeometryShader != nullptr) && Param.shaderStages.spGeometryShader->IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spGeometryShader->GetHandle(), ShaderStage::eGeometry));
-	if ((Param.shaderStages.spTessControlShader != nullptr) && Param.shaderStages.spTessControlShader->IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spTessControlShader->GetHandle(), ShaderStage::eTessellationControl));
-	if ((Param.shaderStages.spTessEvalutionShader != nullptr) && Param.shaderStages.spTessEvalutionShader->IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.spTessEvalutionShader->GetHandle(), ShaderStage::eTessellationEvaluation));
+	if (Param.shaderStages.VertexShader.IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.VertexShader, ShaderStage::eVertex));
+	if (Param.shaderStages.FragmentShader.IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.FragmentShader, ShaderStage::eFragment));
+	if (Param.shaderStages.GeometryShader.IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.GeometryShader, ShaderStage::eGeometry));
+	if (Param.shaderStages.TessControlShader.IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.TessControlShader, ShaderStage::eTessellationControl));
+	if (Param.shaderStages.TessEvalutionShader.IsValid())
+		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.TessEvalutionShader, ShaderStage::eTessellationEvaluation));
 
 	VkPipelineVertexInputStateCreateInfo							VertexInputStateCreateInfo = {};
 	VertexInputStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -227,20 +227,20 @@ Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 	PipelineCreateInfo.pColorBlendState								= &ColorBlendStateCreateInfo;
 	PipelineCreateInfo.pDynamicState								= &DynamicStateCreateInfo;
 	PipelineCreateInfo.layout										= Param.spPipelineLayout->GetHandle();
-	PipelineCreateInfo.renderPass									= Param.spRenderPass->GetHandle();
+	PipelineCreateInfo.renderPass									= Param.renderPass;
 	PipelineCreateInfo.subpass										= 0;
 	PipelineCreateInfo.basePipelineHandle							= VK_NULL_HANDLE;
 	PipelineCreateInfo.basePipelineIndex							= 0;
 
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 
-	VkResult eResult = vkCreateGraphicsPipelines(Param.spRenderPass->GetDeviceHandle(), VK_NULL_HANDLE, 1, &PipelineCreateInfo, nullptr, &hPipeline);
+	VkResult eResult = vkCreateGraphicsPipelines(Param.renderPass.GetDeviceHandle(), VK_NULL_HANDLE, 1, &PipelineCreateInfo, nullptr, &hPipeline);
 
 	if (eResult == VK_SUCCESS)
 	{
 		this->Destroy();
 
-		m_hDevice = Param.spRenderPass->GetDeviceHandle();
+		m_hDevice = Param.renderPass.GetDeviceHandle();
 
 		m_hGraphicsPipeline = hPipeline;
 

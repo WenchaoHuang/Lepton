@@ -8,15 +8,10 @@ using namespace Vk;
 /*************************************************************************
 *****************************    Sampler    ******************************
 *************************************************************************/
-Sampler::Sampler() : m_hDevice(VK_NULL_HANDLE), m_hSampler(VK_NULL_HANDLE)
+Sampler::UniqueHandle::UniqueHandle(VkDevice hDevice, VkSampler hSampler, const SamplerParam & Param)
+	: m_hDevice(hDevice), m_hSampler(hSampler), m_Parameter(Param)
 {
 
-}
-
-
-Sampler::Sampler(VkDevice hDevice, const SamplerParam & Param) : Sampler()
-{
-	this->Create(hDevice, Param);
 }
 
 
@@ -52,13 +47,7 @@ Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 
 		if (eResult == VK_SUCCESS)
 		{
-			this->Destroy();
-
-			m_hSampler = hSampler;
-
-			m_hDevice = hDevice;
-
-			m_Parameter = Param;
+			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hSampler, Param);
 		}
 	}
 
@@ -66,22 +55,10 @@ Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 }
 
 
-void Sampler::Destroy()
+Sampler::UniqueHandle::~UniqueHandle() noexcept
 {
-	if (m_hSampler != VK_NULL_HANDLE)
+	if (m_hDevice != VK_NULL_HANDLE)
 	{
 		vkDestroySampler(m_hDevice, m_hSampler, nullptr);
-
-		m_Parameter = SamplerParam();
-
-		m_hSampler = VK_NULL_HANDLE;
-
-		m_hDevice = VK_NULL_HANDLE;
 	}
-}
-
-
-Sampler::~Sampler()
-{
-	this->Destroy();
 }

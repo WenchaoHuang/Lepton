@@ -34,7 +34,7 @@ namespace Vk
 	};
 
 	/*********************************************************************
-	***************************    Sampler    ****************************
+	****************************    Sampler   ****************************
 	*********************************************************************/
 
 	/**
@@ -42,32 +42,48 @@ namespace Vk
 	 */
 	class Sampler
 	{
-		VK_UNIQUE_RESOURCE(Sampler)
 
 	public:
 
-		//!	@brief	Create sampler object.
-		Sampler();
+		//!	@brief	Invalidate this resource handle.
+		void Destroy() { m_spHandle.reset(); }
 
-		//!	@brief	Create and initialize immediately.
-		explicit Sampler(VkDevice hDevice, const SamplerParam & Param = SamplerParam());
+		//!	@brief	Whether this resource handle is valid.
+		bool IsValid() const { return m_spHandle != nullptr; }
 
-		//!	@brief	Destroy sampler object.
-		~Sampler();
-
-	public:
-
-		//!	@brief	Return sampler parameters.
-		const SamplerParam & GetParam() const { return m_Parameter; }
+		//!	@brief	Return constant reference to its parameter (must be valid).
+		const SamplerParam & GetParam() const { return m_spHandle->m_Parameter; }
 
 		//!	@brief	Create a new sampler object.
 		Result Create(VkDevice hDevice, const SamplerParam & Param = SamplerParam());
 
-		//!	@brief	Destroy the sampler.
-		void Destroy();
+		//!	@brief	Convert to VkSampler.
+		operator VkSampler() const { return (m_spHandle != nullptr) ? m_spHandle->m_hSampler : VK_NULL_HANDLE; }
 
 	private:
 
-		SamplerParam		m_Parameter;
+		/**
+		 *	@brief	Unique handle of Vulkan resource.
+		 */
+		struct UniqueHandle
+		{
+			VK_NONCOPYABLE(UniqueHandle)
+
+		public:
+
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(VkDevice, VkSampler, const SamplerParam&);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
+
+		public:
+
+			const VkDevice					m_hDevice;
+			const VkSampler					m_hSampler;
+			const SamplerParam				m_Parameter;
+		};
+
+		std::shared_ptr<UniqueHandle>		m_spHandle;
 	};
 }
