@@ -57,7 +57,7 @@ Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 
 Sampler::UniqueHandle::~UniqueHandle() noexcept
 {
-	if (m_hDevice != VK_NULL_HANDLE)
+	if (m_hSampler != VK_NULL_HANDLE)
 	{
 		vkDestroySampler(m_hDevice, m_hSampler, nullptr);
 	}

@@ -19,9 +19,9 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 /*************************************************************************
 ****************************    BaseImage    *****************************
 *************************************************************************/
-template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::BaseImage()
-	:	m_hDevice(VK_NULL_HANDLE), m_hImage(VK_NULL_HANDLE), m_hImageView(VK_NULL_HANDLE), m_eFormat(Format::eUndefined),
-		m_eSamples(SampleCount::x1), m_MipLevels(0), m_ArrayLayers(0), m_Extent({ 0, 0, 0 })
+template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::
+UniqueHandle::UniqueHandle(VkImage hImage, VkImageView hImageView, DeviceMemory deviceMemory, const ImageParam & Param)
+	: m_hImage(hImage), m_hImageView(hImageView), m_DeviceMemory(deviceMemory), m_Parameter(Param)
 {
 
 }
@@ -35,6 +35,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 												uint32_t arrayLayers,
 												SampleCount eSamples,
 												Flags<ImageUsage> eUsages,
+												Flags<ImageAspect> eAspects,
 												VkImageCreateFlags eCreateFlags)
 {
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
@@ -56,116 +57,80 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 	CreateInfo.pQueueFamilyIndices			= nullptr;
 	CreateInfo.initialLayout				= VK_IMAGE_LAYOUT_UNDEFINED;
 
-	VkImage hNewImage = VK_NULL_HANDLE;
+	VkImage hImage = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateImage(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewImage));
+	Result eResult = VK_RESULT_CAST(vkCreateImage(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hImage));
 
 	if (eResult == Result::eSuccess)
 	{
+		DeviceMemory deviceMemory;
+
 		VkMemoryRequirements Requirements = {};
 
-		vkGetImageMemoryRequirements(pLogicalDevice->GetHandle(), hNewImage, &Requirements);
+		vkGetImageMemoryRequirements(pLogicalDevice->GetHandle(), hImage, &Requirements);
 
 		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
 
-		eResult = m_DeviceMemory.Allocate(pLogicalDevice->GetHandle(), Requirements.size, memoryTypeIndex);
+		eResult = deviceMemory.Allocate(pLogicalDevice->GetHandle(), Requirements.size, memoryTypeIndex);
 
-		if (eResult != Result::eSuccess)
+		if (eResult == Result::eSuccess)
 		{
-			vkDestroyImage(pLogicalDevice->GetHandle(), hNewImage, nullptr);
+			eResult = VK_RESULT_CAST(vkBindImageMemory(pLogicalDevice->GetHandle(), hImage, deviceMemory, 0));
+
+			if (eResult == Result::eSuccess)
+			{
+				VkImageViewCreateInfo								ViewCreateInfo = {};
+				ViewCreateInfo.sType								= VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+				ViewCreateInfo.pNext								= nullptr;
+				ViewCreateInfo.flags								= 0;
+				ViewCreateInfo.image								= hImage;
+				ViewCreateInfo.viewType								= eViewType;
+				ViewCreateInfo.format								= static_cast<VkFormat>(eFormat);
+				ViewCreateInfo.components.r							= VK_COMPONENT_SWIZZLE_R;
+				ViewCreateInfo.components.g							= VK_COMPONENT_SWIZZLE_G;
+				ViewCreateInfo.components.b							= VK_COMPONENT_SWIZZLE_B;
+				ViewCreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
+				ViewCreateInfo.subresourceRange.baseArrayLayer		= 0;
+				ViewCreateInfo.subresourceRange.baseMipLevel		= 0;
+				ViewCreateInfo.subresourceRange.aspectMask			= eAspects;
+				ViewCreateInfo.subresourceRange.layerCount			= arrayLayers;
+				ViewCreateInfo.subresourceRange.levelCount			= mipLevels;
+
+				VkImageView hImageView = VK_NULL_HANDLE;
+
+				eResult = VK_RESULT_CAST(vkCreateImageView(pLogicalDevice->GetHandle(), &ViewCreateInfo, nullptr, &hImageView));
+
+				if (eResult == Result::eSuccess)
+				{
+					ImageParam					imageParam;
+					imageParam.format			= eFormat;
+					imageParam.extent			= extent;
+					imageParam.mipLevels		= mipLevels;
+					imageParam.arrayLayers		= arrayLayers;
+					imageParam.samples			= eSamples;
+					imageParam.usage			= eUsages;
+					imageParam.aspectMask		= eAspects;
+
+					m_spHandle = std::make_shared<UniqueHandle>(hImage, hImageView, deviceMemory, imageParam);
+
+					return Result::eSuccess;
+				}
+			}
 		}
-		else
-		{
-			this->Destroy();
 
-			vkBindImageMemory(pLogicalDevice->GetHandle(), hNewImage, m_DeviceMemory, 0);
-
-			m_hDevice = pLogicalDevice->GetHandle();
-
-			m_ArrayLayers = arrayLayers;
-
-			m_MipLevels = mipLevels;
-
-			m_eSamples = eSamples;
-
-			m_hImage = hNewImage;
-
-			m_eFormat = eFormat;
-
-			m_Extent = extent;
-		}
+		vkDestroyImage(pLogicalDevice->GetHandle(), hImage, nullptr);
 	}
 
 	return eResult;
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> Result BaseImage<eImageType, eViewType>::CreateView(Flags<ImageAspect> eAspects)
+template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::UniqueHandle::~UniqueHandle()
 {
-	if (m_hImage == VK_NULL_HANDLE)					return Result::eErrorInvalidExternalHandle;
-
-	VkImageViewCreateInfo							CreateInfo = {};
-	CreateInfo.sType								= VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	CreateInfo.pNext								= nullptr;
-	CreateInfo.flags								= 0;
-	CreateInfo.image								= m_hImage;
-	CreateInfo.viewType								= eViewType;
-	CreateInfo.format								= static_cast<VkFormat>(m_eFormat);
-	CreateInfo.components.r							= VK_COMPONENT_SWIZZLE_R;
-	CreateInfo.components.g							= VK_COMPONENT_SWIZZLE_G;
-	CreateInfo.components.b							= VK_COMPONENT_SWIZZLE_B;
-	CreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
-	CreateInfo.subresourceRange.baseArrayLayer		= 0;
-	CreateInfo.subresourceRange.baseMipLevel		= 0;
-	CreateInfo.subresourceRange.aspectMask			= eAspects;
-	CreateInfo.subresourceRange.layerCount			= m_ArrayLayers;
-	CreateInfo.subresourceRange.levelCount			= m_MipLevels;
-
-	VkImageView hImageView = VK_NULL_HANDLE;
-
-	VkResult eResult = vkCreateImageView(m_hDevice, &CreateInfo, nullptr, &hImageView);
-
-	if (eResult == VK_SUCCESS)
+	if ((m_hImage != VK_NULL_HANDLE) && (m_hImageView != VK_NULL_HANDLE))
 	{
-		vkDestroyImageView(m_hDevice, m_hImageView, nullptr);
+		vkDestroyImageView(m_DeviceMemory.GetDeviceHandle(), m_hImageView, nullptr);
 
-		m_hImageView = hImageView;
+		vkDestroyImage(m_DeviceMemory.GetDeviceHandle(), m_hImage, nullptr);
 	}
-
-	return VK_RESULT_CAST(eResult);
-}
-
-
-template<VkImageType eImageType, VkImageViewType eViewType> void BaseImage<eImageType, eViewType>::Destroy()
-{
-	if (m_hImage != VK_NULL_HANDLE)
-	{
-		m_DeviceMemory.Free();
-
-		vkDestroyImage(m_hDevice, m_hImage, nullptr);
-
-		vkDestroyImageView(m_hDevice, m_hImageView, nullptr);
-
-		m_eFormat = Format::eUndefined;
-
-		m_hImageView = VK_NULL_HANDLE;
-
-		m_eSamples = SampleCount::x1;
-
-		m_hDevice = VK_NULL_HANDLE;
-
-		m_hImage = VK_NULL_HANDLE;
-
-		m_Extent = { 0, 0, 0 };
-
-		m_ArrayLayers = 0;
-
-		m_MipLevels = 0;
-	}
-}
-
-
-template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::~BaseImage()
-{
-	this->Destroy();
 }

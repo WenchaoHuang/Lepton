@@ -72,7 +72,7 @@ std::vector<uint32_t> ShaderModule::ReadSPIRV(const char * pFilePath)
 
 ShaderModule::UniqueHandle::~UniqueHandle() noexcept
 {
-	if (m_hDevice != VK_NULL_HANDLE)
+	if (m_hShaderModule != VK_NULL_HANDLE)
 	{
 		vkDestroyShaderModule(m_hDevice, m_hShaderModule, nullptr);
 	}

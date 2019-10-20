@@ -8,15 +8,10 @@ using namespace Vk;
 /*************************************************************************
 ***************************    DeviceMemory    ***************************
 *************************************************************************/
-DeviceMemory::DeviceMemory() : m_hDevice(VK_NULL_HANDLE), m_hDeviceMemory(VK_NULL_HANDLE), m_SizeBytes(0)
+DeviceMemory::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDeviceMemory hDeviceMemory, VkDeviceSize allocateSize)
+	: m_hDevice(hDevice), m_hDeviceMemory(hDeviceMemory), m_AllocateSize(allocateSize)
 {
 
-}
-
-
-DeviceMemory::DeviceMemory(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex) : DeviceMemory()
-{
-	this->Allocate(hDevice, allocationSize, memoryTypeIndex);
 }
 
 
@@ -38,13 +33,7 @@ Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uin
 
 		if (eResult == VK_SUCCESS)
 		{
-			this->Free();
-
-			m_SizeBytes = allocationSize;
-
-			m_hDeviceMemory = hMemory;
-
-			m_hDevice = hDevice;
+			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hMemory, allocationSize);
 		}
 	}
 
@@ -52,64 +41,42 @@ Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uin
 }
 
 
-Result DeviceMemory::Invalidate(VkDeviceSize offset, VkDeviceSize size)
+Result DeviceMemory::Invalidate(VkDeviceSize offset, VkDeviceSize size) const
 {
 	VkMappedMemoryRange		MemoryRange = {};
 	MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 	MemoryRange.pNext		= nullptr;
-	MemoryRange.memory		= m_hDeviceMemory;
+	MemoryRange.memory		= m_spHandle->m_hDeviceMemory;
 	MemoryRange.offset		= offset;
 	MemoryRange.size		= size;
 
-	return VK_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_hDevice, 1, &MemoryRange));
+	return VK_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_spHandle->m_hDevice, 1, &MemoryRange));
 }
 
 
-Result DeviceMemory::Flush(VkDeviceSize offset, VkDeviceSize size)
+Result DeviceMemory::Flush(VkDeviceSize offset, VkDeviceSize size) const
 {
 	VkMappedMemoryRange		MemoryRange = {};
 	MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 	MemoryRange.pNext		= nullptr;
-	MemoryRange.memory		= m_hDeviceMemory;
+	MemoryRange.memory		= m_spHandle->m_hDeviceMemory;
 	MemoryRange.offset		= offset;
 	MemoryRange.size		= size;
 
-	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_hDevice, 1, &MemoryRange));
+	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_spHandle->m_hDevice, 1, &MemoryRange));
 }
 
 
-Result DeviceMemory::Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size)
+Result DeviceMemory::Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size) const
 {
-	return VK_RESULT_CAST(vkMapMemory(m_hDevice, m_hDeviceMemory, offset, size, 0, ppData));
+	return VK_RESULT_CAST(vkMapMemory(m_spHandle->m_hDevice, m_spHandle->m_hDeviceMemory, offset, size, 0, ppData));
 }
 
 
-VkDeviceSize DeviceMemory::GetCommitment() const
+DeviceMemory::UniqueHandle::~UniqueHandle() noexcept
 {
-	VkDeviceSize committedMemoryInBytes = 0;
-
-	vkGetDeviceMemoryCommitment(m_hDevice, m_hDeviceMemory, &committedMemoryInBytes);
-
-	return committedMemoryInBytes;
-}
-
-
-void DeviceMemory::Free()
-{
-	if (m_hDeviceMemory != VK_NULL_HANDLE)
+	if (m_hDevice != VK_NULL_HANDLE)
 	{
 		vkFreeMemory(m_hDevice, m_hDeviceMemory, nullptr);
-
-		m_hDeviceMemory = VK_NULL_HANDLE;
-
-		m_hDevice = VK_NULL_HANDLE;
-
-		m_SizeBytes = 0;
 	}
-}
-
-
-DeviceMemory::~DeviceMemory()
-{
-	this->Free();
 }

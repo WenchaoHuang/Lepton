@@ -48,7 +48,7 @@ Result RenderPass::Create(VkDevice hDevice, ArrayProxy<const AttachmentDescripti
 
 RenderPass::UniqueHandle::~UniqueHandle()
 {
-	if (m_hDevice != VK_NULL_HANDLE)
+	if (m_hRenderPass != VK_NULL_HANDLE)
 	{
 		vkDestroyRenderPass(m_hDevice, m_hRenderPass, nullptr);
 	}
