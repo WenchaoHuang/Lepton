@@ -22,7 +22,7 @@ Fence::Fence(VkDevice hDevice) : Fence()
 
 Result Fence::Create(VkDevice hDevice)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
@@ -33,19 +33,19 @@ Result Fence::Create(VkDevice hDevice)
 
 		VkFence hFence = VK_NULL_HANDLE;
 
-		eResult = vkCreateFence(hDevice, &CreateInfo, nullptr, &hFence);
+		eResult = VK_RESULT_CAST(vkCreateFence(hDevice, &CreateInfo, nullptr, &hFence));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
 			this->Destroy();
 
-			m_hDevice = hDevice;
-
 			m_hFence = hFence;
+
+			m_hDevice = hDevice;
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 
@@ -85,7 +85,7 @@ Semaphore::Semaphore(VkDevice hDevice) : Semaphore()
 
 Result Semaphore::Create(VkDevice hDevice)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
@@ -96,19 +96,19 @@ Result Semaphore::Create(VkDevice hDevice)
 		
 		VkSemaphore hSemaphore = VK_NULL_HANDLE;
 
-		eResult = vkCreateSemaphore(hDevice, &CreateInfo, nullptr, &hSemaphore);
+		eResult = VK_RESULT_CAST(vkCreateSemaphore(hDevice, &CreateInfo, nullptr, &hSemaphore));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
 			this->Destroy();
 
-			m_hSemaphore = hSemaphore;
-
 			m_hDevice = hDevice;
+
+			m_hSemaphore = hSemaphore;
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 
@@ -148,7 +148,7 @@ Event::Event(VkDevice hDevice) : Event()
 
 Result Event::Create(VkDevice hDevice)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
@@ -159,19 +159,19 @@ Result Event::Create(VkDevice hDevice)
 		
 		VkEvent hEvent = VK_NULL_HANDLE;
 
-		eResult = vkCreateEvent(hDevice, &CreateInfo, nullptr, &hEvent);
+		eResult = VK_RESULT_CAST(vkCreateEvent(hDevice, &CreateInfo, nullptr, &hEvent));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
 			this->Destroy();
 
-			m_hDevice = hDevice;
-
 			m_hEvent = hEvent;
+
+			m_hDevice = hDevice;
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 

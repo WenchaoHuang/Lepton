@@ -20,10 +20,10 @@ namespace Vk
 	public:
 
 		//!	@brief	Free memory.
-		void Free() { m_spHandle.reset(); }
+		void Free() { m_spUniqueHandle.reset(); }
 
 		//!	@brief	Whether this resource handle is valid.
-		bool IsValid() const { return m_spHandle != nullptr; }
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Invalidate range of mapped memory object.
 		Result Invalidate(VkDeviceSize offset, VkDeviceSize size) const;
@@ -34,25 +34,25 @@ namespace Vk
 		//!	@brief	Map memory into application address space.
 		Result Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size) const;
 
-		//!	@brief	Unmap previously mapped memory.
-		void Unmap() const { vkUnmapMemory(m_spHandle->m_hDevice, m_spHandle->m_hDeviceMemory); }
-
 		//!	@brief	Allocate device memory.
 		Result Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex);
 
+		//!	@brief	Unmap previously mapped memory.
+		void Unmap() const { vkUnmapMemory(m_spUniqueHandle->m_hDevice, m_spUniqueHandle->m_hDeviceMemory); }
+
 		//!	@brief	Return the size of device memory.
-		VkDeviceSize Size() const { return (m_spHandle != nullptr) ? m_spHandle->m_AllocateSize : 0; }
+		VkDeviceSize Size() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_AllocateSize : 0; }
 
 		//!	@brief	Return VkDevice handle.
-		VkDevice GetDeviceHandle() const { return (m_spHandle != nullptr) ? m_spHandle->m_hDevice : VK_NULL_HANDLE; }
+		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
 
 		//!	@brief	Convert to VkDeviceMemory.
-		operator VkDeviceMemory() const { return (m_spHandle != nullptr) ? m_spHandle->m_hDeviceMemory : VK_NULL_HANDLE; }
+		operator VkDeviceMemory() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDeviceMemory : VK_NULL_HANDLE; }
 
 	private:
 
 		/**
-		 *	@brief	Unique handle of Vulkan resource.
+		 *	@brief	Unique handle of device memory.
 		 */
 		struct UniqueHandle
 		{
@@ -73,6 +73,6 @@ namespace Vk
 			const VkDeviceMemory			m_hDeviceMemory;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spHandle;
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 }

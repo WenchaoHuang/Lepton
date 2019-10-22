@@ -17,7 +17,7 @@ Sampler::UniqueHandle::UniqueHandle(VkDevice hDevice, VkSampler hSampler, const 
 
 Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
@@ -43,15 +43,15 @@ Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 
 		VkSampler hSampler = VK_NULL_HANDLE;
 
-		eResult = vkCreateSampler(hDevice, &CreateInfo, nullptr, &hSampler);
+		eResult = VK_RESULT_CAST(vkCreateSampler(hDevice, &CreateInfo, nullptr, &hSampler));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
-			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hSampler, Param);
+			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hSampler, Param);
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 

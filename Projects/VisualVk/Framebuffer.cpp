@@ -17,7 +17,7 @@ RenderPass::UniqueHandle::UniqueHandle(VkDevice hDevice, VkRenderPass hRenderPas
 Result RenderPass::Create(VkDevice hDevice, ArrayProxy<const AttachmentDescription> attachmentDescriptions,
 						  ArrayProxy<const SubpassDescription> subpassDescriptions, ArrayProxy<const SubpassDependency> subpassDependencies)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
@@ -34,15 +34,15 @@ Result RenderPass::Create(VkDevice hDevice, ArrayProxy<const AttachmentDescripti
 
 		VkRenderPass hRenderPass = VK_NULL_HANDLE;
 
-		eResult = vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass);
+		eResult = VK_RESULT_CAST(vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
-			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hRenderPass);
+			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hRenderPass);
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 
@@ -72,7 +72,7 @@ Framebuffer::Framebuffer(RenderPass renderPass, ArrayProxy<const VkImageView> at
 
 Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (renderPass.IsValid())
 	{
@@ -89,9 +89,9 @@ Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> 
 
 		VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 
-		eResult = vkCreateFramebuffer(renderPass.GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer);
+		eResult = VK_RESULT_CAST(vkCreateFramebuffer(renderPass.GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
 			this->Destroy();
 
@@ -103,7 +103,7 @@ Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> 
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 

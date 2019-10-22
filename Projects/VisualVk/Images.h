@@ -38,19 +38,19 @@ namespace Vk
 	public:
 
 		//!	@brief	Destroy image object.
-		void Destroy() { m_spHandle.reset(); }
+		void Destroy() { m_spUniqueHandle.reset(); }
 
 		//!	@brief	Whether image handle is valid.
-		bool IsValid() const { return m_spHandle != nullptr; }
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Return constant reference to its parameter (must be valid).
-		const ImageParam & GetParam() const { return m_spHandle->m_Parameter; }
+		const ImageParam & GetParam() const { return m_spUniqueHandle->m_Parameter; }
 
 		//!	@brief	Convert to VkImage.
-		operator VkImage() const { return (m_spHandle != nullptr) ? m_spHandle->m_hImage : VK_NULL_HANDLE; }
+		operator VkImage() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hImage : VK_NULL_HANDLE; }
 
 		//!	@brief	Convert to VkImageView.
-		operator VkImageView() const { return (m_spHandle != nullptr) ? m_spHandle->m_hImageView : VK_NULL_HANDLE; }
+		operator VkImageView() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hImageView : VK_NULL_HANDLE; }
 
 	protected:
 
@@ -61,7 +61,7 @@ namespace Vk
 	private:
 
 		/**
-		 *	@brief	Unique handle of Vulkan resource.
+		 *	@brief	Unique handle of image.
 		 */
 		struct UniqueHandle
 		{
@@ -83,7 +83,7 @@ namespace Vk
 			const DeviceMemory				m_DeviceMemory;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spHandle;
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 
 	/*********************************************************************
@@ -99,8 +99,8 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 1D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width,
-					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, 1, SampleCount::x1, usageFlags, eAspects);
 		}
@@ -119,8 +119,8 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 1D array object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
-					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels, uint32_t arrayLayers,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, arrayLayers, SampleCount::x1, usageFlags, eAspects);
 		}
@@ -139,8 +139,8 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
-					  SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, SampleCount eSamples,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 1, eSamples, usageFlags, eAspects);
 		}
@@ -159,8 +159,8 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
-					  uint32_t arrayLayers, SampleCount eSamples, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers, SampleCount eSamples,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, arrayLayers, eSamples, usageFlags, eAspects);
 		}
@@ -179,11 +179,11 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent,
-					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
-			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 },
-									 mipLevels, 6, SampleCount::x1, usageFlags, eAspects, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 },  mipLevels, 6, SampleCount::x1,
+									 usageFlags, eAspects, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 		}
 	};
 
@@ -200,11 +200,11 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image cube array object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
-					  uint32_t arrayLayers, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
-			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels,
-									 6 * arrayLayers, SampleCount::x1, usageFlags, eAspects, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
+			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 6 * arrayLayers, SampleCount::x1,
+									 usageFlags, eAspects, VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT);
 		}
 	};
 
@@ -221,8 +221,8 @@ namespace Vk
 	public:
 
 		//!	@brief	Create a new image 3D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D,
-					  uint32_t mipLevels, Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
+		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D, uint32_t mipLevels,
+					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, Extent3D, mipLevels, 1, SampleCount::x1, usageFlags, eAspects);
 		}

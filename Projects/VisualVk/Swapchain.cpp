@@ -23,8 +23,8 @@ Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE)
 
 Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
 {
-	if (hDevice == VK_NULL_HANDLE)			return Result::eErrorInvalidExternalHandle;
-	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidExternalHandle;
+	if (hDevice == VK_NULL_HANDLE)			return Result::eErrorInvalidDeviceHandle;
+	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidDeviceHandle;
 
 	VkSwapchainCreateInfoKHR				CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -48,9 +48,9 @@ Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMo
 
 	VkSwapchainKHR hSwapchain = VK_NULL_HANDLE;
 
-	VkResult eResult = vkCreateSwapchainKHR(hDevice, &CreateInfo, nullptr, &hSwapchain);
+	Result eResult = VK_RESULT_CAST(vkCreateSwapchainKHR(hDevice, &CreateInfo, nullptr, &hSwapchain));
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
 		this->Destroy();
 
@@ -93,7 +93,7 @@ Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMo
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 

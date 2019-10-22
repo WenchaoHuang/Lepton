@@ -17,7 +17,7 @@ DeviceMemory::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDeviceMemory hDevic
 
 Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
@@ -29,15 +29,15 @@ Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uin
 
 		VkDeviceMemory hMemory = VK_NULL_HANDLE;
 
-		eResult = vkAllocateMemory(hDevice, &AllocateInfo, nullptr, &hMemory);
+		eResult = VK_RESULT_CAST(vkAllocateMemory(hDevice, &AllocateInfo, nullptr, &hMemory));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
-			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hMemory, allocationSize);
+			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hMemory, allocationSize);
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 
@@ -46,11 +46,11 @@ Result DeviceMemory::Invalidate(VkDeviceSize offset, VkDeviceSize size) const
 	VkMappedMemoryRange		MemoryRange = {};
 	MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 	MemoryRange.pNext		= nullptr;
-	MemoryRange.memory		= m_spHandle->m_hDeviceMemory;
+	MemoryRange.memory		= m_spUniqueHandle->m_hDeviceMemory;
 	MemoryRange.offset		= offset;
 	MemoryRange.size		= size;
 
-	return VK_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_spHandle->m_hDevice, 1, &MemoryRange));
+	return VK_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_spUniqueHandle->m_hDevice, 1, &MemoryRange));
 }
 
 
@@ -59,17 +59,17 @@ Result DeviceMemory::Flush(VkDeviceSize offset, VkDeviceSize size) const
 	VkMappedMemoryRange		MemoryRange = {};
 	MemoryRange.sType		= VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 	MemoryRange.pNext		= nullptr;
-	MemoryRange.memory		= m_spHandle->m_hDeviceMemory;
+	MemoryRange.memory		= m_spUniqueHandle->m_hDeviceMemory;
 	MemoryRange.offset		= offset;
 	MemoryRange.size		= size;
 
-	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_spHandle->m_hDevice, 1, &MemoryRange));
+	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_spUniqueHandle->m_hDevice, 1, &MemoryRange));
 }
 
 
 Result DeviceMemory::Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size) const
 {
-	return VK_RESULT_CAST(vkMapMemory(m_spHandle->m_hDevice, m_spHandle->m_hDeviceMemory, offset, size, 0, ppData));
+	return VK_RESULT_CAST(vkMapMemory(m_spUniqueHandle->m_hDevice, m_spUniqueHandle->m_hDeviceMemory, offset, size, 0, ppData));
 }
 
 

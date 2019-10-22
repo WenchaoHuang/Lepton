@@ -46,7 +46,7 @@ Result PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
 		return Result::eSuccess;
 	}
 
-	return Result::eErrorInvalidExternalHandle;
+	return Result::eErrorInvalidDeviceHandle;
 }
 
 

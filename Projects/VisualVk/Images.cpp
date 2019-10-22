@@ -38,7 +38,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 												Flags<ImageAspect> eAspects,
 												VkImageCreateFlags eCreateFlags)
 {
-	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
 	
 	VkImageCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -111,7 +111,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 					imageParam.usage			= eUsages;
 					imageParam.aspectMask		= eAspects;
 
-					m_spHandle = std::make_shared<UniqueHandle>(hImage, hImageView, deviceMemory, imageParam);
+					m_spUniqueHandle = std::make_shared<UniqueHandle>(hImage, hImageView, deviceMemory, imageParam);
 
 					return Result::eSuccess;
 				}

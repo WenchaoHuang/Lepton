@@ -100,25 +100,25 @@ namespace Vk
 	public:
 
 		//!	@brief	Invalidate this resource handle.
-		void Destroy() { m_spHandle.reset(); }
+		void Destroy() { m_spUniqueHandle.reset(); }
 
 		//!	@brief	Whether this resource handle is valid.
-		bool IsValid() const { return m_spHandle != nullptr; }
-
-		//!	@brief	Return VkDevice handle.
-		VkDevice GetDeviceHandle() const { return (m_spHandle != nullptr) ? m_spHandle->m_hDevice : VK_NULL_HANDLE; }
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new render pass object.
 		Result Create(VkDevice hDevice, ArrayProxy<const AttachmentDescription> attachmentDescriptions,
 					  ArrayProxy<const SubpassDescription> subpassDescriptions, ArrayProxy<const SubpassDependency> subpassDependencies);
 
+		//!	@brief	Return VkDevice handle.
+		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
+
 		//!	@brief	Convert to VkRenderPass.
-		operator VkRenderPass() const { return (m_spHandle != nullptr) ? m_spHandle->m_hRenderPass : VK_NULL_HANDLE; }
+		operator VkRenderPass() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hRenderPass : VK_NULL_HANDLE; }
 
 	private:
 
 		/**
-		 *	@brief	Unique handle of Vulkan resource.
+		 *	@brief	Unique handle of render pass.
 		 */
 		struct UniqueHandle
 		{
@@ -138,7 +138,7 @@ namespace Vk
 			const VkRenderPass				m_hRenderPass;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spHandle;
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 
 	/*********************************************************************
@@ -181,7 +181,7 @@ namespace Vk
 		RenderPass GetRenderPass() const { return m_RenderPass; }
 
 		//!	@brief	Return extent of the framebuffer.
-		VkExtent2D Extent() const { return m_Extent; }
+		VkExtent2D GetExtent() const { return m_Extent; }
 
 		//!	@brief	Destroy framebuffer.
 		void Destroy();

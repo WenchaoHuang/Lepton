@@ -78,7 +78,7 @@ Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 		(Param.spPipelineLayout == nullptr) || !Param.spPipelineLayout->IsValid() ||
 		 Param.renderPass.GetDeviceHandle() != Param.spPipelineLayout->GetDeviceHandle())
 	{
-		return Result::eErrorInvalidExternalHandle;
+		return Result::eErrorInvalidDeviceHandle;
 	}
 
 	std::vector<VkPipelineShaderStageCreateInfo>		ShaderStageCreateInfos;

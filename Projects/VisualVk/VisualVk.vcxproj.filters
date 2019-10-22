@@ -55,6 +55,9 @@
     <Filter Include="2. Resources\0. Sync">
       <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Resources\10. PipelineLayout\222">
+      <UniqueIdentifier>{901bc216-6cee-43c8-939b-949cdca50676}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -102,6 +105,9 @@
     </ClCompile>
     <ClCompile Include="Sync.cpp">
       <Filter>2. Resources\0. Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorSet.cpp">
+      <Filter>2. Resources\10. PipelineLayout\222</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="Sync.h">
       <Filter>2. Resources\0. Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="DescriptorSet.h">
+      <Filter>2. Resources\10. PipelineLayout\222</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

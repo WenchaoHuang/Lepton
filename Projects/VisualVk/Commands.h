@@ -96,17 +96,17 @@ namespace Vk
 
 	private:
 
-		VkQueue							m_hQueue;
+		VkQueue								m_hQueue;
 
-		VkDevice						m_hDevice;
+		VkDevice							m_hDevice;
 
-		const float						m_Priority;
+		const float							m_Priority;
 
-		const uint32_t					m_FamilyIndex;
+		const uint32_t						m_FamilyIndex;
 
-		std::set<CommandPool*>			m_pCommandPools;
+		std::set<CommandPool*>				m_pCommandPools;
 
-		const Flags<QueueCapability>	m_eCapabilities;
+		const Flags<QueueCapability>		m_eCapabilities;
 	};
 
 	/*********************************************************************

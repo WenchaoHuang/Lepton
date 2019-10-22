@@ -5,6 +5,8 @@
 
 #include <vulkan/vulkan.h>
 
+#define VK_ERROR_INVALID_DEVICE_HANDLE			-2000000
+
 namespace Vk
 {
 	/*********************************************************************
@@ -44,7 +46,6 @@ namespace Vk
 		eErrorOutOfPoolMemoryKHR							= VK_ERROR_OUT_OF_POOL_MEMORY_KHR,
 		eErrorNativeWindowInUseKHR							= VK_ERROR_NATIVE_WINDOW_IN_USE_KHR,
 		eErrorIncompatibleDisplayKHR						= VK_ERROR_INCOMPATIBLE_DISPLAY_KHR,
-		eErrorInvalidExternalHandleKHR						= VK_ERROR_INVALID_EXTERNAL_HANDLE_KHR,
 
 		eErrorInvalidShaderNV								= VK_ERROR_INVALID_SHADER_NV,
 		eErrorNotPermittedEXT								= VK_ERROR_NOT_PERMITTED_EXT,
@@ -52,6 +53,8 @@ namespace Vk
 		eErrorValidationFailedEXT							= VK_ERROR_VALIDATION_FAILED_EXT,
 		eErrorInvalidDeviceAddressEXT						= VK_ERROR_INVALID_DEVICE_ADDRESS_EXT,
 		eErrorInvalidDrmFormatModifierPlaneLayoutEXT		= VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT,
+
+		eErrorInvalidDeviceHandle							= VK_ERROR_INVALID_DEVICE_HANDLE,
 	};
 
 	/*********************************************************************
@@ -99,6 +102,8 @@ namespace Vk
 		case Result::eErrorValidationFailedEXT:							return "ErrorValidationFailedEXT";
 		case Result::eErrorInvalidDeviceAddressEXT:						return "ErrorInvalidDeviceAddressEXT";
 		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "ErrorInvalidDrmFormatModifierPlaneLayoutEXT";
+
+		case Result::eErrorInvalidDeviceHandle:							return "ErrorInvalidDeviceHandle";
 		default:														return "Invalid";
 		}
 	}

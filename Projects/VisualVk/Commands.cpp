@@ -49,7 +49,7 @@ Result CommandQueue::DestroyCommandPool(CommandPool * pCommandPool)
 		return Result::eSuccess;
 	}
 
-	return Result::eErrorInvalidExternalHandle;
+	return Result::eErrorInvalidDeviceHandle;
 }
 
 
@@ -111,7 +111,7 @@ Result CommandPool::FreeCommandBuffer(CommandBuffer * pCommandBuffer)
 		return Result::eSuccess;
 	}
 
-	return Result::eErrorInvalidExternalHandle;
+	return Result::eErrorInvalidDeviceHandle;
 }
 
 

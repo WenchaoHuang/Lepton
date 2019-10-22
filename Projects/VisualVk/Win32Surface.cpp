@@ -34,9 +34,9 @@ Result Win32Surface::Create(VkInstance hInstance, HWND hWindow)
 
 	VkSurfaceKHR hSurface = VK_NULL_HANDLE;
 
-	VkResult eResult = vkCreateWin32SurfaceKHR(hInstance, &CreateInfo, nullptr, &hSurface);
+	Result eResult = VK_RESULT_CAST(vkCreateWin32SurfaceKHR(hInstance, &CreateInfo, nullptr, &hSurface));
 
-	if (eResult == VK_SUCCESS)
+	if (eResult == Result::eSuccess)
 	{
 		this->Destroy();
 
@@ -45,7 +45,7 @@ Result Win32Surface::Create(VkInstance hInstance, HWND hWindow)
 		m_hSurface = hSurface;
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 

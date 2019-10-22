@@ -19,7 +19,7 @@ ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShade
 
 Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
 {
-	VkResult eResult = VK_ERROR_INVALID_EXTERNAL_HANDLE;
+	Result eResult = Result::eErrorInvalidDeviceHandle;
 
 	if ((hDevice != VK_NULL_HANDLE) && !code_spv.empty())
 	{
@@ -32,15 +32,15 @@ Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_sp
 
 		VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-		eResult = vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule);
+		eResult = VK_RESULT_CAST(vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule));
 
-		if (eResult == VK_SUCCESS)
+		if (eResult == Result::eSuccess)
 		{
-			m_spHandle = std::make_shared<UniqueHandle>(hDevice, hShaderModule);
+			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hShaderModule);
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return eResult;
 }
 
 

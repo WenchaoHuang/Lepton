@@ -46,24 +46,24 @@ namespace Vk
 	public:
 
 		//!	@brief	Invalidate this resource handle.
-		void Destroy() { m_spHandle.reset(); }
+		void Destroy() { m_spUniqueHandle.reset(); }
 
 		//!	@brief	Whether this resource handle is valid.
-		bool IsValid() const { return m_spHandle != nullptr; }
-
-		//!	@brief	Return constant reference to its parameter (must be valid).
-		const SamplerParam & GetParam() const { return m_spHandle->m_Parameter; }
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new sampler object.
 		Result Create(VkDevice hDevice, const SamplerParam & Param = SamplerParam());
 
+		//!	@brief	Return constant reference to its parameter (must be valid).
+		const SamplerParam & GetParam() const { return m_spUniqueHandle->m_Parameter; }
+
 		//!	@brief	Convert to VkSampler.
-		operator VkSampler() const { return (m_spHandle != nullptr) ? m_spHandle->m_hSampler : VK_NULL_HANDLE; }
+		operator VkSampler() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hSampler : VK_NULL_HANDLE; }
 
 	private:
 
 		/**
-		 *	@brief	Unique handle of Vulkan resource.
+		 *	@brief	Unique handle of sampler.
 		 */
 		struct UniqueHandle
 		{
@@ -84,6 +84,6 @@ namespace Vk
 			const SamplerParam				m_Parameter;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spHandle;
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 }

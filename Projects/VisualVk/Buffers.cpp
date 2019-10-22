@@ -26,7 +26,7 @@ HostVisibleBuffer::HostVisibleBuffer(LogicalDevice * pLogicalDevice, VkDeviceSiz
 Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize size)
 {
 	if (size == 0)							return Result::eErrorOutOfDeviceMemory;
-	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
 
 	VkBufferCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -159,7 +159,7 @@ DeviceLocalBuffer::DeviceLocalBuffer() : m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
 Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize size)
 {
 	if (size == 0)							return Result::eErrorOutOfDeviceMemory;
-	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidExternalHandle;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
 
 	VkBufferCreateInfo						CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;

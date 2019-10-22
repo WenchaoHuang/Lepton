@@ -20,16 +20,16 @@ namespace Vk
 	public:
 
 		//!	@brief	Invalidate this resource handle.
-		void Destroy() { m_spHandle.reset(); }
+		void Destroy() { m_spUniqueHandle.reset(); }
 
 		//!	@brief	Whether this resource handle is valid.
-		bool IsValid() const { return m_spHandle != nullptr; }
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new shader module.
 		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv);
 
 		//!	@brief	Convert to VkShaderModule.
-		operator VkShaderModule() const { return (m_spHandle != nullptr) ? m_spHandle->m_hShaderModule : VK_NULL_HANDLE; }
+		operator VkShaderModule() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hShaderModule : VK_NULL_HANDLE; }
 
 		//!	@brief	Read SPIR-V shader.
 		static std::vector<uint32_t> ReadSPIRV(const char * pFilePath);
@@ -37,7 +37,7 @@ namespace Vk
 	private:
 
 		/**
-		 *	@brief	Unique handle of Vulkan resource.
+		 *	@brief	Unique handle of shader module.
 		 */
 		struct UniqueHandle
 		{
@@ -57,6 +57,6 @@ namespace Vk
 			const VkShaderModule			m_hShaderModule;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spHandle;
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 }
