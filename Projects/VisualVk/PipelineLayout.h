@@ -3,28 +3,10 @@
 *************************************************************************/
 #pragma once
 
-#include <set>
-#include <map>
-#include "Vulkan.h"
+#include "DescriptorSet.h"
 
 namespace Vk
 {
-	/*********************************************************************
-	*********************    DescriptorSetLayout    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a descriptor.
-	 */
-	struct Descriptor
-	{
-		Flags<ShaderStage>		stageFlags				= ShaderStage::eAllGraphics;
-		DescriptorType			descriptorType			= DescriptorType::eSampler;
-		uint32_t				descriptorCount			= 1;
-	};
-
-	typedef std::map<uint32_t, Descriptor>		DescriptorSetLayout;
-
 	/*********************************************************************
 	**********************    PushConstantRange    ***********************
 	*********************************************************************/
@@ -50,74 +32,40 @@ namespace Vk
 	 */
 	class PipelineLayout
 	{
-		VK_UNIQUE_RESOURCE(PipelineLayout)
 
 	public:
 
-		//!	@brief	Create and initialize immediately.
-		explicit PipelineLayout(VkDevice hDevice,
-								ArrayProxy<const DescriptorSetLayout> descriptorSetLayouts = nullptr,
-								ArrayProxy<const PushConstantRange> pushConstantRanges = nullptr);
 
-		//!	@brief	Destroy pipeline layout object.
-		~PipelineLayout();
-
-	public:
-
-		//!	@brief	Destroy the descriptor set object.
-		Result DestroyDescriptorSet(DescriptorSet * pDescriptorSet);
-
-		//!	@brief	Create a new descriptor set object.
-		DescriptorSet * CreateDescriptorSet(uint32_t setIndex);
+		Result Create(VkDevice hDevice,
+					  ArrayProxy<const DescriptorSetLayout> pDescriptorSetLayouts = nullptr,
+					  ArrayProxy<const PushConstantRange> pPushConstantRanges = nullptr);
+		
 
 	private:
 
-		std::set<DescriptorSet*>				m_pDescriptorSets;
+		/**
+		 *	@brief	Unique handle of pipeline layout.
+		 */
+		struct UniqueHandle
+		{
+			VK_NONCOPYABLE(UniqueHandle)
 
-		std::vector<PushConstantRange>			m_PushConstantRanges;
+		public:
 
-		std::vector<DescriptorSetLayout>		m_DescriptorSetLayouts;
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(VkDevice, VkPipelineLayout, const std::vector<DescriptorSetLayout>&, const std::vector<PushConstantRange>&);
 
-		std::vector<VkDescriptorSetLayout>		m_hDescriptorSetLayouts;
-	};
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
 
-	/*********************************************************************
-	************************    DescriptorSet    *************************
-	*********************************************************************/
+		public:
 
-	/**
-	 *	@brief	Wrapper for Vulkan descriptor set object.
-	 */
-	class DescriptorSet
-	{
-		friend class PipelineLayout;
+			const VkDevice								m_hDevice;
+			const VkPipelineLayout						m_hPipelineLayout;
+			const std::vector<PushConstantRange>		m_PushConstantRanges;
+			const std::vector<DescriptorSetLayout>		m_DescriptorSetLayouts;
+		};
 
-	private:
-
-		//!	@brief	Create descriptor set object.
-		explicit DescriptorSet(VkDevice hDevice,
-							   VkDescriptorPool hDescriptorPool,
-							   VkDescriptorSet hDescriptorSet,
-							   DescriptorSetLayout descriptorSetLayout);
-
-		//!	@brief	Destroy descriptor set object.
-		~DescriptorSet();
-
-	public:
-
-		//!	@brief	Return Vulkan type of this object.
-		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
-
-		void UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
-
-	private:
-
-		const VkDevice					m_hDevice;
-
-		const VkDescriptorSet			m_hDescriptorSet;
-
-		const VkDescriptorPool			m_hDescriptorPool;
-
-		DescriptorSetLayout				m_DescriptorSetLayout;
+		std::shared_ptr<UniqueHandle>					m_spUniqueHandle;
 	};
 }

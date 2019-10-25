@@ -46,17 +46,17 @@
     <Filter Include="2. Resources\6. Framebuffer">
       <UniqueIdentifier>{5275c891-e9a0-46cb-82ff-63ac4dcef833}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\10. PipelineLayout">
-      <UniqueIdentifier>{31e182d7-9735-439b-8269-8520c6713011}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3. Commands">
       <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
     </Filter>
     <Filter Include="2. Resources\0. Sync">
       <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\10. PipelineLayout\222">
+    <Filter Include="2. Resources\10. DescriptorSet">
       <UniqueIdentifier>{901bc216-6cee-43c8-939b-949cdca50676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\11. PipelineLayout">
+      <UniqueIdentifier>{31e182d7-9735-439b-8269-8520c6713011}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +98,7 @@
       <Filter>2. Resources\4. Pipelines</Filter>
     </ClCompile>
     <ClCompile Include="PipelineLayout.cpp">
-      <Filter>2. Resources\10. PipelineLayout</Filter>
+      <Filter>2. Resources\11. PipelineLayout</Filter>
     </ClCompile>
     <ClCompile Include="Commands.cpp">
       <Filter>3. Commands</Filter>
@@ -107,7 +107,7 @@
       <Filter>2. Resources\0. Sync</Filter>
     </ClCompile>
     <ClCompile Include="DescriptorSet.cpp">
-      <Filter>2. Resources\10. PipelineLayout\222</Filter>
+      <Filter>2. Resources\10. DescriptorSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +163,7 @@
       <Filter>2. Resources\4. Pipelines</Filter>
     </ClInclude>
     <ClInclude Include="PipelineLayout.h">
-      <Filter>2. Resources\10. PipelineLayout</Filter>
+      <Filter>2. Resources\11. PipelineLayout</Filter>
     </ClInclude>
     <ClInclude Include="Commands.h">
       <Filter>3. Commands</Filter>
@@ -172,7 +172,7 @@
       <Filter>2. Resources\0. Sync</Filter>
     </ClInclude>
     <ClInclude Include="DescriptorSet.h">
-      <Filter>2. Resources\10. PipelineLayout\222</Filter>
+      <Filter>2. Resources\10. DescriptorSet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
