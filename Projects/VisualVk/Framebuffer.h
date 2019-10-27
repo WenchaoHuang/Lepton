@@ -150,48 +150,51 @@ namespace Vk
 	 */
 	class Framebuffer
 	{
-		VK_NONCOPYABLE(Framebuffer)
 
 	public:
 
-		//!	@brief	Create framebuffer object.
-		Framebuffer();
+		//!	@brief	Invalidate this resource handle.
+		void Destroy() { m_spUniqueHandle.reset(); }
 
-		//!	@brief	Create and initialize immediately.
-		explicit Framebuffer(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
+		//!	@brief	Whether this resource handle is valid.
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
-		//!	@brief	Destroy framebuffer object.
-		~Framebuffer();
+		//!	@brief	Return extent of the framebuffer.
+		VkExtent2D GetExtent() const { return m_spUniqueHandle->m_Extent; }
 
-	public:
-
-		//!	@brief	Convert to VkFramebuffer.
-		operator VkFramebuffer() const { return m_hFramebuffer; }
-
-		//!	@brief	Return VkFramebuffer handle.
-		VkFramebuffer GetHandle() const { return m_hFramebuffer; }
-
-		//!	@brief	Whether this framebuffer handle is valid.
-		bool IsValid() const { return m_hFramebuffer != VK_NULL_HANDLE; }
+		//!	@brief	Return render pass object (must be valid).
+		RenderPass GetRenderPass() const { return m_spUniqueHandle->m_RenderPass; }
 
 		//!	@brief	Create a new framebuffer object.
 		Result Create(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent);
 
-		//!	@brief	Return render pass object.
-		RenderPass GetRenderPass() const { return m_RenderPass; }
-
-		//!	@brief	Return extent of the framebuffer.
-		VkExtent2D GetExtent() const { return m_Extent; }
-
-		//!	@brief	Destroy framebuffer.
-		void Destroy();
+		//!	@brief	Convert to VkFramebuffer.
+		operator VkFramebuffer() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hFramebuffer : VK_NULL_HANDLE; }
 
 	private:
 
-		VkExtent2D			m_Extent;
+		/**
+		 *	@brief	Unique handle of framebuffer.
+		 */
+		struct UniqueHandle
+		{
+			VK_NONCOPYABLE(UniqueHandle)
 
-		RenderPass			m_RenderPass;
+		public:
 
-		VkFramebuffer		m_hFramebuffer;
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(RenderPass, VkFramebuffer, VkExtent2D);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
+
+		public:
+
+			const VkExtent2D				m_Extent;
+			const RenderPass				m_RenderPass;
+			const VkFramebuffer				m_hFramebuffer;
+		};
+
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 }

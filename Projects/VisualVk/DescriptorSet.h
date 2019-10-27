@@ -162,8 +162,8 @@ namespace Vk
 
 	public:
 
-		//!	@brief	Convert to VkDescriptorSet.
-		operator VkDescriptorSet() const { return m_hDescriptorSet; }
+		//!	@brief	Return Vulkan type of this object.
+		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
 
 		//!	@brief	Whether this descriptor set handle is valid.
 		bool IsValid() const { return m_hDescriptorSet != VK_NULL_HANDLE; }

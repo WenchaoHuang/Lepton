@@ -35,11 +35,17 @@ namespace Vk
 
 	public:
 
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
+
+		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
 
 		Result Create(VkDevice hDevice,
 					  ArrayProxy<const DescriptorSetLayout> pDescriptorSetLayouts = nullptr,
 					  ArrayProxy<const PushConstantRange> pPushConstantRanges = nullptr);
 		
+		DescriptorSetLayout GetDescriptorSetLayout(uint32_t index) const { return m_spUniqueHandle->m_DescriptorSetLayouts[index]; }
+
+		operator VkPipelineLayout() const { return m_spUniqueHandle != nullptr ? m_spUniqueHandle->m_hPipelineLayout : VK_NULL_HANDLE; }
 
 	private:
 

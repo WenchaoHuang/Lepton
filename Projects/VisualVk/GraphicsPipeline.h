@@ -5,12 +5,11 @@
 
 #include "Framebuffer.h"
 #include "ShaderModule.h"
+#include "PipelineLayout.h"
 
 namespace Vk
 {
-	typedef VkPipeline		VkComputePipeline;
 	typedef VkPipeline		VkGraphicsPipeline;
-	typedef VkPipeline		VkRayTracingPipeline;
 
 	/*********************************************************************
 	********************    GraphicsPipelineParam    *********************
@@ -206,6 +205,8 @@ namespace Vk
 	public:
 
 		RenderPass							renderPass;
+		PipelineLayout						pipelineLayout;
+
 		ShaderStagesInfo					shaderStages;
 		DynamicStateInfo					dynamicStates;
 		ViewportStateInfo					viewportState;
@@ -216,7 +217,6 @@ namespace Vk
 		TessellationStateInfo				tessellationState;
 		InputAssemblyStateInfo				inputAssemblyState;
 		RasterizationStateInfo				rasterizationState;
-		std::shared_ptr<PipelineLayout>		spPipelineLayout;
 	};
 
 	/*********************************************************************
@@ -255,53 +255,5 @@ namespace Vk
 	private:
 
 		GraphicsPipelineParam		m_Parameter;
-	};
-
-	/*********************************************************************
-	***********************    ComputePipeline    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Wrapper for Vulkan compute pipeline object.
-	 */
-	class ComputePipeline
-	{
-		VK_UNIQUE_RESOURCE(ComputePipeline)
-
-	public:
-
-		//!	@brief	Create compute pipeline object.
-		ComputePipeline();
-
-		//!	@brief	Destroy compute pipeline object.
-		~ComputePipeline();
-
-	public:
-
-
-	};
-
-	/*********************************************************************
-	**********************    RayTracingPipeline    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Wrapper for Vulkan ray tracing pipeline object.
-	 */
-	class RayTracingPipeline
-	{
-		VK_UNIQUE_RESOURCE(RayTracingPipeline)
-
-	public:
-
-		//!	@brief	Create ray tracing pipeline object.
-		RayTracingPipeline();
-
-		//!	@brief	Destroy ray tracing pipeline object.
-		~RayTracingPipeline();
-
-	public:
-
-
 	};
 }

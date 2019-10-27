@@ -144,14 +144,14 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 }
 
 
-void CommandBuffer::CmdBeginRenderPass(const Framebuffer * pFramebuffer, VkRect2D renderArea,
+void CommandBuffer::CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea,
 									   ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents)
 {
 	VkRenderPassBeginInfo			BeginInfo = {};
 	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 	BeginInfo.pNext					= nullptr;
-	BeginInfo.renderPass			= pFramebuffer->GetRenderPass();
-	BeginInfo.framebuffer			= pFramebuffer->GetHandle();
+	BeginInfo.renderPass			= framebuffer.GetRenderPass();
+	BeginInfo.framebuffer			= framebuffer;
 	BeginInfo.renderArea			= renderArea;
 	BeginInfo.clearValueCount		= pClearValues.size();
 	BeginInfo.pClearValues			= reinterpret_cast<const VkClearValue*>(pClearValues.data());

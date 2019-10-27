@@ -3,10 +3,10 @@
 *************************************************************************/
 
 #include <functional>
-#include "Pipelines.h"
 #include "Framebuffer.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
+#include "GraphicsPipeline.h"
 
 using namespace Vk;
 
@@ -74,9 +74,8 @@ GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineParam & Param) : Graphi
 
 Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 {
-	if (!Param.renderPass.IsValid() ||
-		(Param.spPipelineLayout == nullptr) || !Param.spPipelineLayout->IsValid() ||
-		 Param.renderPass.GetDeviceHandle() != Param.spPipelineLayout->GetDeviceHandle())
+	if (!Param.renderPass.IsValid() || !Param.pipelineLayout.IsValid() ||
+		 Param.renderPass.GetDeviceHandle() != Param.pipelineLayout.GetDeviceHandle())
 	{
 		return Result::eErrorInvalidDeviceHandle;
 	}
@@ -226,7 +225,7 @@ Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 	PipelineCreateInfo.pDepthStencilState							= &DepthStencilStateCreateInfo;
 	PipelineCreateInfo.pColorBlendState								= &ColorBlendStateCreateInfo;
 	PipelineCreateInfo.pDynamicState								= &DynamicStateCreateInfo;
-	PipelineCreateInfo.layout										= Param.spPipelineLayout->GetHandle();
+	PipelineCreateInfo.layout										= Param.pipelineLayout;
 	PipelineCreateInfo.renderPass									= Param.renderPass;
 	PipelineCreateInfo.subpass										= 0;
 	PipelineCreateInfo.basePipelineHandle							= VK_NULL_HANDLE;
@@ -269,34 +268,4 @@ void GraphicsPipeline::Destroy()
 GraphicsPipeline::~GraphicsPipeline()
 {
 	this->Destroy();
-}
-
-
-/*************************************************************************
-*************************    ComputePipeline    **************************
-*************************************************************************/
-ComputePipeline::ComputePipeline() : m_hDevice(VK_NULL_HANDLE), m_hComputePipeline(VK_NULL_HANDLE)
-{
-
-}
-
-
-ComputePipeline::~ComputePipeline()
-{
-
-}
-
-
-/*************************************************************************
-************************    RayTracingPipeline    ************************
-*************************************************************************/
-RayTracingPipeline::RayTracingPipeline() : m_hDevice(VK_NULL_HANDLE), m_hRayTracingPipeline(VK_NULL_HANDLE)
-{
-
-}
-
-
-RayTracingPipeline::~RayTracingPipeline()
-{
-
 }

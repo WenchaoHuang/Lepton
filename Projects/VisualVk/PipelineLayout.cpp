@@ -43,7 +43,7 @@ Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLa
 			std::vector<PushConstantRange>		PushConstantRanges;
 			std::vector<DescriptorSetLayout>	DescriptorSetLayouts;
 
-
+			//!	TODO
 
 			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hPipelineLayou, DescriptorSetLayouts, PushConstantRanges);
 		}

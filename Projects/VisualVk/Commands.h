@@ -4,7 +4,8 @@
 #pragma once
 
 #include <set>
-#include "Pipelines.h"
+#include "Framebuffer.h"
+#include "GraphicsPipeline.h"
 
 namespace Vk
 {
@@ -268,8 +269,7 @@ namespace Vk
 		}
 
 		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(const Framebuffer * pFramebuffer, VkRect2D renderArea,
-								ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
+		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
 
 		//!	@brief	Insert a image memory dependency.
 		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask,

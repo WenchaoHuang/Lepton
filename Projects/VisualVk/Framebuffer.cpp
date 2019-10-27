@@ -58,15 +58,10 @@ RenderPass::UniqueHandle::~UniqueHandle()
 /*************************************************************************
 ***************************    Framebuffer    ****************************
 *************************************************************************/
-Framebuffer::Framebuffer() : m_hFramebuffer(VK_NULL_HANDLE), m_Extent({ 0, 0 })
+Framebuffer::UniqueHandle::UniqueHandle(RenderPass renderPass, VkFramebuffer hFramebuffer, VkExtent2D extent)
+	: m_RenderPass(renderPass), m_hFramebuffer(hFramebuffer), m_Extent(extent)
 {
-	
-}
 
-
-Framebuffer::Framebuffer(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent) : Framebuffer()
-{
-	this->Create(renderPass, attachments, extent);
 }
 
 
@@ -93,13 +88,7 @@ Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> 
 
 		if (eResult == Result::eSuccess)
 		{
-			this->Destroy();
-
-			m_hFramebuffer = hFramebuffer;
-
-			m_RenderPass = renderPass;
-
-			m_Extent = extent;
+			m_spUniqueHandle = std::make_shared<UniqueHandle>(renderPass, hFramebuffer, extent);
 		}
 	}
 
@@ -107,22 +96,10 @@ Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> 
 }
 
 
-void Framebuffer::Destroy()
+Framebuffer::UniqueHandle::~UniqueHandle()
 {
 	if (m_hFramebuffer != VK_NULL_HANDLE)
 	{
 		vkDestroyFramebuffer(m_RenderPass.GetDeviceHandle(), m_hFramebuffer, nullptr);
-
-		m_hFramebuffer = VK_NULL_HANDLE;
-
-		m_RenderPass.Destroy();
-
-		m_Extent = { 0, 0 };
 	}
-}
-
-
-Framebuffer::~Framebuffer()
-{
-	this->Destroy();
 }
