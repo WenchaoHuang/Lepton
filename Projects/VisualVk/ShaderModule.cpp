@@ -19,25 +19,23 @@ ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShade
 
 Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
 {
-	Result eResult = Result::eErrorInvalidDeviceHandle;
+	if (code_spv.empty() == true)			return Result::eErrorInvalidSPIRVCode;
+	else if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	if ((hDevice != VK_NULL_HANDLE) && !code_spv.empty())
+	VkShaderModuleCreateInfo		CreateInfo = {};
+	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+	CreateInfo.pNext				= nullptr;
+	CreateInfo.flags				= 0;
+	CreateInfo.codeSize				= sizeof(uint32_t) * code_spv.size();
+	CreateInfo.pCode				= code_spv.data();
+
+	VkShaderModule hShaderModule = VK_NULL_HANDLE;
+
+	Result eResult = VK_RESULT_CAST(vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule));
+
+	if (eResult == Result::eSuccess)
 	{
-		VkShaderModuleCreateInfo		CreateInfo = {};
-		CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-		CreateInfo.pNext				= nullptr;
-		CreateInfo.flags				= 0;
-		CreateInfo.codeSize				= sizeof(uint32_t) * code_spv.size();
-		CreateInfo.pCode				= code_spv.data();
-
-		VkShaderModule hShaderModule = VK_NULL_HANDLE;
-
-		eResult = VK_RESULT_CAST(vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule));
-
-		if (eResult == Result::eSuccess)
-		{
-			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hShaderModule);
-		}
+		m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hShaderModule);
 	}
 
 	return eResult;

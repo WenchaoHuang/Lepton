@@ -24,7 +24,7 @@ Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE)
 Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
 {
 	if (hDevice == VK_NULL_HANDLE)			return Result::eErrorInvalidDeviceHandle;
-	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidDeviceHandle;
+	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidSurfaceHandle;
 
 	VkSwapchainCreateInfoKHR				CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -99,19 +99,16 @@ Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMo
 
 uint32_t Swapchain::AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence, uint64_t timeout)
 {
-	if (m_hSwapchain != VK_NULL_HANDLE)
-	{
-		vkAcquireNextImageKHR(m_hDevice, m_hSwapchain, timeout, hSemaphore, hFence, &m_ImageIndex);
-	}
+	vkAcquireNextImageKHR(m_hDevice, m_hSwapchain, timeout, hSemaphore, hFence, &m_ImageIndex);
 
 	return m_ImageIndex;
 }
 
 
-Result Swapchain::Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> WaitSemaphores)
+Result Swapchain::Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> waitSemaphores)
 {
-	m_PresentInfo.pWaitSemaphores		= WaitSemaphores.data();
-	m_PresentInfo.waitSemaphoreCount	= WaitSemaphores.size();
+	m_PresentInfo.pWaitSemaphores		= waitSemaphores.data();
+	m_PresentInfo.waitSemaphoreCount	= waitSemaphores.size();
 
 	return VK_RESULT_CAST(vkQueuePresentKHR(hQueue, &m_PresentInfo));
 }

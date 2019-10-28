@@ -67,7 +67,7 @@ Framebuffer::UniqueHandle::UniqueHandle(RenderPass renderPass, VkFramebuffer hFr
 
 Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> attachments, VkExtent2D extent)
 {
-	Result eResult = Result::eErrorInvalidDeviceHandle;
+	Result eResult = Result::eErrorInvalidRenderPassHandle;
 
 	if (renderPass.IsValid())
 	{

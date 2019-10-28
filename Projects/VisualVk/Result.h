@@ -5,7 +5,11 @@
 
 #include <vulkan/vulkan.h>
 
-#define VK_ERROR_INVALID_DEVICE_HANDLE			-2000000
+#define VK_ERROR_INVALID_SPIR_V_CODE				-2000000
+#define VK_ERROR_INVALID_IMAGE_HANDLE				-2000001
+#define VK_ERROR_INVALID_DEVICE_HANDLE				-2000002
+#define VK_ERROR_INVALID_SURFACE_HANDLE				-2000003
+#define VK_ERROR_INVALID_RENDER_PASS_HANDLE			-2000004
 
 namespace Vk
 {
@@ -54,7 +58,11 @@ namespace Vk
 		eErrorInvalidDeviceAddressEXT						= VK_ERROR_INVALID_DEVICE_ADDRESS_EXT,
 		eErrorInvalidDrmFormatModifierPlaneLayoutEXT		= VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT,
 
+		eErrorInvalidSPIRVCode								= VK_ERROR_INVALID_SPIR_V_CODE,
+		eErrorInvalidImageHandle							= VK_ERROR_INVALID_IMAGE_HANDLE,
 		eErrorInvalidDeviceHandle							= VK_ERROR_INVALID_DEVICE_HANDLE,
+		eErrorInvalidSurfaceHandle							= VK_ERROR_INVALID_SURFACE_HANDLE,
+		eErrorInvalidRenderPassHandle						= VK_ERROR_INVALID_RENDER_PASS_HANDLE,
 	};
 
 	/*********************************************************************
@@ -70,40 +78,44 @@ namespace Vk
 		{
 		case Result::eSuccess:											return "Success";
 		case Result::eTimeout:											return "Timeout";
-		case Result::eNotReady:											return "NotReady";
-		case Result::eEventSet:											return "EventSet";
-		case Result::eEventReset:										return "EventReset";
+		case Result::eNotReady:											return "Not Ready";
+		case Result::eEventSet:											return "Event Set";
+		case Result::eEventReset:										return "Event Reset";
 		case Result::eIncomplete:										return "Incomplete";
 
-		case Result::eErrorDeviceLost:									return "ErrorDeviceLost";
-		case Result::eErrorTooManyObjects:								return "ErrorTooManyObjects";
-		case Result::eErrorFragmentedPool:								return "ErrorFragmentedPool";
-		case Result::eErrorMemoryMapFailed:								return "ErrorMemoryMapFailed";
-		case Result::eErrorLayerNotPresent:								return "ErrorLayerNotPresent";
-		case Result::eErrorOutOfHostMemory:								return "ErrorOutOfHostMemory";
-		case Result::eErrorOutOfPoolMemory:								return "ErrorOutOfPoolMemory";
-		case Result::eErrorOutOfDeviceMemory:							return "ErrorOutOfDeviceMemory";
-		case Result::eErrorFeatureNotPresent:							return "ErrorFeatureNotPresent";
-		case Result::eErrorFormatNotSupported:							return "ErrorFormatNotSupported";
-		case Result::eErrorIncompatibleDriver:							return "ErrorIncompatibleDriver";
-		case Result::eErrorExtensionNotPresent:							return "ErrorExtensionNotPresent";
-		case Result::eErrorInitializationFailed:						return "ErrorInitializationFailed";
-		case Result::eErrorInvalidExternalHandle:						return "ErrorInvalidExternalHandle";
+		case Result::eErrorDeviceLost:									return "Error Device Lost";
+		case Result::eErrorTooManyObjects:								return "Error Too Many Objects";
+		case Result::eErrorFragmentedPool:								return "Error Fragmented Pool";
+		case Result::eErrorMemoryMapFailed:								return "Error Memory Map Failed";
+		case Result::eErrorLayerNotPresent:								return "Error Layer Not Present";
+		case Result::eErrorOutOfHostMemory:								return "Error Out Of Host Memory";
+		case Result::eErrorOutOfPoolMemory:								return "Error Out Of Pool Memory";
+		case Result::eErrorOutOfDeviceMemory:							return "Error Out Of Device Memory";
+		case Result::eErrorFeatureNotPresent:							return "Error Feature Not Present";
+		case Result::eErrorFormatNotSupported:							return "Error Format Not Supported";
+		case Result::eErrorIncompatibleDriver:							return "Error Incompatible Driver";
+		case Result::eErrorExtensionNotPresent:							return "Error Extension Not Present";
+		case Result::eErrorInitializationFailed:						return "Error Initialization Failed";
+		case Result::eErrorInvalidExternalHandle:						return "Error Invalid External Handle";
 
-		case Result::eSuboptimalKHR:									return "SuboptimalKHR";
-		case Result::eErrorOutOfDateKHR:								return "ErrorOutOfDateKHR";
-		case Result::eErrorSurfaceLostKHR:								return "ErrorSurfaceLostKHR";
-		case Result::eErrorNativeWindowInUseKHR:						return "ErrorNativeWindowInUseKHR";
-		case Result::eErrorIncompatibleDisplayKHR:						return "ErrorIncompatibleDisplayKHR";
+		case Result::eSuboptimalKHR:									return "Suboptimal KHR";
+		case Result::eErrorOutOfDateKHR:								return "Error Out Of Date KHR";
+		case Result::eErrorSurfaceLostKHR:								return "Error Surface Lost KHR";
+		case Result::eErrorNativeWindowInUseKHR:						return "Error Native Window In Use KHR";
+		case Result::eErrorIncompatibleDisplayKHR:						return "Error Incompatible Display KHR";
 
-		case Result::eErrorInvalidShaderNV:								return "ErrorInvalidShaderNV";
-		case Result::eErrorNotPermittedEXT:								return "ErrorNotPermittedEXT";
-		case Result::eErrorFragmentationEXT:							return "ErrorFragmentationEXT";
-		case Result::eErrorValidationFailedEXT:							return "ErrorValidationFailedEXT";
-		case Result::eErrorInvalidDeviceAddressEXT:						return "ErrorInvalidDeviceAddressEXT";
-		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "ErrorInvalidDrmFormatModifierPlaneLayoutEXT";
+		case Result::eErrorInvalidShaderNV:								return "Error Invalid Shader NV";
+		case Result::eErrorNotPermittedEXT:								return "Error Not Permitted EXT";
+		case Result::eErrorFragmentationEXT:							return "Error Fragmentation EXT";
+		case Result::eErrorValidationFailedEXT:							return "Error Validation Failed EXT";
+		case Result::eErrorInvalidDeviceAddressEXT:						return "Error Invalid Device Address EXT";
+		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "Error Invalid Drm Format Modifier Plane Layout EXT";
 
-		case Result::eErrorInvalidDeviceHandle:							return "ErrorInvalidDeviceHandle";
+		case Result::eErrorInvalidSPIRVCode:							return "Error Invalid SPIR-V Code";
+		case Result::eErrorInvalidImageHandle:							return "Error Invalid Image Handle";
+		case Result::eErrorInvalidDeviceHandle:							return "Error Invalid Device Handle";
+		case Result::eErrorInvalidSurfaceHandle:						return "Error Invalid Surface Handle";
+		case Result::eErrorInvalidRenderPassHandle:						return "Error Invalid RenderPass Handle";
 		default:														return "Invalid";
 		}
 	}

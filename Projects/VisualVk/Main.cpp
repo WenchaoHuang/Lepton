@@ -58,4 +58,7 @@ int main()
 
 //	PipelineLayout		pipelineLayout(pLogicalDevice->GetHandle());
 //	pipelineLayout.Destroy();
+
+	ShaderModule		xxx;
+	xxx.Create(pLogicalDevice->GetHandle(), nullptr);
 }
