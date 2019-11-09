@@ -109,7 +109,7 @@ namespace Lava
 		case Result::eErrorFragmentationEXT:							return "Error Fragmentation EXT";
 		case Result::eErrorValidationFailedEXT:							return "Error Validation Failed EXT";
 		case Result::eErrorInvalidDeviceAddressEXT:						return "Error Invalid Device Address EXT";
-		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "Error Invalid Drm Format Modifier Plane Layout EXT";
+		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "Error Invalid DRM Format Modifier Plane Layout EXT";
 
 		case Result::eErrorInvalidSPIRVCode:							return "Error Invalid SPIR-V Code";
 		case Result::eErrorInvalidImageHandle:							return "Error Invalid Image Handle";

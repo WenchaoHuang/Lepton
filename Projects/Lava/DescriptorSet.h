@@ -59,6 +59,9 @@ namespace Lava
 		//!	@brief	Return descriptor bindings.
 		const std::vector<DescriptorSetLayoutBinding> & GetLayoutBindings() const { return m_spUniqueHandle->m_LayoutBindings; }
 
+		//!	@brief	Return VkDevice handle.
+		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
+
 		//!	@brief	Convert to VkDescriptorSetLayout.
 		operator VkDescriptorSetLayout() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDescriptorSetLayout : VK_NULL_HANDLE; }
 
@@ -69,7 +72,7 @@ namespace Lava
 		 */
 		struct UniqueHandle
 		{
-			VK_NONCOPYABLE(UniqueHandle)
+			LAVA_NONCOPYABLE(UniqueHandle)
 
 		public:
 
@@ -98,7 +101,7 @@ namespace Lava
 	 */
 	class DescriptorPool
 	{
-		VK_NONCOPYABLE(DescriptorPool)
+		LAVA_NONCOPYABLE(DescriptorPool)
 
 	public:
 

@@ -42,7 +42,7 @@ Result Sampler::Create(VkDevice hDevice, const SamplerParam & Param)
 
 	VkSampler hSampler = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateSampler(hDevice, &CreateInfo, nullptr, &hSampler));
+	Result eResult = LAVA_RESULT_CAST(vkCreateSampler(hDevice, &CreateInfo, nullptr, &hSampler));
 
 	if (eResult == Result::eSuccess)
 	{

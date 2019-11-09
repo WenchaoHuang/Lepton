@@ -40,7 +40,7 @@ Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
+	Result eResult = LAVA_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
 
 	if (eResult == Result::eSuccess)
 	{
@@ -173,7 +173,7 @@ Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
+	Result eResult = LAVA_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
 
 	if (eResult == Result::eSuccess)
 	{

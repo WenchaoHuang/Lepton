@@ -16,7 +16,7 @@ namespace Lava
 	 */
 	class Fence
 	{
-		VK_UNIQUE_RESOURCE(Fence)
+		LAVA_UNIQUE_RESOURCE(Fence)
 
 	public:
 
@@ -35,13 +35,13 @@ namespace Lava
 		Result Create(VkDevice hDevice);
 
 		//!	@brief	Reset to non-signaled state.
-		Result Reset() { return VK_RESULT_CAST(vkResetFences(m_hDevice, 1, &m_hFence)); }
+		Result Reset() { return LAVA_RESULT_CAST(vkResetFences(m_hDevice, 1, &m_hFence)); }
 
 		//!	@brief	Return the status of fence.
-		Result GetStatus() const { return VK_RESULT_CAST(vkGetFenceStatus(m_hDevice, m_hFence)); }
+		Result GetStatus() const { return LAVA_RESULT_CAST(vkGetFenceStatus(m_hDevice, m_hFence)); }
 
 		//!	@brief	Wait for fence to become signaled.
-		Result Wait(uint64_t timeout = VK_DEFAULT_TIMEOUT) const { return VK_RESULT_CAST(vkWaitForFences(m_hDevice, 1, &m_hFence, VK_TRUE, timeout)); }
+		Result Wait(uint64_t timeout = LAVA_DEFAULT_TIMEOUT) const { return LAVA_RESULT_CAST(vkWaitForFences(m_hDevice, 1, &m_hFence, VK_TRUE, timeout)); }
 
 		//!	@brief	Destroy the fence.
 		void Destroy();
@@ -56,7 +56,7 @@ namespace Lava
 	 */
 	class Semaphore
 	{
-		VK_UNIQUE_RESOURCE(Semaphore)
+		LAVA_UNIQUE_RESOURCE(Semaphore)
 
 	public:
 
@@ -87,7 +87,7 @@ namespace Lava
 	 */
 	class Event
 	{
-		VK_UNIQUE_RESOURCE(Event)
+		LAVA_UNIQUE_RESOURCE(Event)
 
 	public:
 
@@ -106,13 +106,13 @@ namespace Lava
 		Result Create(VkDevice hDevice);
 
 		//!	@brief	Reset event to non-signaled state.
-		Result Reset() { return VK_RESULT_CAST(vkResetEvent(m_hDevice, m_hEvent)); }
+		Result Reset() { return LAVA_RESULT_CAST(vkResetEvent(m_hDevice, m_hEvent)); }
 
 		//!	@brief	Set event to signaled state.
-		Result SetSignaled() { return VK_RESULT_CAST(vkSetEvent(m_hDevice, m_hEvent)); }
+		Result SetSignaled() { return LAVA_RESULT_CAST(vkSetEvent(m_hDevice, m_hEvent)); }
 
 		//!	@brief	Retrieve the status of event.
-		Result GetStatus() const { return VK_RESULT_CAST(vkGetEventStatus(m_hDevice, m_hEvent)); }
+		Result GetStatus() const { return LAVA_RESULT_CAST(vkGetEventStatus(m_hDevice, m_hEvent)); }
 
 		//!	@brief	Destroy the event.
 		void Destroy();

@@ -9,15 +9,15 @@
 #include "Result.h"
 #include "ArrayProxy.h"
 
-#define VK_INVALID_INDEX				UINT32_MAX
-#define VK_DEFAULT_TIMEOUT				100000000000L	//!	100s.
-#define VK_RESULT_CAST(eResult)			static_cast<Result>(eResult)
+#define LAVA_INVALID_INDEX					UINT32_MAX
+#define LAVA_DEFAULT_TIMEOUT				100000000000L	//!	100s.
+#define LAVA_RESULT_CAST(eResult)			static_cast<Result>(eResult)
 
 /*************************************************************************
 ***************************    Noncopyable    ****************************
 *************************************************************************/
 
-#define VK_NONCOPYABLE(ClassName)										\
+#define LAVA_NONCOPYABLE(ClassName)										\
 																		\
 	ClassName(const ClassName&) = delete;								\
 	ClassName & operator=(const ClassName&) = delete;					\
@@ -26,7 +26,7 @@
 *************************    Unique_Resource    **************************
 *************************************************************************/
 
-#define VK_UNIQUE_RESOURCE(ResName)										\
+#define LAVA_UNIQUE_RESOURCE(ResName)									\
 																		\
 public:																	\
 																		\

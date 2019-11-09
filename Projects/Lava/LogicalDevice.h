@@ -36,7 +36,7 @@ namespace Lava
 		bool IsReady() const { return m_hDevice != VK_NULL_HANDLE; }
 
 		//!	@brief	Wait for a device to become idle.
-		Result WaitIdle() { return VK_RESULT_CAST(vkDeviceWaitIdle(m_hDevice)); }
+		Result WaitIdle() { return LAVA_RESULT_CAST(vkDeviceWaitIdle(m_hDevice)); }
 
 		CommandQueue * PreInstallQueue(uint32_t familyIndex, float priority = 0.0f);
 

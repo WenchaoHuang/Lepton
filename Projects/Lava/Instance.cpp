@@ -67,7 +67,7 @@ Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const ch
 		}
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return LAVA_RESULT_CAST(eResult);
 }
 
 

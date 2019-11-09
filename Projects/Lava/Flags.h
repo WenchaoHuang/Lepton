@@ -17,6 +17,7 @@ namespace Lava
 	 */
 	template<typename EnumType> class Flags
 	{
+		static_assert(std::is_enum<EnumType>::value, "Invalid type!");
 
 	public:
 

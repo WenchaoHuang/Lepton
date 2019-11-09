@@ -24,7 +24,16 @@ Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLa
 
 	if (hDevice != VK_NULL_HANDLE)
 	{
-		std::vector<VkDescriptorSetLayout>		hDescriptorSetLayouts;
+		std::vector<VkDescriptorSetLayout>	hDescriptorSetLayouts;
+
+		hDescriptorSetLayouts.resize(pDescriptorSetLayouts.size());
+
+		for (uint32_t i = 0; i < pDescriptorSetLayouts.size(); i++)
+		{
+			if (pDescriptorSetLayouts[i].GetDeviceHandle() != hDevice)		return eResult;
+			
+			hDescriptorSetLayouts[i] = pDescriptorSetLayouts[i];
+		}
 
 		VkPipelineLayoutCreateInfo				CreateInfo = {};
 		CreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -37,14 +46,22 @@ Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLa
 
 		VkPipelineLayout hPipelineLayou = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreatePipelineLayout(hDevice, &CreateInfo, nullptr, &hPipelineLayou));
+		eResult = LAVA_RESULT_CAST(vkCreatePipelineLayout(hDevice, &CreateInfo, nullptr, &hPipelineLayou));
 
 		if (eResult == Result::eSuccess)
 		{
-			std::vector<PushConstantRange>		PushConstantRanges;
-			std::vector<DescriptorSetLayout>	DescriptorSetLayouts;
+			std::vector<PushConstantRange>		PushConstantRanges(pPushConstantRanges.size());
+			std::vector<DescriptorSetLayout>	DescriptorSetLayouts(pDescriptorSetLayouts.size());
 
-			//!	TODO
+			for (size_t i = 0; i < PushConstantRanges.size(); i++)
+			{
+				PushConstantRanges[i] = pPushConstantRanges[i];
+			}
+
+			for (size_t i = 0; i < DescriptorSetLayouts.size(); i++)
+			{
+				DescriptorSetLayouts[i] = pDescriptorSetLayouts[i];
+			}
 
 			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hPipelineLayou, DescriptorSetLayouts, PushConstantRanges);
 		}

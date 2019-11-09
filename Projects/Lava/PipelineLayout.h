@@ -35,16 +35,21 @@ namespace Lava
 
 	public:
 
+		//!	@brief	Whether this resource handle is valid.
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
+		//!	@brief	Return VkDevice handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
 
+		//!	@brief	Create a new pipeline layout.
 		Result Create(VkDevice hDevice,
 					  ArrayProxy<const DescriptorSetLayout> pDescriptorSetLayouts = nullptr,
 					  ArrayProxy<const PushConstantRange> pPushConstantRanges = nullptr);
 		
-		DescriptorSetLayout GetDescriptorSetLayout(uint32_t index) const { return m_spUniqueHandle->m_DescriptorSetLayouts[index]; }
+		//!	@brief	Return array of descriptor set layouts.
+		const std::vector<DescriptorSetLayout> & GetDescriptorSetLayouts() const { return m_spUniqueHandle->m_DescriptorSetLayouts; }
 
+		//!	@brief	Convert to VkPipelineLayout.
 		operator VkPipelineLayout() const { return m_spUniqueHandle != nullptr ? m_spUniqueHandle->m_hPipelineLayout : VK_NULL_HANDLE; }
 
 	private:
@@ -54,7 +59,7 @@ namespace Lava
 		 */
 		struct UniqueHandle
 		{
-			VK_NONCOPYABLE(UniqueHandle)
+			LAVA_NONCOPYABLE(UniqueHandle)
 
 		public:
 

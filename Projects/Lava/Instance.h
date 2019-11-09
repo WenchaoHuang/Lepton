@@ -16,7 +16,7 @@ namespace Lava
 	 */
 	class Instance
 	{
-		VK_NONCOPYABLE(Instance)
+		LAVA_NONCOPYABLE(Instance)
 
 	public:
 

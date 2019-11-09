@@ -59,7 +59,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 
 	VkImage hImage = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateImage(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hImage));
+	Result eResult = LAVA_RESULT_CAST(vkCreateImage(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hImage));
 
 	if (eResult == Result::eSuccess)
 	{
@@ -75,7 +75,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 
 		if (eResult == Result::eSuccess)
 		{
-			eResult = VK_RESULT_CAST(vkBindImageMemory(pLogicalDevice->GetHandle(), hImage, deviceMemory, 0));
+			eResult = LAVA_RESULT_CAST(vkBindImageMemory(pLogicalDevice->GetHandle(), hImage, deviceMemory, 0));
 
 			if (eResult == Result::eSuccess)
 			{
@@ -98,7 +98,7 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 
 				VkImageView hImageView = VK_NULL_HANDLE;
 
-				eResult = VK_RESULT_CAST(vkCreateImageView(pLogicalDevice->GetHandle(), &ViewCreateInfo, nullptr, &hImageView));
+				eResult = LAVA_RESULT_CAST(vkCreateImageView(pLogicalDevice->GetHandle(), &ViewCreateInfo, nullptr, &hImageView));
 
 				if (eResult == Result::eSuccess)
 				{

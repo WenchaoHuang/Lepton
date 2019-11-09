@@ -246,7 +246,7 @@ Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 		m_Parameter = Param;
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return LAVA_RESULT_CAST(eResult);
 }
 
 

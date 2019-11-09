@@ -31,7 +31,7 @@ Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_sp
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule));
+	Result eResult = LAVA_RESULT_CAST(vkCreateShaderModule(hDevice, &CreateInfo, nullptr, &hShaderModule));
 
 	if (eResult == Result::eSuccess)
 	{

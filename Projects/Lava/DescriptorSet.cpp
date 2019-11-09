@@ -42,7 +42,7 @@ Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<const Descriptor
 
 		VkDescriptorSetLayout hDescriptorSetLayout = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateDescriptorSetLayout(hDevice, &CreateInfo, nullptr, &hDescriptorSetLayout));
+		eResult = LAVA_RESULT_CAST(vkCreateDescriptorSetLayout(hDevice, &CreateInfo, nullptr, &hDescriptorSetLayout));
 
 		if (eResult == Result::eSuccess)
 		{
@@ -101,11 +101,13 @@ Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<const DescriptorPoolS
 
 		VkDescriptorPool hDescriptorPool = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateDescriptorPool(hDevice, &CreateInfo, nullptr, &hDescriptorPool));
+		eResult = LAVA_RESULT_CAST(vkCreateDescriptorPool(hDevice, &CreateInfo, nullptr, &hDescriptorPool));
 
 		if (eResult == Result::eSuccess)
 		{
 			this->Destroy();
+
+			m_DescriptorPoolSizes.resize(pDescriptorPoolSizes.size());
 
 			for (uint32_t i = 0; i < pDescriptorPoolSizes.size(); i++)
 			{
@@ -144,6 +146,8 @@ DescriptorSet * DescriptorPool::AllocateDescriptorSet(DescriptorSetLayout descri
 		if (vkAllocateDescriptorSets(m_hDevice, &AllocateInfo, &hDescriptorSet) == VK_SUCCESS)
 		{
 			pDescriptorSet = new DescriptorSet(m_hDevice, hDescriptorSet, descriptorSetLayout);
+
+			m_pDescriptorSets.insert(pDescriptorSet);
 		}
 	}
 

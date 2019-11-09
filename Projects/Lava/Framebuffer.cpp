@@ -35,7 +35,7 @@ Result RenderPass::Create(VkDevice hDevice, ArrayProxy<const AttachmentDescripti
 
 		VkRenderPass hRenderPass = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass));
+		eResult = LAVA_RESULT_CAST(vkCreateRenderPass(hDevice, &CreateInfo, nullptr, &hRenderPass));
 
 		if (eResult == Result::eSuccess)
 		{
@@ -85,7 +85,7 @@ Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<const VkImageView> 
 
 		VkFramebuffer hFramebuffer = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateFramebuffer(renderPass.GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer));
+		eResult = LAVA_RESULT_CAST(vkCreateFramebuffer(renderPass.GetDeviceHandle(), &CreateInfo, nullptr, &hFramebuffer));
 
 		if (eResult == Result::eSuccess)
 		{

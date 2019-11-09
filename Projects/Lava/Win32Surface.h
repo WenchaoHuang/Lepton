@@ -54,7 +54,7 @@ namespace Lava
 	 */
 	class Win32Surface
 	{
-		VK_NONCOPYABLE(Win32Surface)
+		LAVA_NONCOPYABLE(Win32Surface)
 
 	public:
 

@@ -75,7 +75,7 @@ uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<Memor
 		memoryTypeBits >>= 1;
 	}
 
-	return VK_INVALID_INDEX;
+	return LAVA_INVALID_INDEX;
 }
 
 
@@ -106,7 +106,7 @@ uint32_t PhysicalDevice::GetGraphicsQueueFamilyIndex() const
 		}
 	}
 
-	return VK_INVALID_INDEX;
+	return LAVA_INVALID_INDEX;
 }
 
 
@@ -131,7 +131,7 @@ uint32_t PhysicalDevice::GetTransferQueueFamilyIndex() const
 		}
 	}
 
-	return VK_INVALID_INDEX;
+	return LAVA_INVALID_INDEX;
 }
 
 
@@ -156,7 +156,7 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 		}
 	}
 
-	return VK_INVALID_INDEX;
+	return LAVA_INVALID_INDEX;
 }
 
 

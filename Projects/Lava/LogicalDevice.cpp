@@ -81,7 +81,7 @@ Result LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures)
 		m_hDevice = hDevice;
 	}
 
-	return VK_RESULT_CAST(eResult);
+	return LAVA_RESULT_CAST(eResult);
 }
 
 

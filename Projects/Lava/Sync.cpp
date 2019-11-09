@@ -34,7 +34,7 @@ Result Fence::Create(VkDevice hDevice)
 
 		VkFence hFence = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateFence(hDevice, &CreateInfo, nullptr, &hFence));
+		eResult = LAVA_RESULT_CAST(vkCreateFence(hDevice, &CreateInfo, nullptr, &hFence));
 
 		if (eResult == Result::eSuccess)
 		{
@@ -97,7 +97,7 @@ Result Semaphore::Create(VkDevice hDevice)
 		
 		VkSemaphore hSemaphore = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateSemaphore(hDevice, &CreateInfo, nullptr, &hSemaphore));
+		eResult = LAVA_RESULT_CAST(vkCreateSemaphore(hDevice, &CreateInfo, nullptr, &hSemaphore));
 
 		if (eResult == Result::eSuccess)
 		{
@@ -160,7 +160,7 @@ Result Event::Create(VkDevice hDevice)
 		
 		VkEvent hEvent = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkCreateEvent(hDevice, &CreateInfo, nullptr, &hEvent));
+		eResult = LAVA_RESULT_CAST(vkCreateEvent(hDevice, &CreateInfo, nullptr, &hEvent));
 
 		if (eResult == Result::eSuccess)
 		{

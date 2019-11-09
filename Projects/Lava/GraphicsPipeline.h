@@ -228,7 +228,7 @@ namespace Lava
 	 */
 	class GraphicsPipeline
 	{
-		VK_UNIQUE_RESOURCE(GraphicsPipeline)
+		LAVA_UNIQUE_RESOURCE(GraphicsPipeline)
 
 	public:
 

@@ -49,7 +49,7 @@ Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMo
 
 	VkSwapchainKHR hSwapchain = VK_NULL_HANDLE;
 
-	Result eResult = VK_RESULT_CAST(vkCreateSwapchainKHR(hDevice, &CreateInfo, nullptr, &hSwapchain));
+	Result eResult = LAVA_RESULT_CAST(vkCreateSwapchainKHR(hDevice, &CreateInfo, nullptr, &hSwapchain));
 
 	if (eResult == Result::eSuccess)
 	{
@@ -111,7 +111,7 @@ Result Swapchain::Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> waitSema
 	m_PresentInfo.pWaitSemaphores		= waitSemaphores.data();
 	m_PresentInfo.waitSemaphoreCount	= waitSemaphores.size();
 
-	return VK_RESULT_CAST(vkQueuePresentKHR(hQueue, &m_PresentInfo));
+	return LAVA_RESULT_CAST(vkQueuePresentKHR(hQueue, &m_PresentInfo));
 }
 
 

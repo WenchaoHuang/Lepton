@@ -30,7 +30,7 @@ Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uin
 
 		VkDeviceMemory hMemory = VK_NULL_HANDLE;
 
-		eResult = VK_RESULT_CAST(vkAllocateMemory(hDevice, &AllocateInfo, nullptr, &hMemory));
+		eResult = LAVA_RESULT_CAST(vkAllocateMemory(hDevice, &AllocateInfo, nullptr, &hMemory));
 
 		if (eResult == Result::eSuccess)
 		{
@@ -51,7 +51,7 @@ Result DeviceMemory::Invalidate(VkDeviceSize offset, VkDeviceSize size) const
 	MemoryRange.offset		= offset;
 	MemoryRange.size		= size;
 
-	return VK_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_spUniqueHandle->m_hDevice, 1, &MemoryRange));
+	return LAVA_RESULT_CAST(vkInvalidateMappedMemoryRanges(m_spUniqueHandle->m_hDevice, 1, &MemoryRange));
 }
 
 
@@ -64,13 +64,13 @@ Result DeviceMemory::Flush(VkDeviceSize offset, VkDeviceSize size) const
 	MemoryRange.offset		= offset;
 	MemoryRange.size		= size;
 
-	return VK_RESULT_CAST(vkFlushMappedMemoryRanges(m_spUniqueHandle->m_hDevice, 1, &MemoryRange));
+	return LAVA_RESULT_CAST(vkFlushMappedMemoryRanges(m_spUniqueHandle->m_hDevice, 1, &MemoryRange));
 }
 
 
 Result DeviceMemory::Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size) const
 {
-	return VK_RESULT_CAST(vkMapMemory(m_spUniqueHandle->m_hDevice, m_spUniqueHandle->m_hDeviceMemory, offset, size, 0, ppData));
+	return LAVA_RESULT_CAST(vkMapMemory(m_spUniqueHandle->m_hDevice, m_spUniqueHandle->m_hDeviceMemory, offset, size, 0, ppData));
 }
 
 

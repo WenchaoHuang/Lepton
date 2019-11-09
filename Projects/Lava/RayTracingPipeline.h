@@ -29,7 +29,7 @@ namespace Lava
 		 */
 		struct UniqueHandle
 		{
-			VK_NONCOPYABLE(UniqueHandle)
+			LAVA_NONCOPYABLE(UniqueHandle)
 
 		public:
 

@@ -135,7 +135,7 @@ namespace Lava
 		VkCommandPool GetHandle() const { return m_hCommandPool; }
 
 		//!	@brief	Reset command pool.
-		Result Reset() { return VK_RESULT_CAST(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
+		Result Reset() { return LAVA_RESULT_CAST(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
 
 		//!	@brief	Free command buffer.
 		Result FreeCommandBuffer(CommandBuffer * pCommandBuffer);
@@ -181,18 +181,18 @@ namespace Lava
 		VkCommandBuffer GetHandle() const { return m_hCommandBuffer; }
 
 		//!	@brief	Finish recording command buffer.
-		Result EndRecord() { return VK_RESULT_CAST(vkEndCommandBuffer(m_hCommandBuffer)); }
+		Result EndRecord() { return LAVA_RESULT_CAST(vkEndCommandBuffer(m_hCommandBuffer)); }
 
 		//!	@brief	Start recording command buffer.
 		Result BeginRecord(Flags<CommandBufferUsage> eUsages = 0)
 		{
 			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, eUsages, nullptr };
 
-			return VK_RESULT_CAST(vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo));
+			return LAVA_RESULT_CAST(vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo));
 		}
 
 		//!	@brief	Reset command buffer to the initial state.
-		Result Reset(VkCommandBufferResetFlags eResetFlags = 0) { return VK_RESULT_CAST(vkResetCommandBuffer(m_hCommandBuffer, eResetFlags)); }
+		Result Reset(VkCommandBufferResetFlags eResetFlags = 0) { return LAVA_RESULT_CAST(vkResetCommandBuffer(m_hCommandBuffer, eResetFlags)); }
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
 		Result Submit(VkSemaphore hWaitSemaphore, Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
@@ -203,7 +203,7 @@ namespace Lava
 			m_SubmitInfo.pSignalSemaphores		= &hSignalSemaphore;
 			m_SubmitInfo.pWaitSemaphores		= &hWaitSemaphore;
 
-			return VK_RESULT_CAST(vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence));
+			return LAVA_RESULT_CAST(vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence));
 		}
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
@@ -215,7 +215,7 @@ namespace Lava
 			m_SubmitInfo.pSignalSemaphores		= nullptr;
 			m_SubmitInfo.pWaitSemaphores		= nullptr;
 
-			return VK_RESULT_CAST(vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence));
+			return LAVA_RESULT_CAST(vkQueueSubmit(m_hQueue, 1, &m_SubmitInfo, hFence));
 		}
 
 	public:
