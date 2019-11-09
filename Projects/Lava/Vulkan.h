@@ -9,9 +9,9 @@
 #include "Result.h"
 #include "ArrayProxy.h"
 
-#define LAVA_INVALID_INDEX					UINT32_MAX
-#define LAVA_DEFAULT_TIMEOUT				100000000000L	//!	100s.
-#define LAVA_RESULT_CAST(eResult)			static_cast<Result>(eResult)
+#define LAVA_INVALID_INDEX				UINT32_MAX
+#define LAVA_DEFAULT_TIMEOUT			100000000000L	//!	100s.
+#define LAVA_RESULT_CAST(eResult)		static_cast<Result>(eResult)
 
 /*************************************************************************
 ***************************    Noncopyable    ****************************

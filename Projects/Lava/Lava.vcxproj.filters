@@ -123,29 +123,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Flags.h">
-      <Filter>0. Wrappers</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrayProxy.h">
-      <Filter>0. Wrappers</Filter>
-    </ClInclude>
-    <ClInclude Include="Result.h">
-      <Filter>0. Wrappers</Filter>
-    </ClInclude>
     <ClInclude Include="Instance.h">
       <Filter>1. Context\0. Instance</Filter>
-    </ClInclude>
-    <ClInclude Include="Vulkan.h">
-      <Filter>0. Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="PhysicalDevice.h">
       <Filter>1. Context\2. PhysicalDevice</Filter>
     </ClInclude>
     <ClInclude Include="LogicalDevice.h">
       <Filter>1. Context\1. LogicalDevice</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>0. Wrappers</Filter>
     </ClInclude>
     <ClInclude Include="Win32Surface.h">
       <Filter>2. Resources\6. Win32Surface</Filter>
@@ -191,6 +176,21 @@
     </ClInclude>
     <ClInclude Include="ComputePipeline.h">
       <Filter>2. Resources\12. ComputePipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Vulkan.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Flags.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayProxy.h">
+      <Filter>0. Wrappers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
