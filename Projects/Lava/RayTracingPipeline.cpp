@@ -32,6 +32,8 @@ Result RayTracingPipeline::Create()
 	CreateInfo.basePipelineIndex			;
 
 //	VkPipeline hPipeline = VK_NULL_HANDLE;
+
+	return Result::eSuccess;
 }
 
 
