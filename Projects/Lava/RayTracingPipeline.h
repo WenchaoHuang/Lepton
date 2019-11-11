@@ -19,7 +19,7 @@ namespace Lava
 
 	public:
 
-		
+		Result Create();
 
 
 	public:

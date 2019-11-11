@@ -173,6 +173,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AccelerationStructureNV.cpp" />
     <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="ComputePipeline.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Win32Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AccelerationStructureNV.h" />
     <ClInclude Include="ArrayProxy.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Commands.h" />

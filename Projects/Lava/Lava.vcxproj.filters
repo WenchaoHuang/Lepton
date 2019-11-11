@@ -64,6 +64,9 @@
     <Filter Include="2. Resources\11. GraphicsPipeline">
       <UniqueIdentifier>{bb636acc-ce26-4b55-985c-93b0152190de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Resources\14. AccelerationStructureNV">
+      <UniqueIdentifier>{f10b926b-6e02-4cbb-9876-12c7d06a10e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -120,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="ComputePipeline.cpp">
       <Filter>2. Resources\12. ComputePipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="AccelerationStructureNV.cpp">
+      <Filter>2. Resources\14. AccelerationStructureNV</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="ArrayProxy.h">
       <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="AccelerationStructureNV.h">
+      <Filter>2. Resources\14. AccelerationStructureNV</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

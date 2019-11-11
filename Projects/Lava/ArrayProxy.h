@@ -5,7 +5,6 @@
 
 #include <array>
 #include <vector>
-#include <type_traits>
 #include <vulkan/vulkan.hpp>
 
 namespace Lava

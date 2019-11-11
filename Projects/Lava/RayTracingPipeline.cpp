@@ -16,6 +16,25 @@ RayTracingPipeline::UniqueHandle::UniqueHandle(VkDevice hDevice, VkPipeline hPip
 }
 
 
+Result RayTracingPipeline::Create()
+{
+	VkRayTracingPipelineCreateInfoNV		CreateInfo = {};
+	CreateInfo.sType						;
+	CreateInfo.pNext						;
+	CreateInfo.flags						;
+	CreateInfo.stageCount					;
+	CreateInfo.pStages						;
+	CreateInfo.groupCount					;
+	CreateInfo.pGroups						;
+	CreateInfo.maxRecursionDepth			;
+	CreateInfo.layout						;
+	CreateInfo.basePipelineHandle			;
+	CreateInfo.basePipelineIndex			;
+
+//	VkPipeline hPipeline = VK_NULL_HANDLE;
+}
+
+
 RayTracingPipeline::UniqueHandle::~UniqueHandle() noexcept
 {
 	if (m_hPipeline != VK_NULL_HANDLE)
