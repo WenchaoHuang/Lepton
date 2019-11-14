@@ -50,6 +50,22 @@ namespace Lava
 
 	static_assert(sizeof(ImageMemoryBarrier) == sizeof(VkImageMemoryBarrier), "Struct and wrapper have different size!");
 
+	struct ImageSubresourceLayers
+	{
+		Flags<ImageAspect>		aspectMask;
+		uint32_t				mipLevel;
+		uint32_t				baseArrayLayer;
+		uint32_t				layerCount;
+	};
+
+	struct ImageBlit
+	{
+		ImageSubresourceLayers		srcSubresource;
+		VkOffset3D					srcOffsets[2];
+		ImageSubresourceLayers		dstSubresource;
+		VkOffset3D					dstOffsets[2];
+	};
+
 	/*********************************************************************
 	*************************    CommandQueue    *************************
 	*********************************************************************/
@@ -238,6 +254,12 @@ namespace Lava
 			vkCmdSetBlendConstants(m_hCommandBuffer, blendConstants);
 		}
 
+		//!	@brief	Bind a vertex buffer to a command buffer.
+		void CmdBindVertexBuffer(VkBuffer hBuffer, VkDeviceSize offset = 0)
+		{
+			vkCmdBindVertexBuffers(m_hCommandBuffer, 0, 1, &hBuffer, &offset);
+		}
+
 		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
 		void CmdSetScissor(ArrayProxy<const VkRect2D> pScissors, uint32_t firstScissor = 0)
 		{
@@ -256,27 +278,28 @@ namespace Lava
 			vkCmdDrawIndirect(m_hCommandBuffer, hBuffer, offset, drawCount, stride);
 		}
 
+		//!	@brief	Bind an index buffer to a command buffer.
+		void CmdBindIndexBuffer(VkBuffer hBuffer, IndexType eIndexType, VkDeviceSize offset = 0)
+		{
+			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, offset, static_cast<VkIndexType>(eIndexType));
+		}
+
 		//!	@brief	Set the depth bias dynamic state.
 		void CmdSetDepthBias(float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor)
 		{
 			vkCmdSetDepthBias(m_hCommandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
 		}
 
+		//!	@brief	Bind a graphics pipeline object to a command buffer.
+		void CmdBindPipeline(const GraphicsPipeline * pGraphicsPipeline)
+		{
+			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pGraphicsPipeline->GetHandle());
+		}
+
 		//!	@brief	Draw primitives.
 		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex = 0, uint32_t firstInstance = 0)
 		{
 			vkCmdDraw(m_hCommandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
-		}
-
-		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
-
-		//!	@brief	Insert a image memory dependency.
-		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask,
-								   Flags<MemoryDependency> dependencyFlags, ArrayProxy<const ImageMemoryBarrier> pImageMemoryBarriers)
-		{
-			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr,
-								 pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
 		}
 
 		//!	@brief	 Update the values of push constants.
@@ -291,42 +314,37 @@ namespace Lava
 			vkCmdDrawIndexed(m_hCommandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 		}
 
-		//!	@brief	Clear regions of a color image.
-		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<const ImageSubresourceRange> pRanges)
-		{
-			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), &color,
-								 pRanges.size(), reinterpret_cast<const VkImageSubresourceRange*>(pRanges.data()));
-		}
-
 		//!	@brief	Copy data from a buffer into an image.
 		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const VkBufferImageCopy> pRegions)
 		{
 			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), pRegions.data());
 		}
 
-		//!	@brief	Bind a graphics pipeline object to a command buffer.
-		void CmdBindPipeline(const GraphicsPipeline * pGraphicsPipeline)
+		//!	@brief	Begin a new render pass.
+		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
+
+		//!	@brief	Clear regions of a color image.
+		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<const ImageSubresourceRange> pRanges)
 		{
-			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pGraphicsPipeline->GetHandle());
+			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), &color, pRanges.size(), reinterpret_cast<const VkImageSubresourceRange*>(pRanges.data()));
+		}
+
+		//!	@brief	Insert a image memory dependency.
+		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask, Flags<MemoryDependency> dependencyFlags, ArrayProxy<const ImageMemoryBarrier> pImageMemoryBarriers)
+		{
+			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
+		}
+
+		//!	@brief	Copy regions of an image, potentially performing format conversion.
+		void CmdBlitImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const ImageBlit> pRegions, Filter eFilter)
+		{
+			vkCmdBlitImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageBlit*>(pRegions.data()), static_cast<VkFilter>(eFilter));
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
 		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<const VkDescriptorSet> pDescriptorSets)
 		{
-			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint),
-									hPipelineLayout, 0, pDescriptorSets.size(), pDescriptorSets.data(), 0, nullptr);
-		}
-
-		//!	@brief	Bind a vertex buffer to a command buffer.
-		void CmdBindVertexBuffer(VkBuffer hBuffer, VkDeviceSize offset = 0)
-		{
-			vkCmdBindVertexBuffers(m_hCommandBuffer, 0, 1, &hBuffer, &offset);
-		}
-
-		//!	@brief	Bind an index buffer to a command buffer.
-		void CmdBindIndexBuffer(VkBuffer hBuffer, IndexType eIndexType, VkDeviceSize offset = 0)
-		{
-			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, offset, static_cast<VkIndexType>(eIndexType));
+			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hPipelineLayout, 0, pDescriptorSets.size(), pDescriptorSets.data(), 0, nullptr);
 		}
 
 	private:
