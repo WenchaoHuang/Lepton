@@ -7,18 +7,7 @@
 
 namespace Lava
 {
-	/*********************************************************************
-	*****************    AccelerationStructureTypeNV    ******************
-	*********************************************************************/
 
-	/**
-	 *	@brief	Structure specifying the parameters of acceleration structure object.
-	 */
-	enum class AccelerationStructureTypeNV
-	{
-		eTopLevel = VK_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL_NV,
-		eBottomLevel = VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_NV,
-	};
 
 	/*********************************************************************
 	***************    BuildAccelerationStructureFlagNV    ***************
@@ -117,21 +106,28 @@ namespace Lava
 	};
 
 	/*********************************************************************
-	*******************    AccelerationStructureNV    ********************
+	********************    TopLevelAccelStructNV    *********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan acceleration structure object.
+	 *	@brief	Wrapper for Nvidia top-level acceleration structure object.
 	 */
-	class AccelerationStructureNV
+	class TopLevelAccelStructNV
 	{
 
 	public:
 
-		void Destory() { m_spUniqueHandle.reset(); }
+		//!	@brief	Invalidate this resource handle.
+		void Destroy() { m_spUniqueHandle.reset(); }
 
-		Result Create(VkDevice hDevice, AccelerationStructureTypeNV eType, Flags<BuildAccelerationStructureFlagNV> eBuildFlags,
-					  VkDeviceSize compactedSize, uint32_t instanceCount, ArrayProxy<const GeometryDataNV> pGeometries);
+		//!	@brief	Whether this resource handle is valid.
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
+
+		//!	@brief	Create a new top-level acceleration structure.
+		Result Create(LogicalDevice * pLogicalDevice, uint32_t instanceCount);
+
+		//!	@brief	Convert to VkAccelerationStructureNV.
+		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }
 
 	private:
 
@@ -140,17 +136,76 @@ namespace Lava
 		 */
 		struct UniqueHandle
 		{
-			LAVA_NONCOPYABLE(UniqueHandle)
 
 		public:
 
-			
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(VkDevice, VkAccelerationStructureNV, VkDeviceMemory, VkDeviceSize, uint64_t);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
 
 		public:
 
-
+			const uint64_t						m_Handle;
+			const VkDevice						m_hDevice;
+			const VkDeviceSize					m_MemSize;
+			const VkDeviceMemory				m_hMemory;
+			const VkAccelerationStructureNV		m_hAccelStruct;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
+		std::shared_ptr<UniqueHandle>			m_spUniqueHandle;
+	};
+
+	/*********************************************************************
+	*******************    BottomLevelAccelStructNV    *******************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Wrapper for Nvidia bottom-level acceleration structure object.
+	 */
+	class BottomLevelAccelStructNV
+	{
+
+	public:
+
+		//!	@brief	Invalidate this resource handle.
+		void Destroy() { m_spUniqueHandle.reset(); }
+
+		//!	@brief	Whether this resource handle is valid.
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
+
+		//!	@brief	Create a new top-level acceleration structure.
+		Result Create(LogicalDevice * pLogicalDevice);
+
+		//!	@brief	Convert to VkAccelerationStructureNV.
+		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }
+
+	private:
+
+		/**
+		 *	@brief	Unique handle of sampler.
+		 */
+		struct UniqueHandle
+		{
+
+		public:
+
+			//!	@brief	Constructor (all handles must be generated outside).
+			UniqueHandle(VkDevice, VkAccelerationStructureNV, VkDeviceMemory, VkDeviceSize, uint64_t);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
+
+		public:
+
+			const uint64_t						m_Handle;
+			const VkDevice						m_hDevice;
+			const VkDeviceSize					m_MemSize;
+			const VkDeviceMemory				m_hMemory;
+			const VkAccelerationStructureNV		m_hAccelStruct;
+		};
+
+		std::shared_ptr<UniqueHandle>			m_spUniqueHandle;
 	};
 }

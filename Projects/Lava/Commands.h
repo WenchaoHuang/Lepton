@@ -3,7 +3,6 @@
 *************************************************************************/
 #pragma once
 
-#include <set>
 #include "Framebuffer.h"
 #include "GraphicsPipeline.h"
 
@@ -64,6 +63,15 @@ namespace Lava
 		VkOffset3D					srcOffsets[2];
 		ImageSubresourceLayers		dstSubresource;
 		VkOffset3D					dstOffsets[2];
+	};
+
+	struct ImageResolve
+	{
+		ImageSubresourceLayers		srcSubresource;
+		VkOffset3D					srcOffset;
+		ImageSubresourceLayers		dstSubresource;
+		VkOffset3D					dstOffset;
+		VkExtent3D					extent;
 	};
 
 	/*********************************************************************
@@ -333,6 +341,12 @@ namespace Lava
 		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask, Flags<MemoryDependency> dependencyFlags, ArrayProxy<const ImageMemoryBarrier> pImageMemoryBarriers)
 		{
 			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
+		}
+
+		//!	@brief	Resolve regions of an image.
+		void CmdResolveImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const ImageResolve> pRegions)
+		{
+			vkCmdResolveImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageResolve*>(pRegions.data()));
 		}
 
 		//!	@brief	Copy regions of an image, potentially performing format conversion.

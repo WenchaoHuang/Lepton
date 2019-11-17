@@ -79,5 +79,5 @@ namespace Lava
 	class GraphicsPipeline;
 	class HostVisibleBuffer;
 	class DeviceLocalBuffer;
-	class RayTracingPipeline;
+	class RayTracingPipelineNV;
 }

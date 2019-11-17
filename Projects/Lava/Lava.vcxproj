@@ -187,7 +187,7 @@
     <ClCompile Include="PhysicalDevice.cpp" />
     <ClCompile Include="PipelineLayout.cpp" />
     <ClCompile Include="GraphicsPipeline.cpp" />
-    <ClCompile Include="RayTracingPipeline.cpp" />
+    <ClCompile Include="RayTracingPipelineNV.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
     <ClCompile Include="Swapchain.cpp" />
@@ -211,7 +211,7 @@
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="PipelineLayout.h" />
     <ClInclude Include="GraphicsPipeline.h" />
-    <ClInclude Include="RayTracingPipeline.h" />
+    <ClInclude Include="RayTracingPipelineNV.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShaderModule.h" />

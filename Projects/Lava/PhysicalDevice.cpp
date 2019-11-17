@@ -3,6 +3,7 @@
 *************************************************************************/
 
 #include "Commands.h"
+#include "Instance.h"
 #include "LogicalDevice.h"
 #include "PhysicalDevice.h"
 
@@ -13,9 +14,14 @@ using namespace Lava;
 *************************************************************************/
 PhysicalDevice::PhysicalDevice(Instance * pInstance, VkPhysicalDevice hPhysicalDevice) : m_pInstance(pInstance), m_hPhysicalDevice(hPhysicalDevice)
 {
+	m_Properties.sType					= VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+	m_Properties.pNext					= pInstance->IsExtensionEnabled(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME) ? m_Properties.pNext = &m_RayTracingProperitesNV : nullptr;
+	m_RayTracingProperitesNV.sType		= VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PROPERTIES_NV;
+	m_RayTracingProperitesNV.pNext		= nullptr;
+
 	vkGetPhysicalDeviceMemoryProperties(m_hPhysicalDevice, &m_MemoryProperties);
 
-	vkGetPhysicalDeviceProperties(m_hPhysicalDevice, &m_Properties);
+	vkGetPhysicalDeviceProperties2(m_hPhysicalDevice, &m_Properties);
 
 	vkGetPhysicalDeviceFeatures(m_hPhysicalDevice, &m_Features);
 

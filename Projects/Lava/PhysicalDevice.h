@@ -57,11 +57,11 @@ namespace Lava
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
 		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const;
 
+		//!	@brief	Return the physical properties.
+		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties.properties; }
+
 		//!	@brief	Return set of logical devices.
 		const std::set<LogicalDevice*> GetLogicalDevices() const { return m_pLogicalDevices; }
-
-		//!	@brief	Return the physical properties.
-		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties; }
 
 		//!	@brief	Return the physical features.
 		const VkPhysicalDeviceFeatures & GetFeatures() const { return m_Features; }
@@ -105,7 +105,7 @@ namespace Lava
 
 		mutable VkPhysicalDeviceFeatures					m_Features;
 
-		mutable VkPhysicalDeviceProperties					m_Properties;
+		mutable VkPhysicalDeviceProperties2					m_Properties;
 
 		mutable std::vector<VkLayerProperties>				m_AvailableLayers;
 
@@ -114,5 +114,7 @@ namespace Lava
 		mutable std::vector<VkExtensionProperties>			m_AvailableExtensions;
 
 		mutable std::vector<VkQueueFamilyProperties>		m_QueueFamilyProperties;
+
+		mutable VkPhysicalDeviceRayTracingPropertiesNV		m_RayTracingProperitesNV;
 	};
 }

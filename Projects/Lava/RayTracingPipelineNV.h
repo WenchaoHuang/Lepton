@@ -1,20 +1,23 @@
 /*************************************************************************
-************************    Lava_ShaderModule    *************************
+********************    Lava_RayTracingPipelineNV    *********************
 *************************************************************************/
 #pragma once
 
-#include "Vulkan.h"
+#include "ShaderModule.h"
+#include "PipelineLayout.h"
 
 namespace Lava
 {
+
+
 	/*********************************************************************
-	*************************    ShaderModule    *************************
+	*********************    RayTracingPipelineNV    *********************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Wrapper for Vulkan shader module object.
+	 *	@brief	Wrapper for Nvidia ray tracing pipeline object.
 	 */
-	class ShaderModule
+	class RayTracingPipelineNV
 	{
 
 	public:
@@ -25,19 +28,15 @@ namespace Lava
 		//!	@brief	Whether this resource handle is valid.
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
-		//!	@brief	Create a new shader module.
-		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> pCode);
+		Result Create(PipelineLayout pipelineLayout, uint32_t maxRecursionDepth);
 
-		//!	@brief	Convert to VkShaderModule.
-		operator VkShaderModule() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hShaderModule : VK_NULL_HANDLE; }
+		//!	@brief	Convert to VkPipeline.
+		operator VkPipeline() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hPipeline : VK_NULL_HANDLE; }
 
-		//!	@brief	Read SPIR-V shader (size of file must be a multiple of 4).
-		static std::vector<uint32_t> ReadSPIRV(const char * pFilePath);
-
-	private:
+	public:
 
 		/**
-		 *	@brief	Unique handle of shader module.
+		 *	@brief	Unique handle of ray tracing pipeline.
 		 */
 		struct UniqueHandle
 		{
@@ -46,7 +45,7 @@ namespace Lava
 		public:
 
 			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkDevice, VkShaderModule);
+			UniqueHandle(VkDevice, VkPipeline);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
@@ -54,7 +53,7 @@ namespace Lava
 		public:
 
 			const VkDevice					m_hDevice;
-			const VkShaderModule			m_hShaderModule;
+			const VkPipeline				m_hPipeline;
 		};
 
 		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;

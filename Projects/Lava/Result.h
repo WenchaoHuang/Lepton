@@ -10,6 +10,8 @@
 #define VK_ERROR_INVALID_DEVICE_HANDLE				-2000002
 #define VK_ERROR_INVALID_SURFACE_HANDLE				-2000003
 #define VK_ERROR_INVALID_RENDER_PASS_HANDLE			-2000004
+#define VK_ERROR_INVALID_PIPELINE_LAYOUT_HANDLE		-2000005
+#define VK_ERROR_FAILED_TO_GET_PROCESS_ADDRESS		-2000006
 
 namespace Lava
 {
@@ -63,6 +65,8 @@ namespace Lava
 		eErrorInvalidDeviceHandle							= VK_ERROR_INVALID_DEVICE_HANDLE,
 		eErrorInvalidSurfaceHandle							= VK_ERROR_INVALID_SURFACE_HANDLE,
 		eErrorInvalidRenderPassHandle						= VK_ERROR_INVALID_RENDER_PASS_HANDLE,
+		eErrorInvalidPipelineLayoutHandle					= VK_ERROR_INVALID_PIPELINE_LAYOUT_HANDLE,
+		eErrorFailedToGetProcessAddress						= VK_ERROR_FAILED_TO_GET_PROCESS_ADDRESS,
 	};
 
 	/*********************************************************************
@@ -78,44 +82,46 @@ namespace Lava
 		{
 		case Result::eSuccess:											return "Success";
 		case Result::eTimeout:											return "Timeout";
-		case Result::eNotReady:											return "Not Ready";
-		case Result::eEventSet:											return "Event Set";
-		case Result::eEventReset:										return "Event Reset";
+		case Result::eNotReady:											return "Not ready";
+		case Result::eEventSet:											return "Event set";
+		case Result::eEventReset:										return "Event reset";
 		case Result::eIncomplete:										return "Incomplete";
 
-		case Result::eErrorDeviceLost:									return "Error Device Lost";
-		case Result::eErrorTooManyObjects:								return "Error Too Many Objects";
-		case Result::eErrorFragmentedPool:								return "Error Fragmented Pool";
-		case Result::eErrorMemoryMapFailed:								return "Error Memory Map Failed";
-		case Result::eErrorLayerNotPresent:								return "Error Layer Not Present";
-		case Result::eErrorOutOfHostMemory:								return "Error Out Of Host Memory";
-		case Result::eErrorOutOfPoolMemory:								return "Error Out Of Pool Memory";
-		case Result::eErrorOutOfDeviceMemory:							return "Error Out Of Device Memory";
-		case Result::eErrorFeatureNotPresent:							return "Error Feature Not Present";
-		case Result::eErrorFormatNotSupported:							return "Error Format Not Supported";
-		case Result::eErrorIncompatibleDriver:							return "Error Incompatible Driver";
-		case Result::eErrorExtensionNotPresent:							return "Error Extension Not Present";
-		case Result::eErrorInitializationFailed:						return "Error Initialization Failed";
-		case Result::eErrorInvalidExternalHandle:						return "Error Invalid External Handle";
+		case Result::eErrorDeviceLost:									return "Error: Device lost";
+		case Result::eErrorTooManyObjects:								return "Error: Too many objects";
+		case Result::eErrorFragmentedPool:								return "Error: Fragmented pool";
+		case Result::eErrorMemoryMapFailed:								return "Error: Memory map failed";
+		case Result::eErrorLayerNotPresent:								return "Error: Layer not present";
+		case Result::eErrorOutOfHostMemory:								return "Error: Out of host memory";
+		case Result::eErrorOutOfPoolMemory:								return "Error: Out of pool memory";
+		case Result::eErrorOutOfDeviceMemory:							return "Error: Out of device memory";
+		case Result::eErrorFeatureNotPresent:							return "Error: Feature not present";
+		case Result::eErrorFormatNotSupported:							return "Error: Format not supported";
+		case Result::eErrorIncompatibleDriver:							return "Error: Incompatible driver";
+		case Result::eErrorExtensionNotPresent:							return "Error: Extension not present";
+		case Result::eErrorInitializationFailed:						return "Error: Initialization failed";
+		case Result::eErrorInvalidExternalHandle:						return "Error: Invalid external handle";
 
 		case Result::eSuboptimalKHR:									return "Suboptimal KHR";
-		case Result::eErrorOutOfDateKHR:								return "Error Out Of Date KHR";
-		case Result::eErrorSurfaceLostKHR:								return "Error Surface Lost KHR";
-		case Result::eErrorNativeWindowInUseKHR:						return "Error Native Window In Use KHR";
-		case Result::eErrorIncompatibleDisplayKHR:						return "Error Incompatible Display KHR";
+		case Result::eErrorOutOfDateKHR:								return "Error: Out of date KHR";
+		case Result::eErrorSurfaceLostKHR:								return "Error: Surface lost KHR";
+		case Result::eErrorNativeWindowInUseKHR:						return "Error: Native window in use KHR";
+		case Result::eErrorIncompatibleDisplayKHR:						return "Error: Incompatible display KHR";
 
-		case Result::eErrorInvalidShaderNV:								return "Error Invalid Shader NV";
-		case Result::eErrorNotPermittedEXT:								return "Error Not Permitted EXT";
-		case Result::eErrorFragmentationEXT:							return "Error Fragmentation EXT";
-		case Result::eErrorValidationFailedEXT:							return "Error Validation Failed EXT";
-		case Result::eErrorInvalidDeviceAddressEXT:						return "Error Invalid Device Address EXT";
-		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "Error Invalid DRM Format Modifier Plane Layout EXT";
+		case Result::eErrorInvalidShaderNV:								return "Error: Invalid shader NV";
+		case Result::eErrorNotPermittedEXT:								return "Error: Not permitted EXT";
+		case Result::eErrorFragmentationEXT:							return "Error: Fragmentation EXT";
+		case Result::eErrorValidationFailedEXT:							return "Error: Validation failed EXT";
+		case Result::eErrorInvalidDeviceAddressEXT:						return "Error: Invalid device address EXT";
+		case Result::eErrorInvalidDrmFormatModifierPlaneLayoutEXT:		return "Error: Invalid DRM format modifier plane layout EXT";
 
-		case Result::eErrorInvalidSPIRVCode:							return "Error Invalid SPIR-V Code";
-		case Result::eErrorInvalidImageHandle:							return "Error Invalid Image Handle";
-		case Result::eErrorInvalidDeviceHandle:							return "Error Invalid Device Handle";
-		case Result::eErrorInvalidSurfaceHandle:						return "Error Invalid Surface Handle";
-		case Result::eErrorInvalidRenderPassHandle:						return "Error Invalid RenderPass Handle";
+		case Result::eErrorInvalidSPIRVCode:							return "Error: Invalid SPIR-V code";
+		case Result::eErrorInvalidImageHandle:							return "Error: Invalid image handle";
+		case Result::eErrorInvalidDeviceHandle:							return "Error: Invalid device handle";
+		case Result::eErrorInvalidSurfaceHandle:						return "Error: Invalid surface handle";
+		case Result::eErrorInvalidRenderPassHandle:						return "Error: Invalid render pass handle";
+		case Result::eErrorInvalidPipelineLayoutHandle:					return "Error: Invalid pipeline layout handle";
+		case Result::eErrorFailedToGetProcessAddress:					return "Error: Failed to get process address";
 		default:														return "Invalid";
 		}
 	}

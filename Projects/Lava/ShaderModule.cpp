@@ -17,17 +17,17 @@ ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShade
 }
 
 
-Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> code_spv)
+Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> pCode)
 {
-	if (code_spv.empty() == true)			return Result::eErrorInvalidSPIRVCode;
+	if (pCode.empty() == true)				return Result::eErrorInvalidSPIRVCode;
 	else if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
 	VkShaderModuleCreateInfo		CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
 	CreateInfo.flags				= 0;
-	CreateInfo.codeSize				= sizeof(uint32_t) * code_spv.size();
-	CreateInfo.pCode				= code_spv.data();
+	CreateInfo.codeSize				= sizeof(uint32_t) * pCode.size();
+	CreateInfo.pCode				= pCode.data();
 
 	VkShaderModule hShaderModule = VK_NULL_HANDLE;
 

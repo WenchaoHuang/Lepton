@@ -75,7 +75,7 @@ namespace Lava
 	/**
 	 *	@brief	Bitmask specifying usage behavior for command buffer.
 	 */
-	enum CommandBufferUsage
+	enum class CommandBufferUsage
 	{
 		eOneTimeSubmit			= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
 		eSimultaneousUse		= VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT,

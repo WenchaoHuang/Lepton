@@ -7,10 +7,6 @@
 
 using namespace Lava;
 
-std::vector<VkLayerProperties>			Instance::sm_AvailableLayers;
-
-std::vector<VkExtensionProperties>		Instance::sm_AvailableExtensions;
-
 /*************************************************************************
 *****************************    Instance    *****************************
 *************************************************************************/
@@ -53,6 +49,8 @@ Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const ch
 
 		uint32_t physicalDeviceCount = 0;
 
+		for (auto iter : pExtensions)			m_pExtensions.insert(iter);
+
 		vkEnumeratePhysicalDevices(m_hInstance, &physicalDeviceCount, nullptr);
 
 		std::vector<VkPhysicalDevice> hPhysicalDevices(physicalDeviceCount);
@@ -71,43 +69,49 @@ Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const ch
 }
 
 
-const std::vector<VkExtensionProperties> & Instance::GetAvailableExtensions()
+bool Instance::IsExtensionEnabled(std::string extensionName) const
 {
-	if (sm_AvailableExtensions.empty())
+	return m_pExtensions.find(extensionName) != m_pExtensions.end();
+}
+
+
+const std::vector<VkExtensionProperties> & Instance::GetAvailableExtensions() const
+{
+	if (m_AvailableExtensions.empty())
 	{
 		uint32_t extensionCount = 0;
 
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 
-		sm_AvailableExtensions.resize(extensionCount);
+		m_AvailableExtensions.resize(extensionCount);
 
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, sm_AvailableExtensions.data());
+		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, m_AvailableExtensions.data());
 	}
 
-	return sm_AvailableExtensions;
+	return m_AvailableExtensions;
 }
 
 
-const std::vector<VkLayerProperties> & Instance::GetAvailableLayers()
+const std::vector<VkLayerProperties> & Instance::GetAvailableLayers() const
 {
-	if (sm_AvailableLayers.empty())
+	if (m_AvailableLayers.empty())
 	{
 		uint32_t layerCount = 0;
 
 		vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
-		sm_AvailableLayers.resize(layerCount);
+		m_AvailableLayers.resize(layerCount);
 
-		vkEnumerateInstanceLayerProperties(&layerCount, sm_AvailableLayers.data());
+		vkEnumerateInstanceLayerProperties(&layerCount, m_AvailableLayers.data());
 	}
 
-	return sm_AvailableLayers;
+	return m_AvailableLayers;
 }
 
 
-bool Instance::IsExtensionAvilable(std::string extensionName)
+bool Instance::IsExtensionAvilable(std::string extensionName) const
 {
-	auto & AvailableExtensions = Instance::GetAvailableExtensions();
+	auto & AvailableExtensions = this->GetAvailableExtensions();
 
 	for (size_t i = 0; i < AvailableExtensions.size(); i++)
 	{
@@ -121,9 +125,9 @@ bool Instance::IsExtensionAvilable(std::string extensionName)
 }
 
 
-bool Instance::IsLayerAvilable(std::string layerName)
+bool Instance::IsLayerAvilable(std::string layerName) const
 {
-	auto & AvailableLayers = Instance::GetAvailableLayers();
+	auto & AvailableLayers = this->GetAvailableLayers();
 
 	for (size_t i = 0; i < AvailableLayers.size(); i++)
 	{
@@ -151,6 +155,8 @@ void Instance::Destroy()
 		m_hInstance = VK_NULL_HANDLE;
 
 		m_pPhysicalDevices.clear();
+
+		m_pExtensions.clear();
 	}
 }
 

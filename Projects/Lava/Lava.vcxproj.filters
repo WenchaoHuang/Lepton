@@ -55,14 +55,14 @@
     <Filter Include="2. Resources\9. ShaderModule">
       <UniqueIdentifier>{b44ea248-a3e3-4813-a519-3185ec6158d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2. Resources\13. RayTracingPipeline">
-      <UniqueIdentifier>{00a81edc-b341-4da6-a14d-57b647f203d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2. Resources\12. ComputePipeline">
       <UniqueIdentifier>{6c0bd692-808b-417f-8991-1c008272c828}</UniqueIdentifier>
     </Filter>
     <Filter Include="2. Resources\11. GraphicsPipeline">
       <UniqueIdentifier>{bb636acc-ce26-4b55-985c-93b0152190de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\13. RayTracingPipelineNV">
+      <UniqueIdentifier>{00a81edc-b341-4da6-a14d-57b647f203d1}</UniqueIdentifier>
     </Filter>
     <Filter Include="2. Resources\14. AccelerationStructureNV">
       <UniqueIdentifier>{f10b926b-6e02-4cbb-9876-12c7d06a10e4}</UniqueIdentifier>
@@ -115,9 +115,6 @@
     <ClCompile Include="DescriptorSet.cpp">
       <Filter>2. Resources\7. DescriptorSet</Filter>
     </ClCompile>
-    <ClCompile Include="RayTracingPipeline.cpp">
-      <Filter>2. Resources\13. RayTracingPipeline</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsPipeline.cpp">
       <Filter>2. Resources\11. GraphicsPipeline</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="AccelerationStructureNV.cpp">
       <Filter>2. Resources\14. AccelerationStructureNV</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingPipelineNV.cpp">
+      <Filter>2. Resources\13. RayTracingPipelineNV</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,9 +174,6 @@
     <ClInclude Include="DescriptorSet.h">
       <Filter>2. Resources\7. DescriptorSet</Filter>
     </ClInclude>
-    <ClInclude Include="RayTracingPipeline.h">
-      <Filter>2. Resources\13. RayTracingPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsPipeline.h">
       <Filter>2. Resources\11. GraphicsPipeline</Filter>
     </ClInclude>
@@ -200,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="AccelerationStructureNV.h">
       <Filter>2. Resources\14. AccelerationStructureNV</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingPipelineNV.h">
+      <Filter>2. Resources\13. RayTracingPipelineNV</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

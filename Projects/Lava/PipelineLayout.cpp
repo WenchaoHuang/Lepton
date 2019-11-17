@@ -53,12 +53,12 @@ Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLa
 			std::vector<PushConstantRange>		PushConstantRanges(pPushConstantRanges.size());
 			std::vector<DescriptorSetLayout>	DescriptorSetLayouts(pDescriptorSetLayouts.size());
 
-			for (size_t i = 0; i < PushConstantRanges.size(); i++)
+			for (uint32_t i = 0; i < PushConstantRanges.size(); i++)
 			{
 				PushConstantRanges[i] = pPushConstantRanges[i];
 			}
 
-			for (size_t i = 0; i < DescriptorSetLayouts.size(); i++)
+			for (uint32_t i = 0; i < DescriptorSetLayouts.size(); i++)
 			{
 				DescriptorSetLayouts[i] = pDescriptorSetLayouts[i];
 			}
