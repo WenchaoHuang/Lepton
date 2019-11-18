@@ -21,7 +21,7 @@ TopLevelAccelStructNV::UniqueHandle::UniqueHandle(VkDevice hDevice, VkAccelerati
 Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t instanceCount)
 {
 	if (pLogicalDevice == nullptr)							return Result::eErrorInvalidDeviceHandle;
-	if (pLogicalDevice->GetHandle() == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
+	if (!pLogicalDevice->IsReady())							return Result::eErrorInvalidDeviceHandle;
 
 	PFN_vkCreateAccelerationStructureNV						pfnCreateAccelStruct = nullptr;
 	PFN_vkDestroyAccelerationStructureNV					pfnDestroyAccelStruct = nullptr;
@@ -80,9 +80,9 @@ Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t in
 			AllocateInfo.allocationSize			= Requirements.memoryRequirements.size;
 			AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
 
-			VkDeviceMemory hMemory = VK_NULL_HANDLE;
+			VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
 
-			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hMemory));
+			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
 
 			if (eResult == Result::eSuccess)
 			{
@@ -90,7 +90,7 @@ Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t in
 				MemoryInfo.sType							= VK_STRUCTURE_TYPE_BIND_ACCELERATION_STRUCTURE_MEMORY_INFO_NV;
 				MemoryInfo.pNext							= nullptr;
 				MemoryInfo.accelerationStructure			= hAccelerationStructure;
-				MemoryInfo.memory							= hMemory;
+				MemoryInfo.memory							= hDeviceMemory;
 				MemoryInfo.memoryOffset						= 0;
 				MemoryInfo.deviceIndexCount					= 0;
 				MemoryInfo.pDeviceIndices					= nullptr;
@@ -105,13 +105,13 @@ Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t in
 
 					if (eResult == Result::eSuccess)
 					{
-						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hAccelerationStructure, hMemory, AllocateInfo.allocationSize, handle);
+						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hAccelerationStructure, hDeviceMemory, AllocateInfo.allocationSize, handle);
 
 						return Result::eSuccess;
 					}
 				}
 
-				vkFreeMemory(pLogicalDevice->GetHandle(), hMemory, nullptr);
+				vkFreeMemory(pLogicalDevice->GetHandle(), hDeviceMemory, nullptr);
 			}
 		}
 
@@ -150,7 +150,7 @@ BottomLevelAccelStructNV::UniqueHandle::UniqueHandle(VkDevice hDevice, VkAcceler
 Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
 {
 	if (pLogicalDevice == nullptr)							return Result::eErrorInvalidDeviceHandle;
-	if (pLogicalDevice->GetHandle() == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
+	if (!pLogicalDevice->IsReady())							return Result::eErrorInvalidDeviceHandle;
 
 	PFN_vkCreateAccelerationStructureNV						pfnCreateAccelStruct = nullptr;
 	PFN_vkDestroyAccelerationStructureNV					pfnDestroyAccelStruct = nullptr;
@@ -209,9 +209,9 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
 			AllocateInfo.allocationSize			= Requirements.memoryRequirements.size;
 			AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
 
-			VkDeviceMemory hMemory = VK_NULL_HANDLE;
+			VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
 
-			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hMemory));
+			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
 
 			if (eResult == Result::eSuccess)
 			{
@@ -219,7 +219,7 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
 				MemoryInfo.sType							= VK_STRUCTURE_TYPE_BIND_ACCELERATION_STRUCTURE_MEMORY_INFO_NV;
 				MemoryInfo.pNext							= nullptr;
 				MemoryInfo.accelerationStructure			= hAccelerationStructure;
-				MemoryInfo.memory							= hMemory;
+				MemoryInfo.memory							= hDeviceMemory;
 				MemoryInfo.memoryOffset						= 0;
 				MemoryInfo.deviceIndexCount					= 0;
 				MemoryInfo.pDeviceIndices					= nullptr;
@@ -234,13 +234,13 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
 
 					if (eResult == Result::eSuccess)
 					{
-						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hAccelerationStructure, hMemory, AllocateInfo.allocationSize, handle);
+						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hAccelerationStructure, hDeviceMemory, AllocateInfo.allocationSize, handle);
 
 						return Result::eSuccess;
 					}
 				}
 
-				vkFreeMemory(pLogicalDevice->GetHandle(), hMemory, nullptr);
+				vkFreeMemory(pLogicalDevice->GetHandle(), hDeviceMemory, nullptr);
 			}
 		}
 

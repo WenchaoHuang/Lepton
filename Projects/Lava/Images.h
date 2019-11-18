@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "DeviceMemory.h"
+#include "Vulkan.h"
 
 namespace Lava
 {
@@ -70,7 +70,7 @@ namespace Lava
 		public:
 
 			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkImage, VkImageView, DeviceMemory, const ImageParam&);
+			UniqueHandle(VkDevice, VkImage, VkImageView, VkDeviceMemory, VkDeviceSize, const ImageParam&);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
@@ -78,9 +78,11 @@ namespace Lava
 		public:
 
 			const VkImage					m_hImage;
+			const VkDevice					m_hDevice;
 			const ImageParam				m_Parameter;
 			const VkImageView				m_hImageView;
-			const DeviceMemory				m_DeviceMemory;
+			const VkDeviceSize				m_MemorySize;
+			const VkDeviceMemory			m_hDeviceMemory;
 		};
 
 		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
