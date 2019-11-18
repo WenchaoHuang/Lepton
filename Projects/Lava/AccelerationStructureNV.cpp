@@ -164,23 +164,23 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
 	pfnGetAccelStructHandle		= (PFN_vkGetAccelerationStructureHandleNV)vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkGetAccelerationStructureHandleNV");
 	pfnGetAccelStructMemReq		= (PFN_vkGetAccelerationStructureMemoryRequirementsNV)vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkGetAccelerationStructureMemoryRequirementsNV");
 
-	if (!pfnCreateAccelStruct)				return Result::eErrorFailedToGetProcessAddress;
-	if (!pfnBindAccelStructMem)				return Result::eErrorFailedToGetProcessAddress;
-	if (!pfnGetAccelStructHandle)			return Result::eErrorFailedToGetProcessAddress;
-	if (!pfnGetAccelStructMemReq)			return Result::eErrorFailedToGetProcessAddress;
+	if (!pfnCreateAccelStruct)					return Result::eErrorFailedToGetProcessAddress;
+	if (!pfnBindAccelStructMem)					return Result::eErrorFailedToGetProcessAddress;
+	if (!pfnGetAccelStructHandle)				return Result::eErrorFailedToGetProcessAddress;
+	if (!pfnGetAccelStructMemReq)				return Result::eErrorFailedToGetProcessAddress;
 
-	VkAccelerationStructureCreateInfoNV		CreateInfo = {};
-	CreateInfo.sType						= VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_NV;
-	CreateInfo.pNext						= nullptr;
-	CreateInfo.compactedSize				= 0;
-	CreateInfo.info.sType					= VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_INFO_NV;
-	CreateInfo.info.pNext					= nullptr;
-	CreateInfo.info.type					= VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_NV;
-	CreateInfo.info.flags					= 0;
-	CreateInfo.info.instanceCount			= 0;
-	CreateInfo.info.geometryCount			;
-	CreateInfo.info.pGeometries				;
-
+	VkAccelerationStructureCreateInfoNV			CreateInfo = {};
+	CreateInfo.sType							= VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_NV;
+	CreateInfo.pNext							= nullptr;
+	CreateInfo.compactedSize					= 0;
+	CreateInfo.info.sType						= VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_INFO_NV;
+	CreateInfo.info.pNext						= nullptr;
+	CreateInfo.info.type						= VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_NV;
+	CreateInfo.info.flags						= 0;
+	CreateInfo.info.instanceCount				= 0;
+	CreateInfo.info.geometryCount				;	//!	TODO
+	CreateInfo.info.pGeometries					;	//!	TODO
+	
 	VkAccelerationStructureNV hAccelerationStructure = VK_NULL_HANDLE;
 
 	Result eResult = LAVA_RESULT_CAST(pfnCreateAccelStruct(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hAccelerationStructure));
