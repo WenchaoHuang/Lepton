@@ -147,7 +147,7 @@ BottomLevelAccelStructNV::UniqueHandle::UniqueHandle(VkDevice hDevice, VkAcceler
 }
 
 
-Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
+Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries)
 {
 	if (pLogicalDevice == nullptr)							return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())							return Result::eErrorInvalidDeviceHandle;
@@ -178,8 +178,8 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice)
 	CreateInfo.info.type						= VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_NV;
 	CreateInfo.info.flags						= 0;
 	CreateInfo.info.instanceCount				= 0;
-	CreateInfo.info.geometryCount				;	//!	TODO
-	CreateInfo.info.pGeometries					;	//!	TODO
+	CreateInfo.info.geometryCount				= pGeometries.size();
+	CreateInfo.info.pGeometries					= reinterpret_cast<const VkGeometryNV*>(pGeometries.data());
 	
 	VkAccelerationStructureNV hAccelerationStructure = VK_NULL_HANDLE;
 

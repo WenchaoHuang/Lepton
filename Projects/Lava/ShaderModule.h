@@ -59,4 +59,6 @@ namespace Lava
 
 		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
+
+
 }

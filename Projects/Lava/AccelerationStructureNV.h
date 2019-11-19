@@ -7,24 +7,6 @@
 
 namespace Lava
 {
-
-
-	/*********************************************************************
-	***************    BuildAccelerationStructureFlagNV    ***************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Bitmask specifying additional parameters for acceleration structure builds.
-	 */
-	enum class BuildAccelerationStructureFlagNV : VkFlags
-	{
-		eLowMemory				= VK_BUILD_ACCELERATION_STRUCTURE_LOW_MEMORY_BIT_NV,
-		eAllowUpdate			= VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_UPDATE_BIT_NV,
-		eAllowCompaction		= VK_BUILD_ACCELERATION_STRUCTURE_ALLOW_COMPACTION_BIT_NV,
-		ePreferFastTrace		= VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_NV,
-		ePreferFastBuild		= VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT_NV,
-	};
-
 	/*********************************************************************
 	************************    GeometryTypeNV    ************************
 	*********************************************************************/
@@ -66,11 +48,11 @@ namespace Lava
 		VkDeviceSize				vertexOffset		= 0;
 		uint32_t					vertexCount			= 0;
 		VkDeviceSize				vertexStride		= 0;
-		Format						vertexFormat		= Format::eUndefined;
+		Format						vertexFormat		= Format::eRGBA32Sfloat;
 		VkBuffer					indexData			= VK_NULL_HANDLE;
 		VkDeviceSize				indexOffset			= 0;
 		uint32_t					indexCount			= 0;
-		IndexType					indexType			= IndexType::eNoneNV;
+		IndexType					indexType			= IndexType::eUint32;
 		VkBuffer					transformData		= VK_NULL_HANDLE;
 		VkDeviceSize				transformOffset		= 0;
 	};
@@ -93,17 +75,23 @@ namespace Lava
 	};
 
 	/*********************************************************************
-	************************    GeometryDataNV    ************************
+	**************************    GeometryNV    **************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Structure specifying geometry in a bottom-level acceleration structure.
+	 *	@brief	Structure specifying a geometry in a bottom-level acceleration structure.
 	 */
-	struct GeometryDataNV
+	struct GeometryNV
 	{
-		GeometryTrianglesNV		triangles;
-		GeometryAABBNV			aabbs;
+		const VkStructureType		sType				= VK_STRUCTURE_TYPE_GEOMETRY_NV;
+		const void * const			pNext				= nullptr;
+		GeometryTypeNV				geometryType		= GeometryTypeNV::eTriangles;
+		GeometryTrianglesNV			triangles;
+		GeometryAABBNV				aabbs;
+		Flags<GeometryFlagNV>		flags				= 0;
 	};
+
+	static_assert(sizeof(GeometryNV) == sizeof(VkGeometryNV), "Struct and wrapper have different size!");
 
 	/*********************************************************************
 	********************    TopLevelAccelStructNV    *********************
@@ -176,7 +164,7 @@ namespace Lava
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new top-level acceleration structure.
-		Result Create(LogicalDevice * pLogicalDevice);
+		Result Create(LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries);
 
 		//!	@brief	Convert to VkAccelerationStructureNV.
 		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }

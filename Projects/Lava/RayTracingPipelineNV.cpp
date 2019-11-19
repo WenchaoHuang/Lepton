@@ -20,6 +20,12 @@ Result RayTracingPipelineNV::Create(PipelineLayout pipelineLayout, uint32_t maxR
 {
 	if (!pipelineLayout.IsValid())			return Result::eErrorInvalidPipelineLayoutHandle;
 
+	PFN_vkCreateRayTracingPipelinesNV		pfnCreateRayTracingPipelines = nullptr;
+
+	pfnCreateRayTracingPipelines			= (PFN_vkCreateRayTracingPipelinesNV)vkGetDeviceProcAddr(pipelineLayout.GetDeviceHandle(), "vkCreateRayTracingPipelinesNV");
+
+	if (!pfnCreateRayTracingPipelines)		return Result::eErrorFailedToGetProcessAddress;
+
 	VkRayTracingPipelineCreateInfoNV		CreateInfo = {};
 	CreateInfo.sType						= VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_NV;
 	CreateInfo.pNext						= nullptr;
@@ -35,7 +41,7 @@ Result RayTracingPipelineNV::Create(PipelineLayout pipelineLayout, uint32_t maxR
 
 	VkPipeline hPipeline = VK_NULL_HANDLE;
 
-	Result eResult = LAVA_RESULT_CAST(vkCreateRayTracingPipelinesNV(pipelineLayout.GetDeviceHandle(), VK_NULL_HANDLE, 1, &CreateInfo, nullptr, &hPipeline));
+	Result eResult = LAVA_RESULT_CAST(pfnCreateRayTracingPipelines(pipelineLayout.GetDeviceHandle(), VK_NULL_HANDLE, 1, &CreateInfo, nullptr, &hPipeline));
 
 	if (eResult == Result::eSuccess)
 	{
