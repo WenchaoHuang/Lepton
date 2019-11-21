@@ -12,7 +12,7 @@ using namespace Lava;
 *************************************************************************/
 Instance::Instance() : m_hInstance(VK_NULL_HANDLE)
 {
-
+	this->GetAvailableExtensions();
 }
 
 
