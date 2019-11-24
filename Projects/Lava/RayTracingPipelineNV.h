@@ -8,7 +8,53 @@
 
 namespace Lava
 {
+	typedef VkPipeline		VkRayTracingPipelineNV;
 
+	/*********************************************************************
+	*****************    RayTracingShaderGroupTypeNV    ******************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Ray tracing shader group types.
+	 */
+	enum class RayTracingShaderGroupTypeNV
+	{
+		eGeneral				= VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_NV,
+		eTrianglesHitGroup		= VK_RAY_TRACING_SHADER_GROUP_TYPE_TRIANGLES_HIT_GROUP_NV,
+		eProceduralHitGoutp		= VK_RAY_TRACING_SHADER_GROUP_TYPE_PROCEDURAL_HIT_GROUP_NV,
+	};
+
+	/*********************************************************************
+	*******************    RayTracingPipelineParam    ********************
+	*********************************************************************/
+
+	/**
+	 *	@brief	Vulkan ray tracing pipeline parameters.
+	 */
+	struct RayTracingPipelineParam
+	{
+
+	public:
+
+		/**
+		 *	@brief	Structure specifying shaders in a shader group.
+		 */
+		struct ShaderGroup
+		{
+			RayTracingShaderGroupTypeNV		eType					= RayTracingShaderGroupTypeNV::eGeneral;
+			uint32_t						generalShader			= VK_SHADER_UNUSED_NV;
+			uint32_t						closestHitShader		= VK_SHADER_UNUSED_NV;
+			uint32_t						anyHitShader			= VK_SHADER_UNUSED_NV;
+			uint32_t						intersectionShader		= VK_SHADER_UNUSED_NV;
+		};
+
+	public:
+
+		uint32_t						maxRecursionDepth = 1;
+		PipelineLayout					pipelineLayout;
+		std::vector<ShaderGroup>		shaderGroups;
+		std::vector<ShaderModule>		shaderStages;
+	};
 
 	/*********************************************************************
 	*********************    RayTracingPipelineNV    *********************
@@ -19,43 +65,32 @@ namespace Lava
 	 */
 	class RayTracingPipelineNV
 	{
+		LAVA_UNIQUE_RESOURCE(RayTracingPipelineNV)
 
 	public:
 
-		//!	@brief	Invalidate this resource handle.
-		void Destroy() { m_spUniqueHandle.reset(); }
+		//!	@brief	Create ray tracing pipeline object.
+		RayTracingPipelineNV();
 
-		//!	@brief	Whether this resource handle is valid.
-		bool IsValid() const { return m_spUniqueHandle != nullptr; }
+		//!	@brief	Create and initialize immediately.
+		explicit RayTracingPipelineNV(const RayTracingPipelineParam & Param);
 
-		Result Create(PipelineLayout pipelineLayout, uint32_t maxRecursionDepth);
-
-		//!	@brief	Convert to VkPipeline.
-		operator VkPipeline() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hPipeline : VK_NULL_HANDLE; }
+		//!	@brief	Destroy ray tracing pipeline object.
+		~RayTracingPipelineNV();
 
 	public:
 
-		/**
-		 *	@brief	Unique handle of ray tracing pipeline.
-		 */
-		struct UniqueHandle
-		{
-			LAVA_NONCOPYABLE(UniqueHandle)
+		//!	@brief	Create a new ray tracing pipeline.
+		Result Create(const RayTracingPipelineParam & Param);
 
-		public:
+		//!	@brief	Return pipeline parameters.
+		const RayTracingPipelineParam & GetParam() const { return m_Parameter; }
 
-			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkDevice, VkPipeline);
+		//!	@brief	Destroy the ray tracing pipeline.
+		void Destroy();
 
-			//!	@brief	Where resource will be released.
-			~UniqueHandle() noexcept;
-
-		public:
-
-			const VkDevice					m_hDevice;
-			const VkPipeline				m_hPipeline;
-		};
-
-		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
+	public:
+		
+		RayTracingPipelineParam		m_Parameter;
 	};
 }

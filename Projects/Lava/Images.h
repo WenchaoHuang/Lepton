@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Vulkan.h"
+#include "DeviceMemory.h"
 
 namespace Lava
 {
@@ -55,7 +55,7 @@ namespace Lava
 	protected:
 
 		//!	@brief	Create a new image object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D extent, uint32_t mipLevels, uint32_t arrayLayers,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D extent, uint32_t mipLevels, uint32_t arrayLayers,
 					  SampleCount eSamples, Flags<ImageUsage> eUsages, Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags = 0);
 
 	private:
@@ -69,8 +69,8 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkDevice, VkImage, VkImageView, VkDeviceMemory, VkDeviceSize, const ImageParam&);
+			//!	@brief	Constructor (handles must be initialized).
+			UniqueHandle(DeviceLocalMemory, VkImage, VkImageView, const ImageParam&);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
@@ -78,11 +78,9 @@ namespace Lava
 		public:
 
 			const VkImage					m_hImage;
-			const VkDevice					m_hDevice;
 			const ImageParam				m_Parameter;
 			const VkImageView				m_hImageView;
-			const VkDeviceSize				m_MemorySize;
-			const VkDeviceMemory			m_hDeviceMemory;
+			const DeviceLocalMemory			m_DeviceMemory;
 		};
 
 		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
@@ -101,7 +99,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image 1D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, 1, SampleCount::x1, usageFlags, eAspects);
@@ -121,7 +119,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image 1D array object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels, uint32_t arrayLayers,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels, uint32_t arrayLayers,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, arrayLayers, SampleCount::x1, usageFlags, eAspects);
@@ -141,7 +139,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, SampleCount eSamples,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, SampleCount eSamples,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 1, eSamples, usageFlags, eAspects);
@@ -161,7 +159,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers, SampleCount eSamples,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers, SampleCount eSamples,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, arrayLayers, eSamples, usageFlags, eAspects);
@@ -181,7 +179,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image cube object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 },  mipLevels, 6, SampleCount::x1,
@@ -202,7 +200,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image cube array object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 6 * arrayLayers, SampleCount::x1,
@@ -223,7 +221,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Create a new image 3D object.
-		Result Create(LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D, uint32_t mipLevels,
+		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D, uint32_t mipLevels,
 					  Flags<ImageUsage> usageFlags, Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, Extent3D, mipLevels, 1, SampleCount::x1, usageFlags, eAspects);

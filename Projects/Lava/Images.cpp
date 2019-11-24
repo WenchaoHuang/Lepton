@@ -4,7 +4,6 @@
 
 #include "Images.h"
 #include "LogicalDevice.h"
-#include "PhysicalDevice.h"
 
 using namespace Lava;
 
@@ -20,24 +19,21 @@ template class BaseImage<VK_IMAGE_TYPE_2D, VK_IMAGE_VIEW_TYPE_CUBE_ARRAY>;
 ****************************    BaseImage    *****************************
 *************************************************************************/
 template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::
-UniqueHandle::UniqueHandle(VkDevice hDevice, VkImage hImage, VkImageView hImageView, VkDeviceMemory hDeviceMemory, VkDeviceSize memSize, const ImageParam & Param)
-	: m_hDevice(hDevice), m_hImage(hImage), m_hImageView(hImageView), m_hDeviceMemory(hDeviceMemory), m_MemorySize(memSize), m_Parameter(Param)
+UniqueHandle::UniqueHandle(DeviceLocalMemory deviceMemory, VkImage hImage, VkImageView hImageView, const ImageParam & Param)
+	: m_DeviceMemory(deviceMemory), m_hImage(hImage), m_hImageView(hImageView), m_Parameter(Param)
 {
 
 }
 
 
 template<VkImageType eImageType, VkImageViewType eViewType>
-Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
-												Format eFormat,
-												VkExtent3D extent,
-												uint32_t mipLevels,
-												uint32_t arrayLayers,
-												SampleCount eSamples,
-												Flags<ImageUsage> eUsages,
-												Flags<ImageAspect> eAspects,
-												VkImageCreateFlags eCreateFlags)
+Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDevice,
+												Format eFormat, VkExtent3D extent,
+												uint32_t mipLevels, uint32_t arrayLayers,
+												SampleCount eSamples, Flags<ImageUsage> eUsages,
+												Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags)
 {
+	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
 	
 	VkImageCreateInfo						CreateInfo = {};
@@ -63,69 +59,56 @@ Result BaseImage<eImageType, eViewType>::Create(LogicalDevice * pLogicalDevice,
 
 	if (eResult == Result::eSuccess)
 	{
+		DeviceLocalMemory	deviceMemory;
+
 		VkMemoryRequirements Requirements = {};
 
 		vkGetImageMemoryRequirements(pLogicalDevice->GetHandle(), hImage, &Requirements);
 
-		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
+		eResult = deviceMemory.Allocate(pLogicalDevice, Requirements);
 
-		if (memoryTypeIndex != LAVA_INVALID_INDEX)
+		if (eResult == Result::eSuccess)
 		{
-			VkMemoryAllocateInfo				AllocateInfo = {};
-			AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-			AllocateInfo.pNext					= nullptr;
-			AllocateInfo.allocationSize			= Requirements.size;
-			AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
-
-			VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
-
-			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+			eResult = LAVA_RESULT_CAST(vkBindImageMemory(pLogicalDevice->GetHandle(), hImage, deviceMemory, 0));
 
 			if (eResult == Result::eSuccess)
 			{
-				eResult = LAVA_RESULT_CAST(vkBindImageMemory(pLogicalDevice->GetHandle(), hImage, hDeviceMemory, 0));
+				VkImageViewCreateInfo								ViewCreateInfo = {};
+				ViewCreateInfo.sType								= VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+				ViewCreateInfo.pNext								= nullptr;
+				ViewCreateInfo.flags								= 0;
+				ViewCreateInfo.image								= hImage;
+				ViewCreateInfo.viewType								= eViewType;
+				ViewCreateInfo.format								= static_cast<VkFormat>(eFormat);
+				ViewCreateInfo.components.r							= VK_COMPONENT_SWIZZLE_R;
+				ViewCreateInfo.components.g							= VK_COMPONENT_SWIZZLE_G;
+				ViewCreateInfo.components.b							= VK_COMPONENT_SWIZZLE_B;
+				ViewCreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
+				ViewCreateInfo.subresourceRange.baseArrayLayer		= 0;
+				ViewCreateInfo.subresourceRange.baseMipLevel		= 0;
+				ViewCreateInfo.subresourceRange.aspectMask			= eAspects;
+				ViewCreateInfo.subresourceRange.layerCount			= arrayLayers;
+				ViewCreateInfo.subresourceRange.levelCount			= mipLevels;
+
+				VkImageView hImageView = VK_NULL_HANDLE;
+
+				eResult = LAVA_RESULT_CAST(vkCreateImageView(pLogicalDevice->GetHandle(), &ViewCreateInfo, nullptr, &hImageView));
 
 				if (eResult == Result::eSuccess)
 				{
-					VkImageViewCreateInfo								ViewCreateInfo = {};
-					ViewCreateInfo.sType								= VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-					ViewCreateInfo.pNext								= nullptr;
-					ViewCreateInfo.flags								= 0;
-					ViewCreateInfo.image								= hImage;
-					ViewCreateInfo.viewType								= eViewType;
-					ViewCreateInfo.format								= static_cast<VkFormat>(eFormat);
-					ViewCreateInfo.components.r							= VK_COMPONENT_SWIZZLE_R;
-					ViewCreateInfo.components.g							= VK_COMPONENT_SWIZZLE_G;
-					ViewCreateInfo.components.b							= VK_COMPONENT_SWIZZLE_B;
-					ViewCreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
-					ViewCreateInfo.subresourceRange.baseArrayLayer		= 0;
-					ViewCreateInfo.subresourceRange.baseMipLevel		= 0;
-					ViewCreateInfo.subresourceRange.aspectMask			= eAspects;
-					ViewCreateInfo.subresourceRange.layerCount			= arrayLayers;
-					ViewCreateInfo.subresourceRange.levelCount			= mipLevels;
+					ImageParam					imageParam;
+					imageParam.format			= eFormat;
+					imageParam.extent			= extent;
+					imageParam.mipLevels		= mipLevels;
+					imageParam.arrayLayers		= arrayLayers;
+					imageParam.samples			= eSamples;
+					imageParam.usage			= eUsages;
+					imageParam.aspectMask		= eAspects;
 
-					VkImageView hImageView = VK_NULL_HANDLE;
+					m_spUniqueHandle = std::make_shared<UniqueHandle>(deviceMemory, hImage, hImageView, imageParam);
 
-					eResult = LAVA_RESULT_CAST(vkCreateImageView(pLogicalDevice->GetHandle(), &ViewCreateInfo, nullptr, &hImageView));
-
-					if (eResult == Result::eSuccess)
-					{
-						ImageParam					imageParam;
-						imageParam.format			= eFormat;
-						imageParam.extent			= extent;
-						imageParam.mipLevels		= mipLevels;
-						imageParam.arrayLayers		= arrayLayers;
-						imageParam.samples			= eSamples;
-						imageParam.usage			= eUsages;
-						imageParam.aspectMask		= eAspects;
-
-						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hImage, hImageView, hDeviceMemory, AllocateInfo.allocationSize, imageParam);
-
-						return Result::eSuccess;
-					}
+					return Result::eSuccess;
 				}
-
-				vkFreeMemory(pLogicalDevice->GetHandle(), hDeviceMemory, nullptr);
 			}
 		}
 
@@ -140,10 +123,8 @@ template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType
 {
 	if (m_hImage != VK_NULL_HANDLE)
 	{
-		vkDestroyImageView(m_hDevice, m_hImageView, nullptr);
+		vkDestroyImageView(m_DeviceMemory.GetDeviceHandle(), m_hImageView, nullptr);
 
-		vkFreeMemory(m_hDevice, m_hDeviceMemory, nullptr);
-
-		vkDestroyImage(m_hDevice, m_hImage, nullptr);
+		vkDestroyImage(m_DeviceMemory.GetDeviceHandle(), m_hImage, nullptr);
 	}
 }

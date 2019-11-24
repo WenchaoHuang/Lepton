@@ -152,6 +152,7 @@ namespace Lava
 	 */
 	enum class MemoryProperty
 	{
+		eProtected				= VK_MEMORY_PROPERTY_PROTECTED_BIT,
 		eHostCached				= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
 		eHostVisible			= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
 		eDeviceLocal			= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,

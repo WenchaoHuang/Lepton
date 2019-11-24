@@ -11,14 +11,14 @@ using namespace Lava;
 /*************************************************************************
 **********************    TopLevelAccelStructNV    ***********************
 *************************************************************************/
-TopLevelAccelStructNV::UniqueHandle::UniqueHandle(VkDevice hDevice, VkAccelerationStructureNV hAccelStruct, VkDeviceMemory hMemory, VkDeviceSize memSize, uint64_t handle)
-	: m_hDevice(hDevice), m_hAccelStruct(hAccelStruct), m_hMemory(hMemory), m_MemSize(memSize), m_Handle(handle)
+TopLevelAccelStructNV::UniqueHandle::UniqueHandle(DeviceLocalMemory deviceMemory, VkAccelerationStructureNV hAccelStruct,  uint64_t handle)
+	: m_DeviceMemory(deviceMemory), m_hAccelStruct(hAccelStruct), m_Handle(handle)
 {
 
 }
 
 
-Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t instanceCount)
+Result TopLevelAccelStructNV::Create(const LogicalDevice * pLogicalDevice, uint32_t instanceCount)
 {
 	if (pLogicalDevice == nullptr)							return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())							return Result::eErrorInvalidDeviceHandle;
@@ -58,6 +58,8 @@ Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t in
 
 	if (eResult == Result::eSuccess)
 	{
+		DeviceLocalMemory	deviceMemory;
+
 		VkAccelerationStructureMemoryRequirementsInfoNV		RequirementsInfo = {};
 		RequirementsInfo.sType								= VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_MEMORY_REQUIREMENTS_INFO_NV;
 		RequirementsInfo.pNext								= nullptr;
@@ -70,48 +72,33 @@ Result TopLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, uint32_t in
 
 		pfnGetAccelStructMemReq(pLogicalDevice->GetHandle(), &RequirementsInfo, &Requirements);
 
-		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryRequirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
+		eResult = deviceMemory.Allocate(pLogicalDevice, Requirements.memoryRequirements);
 
-		if (memoryTypeIndex != LAVA_INVALID_INDEX)
+		if (eResult == Result::eSuccess)
 		{
-			VkMemoryAllocateInfo				AllocateInfo = {};
-			AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-			AllocateInfo.pNext					= nullptr;
-			AllocateInfo.allocationSize			= Requirements.memoryRequirements.size;
-			AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
+			VkBindAccelerationStructureMemoryInfoNV		MemoryInfo = {};
+			MemoryInfo.sType							= VK_STRUCTURE_TYPE_BIND_ACCELERATION_STRUCTURE_MEMORY_INFO_NV;
+			MemoryInfo.pNext							= nullptr;
+			MemoryInfo.accelerationStructure			= hAccelerationStructure;
+			MemoryInfo.memory							= deviceMemory;
+			MemoryInfo.memoryOffset						= 0;
+			MemoryInfo.deviceIndexCount					= 0;
+			MemoryInfo.pDeviceIndices					= nullptr;
 
-			VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
-
-			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+			eResult = LAVA_RESULT_CAST(pfnBindAccelStructMem(pLogicalDevice->GetHandle(), 1, &MemoryInfo));
 
 			if (eResult == Result::eSuccess)
 			{
-				VkBindAccelerationStructureMemoryInfoNV		MemoryInfo = {};
-				MemoryInfo.sType							= VK_STRUCTURE_TYPE_BIND_ACCELERATION_STRUCTURE_MEMORY_INFO_NV;
-				MemoryInfo.pNext							= nullptr;
-				MemoryInfo.accelerationStructure			= hAccelerationStructure;
-				MemoryInfo.memory							= hDeviceMemory;
-				MemoryInfo.memoryOffset						= 0;
-				MemoryInfo.deviceIndexCount					= 0;
-				MemoryInfo.pDeviceIndices					= nullptr;
+				uint64_t handle = 0;
 
-				eResult = LAVA_RESULT_CAST(pfnBindAccelStructMem(pLogicalDevice->GetHandle(), 1, &MemoryInfo));
+				eResult = LAVA_RESULT_CAST(pfnGetAccelStructHandle(pLogicalDevice->GetHandle(), hAccelerationStructure, sizeof(uint64_t), &handle));
 
 				if (eResult == Result::eSuccess)
 				{
-					uint64_t handle = 0;
+					m_spUniqueHandle = std::make_shared<UniqueHandle>(deviceMemory, hAccelerationStructure, handle);
 
-					eResult = LAVA_RESULT_CAST(pfnGetAccelStructHandle(pLogicalDevice->GetHandle(), hAccelerationStructure, sizeof(uint64_t), &handle));
-
-					if (eResult == Result::eSuccess)
-					{
-						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hAccelerationStructure, hDeviceMemory, AllocateInfo.allocationSize, handle);
-
-						return Result::eSuccess;
-					}
+					return Result::eSuccess;
 				}
-
-				vkFreeMemory(pLogicalDevice->GetHandle(), hDeviceMemory, nullptr);
 			}
 		}
 
@@ -128,11 +115,9 @@ TopLevelAccelStructNV::UniqueHandle::~UniqueHandle() noexcept
 	{
 		PFN_vkDestroyAccelerationStructureNV pfnDestroyAccelStruct = nullptr;
 
-		pfnDestroyAccelStruct = (PFN_vkDestroyAccelerationStructureNV)vkGetDeviceProcAddr(m_hDevice, "vkDestroyAccelerationStructureNV");
+		pfnDestroyAccelStruct = (PFN_vkDestroyAccelerationStructureNV)vkGetDeviceProcAddr(m_DeviceMemory.GetDeviceHandle(), "vkDestroyAccelerationStructureNV");
 
-		pfnDestroyAccelStruct(m_hDevice, m_hAccelStruct, nullptr);
-
-		vkFreeMemory(m_hDevice, m_hMemory, nullptr);
+		pfnDestroyAccelStruct(m_DeviceMemory.GetDeviceHandle(), m_hAccelStruct, nullptr);
 	}
 }
 
@@ -140,14 +125,14 @@ TopLevelAccelStructNV::UniqueHandle::~UniqueHandle() noexcept
 /*************************************************************************
 *********************    BottomLevelAccelStructNV    *********************
 *************************************************************************/
-BottomLevelAccelStructNV::UniqueHandle::UniqueHandle(VkDevice hDevice, VkAccelerationStructureNV hAccelStruct, VkDeviceMemory hMemory, VkDeviceSize memSize, uint64_t handle)
-	: m_hDevice(hDevice), m_hAccelStruct(hAccelStruct), m_hMemory(hMemory), m_MemSize(memSize), m_Handle(handle)
+BottomLevelAccelStructNV::UniqueHandle::UniqueHandle(DeviceLocalMemory deviceMemory, VkAccelerationStructureNV hAccelStruct, uint64_t handle)
+	: m_DeviceMemory(deviceMemory), m_hAccelStruct(hAccelStruct), m_Handle(handle)
 {
 
 }
 
 
-Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries)
+Result BottomLevelAccelStructNV::Create(const LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries)
 {
 	if (pLogicalDevice == nullptr)							return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())							return Result::eErrorInvalidDeviceHandle;
@@ -187,6 +172,8 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, ArrayPro
 
 	if (eResult == Result::eSuccess)
 	{
+		DeviceLocalMemory	deviceMemory;
+
 		VkAccelerationStructureMemoryRequirementsInfoNV		RequirementsInfo = {};
 		RequirementsInfo.sType								= VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_MEMORY_REQUIREMENTS_INFO_NV;
 		RequirementsInfo.pNext								= nullptr;
@@ -194,53 +181,38 @@ Result BottomLevelAccelStructNV::Create(LogicalDevice * pLogicalDevice, ArrayPro
 		RequirementsInfo.accelerationStructure				= hAccelerationStructure;
 
 		VkMemoryRequirements2		Requirements = {};
-		Requirements.sType = VK_STRUCTURE_TYPE_MEMORY_REQUIREMENTS_2;
-		Requirements.pNext = nullptr;
+		Requirements.sType			= VK_STRUCTURE_TYPE_MEMORY_REQUIREMENTS_2;
+		Requirements.pNext			= nullptr;
 
 		pfnGetAccelStructMemReq(pLogicalDevice->GetHandle(), &RequirementsInfo, &Requirements);
 
-		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryRequirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
+		eResult = deviceMemory.Allocate(pLogicalDevice, Requirements.memoryRequirements);
 
-		if (memoryTypeIndex != LAVA_INVALID_INDEX)
+		if (eResult == Result::eSuccess)
 		{
-			VkMemoryAllocateInfo				AllocateInfo = {};
-			AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-			AllocateInfo.pNext					= nullptr;
-			AllocateInfo.allocationSize			= Requirements.memoryRequirements.size;
-			AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
+			VkBindAccelerationStructureMemoryInfoNV		MemoryInfo = {};
+			MemoryInfo.sType							= VK_STRUCTURE_TYPE_BIND_ACCELERATION_STRUCTURE_MEMORY_INFO_NV;
+			MemoryInfo.pNext							= nullptr;
+			MemoryInfo.accelerationStructure			= hAccelerationStructure;
+			MemoryInfo.memory							= deviceMemory;
+			MemoryInfo.memoryOffset						= 0;
+			MemoryInfo.deviceIndexCount					= 0;
+			MemoryInfo.pDeviceIndices					= nullptr;
 
-			VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
-
-			eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+			eResult = LAVA_RESULT_CAST(pfnBindAccelStructMem(pLogicalDevice->GetHandle(), 1, &MemoryInfo));
 
 			if (eResult == Result::eSuccess)
 			{
-				VkBindAccelerationStructureMemoryInfoNV		MemoryInfo = {};
-				MemoryInfo.sType							= VK_STRUCTURE_TYPE_BIND_ACCELERATION_STRUCTURE_MEMORY_INFO_NV;
-				MemoryInfo.pNext							= nullptr;
-				MemoryInfo.accelerationStructure			= hAccelerationStructure;
-				MemoryInfo.memory							= hDeviceMemory;
-				MemoryInfo.memoryOffset						= 0;
-				MemoryInfo.deviceIndexCount					= 0;
-				MemoryInfo.pDeviceIndices					= nullptr;
+				uint64_t handle = 0;
 
-				eResult = LAVA_RESULT_CAST(pfnBindAccelStructMem(pLogicalDevice->GetHandle(), 1, &MemoryInfo));
+				eResult = LAVA_RESULT_CAST(pfnGetAccelStructHandle(pLogicalDevice->GetHandle(), hAccelerationStructure, sizeof(uint64_t), &handle));
 
 				if (eResult == Result::eSuccess)
 				{
-					uint64_t handle = 0;
+					m_spUniqueHandle = std::make_shared<UniqueHandle>(deviceMemory, hAccelerationStructure, handle);
 
-					eResult = LAVA_RESULT_CAST(pfnGetAccelStructHandle(pLogicalDevice->GetHandle(), hAccelerationStructure, sizeof(uint64_t), &handle));
-
-					if (eResult == Result::eSuccess)
-					{
-						m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hAccelerationStructure, hDeviceMemory, AllocateInfo.allocationSize, handle);
-
-						return Result::eSuccess;
-					}
+					return Result::eSuccess;
 				}
-
-				vkFreeMemory(pLogicalDevice->GetHandle(), hDeviceMemory, nullptr);
 			}
 		}
 
@@ -257,10 +229,8 @@ BottomLevelAccelStructNV::UniqueHandle::~UniqueHandle() noexcept
 	{
 		PFN_vkDestroyAccelerationStructureNV pfnDestroyAccelStruct = nullptr;
 
-		pfnDestroyAccelStruct = (PFN_vkDestroyAccelerationStructureNV)vkGetDeviceProcAddr(m_hDevice, "vkDestroyAccelerationStructureNV");
+		pfnDestroyAccelStruct = (PFN_vkDestroyAccelerationStructureNV)vkGetDeviceProcAddr(m_DeviceMemory.GetDeviceHandle(), "vkDestroyAccelerationStructureNV");
 
-		pfnDestroyAccelStruct(m_hDevice, m_hAccelStruct, nullptr);
-
-		vkFreeMemory(m_hDevice, m_hMemory, nullptr);
+		pfnDestroyAccelStruct(m_DeviceMemory.GetDeviceHandle(), m_hAccelStruct, nullptr);
 	}
 }

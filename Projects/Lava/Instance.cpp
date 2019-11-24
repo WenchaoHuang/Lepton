@@ -12,7 +12,13 @@ using namespace Lava;
 *************************************************************************/
 Instance::Instance() : m_hInstance(VK_NULL_HANDLE)
 {
-	this->GetAvailableExtensions();
+	uint32_t extensionCount = 0;
+
+	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+	m_AvailableExtensions.resize(extensionCount);
+
+	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, m_AvailableExtensions.data());
 }
 
 
@@ -49,7 +55,7 @@ Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const ch
 
 		uint32_t physicalDeviceCount = 0;
 
-		for (auto iter : pExtensions)			m_pExtensions.insert(iter);
+		for (auto iter : pExtensions)		m_pExtensions.insert(iter);
 
 		vkEnumeratePhysicalDevices(m_hInstance, &physicalDeviceCount, nullptr);
 
@@ -75,23 +81,6 @@ bool Instance::IsExtensionEnabled(std::string extensionName) const
 }
 
 
-const std::vector<VkExtensionProperties> & Instance::GetAvailableExtensions() const
-{
-	if (m_AvailableExtensions.empty())
-	{
-		uint32_t extensionCount = 0;
-
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-
-		m_AvailableExtensions.resize(extensionCount);
-
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, m_AvailableExtensions.data());
-	}
-
-	return m_AvailableExtensions;
-}
-
-
 const std::vector<VkLayerProperties> & Instance::GetAvailableLayers() const
 {
 	if (m_AvailableLayers.empty())
@@ -111,11 +100,9 @@ const std::vector<VkLayerProperties> & Instance::GetAvailableLayers() const
 
 bool Instance::IsExtensionAvilable(std::string extensionName) const
 {
-	auto & AvailableExtensions = this->GetAvailableExtensions();
-
-	for (size_t i = 0; i < AvailableExtensions.size(); i++)
+	for (size_t i = 0; i < m_AvailableExtensions.size(); i++)
 	{
-		if (extensionName == AvailableExtensions[i].extensionName)
+		if (extensionName == m_AvailableExtensions[i].extensionName)
 		{
 			return true;
 		}

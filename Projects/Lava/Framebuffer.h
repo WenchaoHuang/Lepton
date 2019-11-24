@@ -126,7 +126,7 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
+			//!	@brief	Constructor (handles must be initialized).
 			UniqueHandle(VkDevice, VkRenderPass);
 
 			//!	@brief	Where resource will be released.
@@ -182,7 +182,7 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
+			//!	@brief	Constructor (handles must be initialized).
 			UniqueHandle(RenderPass, VkFramebuffer, VkExtent2D);
 
 			//!	@brief	Where resource will be released.

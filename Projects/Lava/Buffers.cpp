@@ -48,9 +48,7 @@ Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 
 		vkGetBufferMemoryRequirements(pLogicalDevice->GetHandle(), hNewBuffer, &Requirements);
 
-		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryTypeBits, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
-
-		eResult = m_Memory.Allocate(pLogicalDevice->GetHandle(), Requirements.size, memoryTypeIndex);
+		eResult = m_Memory.Allocate(pLogicalDevice, Requirements, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
 
 		if (eResult != Result::eSuccess)
 		{
@@ -150,13 +148,13 @@ HostVisibleBuffer::~HostVisibleBuffer()
 /*************************************************************************
 ************************    DeviceLocalBuffer    *************************
 *************************************************************************/
-DeviceLocalBuffer::DeviceLocalBuffer() : m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
+DeviceLocalBuffer::DeviceLocalBuffer() : m_hBuffer(VK_NULL_HANDLE)
 {
 
 }
 
 
-Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize size)
+Result DeviceLocalBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceSize size)
 {
 	if (size == 0)							return Result::eErrorOutOfDeviceMemory;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
@@ -177,13 +175,11 @@ Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 
 	if (eResult == Result::eSuccess)
 	{
-		VkMemoryRequirements Requirements = {};
+		VkMemoryRequirements	Requirements = {};
 
 		vkGetBufferMemoryRequirements(pLogicalDevice->GetHandle(), hNewBuffer, &Requirements);
 
-		uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(Requirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
-
-		eResult = m_Memory.Allocate(pLogicalDevice->GetHandle(), Requirements.size, memoryTypeIndex);
+		eResult = m_DeviceMemory.Allocate(pLogicalDevice, Requirements);
 
 		if (eResult != Result::eSuccess)
 		{
@@ -193,14 +189,12 @@ Result DeviceLocalBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize si
 		{
 			if (m_hBuffer != VK_NULL_HANDLE)
 			{
-				vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
+				vkDestroyBuffer(m_DeviceMemory.GetDeviceHandle(), m_hBuffer, nullptr);
 			}
 
-			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
+			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_DeviceMemory, 0);
 
 			m_hBuffer = hNewBuffer;
-
-			m_Bytes = size;
 		}
 	}
 
@@ -212,13 +206,11 @@ void DeviceLocalBuffer::Destroy()
 {
 	if (m_hBuffer != VK_NULL_HANDLE)
 	{
-		vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
+		vkDestroyBuffer(m_DeviceMemory.GetDeviceHandle(), m_hBuffer, nullptr);
 
 		m_hBuffer = VK_NULL_HANDLE;
 
-		m_Memory.Free();
-
-		m_Bytes = 0;
+		m_DeviceMemory.Free();
 	}
 }
 

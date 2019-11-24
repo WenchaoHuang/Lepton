@@ -9,9 +9,11 @@
 #define VK_ERROR_INVALID_IMAGE_HANDLE					-2000001
 #define VK_ERROR_INVALID_DEVICE_HANDLE					-2000002
 #define VK_ERROR_INVALID_SURFACE_HANDLE					-2000003
-#define VK_ERROR_INVALID_RENDER_PASS_HANDLE				-2000004
-#define VK_ERROR_INVALID_PIPELINE_LAYOUT_HANDLE			-2000005
-#define VK_ERROR_FAILED_TO_GET_PROCESS_ADDRESS			-2000006
+#define VK_ERROR_INVALID_INSTANCE_HANDLE				-2000004
+#define VK_ERROR_INVALID_MEMORY_TYPE_BITS				-2000005
+#define VK_ERROR_INVALID_RENDER_PASS_HANDLE				-2000006
+#define VK_ERROR_INVALID_PIPELINE_LAYOUT_HANDLE			-2000007
+#define VK_ERROR_FAILED_TO_GET_PROCESS_ADDRESS			-2000008
 
 namespace Lava
 {
@@ -64,6 +66,8 @@ namespace Lava
 		eErrorInvalidImageHandle							= VK_ERROR_INVALID_IMAGE_HANDLE,
 		eErrorInvalidDeviceHandle							= VK_ERROR_INVALID_DEVICE_HANDLE,
 		eErrorInvalidSurfaceHandle							= VK_ERROR_INVALID_SURFACE_HANDLE,
+		eErrorInvalidInstanceHandle							= VK_ERROR_INVALID_INSTANCE_HANDLE,
+		eErrorInvalidMemoryTypeBits							= VK_ERROR_INVALID_MEMORY_TYPE_BITS,
 		eErrorInvalidRenderPassHandle						= VK_ERROR_INVALID_RENDER_PASS_HANDLE,
 		eErrorInvalidPipelineLayoutHandle					= VK_ERROR_INVALID_PIPELINE_LAYOUT_HANDLE,
 		eErrorFailedToGetProcessAddress						= VK_ERROR_FAILED_TO_GET_PROCESS_ADDRESS,
@@ -119,6 +123,8 @@ namespace Lava
 		case Result::eErrorInvalidImageHandle:							return "Error: Invalid image handle";
 		case Result::eErrorInvalidDeviceHandle:							return "Error: Invalid device handle";
 		case Result::eErrorInvalidSurfaceHandle:						return "Error: Invalid surface handle";
+		case Result::eErrorInvalidInstanceHandle:						return "Error: Invalid instance handle";
+		case Result::eErrorInvalidMemoryTypeBits:						return "Error: Invalid memory type bits";
 		case Result::eErrorInvalidRenderPassHandle:						return "Error: Invalid render pass handle";
 		case Result::eErrorInvalidPipelineLayoutHandle:					return "Error: Invalid pipeline layout handle";
 		case Result::eErrorFailedToGetProcessAddress:					return "Error: Failed to get process address";

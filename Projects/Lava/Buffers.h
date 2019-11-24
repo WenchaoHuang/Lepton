@@ -92,24 +92,22 @@ namespace Lava
 		//!	@brief	Return Vulkan type of this object.
 		VkBuffer GetHandle() const { return m_hBuffer; }
 
+		//!	@brief	Return the buffer size in bytes.
+		VkDeviceSize Size() const { return m_DeviceMemory.Size(); }
+
 		//!	@brief	If buffer handle is valid.
 		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
 
 		//!	@brief	Resize buffer.
-		Result Create(LogicalDevice * pLogicalDevice, VkDeviceSize size);
-
-		//!	@brief	Return the buffer size in bytes.
-		VkDeviceSize Bytes() const { return m_Bytes; }
+		Result Create(const LogicalDevice * pLogicalDevice, VkDeviceSize sizeBytes);
 
 		//!	@brief	Destroy the buffer.
 		void Destroy();
 
 	private:
 
-		VkBuffer			m_hBuffer;
+		VkBuffer				m_hBuffer;
 
-		DeviceMemory		m_Memory;
-
-		VkDeviceSize		m_Bytes;
+		DeviceLocalMemory		m_DeviceMemory;
 	};
 }

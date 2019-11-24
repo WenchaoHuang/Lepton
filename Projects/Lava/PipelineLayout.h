@@ -40,14 +40,12 @@ namespace Lava
 
 		//!	@brief	Return VkDevice handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
-
-		//!	@brief	Create a new pipeline layout.
-		Result Create(VkDevice hDevice,
-					  ArrayProxy<const DescriptorSetLayout> pDescriptorSetLayouts = nullptr,
-					  ArrayProxy<const PushConstantRange> pPushConstantRanges = nullptr);
 		
 		//!	@brief	Return array of descriptor set layouts.
 		const std::vector<DescriptorSetLayout> & GetDescriptorSetLayouts() const { return m_spUniqueHandle->m_DescriptorSetLayouts; }
+
+		//!	@brief	Create a new pipeline layout.
+		Result Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLayout> pDescriptorSetLayouts = nullptr, ArrayProxy<const PushConstantRange> pPushConstantRanges = nullptr);
 
 		//!	@brief	Convert to VkPipelineLayout.
 		operator VkPipelineLayout() const { return m_spUniqueHandle != nullptr ? m_spUniqueHandle->m_hPipelineLayout : VK_NULL_HANDLE; }
@@ -63,7 +61,7 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
+			//!	@brief	Constructor (handles must be initialized).
 			UniqueHandle(VkDevice, VkPipelineLayout, const std::vector<DescriptorSetLayout>&, const std::vector<PushConstantRange>&);
 
 			//!	@brief	Where resource will be released.

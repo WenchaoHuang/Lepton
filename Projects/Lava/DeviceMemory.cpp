@@ -3,6 +3,8 @@
 *************************************************************************/
 
 #include "DeviceMemory.h"
+#include "LogicalDevice.h"
+#include "PhysicalDevice.h"
 
 using namespace Lava;
 
@@ -16,26 +18,28 @@ DeviceMemory::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDeviceMemory hDevic
 }
 
 
-Result DeviceMemory::Allocate(VkDevice hDevice, VkDeviceSize allocationSize, uint32_t memoryTypeIndex)
+Result DeviceMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequirements memoryRequirements, Flags<MemoryProperty> eProperties)
 {
-	Result eResult = Result::eErrorInvalidDeviceHandle;
+	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
 
-	if (hDevice != VK_NULL_HANDLE)
+	uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, eProperties);
+
+	if (memoryTypeIndex == LAVA_INVALID_INDEX)		return Result::eErrorInvalidMemoryTypeBits;
+
+	VkMemoryAllocateInfo				AllocateInfo = {};
+	AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	AllocateInfo.pNext					= nullptr;
+	AllocateInfo.allocationSize			= memoryRequirements.size;
+	AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
+
+	VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
+
+	Result eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+
+	if (eResult == Result::eSuccess)
 	{
-		VkMemoryAllocateInfo				AllocateInfo = {};
-		AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-		AllocateInfo.pNext					= nullptr;
-		AllocateInfo.allocationSize			= allocationSize;
-		AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
-
-		VkDeviceMemory hMemory = VK_NULL_HANDLE;
-
-		eResult = LAVA_RESULT_CAST(vkAllocateMemory(hDevice, &AllocateInfo, nullptr, &hMemory));
-
-		if (eResult == Result::eSuccess)
-		{
-			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hMemory, allocationSize);
-		}
+		m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hDeviceMemory, AllocateInfo.allocationSize);
 	}
 
 	return eResult;
@@ -77,6 +81,53 @@ Result DeviceMemory::Map(void ** ppData, VkDeviceSize offset, VkDeviceSize size)
 DeviceMemory::UniqueHandle::~UniqueHandle() noexcept
 {
 	if (m_hDevice != VK_NULL_HANDLE)
+	{
+		vkFreeMemory(m_hDevice, m_hDeviceMemory, nullptr);
+	}
+}
+
+
+/*************************************************************************
+************************    DeviceLocalMemory    *************************
+*************************************************************************/
+DeviceLocalMemory::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDeviceMemory hDeviceMemory, VkDeviceSize allocationSize)
+	: m_hDevice(hDevice), m_hDeviceMemory(hDeviceMemory), m_SizeBytes(allocationSize)
+{
+
+}
+
+
+Result DeviceLocalMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequirements memoryRequirements)
+{
+	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
+	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
+
+	uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
+
+	if (memoryTypeIndex == LAVA_INVALID_INDEX)		return Result::eErrorInvalidMemoryTypeBits;
+
+	VkMemoryAllocateInfo				AllocateInfo = {};
+	AllocateInfo.sType					= VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	AllocateInfo.pNext					= nullptr;
+	AllocateInfo.allocationSize			= memoryRequirements.size;
+	AllocateInfo.memoryTypeIndex		= memoryTypeIndex;
+
+	VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
+
+	Result eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+
+	if (eResult == Result::eSuccess)
+	{
+		m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hDeviceMemory, memoryRequirements.size);
+	}
+
+	return eResult;
+}
+
+
+DeviceLocalMemory::UniqueHandle::~UniqueHandle() noexcept
+{
+	if (m_hDeviceMemory != VK_NULL_HANDLE)
 	{
 		vkFreeMemory(m_hDevice, m_hDeviceMemory, nullptr);
 	}

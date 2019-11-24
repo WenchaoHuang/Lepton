@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include "Vulkan.h"
+#include "DeviceMemory.h"
 
 namespace Lava
 {
@@ -112,7 +112,7 @@ namespace Lava
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new top-level acceleration structure.
-		Result Create(LogicalDevice * pLogicalDevice, uint32_t instanceCount);
+		Result Create(const LogicalDevice * pLogicalDevice, uint32_t instanceCount);
 
 		//!	@brief	Convert to VkAccelerationStructureNV.
 		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }
@@ -127,8 +127,8 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkDevice, VkAccelerationStructureNV, VkDeviceMemory, VkDeviceSize, uint64_t);
+			//!	@brief	Constructor (handles must be initialized).
+			UniqueHandle(DeviceLocalMemory, VkAccelerationStructureNV, uint64_t);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
@@ -136,9 +136,7 @@ namespace Lava
 		public:
 
 			const uint64_t						m_Handle;
-			const VkDevice						m_hDevice;
-			const VkDeviceSize					m_MemSize;
-			const VkDeviceMemory				m_hMemory;
+			const DeviceLocalMemory				m_DeviceMemory;
 			const VkAccelerationStructureNV		m_hAccelStruct;
 		};
 
@@ -164,7 +162,7 @@ namespace Lava
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new top-level acceleration structure.
-		Result Create(LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries);
+		Result Create(const LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries);
 
 		//!	@brief	Convert to VkAccelerationStructureNV.
 		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }
@@ -179,8 +177,8 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkDevice, VkAccelerationStructureNV, VkDeviceMemory, VkDeviceSize, uint64_t);
+			//!	@brief	Constructor (handles must be initialized).
+			UniqueHandle(DeviceLocalMemory, VkAccelerationStructureNV, uint64_t);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
@@ -188,9 +186,7 @@ namespace Lava
 		public:
 
 			const uint64_t						m_Handle;
-			const VkDevice						m_hDevice;
-			const VkDeviceSize					m_MemSize;
-			const VkDeviceMemory				m_hMemory;
+			const DeviceLocalMemory				m_DeviceMemory;
 			const VkAccelerationStructureNV		m_hAccelStruct;
 		};
 

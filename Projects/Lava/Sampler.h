@@ -12,7 +12,7 @@ namespace Lava
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan sampler parameters.
+	 *	@brief	Structure specifying parameters of a sampler.
 	 */
 	struct SamplerParam
 	{
@@ -71,7 +71,7 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
+			//!	@brief	Constructor (handles must be initialized).
 			UniqueHandle(VkDevice, VkSampler, const SamplerParam&);
 
 			//!	@brief	Where resource will be released.

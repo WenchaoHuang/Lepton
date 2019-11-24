@@ -48,8 +48,8 @@ namespace Lava
 		//!	@brief	Return extent of swap-chain image.
 		VkExtent2D GetImageExtent() const { return m_ImageExtent; }
 
-		//!	@brief	Return last presentation result.
-		Result GetPresentResult() const { return m_Result; }
+		//!	@brief	Query for last presentation result.
+		Result QueryPresentResult() const { return m_Result; }
 
 		//!	@brief	Destroy the swap-chain object.
 		void Destroy();

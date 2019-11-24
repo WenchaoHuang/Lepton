@@ -26,13 +26,16 @@ namespace Lava
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new shader module.
-		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> pCode);
+		Result Create(VkDevice hDevice, const char * pShaderPath, ShaderStage eStage);
 
-		//!	@brief	Convert to VkShaderModule.
-		operator VkShaderModule() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hShaderModule : VK_NULL_HANDLE; }
+		//!	@brief	Create a new shader module.
+		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> pCode, ShaderStage eStage);
 
-		//!	@brief	Read SPIR-V shader (size of file must be a multiple of 4).
-		static std::vector<uint32_t> ReadSPIRV(const char * pFilePath);
+		//!	@brief	Return device handle.
+		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
+
+		//!	@brief	Return shader stage create info for creating graphics pipeline.
+		const VkPipelineShaderStageCreateInfo & GetStageInfo() const { return m_spUniqueHandle->m_StageInfo; }
 
 	private:
 
@@ -45,20 +48,18 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
-			UniqueHandle(VkDevice, VkShaderModule);
+			//!	@brief	Constructor (handles must be initialized).
+			UniqueHandle(VkDevice, VkShaderModule, ShaderStage);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
 
 		public:
 
-			const VkDevice					m_hDevice;
-			const VkShaderModule			m_hShaderModule;
+			const VkDevice						m_hDevice;
+			VkPipelineShaderStageCreateInfo		m_StageInfo;
 		};
 
-		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
+		std::shared_ptr<UniqueHandle>			m_spUniqueHandle;
 	};
-
-
 }

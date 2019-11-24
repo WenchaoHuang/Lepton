@@ -37,21 +37,8 @@ namespace Lava
 		//!	@brief	Parameters of a newly created pipeline dynamic state.
 		using DynamicStateInfo = std::vector<DynamicState>;
 
-		/*****************************************************************
-		*********************    ShaderStagesInfo    *********************
-		*****************************************************************/
-
-		/**
-		 *	@brief	Structure specifying parameters of a newly created pipeline shader stages.
-		 */
-		struct ShaderStagesInfo
-		{
-			ShaderModule		VertexShader;
-			ShaderModule		GeometryShader;
-			ShaderModule		FragmentShader;
-			ShaderModule		TessControlShader;
-			ShaderModule		TessEvalutionShader;
-		};
+		//!	@brief	Parameters of a newly created pipeline shader stages.
+		using ShaderStagesInfo = std::vector<ShaderModule>;
 
 		/*****************************************************************
 		********************    ViewportStateInfo    *********************

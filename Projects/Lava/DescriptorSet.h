@@ -76,7 +76,7 @@ namespace Lava
 
 		public:
 
-			//!	@brief	Constructor (all handles must be generated outside).
+			//!	@brief	Constructor (handles must be initialized).
 			UniqueHandle(VkDevice, VkDescriptorSetLayout, const std::vector<DescriptorSetLayoutBinding>&);
 
 			//!	@brief	Where resource will be released.

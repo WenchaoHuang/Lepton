@@ -23,27 +23,21 @@ Fence::Fence(VkDevice hDevice) : Fence()
 
 Result Fence::Create(VkDevice hDevice)
 {
-	Result eResult = Result::eErrorInvalidDeviceHandle;
+	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	if (hDevice != VK_NULL_HANDLE)
+	VkFenceCreateInfo	CreateInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO, nullptr, 0 };
+
+	VkFence hFence = VK_NULL_HANDLE;
+
+	Result eResult = LAVA_RESULT_CAST(vkCreateFence(hDevice, &CreateInfo, nullptr, &hFence));
+
+	if (eResult == Result::eSuccess)
 	{
-		VkFenceCreateInfo		CreateInfo = {};
-		CreateInfo.sType		= VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-		CreateInfo.pNext		= nullptr;
-		CreateInfo.flags		= 0;
+		this->Destroy();
 
-		VkFence hFence = VK_NULL_HANDLE;
+		m_hFence = hFence;
 
-		eResult = LAVA_RESULT_CAST(vkCreateFence(hDevice, &CreateInfo, nullptr, &hFence));
-
-		if (eResult == Result::eSuccess)
-		{
-			this->Destroy();
-
-			m_hFence = hFence;
-
-			m_hDevice = hDevice;
-		}
+		m_hDevice = hDevice;
 	}
 
 	return eResult;
@@ -86,27 +80,21 @@ Semaphore::Semaphore(VkDevice hDevice) : Semaphore()
 
 Result Semaphore::Create(VkDevice hDevice)
 {
-	Result eResult = Result::eErrorInvalidDeviceHandle;
+	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	if (hDevice != VK_NULL_HANDLE)
+	VkSemaphoreCreateInfo	CreateInfo = { VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO, nullptr, 0 };
+
+	VkSemaphore hSemaphore = VK_NULL_HANDLE;
+
+	Result eResult = LAVA_RESULT_CAST(vkCreateSemaphore(hDevice, &CreateInfo, nullptr, &hSemaphore));
+
+	if (eResult == Result::eSuccess)
 	{
-		VkSemaphoreCreateInfo		CreateInfo = {};
-		CreateInfo.sType			= VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-		CreateInfo.pNext			= nullptr;
-		CreateInfo.flags			= 0;
-		
-		VkSemaphore hSemaphore = VK_NULL_HANDLE;
+		this->Destroy();
 
-		eResult = LAVA_RESULT_CAST(vkCreateSemaphore(hDevice, &CreateInfo, nullptr, &hSemaphore));
+		m_hDevice = hDevice;
 
-		if (eResult == Result::eSuccess)
-		{
-			this->Destroy();
-
-			m_hDevice = hDevice;
-
-			m_hSemaphore = hSemaphore;
-		}
+		m_hSemaphore = hSemaphore;
 	}
 
 	return eResult;
@@ -149,27 +137,21 @@ Event::Event(VkDevice hDevice) : Event()
 
 Result Event::Create(VkDevice hDevice)
 {
-	Result eResult = Result::eErrorInvalidDeviceHandle;
+	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	if (hDevice != VK_NULL_HANDLE)
+	VkEventCreateInfo	CreateInfo = { VK_STRUCTURE_TYPE_EVENT_CREATE_INFO, nullptr, 0 };
+
+	VkEvent hEvent = VK_NULL_HANDLE;
+
+	Result eResult = LAVA_RESULT_CAST(vkCreateEvent(hDevice, &CreateInfo, nullptr, &hEvent));
+
+	if (eResult == Result::eSuccess)
 	{
-		VkEventCreateInfo		CreateInfo = {};
-		CreateInfo.sType		= VK_STRUCTURE_TYPE_EVENT_CREATE_INFO;
-		CreateInfo.pNext		= nullptr;
-		CreateInfo.flags		= 0;
-		
-		VkEvent hEvent = VK_NULL_HANDLE;
+		this->Destroy();
 
-		eResult = LAVA_RESULT_CAST(vkCreateEvent(hDevice, &CreateInfo, nullptr, &hEvent));
+		m_hEvent = hEvent;
 
-		if (eResult == Result::eSuccess)
-		{
-			this->Destroy();
-
-			m_hEvent = hEvent;
-
-			m_hDevice = hDevice;
-		}
+		m_hDevice = hDevice;
 	}
 
 	return eResult;

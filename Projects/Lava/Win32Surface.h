@@ -54,37 +54,44 @@ namespace Lava
 	 */
 	class Win32Surface
 	{
-		LAVA_NONCOPYABLE(Win32Surface)
 
 	public:
 
-		//!	@brief	Create win32 surface object.
-		Win32Surface();
-
-		//!	@brief	Create and initialize immediately.
-		explicit Win32Surface(VkInstance hInstance, HWND hWindow);
-
-		//!	@brief	Destroy win32 surface object.
-		~Win32Surface();
-
-	public:
-
-		//!	@brief	Convert to VkSurfaceKHR.
-		operator VkSurfaceKHR() const { return m_hSurface; }
-
-		//!	@brief	If Vulkan handle is valid.
-		bool IsValid() const { return m_hSurface != VK_NULL_HANDLE; }
+		//!	@brief	Destroy the surface.
+		void Destroy() { m_spUniqueHandle.reset(); }
 
 		//!	@brief	Create a new Win32 surface object.
 		Result Create(VkInstance hInstance, HWND hWindow);
 
-		//!	@brief	Destroy the surface.
-		void Destroy();
+		//!	@brief	If Vulkan handle is valid.
+		bool IsValid() const { return m_spUniqueHandle != nullptr; }
+
+		//!	@brief	Convert to VkSurfaceKHR.
+		operator VkSurfaceKHR() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hSurface : VK_NULL_HANDLE; }
 		
 	private:
 
-		VkInstance			m_hInstance;
+		/**
+		 *	@brief	Unique handle of win32 surface.
+		 */
+		struct UniqueHandle
+		{
+			LAVA_NONCOPYABLE(UniqueHandle)
 
-		VkSurfaceKHR		m_hSurface;
+		public:
+
+			//!	@brief	Constructor (handles must be initialized).
+			UniqueHandle(VkInstance, VkSurfaceKHR);
+
+			//!	@brief	Where resource will be released.
+			~UniqueHandle() noexcept;
+
+		public:
+
+			const VkInstance				m_hInstance;
+			const VkSurfaceKHR				m_hSurface;
+		};
+
+		std::shared_ptr<UniqueHandle>		m_spUniqueHandle;
 	};
 }

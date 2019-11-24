@@ -41,11 +41,11 @@ namespace Lava
 		//!	@brief	Create a new instance object.
 		Result Create(ArrayProxy<const char*> pExtensions = nullptr, ArrayProxy<const char*> pLayers = nullptr);
 
+		//!	@brief	Return array of available extensions.
+		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const { return m_AvailableExtensions; }
+
 		//!	@brief	Return array of physical devices.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }
-
-		//!	@brief	Return array of available extensions.
-		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const;
 
 		//!	@brief	Return array of available validation layers.
 		const std::vector<VkLayerProperties> & GetAvailableLayers() const;

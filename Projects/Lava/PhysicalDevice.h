@@ -31,7 +31,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Return pointer to its parent object.
-		Instance * GetInstance() const { return m_pInstance; }
+		const Instance * GetInstance() const { return m_pInstance; }
 
 		//!	@brief	Return Vulkan type of this object.
 		VkPhysicalDevice GetHandle() const { return m_hPhysicalDevice; }

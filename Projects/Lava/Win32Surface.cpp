@@ -9,22 +9,16 @@ using namespace Lava;
 /*************************************************************************
 ***************************    Win32Surface    ***************************
 *************************************************************************/
-Win32Surface::Win32Surface() : m_hInstance(VK_NULL_HANDLE), m_hSurface(VK_NULL_HANDLE)
+Win32Surface::UniqueHandle::UniqueHandle(VkInstance hInstance, VkSurfaceKHR hSurface) : m_hInstance(hInstance), m_hSurface(hSurface)
 {
 
-}
-
-
-Win32Surface::Win32Surface(VkInstance hInstance, HWND hWindow) : Win32Surface()
-{
-	this->Create(hInstance, hWindow);
 }
 
 
 Result Win32Surface::Create(VkInstance hInstance, HWND hWindow)
 {
 	if (hWindow == VK_NULL_HANDLE)		return Result::eErrorInvalidExternalHandle;
-	if (hInstance == VK_NULL_HANDLE)	return Result::eErrorInvalidExternalHandle;
+	if (hInstance == VK_NULL_HANDLE)	return Result::eErrorInvalidInstanceHandle;
 
 	VkWin32SurfaceCreateInfoKHR			CreateInfo = {};
 	CreateInfo.sType					= VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
@@ -39,31 +33,17 @@ Result Win32Surface::Create(VkInstance hInstance, HWND hWindow)
 
 	if (eResult == Result::eSuccess)
 	{
-		this->Destroy();
-
-		m_hInstance = hInstance;
-
-		m_hSurface = hSurface;
+		m_spUniqueHandle = std::make_shared<UniqueHandle>(hInstance, hSurface);
 	}
 
 	return eResult;
 }
 
 
-void Win32Surface::Destroy()
+Win32Surface::UniqueHandle::~UniqueHandle() noexcept
 {
 	if (m_hSurface != VK_NULL_HANDLE)
 	{
 		vkDestroySurfaceKHR(m_hInstance, m_hSurface, nullptr);
-
-		m_hInstance = VK_NULL_HANDLE;
-
-		m_hSurface = VK_NULL_HANDLE;
 	}
-}
-
-
-Win32Surface::~Win32Surface()
-{
-	this->Destroy();
 }

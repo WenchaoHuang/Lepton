@@ -2,7 +2,6 @@
 **************************    Lava_Pipelines    **************************
 *************************************************************************/
 
-#include <functional>
 #include "Framebuffer.h"
 #include "ShaderModule.h"
 #include "PipelineLayout.h"
@@ -60,7 +59,7 @@ void GraphicsPipelineParam::VertexInputStateInfo::SetBinding(uint32_t Binding, u
 /*************************************************************************
 *************************    GraphicsPipeline    *************************
 *************************************************************************/
-GraphicsPipeline::GraphicsPipeline() : m_hGraphicsPipeline(VK_NULL_HANDLE)
+GraphicsPipeline::GraphicsPipeline() : m_hDevice(VK_NULL_HANDLE), m_hGraphicsPipeline(VK_NULL_HANDLE)
 {
 
 }
@@ -80,32 +79,12 @@ Result GraphicsPipeline::Create(const GraphicsPipelineParam & Param)
 		return Result::eErrorInvalidDeviceHandle;
 	}
 
-	std::vector<VkPipelineShaderStageCreateInfo>		ShaderStageCreateInfos;
+	std::vector<VkPipelineShaderStageCreateInfo>	ShaderStageCreateInfos(Param.shaderStages.size());
 
-	auto pfnGetShaderStageInfo = [](VkShaderModule hModule, ShaderStage eStage) -> VkPipelineShaderStageCreateInfo
+	for (size_t i = 0; i < ShaderStageCreateInfos.size(); i++)
 	{
-		VkPipelineShaderStageCreateInfo					ShaderStageCreateInfo = {};
-		ShaderStageCreateInfo.sType						= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		ShaderStageCreateInfo.pNext						= nullptr;
-		ShaderStageCreateInfo.flags						= 0;
-		ShaderStageCreateInfo.stage						= static_cast<VkShaderStageFlagBits>(eStage);
-		ShaderStageCreateInfo.module					= hModule;
-		ShaderStageCreateInfo.pName						= "main";
-		ShaderStageCreateInfo.pSpecializationInfo		= nullptr;
-
-		return ShaderStageCreateInfo;
-	};
-
-	if (Param.shaderStages.VertexShader.IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.VertexShader, ShaderStage::eVertex));
-	if (Param.shaderStages.FragmentShader.IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.FragmentShader, ShaderStage::eFragment));
-	if (Param.shaderStages.GeometryShader.IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.GeometryShader, ShaderStage::eGeometry));
-	if (Param.shaderStages.TessControlShader.IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.TessControlShader, ShaderStage::eTessellationControl));
-	if (Param.shaderStages.TessEvalutionShader.IsValid())
-		ShaderStageCreateInfos.push_back(pfnGetShaderStageInfo(Param.shaderStages.TessEvalutionShader, ShaderStage::eTessellationEvaluation));
+		ShaderStageCreateInfos[i] = Param.shaderStages[i].GetStageInfo();
+	}
 
 	VkPipelineVertexInputStateCreateInfo							VertexInputStateCreateInfo = {};
 	VertexInputStateCreateInfo.sType								= VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
