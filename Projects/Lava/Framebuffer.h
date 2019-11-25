@@ -159,7 +159,7 @@ namespace Lava
 		//!	@brief	Whether this resource handle is valid.
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
-		//!	@brief	Return extent of the framebuffer.
+		//!	@brief	Return extent of the framebuffer (must be valid).
 		VkExtent2D GetExtent() const { return m_spUniqueHandle->m_Extent; }
 
 		//!	@brief	Return render pass object (must be valid).

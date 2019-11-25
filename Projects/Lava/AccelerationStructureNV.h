@@ -114,6 +114,9 @@ namespace Lava
 		//!	@brief	Create a new top-level acceleration structure.
 		Result Create(const LogicalDevice * pLogicalDevice, uint32_t instanceCount);
 
+		//!	@brief	Return memory allocation size.
+		VkDeviceSize MemSize() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_DeviceMemory.Size() : 0; }
+
 		//!	@brief	Convert to VkAccelerationStructureNV.
 		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }
 
@@ -161,8 +164,13 @@ namespace Lava
 		//!	@brief	Whether this resource handle is valid.
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
+		uint64_t GetHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_Handle : 0; }
+
 		//!	@brief	Create a new top-level acceleration structure.
 		Result Create(const LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries);
+
+		//!	@brief	Return memory allocation size.
+		VkDeviceSize MemSize() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_DeviceMemory.Size() : 0; }
 
 		//!	@brief	Convert to VkAccelerationStructureNV.
 		operator VkAccelerationStructureNV() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hAccelStruct : VK_NULL_HANDLE; }
