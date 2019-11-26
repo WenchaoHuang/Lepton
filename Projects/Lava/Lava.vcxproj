@@ -186,6 +186,7 @@
     <ClCompile Include="PhysicalDevice.cpp" />
     <ClCompile Include="PipelineLayout.cpp" />
     <ClCompile Include="GraphicsPipeline.cpp" />
+    <ClCompile Include="RayTracingAgentNV.cpp" />
     <ClCompile Include="RayTracingPipelineNV.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="ShaderModule.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="PhysicalDevice.h" />
     <ClInclude Include="PipelineLayout.h" />
     <ClInclude Include="GraphicsPipeline.h" />
+    <ClInclude Include="RayTracingAgentNV.h" />
     <ClInclude Include="RayTracingPipelineNV.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Sampler.h" />

@@ -23,7 +23,7 @@ namespace Lava
 		HostVisibleBuffer();
 
 		//!	@brief	Create and initialize immediately.
-		explicit HostVisibleBuffer(LogicalDevice * pLogicalDevice, VkDeviceSize size);
+		explicit HostVisibleBuffer(const LogicalDevice * pLogicalDevice, VkDeviceSize size);
 
 		//!	@brief	Destroy buffer object.
 		~HostVisibleBuffer();
@@ -39,11 +39,11 @@ namespace Lava
 		//!	@brief	If buffer handle is valid.
 		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
 
-		//!	@brief	Create a new buffer object.
-		Result Create(LogicalDevice * pLogicalDevice, VkDeviceSize size);
-
 		//!	@brief	Memory copy from device to host.
 		Result Read(void * pHostData, VkDeviceSize offset, VkDeviceSize size);
+
+		//!	@brief	Create a new buffer object.
+		Result Create(const LogicalDevice * pLogicalDevice, VkDeviceSize size);
 
 		//!	@brief	Memory copy from host to device.
 		Result Write(const void * pHostData, VkDeviceSize offset, VkDeviceSize size);

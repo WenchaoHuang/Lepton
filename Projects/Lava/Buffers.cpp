@@ -17,13 +17,13 @@ HostVisibleBuffer::HostVisibleBuffer() : m_hBuffer(VK_NULL_HANDLE), m_Bytes(0)
 }
 
 
-HostVisibleBuffer::HostVisibleBuffer(LogicalDevice * pLogicalDevice, VkDeviceSize size) : HostVisibleBuffer()
+HostVisibleBuffer::HostVisibleBuffer(const LogicalDevice * pLogicalDevice, VkDeviceSize size) : HostVisibleBuffer()
 {
 	this->Create(pLogicalDevice, size);
 }
 
 
-Result HostVisibleBuffer::Create(LogicalDevice * pLogicalDevice, VkDeviceSize size)
+Result HostVisibleBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceSize size)
 {
 	if (size == 0)							return Result::eErrorOutOfDeviceMemory;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;

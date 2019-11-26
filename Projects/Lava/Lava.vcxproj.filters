@@ -70,6 +70,9 @@
     <Filter Include="2. Resources\5. Framebuffer">
       <UniqueIdentifier>{5275c891-e9a0-46cb-82ff-63ac4dcef833}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2. Resources\RayTracingExtension">
+      <UniqueIdentifier>{4a1ad575-5b6a-418a-b92d-e1c0c1962f99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Instance.cpp">
@@ -128,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="RayTracingPipelineNV.cpp">
       <Filter>2. Resources\NotCompleted\13. RayTracingPipelineNV</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingAgentNV.cpp">
+      <Filter>2. Resources\RayTracingExtension</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="RayTracingPipelineNV.h">
       <Filter>2. Resources\NotCompleted\13. RayTracingPipelineNV</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingAgentNV.h">
+      <Filter>2. Resources\RayTracingExtension</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
