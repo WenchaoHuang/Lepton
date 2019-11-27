@@ -51,13 +51,13 @@ namespace Lava
 		const std::vector<VkLayerProperties> & GetAvailableLayers() const;
 
 		//!	@brief	Check if extension is available.
-		bool IsExtensionAvilable(std::string extensionName) const;
+		bool IsExtensionAvailable(std::string extensionName) const;
 
 		//!	@brief	Check if extension is enabled.
 		bool IsExtensionEnabled(std::string extensionName) const;
 
 		//!	@brief	Check if validation layer is available.
-		bool IsLayerAvilable(std::string layerName) const;
+		bool IsLayerAvailable(std::string layerName) const;
 
 		//!	@brief	Destroy instance object.
 		void Destroy();

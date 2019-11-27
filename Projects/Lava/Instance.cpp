@@ -98,7 +98,7 @@ const std::vector<VkLayerProperties> & Instance::GetAvailableLayers() const
 }
 
 
-bool Instance::IsExtensionAvilable(std::string extensionName) const
+bool Instance::IsExtensionAvailable(std::string extensionName) const
 {
 	for (size_t i = 0; i < m_AvailableExtensions.size(); i++)
 	{
@@ -112,7 +112,7 @@ bool Instance::IsExtensionAvilable(std::string extensionName) const
 }
 
 
-bool Instance::IsLayerAvilable(std::string layerName) const
+bool Instance::IsLayerAvailable(std::string layerName) const
 {
 	auto & AvailableLayers = this->GetAvailableLayers();
 
