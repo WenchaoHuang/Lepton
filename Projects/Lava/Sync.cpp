@@ -25,7 +25,10 @@ Result Fence::Create(VkDevice hDevice)
 {
 	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	VkFenceCreateInfo	CreateInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO, nullptr, 0 };
+	VkFenceCreateInfo		CreateInfo = {};
+	CreateInfo.sType		= VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	CreateInfo.pNext		= nullptr;
+	CreateInfo.flags		= 0;
 
 	VkFence hFence = VK_NULL_HANDLE;
 
@@ -82,7 +85,10 @@ Result Semaphore::Create(VkDevice hDevice)
 {
 	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	VkSemaphoreCreateInfo	CreateInfo = { VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO, nullptr, 0 };
+	VkSemaphoreCreateInfo		CreateInfo;
+	CreateInfo.sType			= VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	CreateInfo.pNext			= nullptr;
+	CreateInfo.flags			= 0;
 
 	VkSemaphore hSemaphore = VK_NULL_HANDLE;
 
@@ -139,7 +145,10 @@ Result Event::Create(VkDevice hDevice)
 {
 	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
 
-	VkEventCreateInfo	CreateInfo = { VK_STRUCTURE_TYPE_EVENT_CREATE_INFO, nullptr, 0 };
+	VkEventCreateInfo		CreateInfo;
+	CreateInfo.sType		= VK_STRUCTURE_TYPE_EVENT_CREATE_INFO;
+	CreateInfo.pNext		= nullptr;
+	CreateInfo.flags		= 0;
 
 	VkEvent hEvent = VK_NULL_HANDLE;
 
