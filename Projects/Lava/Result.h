@@ -80,7 +80,7 @@ namespace Lava
 	/**
 	 *	@brief	Convert result to string.
 	 */
-	inline const char * to_string(Result eValue)
+	constexpr const char * to_string(Result eValue)
 	{
 		switch (eValue)
 		{
