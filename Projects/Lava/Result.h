@@ -22,7 +22,7 @@ namespace Lava
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan command return codes.
+	 *	@brief		Vulkan command return codes.
 	 */
 	enum class Result
 	{
@@ -78,7 +78,7 @@ namespace Lava
 	*********************************************************************/
 
 	/**
-	 *	@brief	Convert result to string.
+	 *	@brief		Convert result to string.
 	 */
 	constexpr const char * to_string(Result eValue)
 	{
