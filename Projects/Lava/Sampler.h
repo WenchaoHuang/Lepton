@@ -54,8 +54,8 @@ namespace Lava
 		//!	@brief	Create a new sampler object.
 		Result Create(VkDevice hDevice, const SamplerParam & Param = SamplerParam());
 
-		//!	@brief	Return constant reference to its parameter (must be valid).
-		const SamplerParam & GetParam() const { return m_spUniqueHandle->m_Parameter; }
+		//!	@brief	Return constant pointer to its parameter (must be valid).
+		const SamplerParam * operator->() const { return &m_spUniqueHandle->m_Parameter; }
 
 		//!	@brief	Convert to VkSampler.
 		operator VkSampler() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hSampler : VK_NULL_HANDLE; }
