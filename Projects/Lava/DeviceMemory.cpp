@@ -35,11 +35,11 @@ Result DeviceMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequ
 
 	VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
 
-	Result eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+	Result eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->Handle(), &AllocateInfo, nullptr, &hDeviceMemory));
 
 	if (eResult == Result::eSuccess)
 	{
-		m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hDeviceMemory, AllocateInfo.allocationSize);
+		m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->Handle(), hDeviceMemory, AllocateInfo.allocationSize);
 	}
 
 	return eResult;
@@ -114,11 +114,11 @@ Result DeviceLocalMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemor
 
 	VkDeviceMemory hDeviceMemory = VK_NULL_HANDLE;
 
-	Result eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->GetHandle(), &AllocateInfo, nullptr, &hDeviceMemory));
+	Result eResult = LAVA_RESULT_CAST(vkAllocateMemory(pLogicalDevice->Handle(), &AllocateInfo, nullptr, &hDeviceMemory));
 
 	if (eResult == Result::eSuccess)
 	{
-		m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->GetHandle(), hDeviceMemory, memoryRequirements.size);
+		m_spUniqueHandle = std::make_shared<UniqueHandle>(pLogicalDevice->Handle(), hDeviceMemory, memoryRequirements.size);
 	}
 
 	return eResult;

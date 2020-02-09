@@ -164,7 +164,7 @@ namespace Lava
 		//!	@brief	Whether this resource handle is valid.
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
-		uint64_t GetHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_Handle : 0; }
+		uint64_t Handle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_Handle : 0; }
 
 		//!	@brief	Create a new top-level acceleration structure.
 		Result Create(const LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries);

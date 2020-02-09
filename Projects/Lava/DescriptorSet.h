@@ -166,7 +166,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		VkDescriptorSet GetHandle() const { return m_hDescriptorSet; }
+		VkDescriptorSet Handle() const { return m_hDescriptorSet; }
 
 		//!	@brief	Whether this descriptor set handle is valid.
 		bool IsValid() const { return m_hDescriptorSet != VK_NULL_HANDLE; }

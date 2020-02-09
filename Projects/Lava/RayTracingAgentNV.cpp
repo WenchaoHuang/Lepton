@@ -21,18 +21,18 @@ Result RayTracingAgentNV::GetAuthorization(const LogicalDevice * pLogicalDevice)
 	if (pLogicalDevice == nullptr)						return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())						return Result::eErrorInvalidDeviceHandle;
 
-	m_pfnCmdTraceRays									= reinterpret_cast<PFN_vkCmdTraceRaysNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCmdTraceRaysNV"));
-	m_pfnCompileDeferred								= reinterpret_cast<PFN_vkCompileDeferredNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCompileDeferredNV"));
-	m_pfnCreateRayTracingPipelines						= reinterpret_cast<PFN_vkCreateRayTracingPipelinesNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCreateRayTracingPipelinesNV"));
-	m_pfnCreateAccelerationStructure					= reinterpret_cast<PFN_vkCreateAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCreateAccelerationStructureNV"));
-	m_pfnDestroyAccelerationStructure					= reinterpret_cast<PFN_vkDestroyAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkDestroyAccelerationStructureNV"));
-	m_pfnCmdCopyAccelerationStructure					= reinterpret_cast<PFN_vkCmdCopyAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCmdCopyAccelerationStructureNV"));
-	m_pfnCmdBuildAccelerationStructure					= reinterpret_cast<PFN_vkCmdBuildAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCmdBuildAccelerationStructureNV"));
-	m_pfnGetAccelerationStructureHandle					= reinterpret_cast<PFN_vkGetAccelerationStructureHandleNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkGetAccelerationStructureHandleNV"));
-	m_pfnGetRayTracingShaderGroupHandles				= reinterpret_cast<PFN_vkGetRayTracingShaderGroupHandlesNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkGetRayTracingShaderGroupHandlesNV"));
-	m_pfnBindAccelerationStructureMemory				= reinterpret_cast<PFN_vkBindAccelerationStructureMemoryNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkBindAccelerationStructureMemoryNV"));
-	m_pfnCmdWriteAccelerationStructuresProperties		= reinterpret_cast<PFN_vkCmdWriteAccelerationStructuresPropertiesNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkCmdWriteAccelerationStructuresPropertiesNV"));
-	m_pfnGetAccelerationStructureMemoryRequirements		= reinterpret_cast<PFN_vkGetAccelerationStructureMemoryRequirementsNV>(vkGetDeviceProcAddr(pLogicalDevice->GetHandle(), "vkGetAccelerationStructureMemoryRequirementsNV"));
+	m_pfnCmdTraceRays									= reinterpret_cast<PFN_vkCmdTraceRaysNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCmdTraceRaysNV"));
+	m_pfnCompileDeferred								= reinterpret_cast<PFN_vkCompileDeferredNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCompileDeferredNV"));
+	m_pfnCreateRayTracingPipelines						= reinterpret_cast<PFN_vkCreateRayTracingPipelinesNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCreateRayTracingPipelinesNV"));
+	m_pfnCreateAccelerationStructure					= reinterpret_cast<PFN_vkCreateAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCreateAccelerationStructureNV"));
+	m_pfnDestroyAccelerationStructure					= reinterpret_cast<PFN_vkDestroyAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkDestroyAccelerationStructureNV"));
+	m_pfnCmdCopyAccelerationStructure					= reinterpret_cast<PFN_vkCmdCopyAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCmdCopyAccelerationStructureNV"));
+	m_pfnCmdBuildAccelerationStructure					= reinterpret_cast<PFN_vkCmdBuildAccelerationStructureNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCmdBuildAccelerationStructureNV"));
+	m_pfnGetAccelerationStructureHandle					= reinterpret_cast<PFN_vkGetAccelerationStructureHandleNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkGetAccelerationStructureHandleNV"));
+	m_pfnGetRayTracingShaderGroupHandles				= reinterpret_cast<PFN_vkGetRayTracingShaderGroupHandlesNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkGetRayTracingShaderGroupHandlesNV"));
+	m_pfnBindAccelerationStructureMemory				= reinterpret_cast<PFN_vkBindAccelerationStructureMemoryNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkBindAccelerationStructureMemoryNV"));
+	m_pfnCmdWriteAccelerationStructuresProperties		= reinterpret_cast<PFN_vkCmdWriteAccelerationStructuresPropertiesNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkCmdWriteAccelerationStructuresPropertiesNV"));
+	m_pfnGetAccelerationStructureMemoryRequirements		= reinterpret_cast<PFN_vkGetAccelerationStructureMemoryRequirementsNV>(vkGetDeviceProcAddr(pLogicalDevice->Handle(), "vkGetAccelerationStructureMemoryRequirementsNV"));
 
 	if (m_pfnCmdTraceRays == nullptr)									return Result::eErrorFailedToGetProcessAddress;
 	if (m_pfnCompileDeferred == nullptr)								return Result::eErrorFailedToGetProcessAddress;

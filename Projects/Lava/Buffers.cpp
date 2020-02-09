@@ -40,19 +40,19 @@ Result HostVisibleBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceS
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	Result eResult = LAVA_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
+	Result eResult = LAVA_RESULT_CAST(vkCreateBuffer(pLogicalDevice->Handle(), &CreateInfo, nullptr, &hNewBuffer));
 
 	if (eResult == Result::eSuccess)
 	{
 		VkMemoryRequirements Requirements = {};
 
-		vkGetBufferMemoryRequirements(pLogicalDevice->GetHandle(), hNewBuffer, &Requirements);
+		vkGetBufferMemoryRequirements(pLogicalDevice->Handle(), hNewBuffer, &Requirements);
 
 		eResult = m_Memory.Allocate(pLogicalDevice, Requirements, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
 
 		if (eResult != Result::eSuccess)
 		{
-			vkDestroyBuffer(pLogicalDevice->GetHandle(), hNewBuffer, nullptr);
+			vkDestroyBuffer(pLogicalDevice->Handle(), hNewBuffer, nullptr);
 		}
 		else
 		{
@@ -61,7 +61,7 @@ Result HostVisibleBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceS
 				vkDestroyBuffer(m_Memory.GetDeviceHandle(), m_hBuffer, nullptr);
 			}
 
-			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_Memory, 0);
+			vkBindBufferMemory(pLogicalDevice->Handle(), hNewBuffer, m_Memory, 0);
 
 			m_hBuffer = hNewBuffer;
 
@@ -171,19 +171,19 @@ Result DeviceLocalBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceS
 
 	VkBuffer hNewBuffer = VK_NULL_HANDLE;
 
-	Result eResult = LAVA_RESULT_CAST(vkCreateBuffer(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hNewBuffer));
+	Result eResult = LAVA_RESULT_CAST(vkCreateBuffer(pLogicalDevice->Handle(), &CreateInfo, nullptr, &hNewBuffer));
 
 	if (eResult == Result::eSuccess)
 	{
 		VkMemoryRequirements	Requirements = {};
 
-		vkGetBufferMemoryRequirements(pLogicalDevice->GetHandle(), hNewBuffer, &Requirements);
+		vkGetBufferMemoryRequirements(pLogicalDevice->Handle(), hNewBuffer, &Requirements);
 
 		eResult = m_DeviceMemory.Allocate(pLogicalDevice, Requirements);
 
 		if (eResult != Result::eSuccess)
 		{
-			vkDestroyBuffer(pLogicalDevice->GetHandle(), hNewBuffer, nullptr);
+			vkDestroyBuffer(pLogicalDevice->Handle(), hNewBuffer, nullptr);
 		}
 		else
 		{
@@ -192,7 +192,7 @@ Result DeviceLocalBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceS
 				vkDestroyBuffer(m_DeviceMemory.GetDeviceHandle(), m_hBuffer, nullptr);
 			}
 
-			vkBindBufferMemory(pLogicalDevice->GetHandle(), hNewBuffer, m_DeviceMemory, 0);
+			vkBindBufferMemory(pLogicalDevice->Handle(), hNewBuffer, m_DeviceMemory, 0);
 
 			m_hBuffer = hNewBuffer;
 		}

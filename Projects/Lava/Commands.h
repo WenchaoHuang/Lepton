@@ -96,7 +96,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		VkQueue GetHandle() const { return m_hQueue; }
+		VkQueue Handle() const { return m_hQueue; }
 
 		//!	@brief	Return the queue priority.
 		float GetPriority() const { return m_Priority; }
@@ -156,7 +156,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		VkCommandPool GetHandle() const { return m_hCommandPool; }
+		VkCommandPool Handle() const { return m_hCommandPool; }
 
 		//!	@brief	Reset command pool.
 		Result Reset() { return LAVA_RESULT_CAST(vkResetCommandPool(m_hDevice, m_hCommandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT)); }
@@ -202,7 +202,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		VkCommandBuffer GetHandle() const { return m_hCommandBuffer; }
+		VkCommandBuffer Handle() const { return m_hCommandBuffer; }
 
 		//!	@brief	Finish recording command buffer.
 		Result EndRecord() { return LAVA_RESULT_CAST(vkEndCommandBuffer(m_hCommandBuffer)); }
@@ -301,7 +301,7 @@ namespace Lava
 		//!	@brief	Bind a graphics pipeline object to a command buffer.
 		void CmdBindPipeline(const GraphicsPipeline * pGraphicsPipeline)
 		{
-			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pGraphicsPipeline->GetHandle());
+			vkCmdBindPipeline(m_hCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pGraphicsPipeline->Handle());
 		}
 
 		//!	@brief	Draw primitives.

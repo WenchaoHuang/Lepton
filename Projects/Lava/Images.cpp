@@ -55,7 +55,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 
 	VkImage hImage = VK_NULL_HANDLE;
 
-	Result eResult = LAVA_RESULT_CAST(vkCreateImage(pLogicalDevice->GetHandle(), &CreateInfo, nullptr, &hImage));
+	Result eResult = LAVA_RESULT_CAST(vkCreateImage(pLogicalDevice->Handle(), &CreateInfo, nullptr, &hImage));
 
 	if (eResult == Result::eSuccess)
 	{
@@ -63,13 +63,13 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 
 		VkMemoryRequirements Requirements = {};
 
-		vkGetImageMemoryRequirements(pLogicalDevice->GetHandle(), hImage, &Requirements);
+		vkGetImageMemoryRequirements(pLogicalDevice->Handle(), hImage, &Requirements);
 
 		eResult = deviceMemory.Allocate(pLogicalDevice, Requirements);
 
 		if (eResult == Result::eSuccess)
 		{
-			eResult = LAVA_RESULT_CAST(vkBindImageMemory(pLogicalDevice->GetHandle(), hImage, deviceMemory, 0));
+			eResult = LAVA_RESULT_CAST(vkBindImageMemory(pLogicalDevice->Handle(), hImage, deviceMemory, 0));
 
 			if (eResult == Result::eSuccess)
 			{
@@ -92,7 +92,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 
 				VkImageView hImageView = VK_NULL_HANDLE;
 
-				eResult = LAVA_RESULT_CAST(vkCreateImageView(pLogicalDevice->GetHandle(), &ViewCreateInfo, nullptr, &hImageView));
+				eResult = LAVA_RESULT_CAST(vkCreateImageView(pLogicalDevice->Handle(), &ViewCreateInfo, nullptr, &hImageView));
 
 				if (eResult == Result::eSuccess)
 				{
@@ -112,7 +112,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 			}
 		}
 
-		vkDestroyImage(pLogicalDevice->GetHandle(), hImage, nullptr);
+		vkDestroyImage(pLogicalDevice->Handle(), hImage, nullptr);
 	}
 
 	return eResult;

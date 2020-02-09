@@ -34,7 +34,7 @@ namespace Lava
 		operator VkBuffer() const { return m_hBuffer; }
 
 		//!	@brief	Return Vulkan type of this object.
-		VkBuffer GetHandle() const { return m_hBuffer; }
+		VkBuffer Handle() const { return m_hBuffer; }
 
 		//!	@brief	If buffer handle is valid.
 		bool IsEmpty() const { return m_hBuffer != VK_NULL_HANDLE; }
@@ -90,7 +90,7 @@ namespace Lava
 		operator VkBuffer() const { return m_hBuffer; }
 
 		//!	@brief	Return Vulkan type of this object.
-		VkBuffer GetHandle() const { return m_hBuffer; }
+		VkBuffer Handle() const { return m_hBuffer; }
 
 		//!	@brief	Return the buffer size in bytes.
 		VkDeviceSize Size() const { return m_DeviceMemory.Size(); }

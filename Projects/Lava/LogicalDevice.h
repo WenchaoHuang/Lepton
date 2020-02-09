@@ -30,7 +30,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Return Vulkan type of this object.
-		VkDevice GetHandle() const { return m_hDevice; }
+		VkDevice Handle() const { return m_hDevice; }
 
 		//!	@brief	If device is started up.
 		bool IsReady() const { return m_hDevice != VK_NULL_HANDLE; }

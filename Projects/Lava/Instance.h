@@ -21,7 +21,7 @@ namespace Lava
 
 	public:
 
-		//!	@brief	Create Vulkan instance object (not ready).
+		//!	@brief	CGetHandlereate Vulkan instance object (not ready).
 		Instance();
 
 		//!	@brief	Destroy Vulkan instance object.
@@ -33,7 +33,7 @@ namespace Lava
 		operator VkInstance() const { return m_hInstance; }
 
 		//!	@brief	Return Vulkan type of this object.
-		VkInstance GetHandle() const { return m_hInstance; }
+		VkInstance Handle() const { return m_hInstance; }
 
 		//!	@brief	If Vulkan handle is valid.
 		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
