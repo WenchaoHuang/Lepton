@@ -38,7 +38,7 @@ namespace Lava
 		Result Reset() { return LAVA_RESULT_CAST(vkResetFences(m_hDevice, 1, &m_hFence)); }
 
 		//!	@brief	Return the status of fence.
-		Result GetStatus() const { return LAVA_RESULT_CAST(vkGetFenceStatus(m_hDevice, m_hFence)); }
+		Result Status() const { return LAVA_RESULT_CAST(vkGetFenceStatus(m_hDevice, m_hFence)); }
 
 		//!	@brief	Wait for fence to become signaled.
 		Result Wait(uint64_t timeout = LAVA_DEFAULT_TIMEOUT) const { return LAVA_RESULT_CAST(vkWaitForFences(m_hDevice, 1, &m_hFence, VK_TRUE, timeout)); }
@@ -105,14 +105,14 @@ namespace Lava
 		//!	@brief	Create a new event object.
 		Result Create(VkDevice hDevice);
 
+		//!	@brief	Set event to signaled state.
+		Result Signal() { return LAVA_RESULT_CAST(vkSetEvent(m_hDevice, m_hEvent)); }
+
 		//!	@brief	Reset event to non-signaled state.
 		Result Reset() { return LAVA_RESULT_CAST(vkResetEvent(m_hDevice, m_hEvent)); }
 
-		//!	@brief	Set event to signaled state.
-		Result SetSignaled() { return LAVA_RESULT_CAST(vkSetEvent(m_hDevice, m_hEvent)); }
-
 		//!	@brief	Retrieve the status of event.
-		Result GetStatus() const { return LAVA_RESULT_CAST(vkGetEventStatus(m_hDevice, m_hEvent)); }
+		Result Status() const { return LAVA_RESULT_CAST(vkGetEventStatus(m_hDevice, m_hEvent)); }
 
 		//!	@brief	Destroy the event.
 		void Destroy();

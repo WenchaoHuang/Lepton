@@ -29,9 +29,6 @@ namespace Lava
 
 	public:
 
-		//!	@brief	Convert to VkInstance.
-		operator VkInstance() const { return m_hInstance; }
-
 		//!	@brief	Return Vulkan type of this object.
 		VkInstance Handle() const { return m_hInstance; }
 

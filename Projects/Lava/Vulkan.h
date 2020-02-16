@@ -33,7 +33,7 @@ public:																	\
 	ResName(const ResName&) = delete;									\
 	ResName & operator=(const ResName&) = delete;						\
 	operator Vk##ResName() const { return m_h##ResName; }				\
-	Vk##ResName Handle() const { return m_h##ResName; }				\
+	Vk##ResName Handle() const { return m_h##ResName; }					\
 	Vk##Device GetDeviceHandle() const { return m_hDevice; }			\
 	bool IsValid() const { return m_h##ResName != VK_NULL_HANDLE; }		\
 																		\
