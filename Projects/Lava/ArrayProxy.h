@@ -5,6 +5,9 @@
 
 #include <array>
 #include <vector>
+#include <assert.h>
+
+#include <vulkan/vulkan.hpp>
 
 namespace Lava
 {
@@ -13,7 +16,7 @@ namespace Lava
 	*********************************************************************/
 
 	/**
-	 *	@brief	Template for array data.
+	 *	@brief		Template for array data.
 	 */
 	template<typename Type> class ArrayProxy
 	{
@@ -21,59 +24,73 @@ namespace Lava
 	public:
 
 		//!	@brief	Default constructor.
-		ArrayProxy() : m_Count(0), m_Ptr(nullptr) {}
+		constexpr ArrayProxy() : m_Address(nullptr), m_Count(0) {}
 
-		//!	@brief	Construct with a instance.
-		ArrayProxy(Type & val) : m_Count(1), m_Ptr(&val) {}
+		//!@brief	Construct with an instance.
+		ArrayProxy(Type & instance) : m_Address(&instance), m_Count(1) {}
 
-		//!	@brief	Only used in this case: ArrayProxy<T> = nullptr.
-		ArrayProxy(std::nullptr_t) : m_Count(0), m_Ptr(nullptr) {}
+		//!@brief	Only used in this case: ArrayProxy<T> = nullptr.
+		constexpr ArrayProxy(std::nullptr_t) : m_Address(nullptr), m_Count(0) {}
 
-		//!	@brief	Construct with a list of data.
-		explicit ArrayProxy(uint32_t count, Type * ptr) : m_Count(count), m_Ptr(ptr) {}
+		//!@brief	Construct with a list of data.
+		explicit ArrayProxy(Type * address, uint32_t count) : m_Address(address), m_Count(count) {}
 
-		//!	@brief	Construct with std::array.
-		template<size_t N> ArrayProxy(std::array<Type, N> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
+		//!@brief	Convert to constant type of this object.
+		operator ArrayProxy<const Type>() const { return ArrayProxy<const Type>(m_Address, m_Count); }
 
-		//!	@brief	Construct with std::vector.
-		template<class Allocator = std::allocator<Type>> ArrayProxy(std::vector<Type, Allocator> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
+		//!@brief	Construct with std::array.
+		template<uint32_t N> ArrayProxy(std::array<Type, N> & rhs) : m_Address(rhs.data()), m_Count(static_cast<uint32_t>(rhs.size())) {}
 
-		//!	@brief	Convert to constant type of this object.
-		operator ArrayProxy<const Type>() const { return ArrayProxy<const Type>(m_Count, m_Ptr); }
+		//!@brief	Construct with std::vector.
+		template<class Alloc = std::allocator<Type>> ArrayProxy(std::vector<Type, Alloc> & rhs) : m_Address(rhs.data()), m_Count(static_cast<uint32_t>(rhs.size())) {}
 
-		//!	@brief	Get access to the specified element.
-		const Type & operator[](uint32_t i) const { return m_Ptr[i]; }
+	public:
 
-		//!	@brief	Get end of the list.
-		const Type * end() const { return m_Ptr + m_Count; }
+		//!@brief	Return last element of this array (constant).
+		const Type & back() const { assert((m_Address != nullptr) && (m_Count != 0)); return *(m_Address + m_Count - 1); }
 
-		//!	@brief	Get access to the specified element.
-		Type & operator[](uint32_t i) { return m_Ptr[i]; }
+		//!@brief	Return last element of this array.
+		Type & back() { assert((m_Address != nullptr) && (m_Count != 0)); return *(m_Address + m_Count - 1); }
 
-		//!	@brief	If the array is empty.
-		bool empty() const { return m_Ptr == nullptr; }
+		//!@brief	Return reference to the specified element (constant).
+		const Type & operator[](uint32_t pos) const { assert(pos < m_Count); return m_Address[pos]; }
 
-		//!	@brief	Get beginning of the list.
-		const Type * begin() const { return m_Ptr; }
+		//!@brief	Return reference to the specified element.
+		Type & operator[](uint32_t pos) { assert(pos < m_Count); return m_Address[pos]; }
 
-		//!	@brief	Return constant address to the first element.
-		const Type * data() const { return m_Ptr; }
+		//!@brief	Return first element of this array (constant).
+		const Type & front() const { assert(m_Address != nullptr); return *m_Address; }
 
-		//!	@brief	Return count of elements.
+		//!@brief	Test if the array is empty.
+		bool empty() const { return (m_Address == nullptr) || (m_Count == 0); }
+
+		//!@brief	Return first element of this array.
+		Type & front() { assert(m_Address != nullptr); return *m_Address; }
+
+		//!@brief	Get end of the list (constant).
+		const Type * end() const { return m_Address + m_Count; }
+
+		//!@brief	Get beginning of the list (constant).
+		const Type * begin() const { return m_Address; }
+
+		//!@brief	Return address to the first element (constant).
+		const Type * data() const { return m_Address; }
+
+		//!@brief	Get end of the list.
+		Type * end() { return m_Address + m_Count; }
+
+		//!@brief	Return count of elements.
 		uint32_t size() const { return m_Count; }
 
-		//!	@brief	Get end of the list.
-		Type * end() { return m_Ptr + m_Count; }
+		//!@brief	Get beginning of the list.
+		Type * begin() { return m_Address; }
 
-		//!	@brief	Get beginning of the list.
-		Type * begin() { return m_Ptr; }
-
-		//!	@brief	Return address to the first element.
-		Type * data() { return m_Ptr; }
+		//!@brief	Return address to the first element.
+		Type * data() { return m_Address; }
 
 	private:
-		
-		Type *			m_Ptr;
+
+		Type *			m_Address;
 
 		uint32_t		m_Count;
 	};
@@ -83,55 +100,63 @@ namespace Lava
 	*********************************************************************/
 
 	/**
-	 *	@brief	Special template for const array data.
+	 *	@brief		Special template for const array data.
 	 */
 	template<typename Type> class ArrayProxy<const Type>
 	{
 
 	public:
 
-		//!	@brief	Default constructor.
-		ArrayProxy() : m_Count(0), m_Ptr(nullptr) {}
+		//!@brief	Default constructor.
+		constexpr ArrayProxy() : m_Address(nullptr), m_Count(0) {}
 
-		//!	@brief	Construct with a instance.
-		ArrayProxy(const Type & val) : m_Count(1), m_Ptr(&val) {}
+		//!@brief	Construct with an instance.
+		ArrayProxy(const Type & instance) : m_Address(&instance), m_Count(1) {}
 
-		//!	@brief	Only used in this case: ArrayProxy<const T> = nullptr.
-		ArrayProxy(std::nullptr_t) : m_Count(0), m_Ptr(nullptr) {}
+		//!@brief	Only used in this case: ArrayProxy<T> = nullptr.
+		constexpr ArrayProxy(std::nullptr_t) : m_Address(nullptr), m_Count(0) {}
 
-		//!	@brief	Construct with a list of data.
-		explicit ArrayProxy(uint32_t count, const Type * ptr) : m_Count(count), m_Ptr(ptr) {}
-		
-		//!	@brief	Construct with std::array.
-		template<size_t N> ArrayProxy(const std::array<Type, N> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
+		//!@brief	Construct with a list of data.
+		explicit ArrayProxy(const Type * address, uint32_t count) : m_Address(address), m_Count(count) {}
 
-		//!	@brief	Construct with std::vector.
-		template<class Allocator = std::allocator<Type>> ArrayProxy(const std::vector<Type, Allocator> & _data) : m_Count(static_cast<uint32_t>(_data.size())), m_Ptr(_data.data()) {}
+		//!@brief	Construct with std::initializer_list.
+		ArrayProxy(const std::initializer_list<Type> & rhs) : m_Address(rhs.begin()), m_Count(static_cast<uint32_t>(rhs.size())) {}
 
-		//!	@brief	Construct with std::initializer_list.
-		ArrayProxy(const std::initializer_list<Type> & _data) : m_Count(static_cast<uint32_t>(_data.end() - _data.begin())), m_Ptr(_data.begin()) {}
+		//!@brief	Construct with std::array.
+		template<uint32_t N> ArrayProxy(const std::array<Type, N> & rhs) : m_Address(rhs.data()), m_Count(static_cast<uint32_t>(rhs.size())) {}
 
-		//!	@brief	Get access to the specified element.
-		const Type & operator[](uint32_t i) const { return m_Ptr[i]; }
+		//!@brief	Construct with std::vector.
+		template<class Alloc = std::allocator<Type>> ArrayProxy(const std::vector<Type, Alloc> & rhs) : m_Address(rhs.data()), m_Count(static_cast<uint32_t>(rhs.size())) {}
 
-		//!	@brief	Get end of the list.
-		const Type * end() const { return m_Ptr + m_Count; }
+	public:
 
-		//!	@brief	If the array is empty.
-		bool empty() const { return m_Ptr == nullptr; }
+		//!@brief	Return last element of this array.
+		const Type & back() const { assert((m_Address != nullptr) && (m_Count != 0)); return *(m_Address + m_Count - 1); }
 
-		//!	@brief	Get beginning of the list.
-		const Type * begin() const { return m_Ptr; }
+		//!@brief	Return reference to the specified element.
+		const Type & operator[](uint32_t pos) const { assert(pos < m_Count); return m_Address[pos]; }
 
-		//!	@brief	Return address to the first element.
-		const Type * data() const { return m_Ptr; }
+		//!@brief	Return first element of this array.
+		const Type & front() const { assert(m_Address != nullptr); return *m_Address; }
 
-		//!	@brief	Return count of elements.
+		//!@brief	Test if the array is empty.
+		bool empty() const { return (m_Address == nullptr) || (m_Count == 0); }
+
+		//!@brief	Get end of the list.
+		const Type * end() const { return m_Address + m_Count; }
+
+		//!@brief	Get beginning of the list).
+		const Type * begin() const { return m_Address; }
+
+		//!@brief	Return address to the first element.
+		const Type * data() const { return m_Address; }
+
+		//!@brief	Return count of elements.
 		uint32_t size() const { return m_Count; }
 
 	private:
 
-		const Type *		m_Ptr;
+		const Type *		m_Address;
 
 		uint32_t			m_Count;
 	};
