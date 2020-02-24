@@ -7,8 +7,6 @@
 #include <vector>
 #include <assert.h>
 
-#include <vulkan/vulkan.hpp>
-
 namespace Lava
 {
 	/*********************************************************************
