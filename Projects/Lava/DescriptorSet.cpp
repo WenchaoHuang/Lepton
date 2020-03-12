@@ -16,7 +16,7 @@ DescriptorSetLayout::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDescriptorSe
 }
 
 
-Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLayoutBinding> pLayoutBindings)
+Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayoutBinding> pLayoutBindings)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 
@@ -79,13 +79,13 @@ DescriptorPool::DescriptorPool() : m_hDevice(VK_NULL_HANDLE), m_hDescriptorPool(
 }
 
 
-DescriptorPool::DescriptorPool(VkDevice hDevice, ArrayProxy<const DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets) : DescriptorPool()
+DescriptorPool::DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets) : DescriptorPool()
 {
 	this->Create(hDevice, pDescriptorPoolSizes, maxSets);
 }
 
 
-Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<const DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets)
+Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 

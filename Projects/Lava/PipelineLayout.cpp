@@ -18,7 +18,7 @@ PipelineLayout::UniqueHandle::UniqueHandle(VkDevice hDevice, VkPipelineLayout hP
 }
 
 
-Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLayout> pDescriptorSetLayouts, ArrayProxy<const PushConstantRange> pPushConstantRanges)
+Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayout> pDescriptorSetLayouts, ArrayProxy<PushConstantRange> pPushConstantRanges)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 

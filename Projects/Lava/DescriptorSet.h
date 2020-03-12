@@ -54,7 +54,7 @@ namespace Lava
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new descriptor set layout object.
-		Result Create(VkDevice hDevice, ArrayProxy<const DescriptorSetLayoutBinding> pLayoutBindings);
+		Result Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayoutBinding> pLayoutBindings);
 
 		//!	@brief	Return descriptor bindings.
 		const std::vector<DescriptorSetLayoutBinding> & GetLayoutBindings() const { return m_spUniqueHandle->m_LayoutBindings; }
@@ -109,7 +109,7 @@ namespace Lava
 		DescriptorPool();
 
 		//!	@brief	Create and initialize immediately.
-		explicit DescriptorPool(VkDevice hDevice, ArrayProxy<const DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets);
+		explicit DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets);
 
 		//!	@brief	Destroy descriptor pool object.
 		~DescriptorPool();
@@ -120,7 +120,7 @@ namespace Lava
 		bool IsValid() const { return m_hDescriptorPool != VK_NULL_HANDLE; }
 
 		//!	@brief	Create a new descriptor pool object.
-		Result Create(VkDevice hDevice, ArrayProxy<const DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets);
+		Result Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets);
 
 		//!	@brief	Allocate a new descriptor set object.
 		DescriptorSet * AllocateDescriptorSet(DescriptorSetLayout descriptorSetLayout);

@@ -106,7 +106,7 @@ uint32_t Swapchain::AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence
 }
 
 
-Result Swapchain::Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> waitSemaphores)
+Result Swapchain::Present(VkQueue hQueue, ArrayProxy<VkSemaphore> waitSemaphores)
 {
 	m_PresentInfo.pWaitSemaphores		= waitSemaphores.data();
 	m_PresentInfo.waitSemaphoreCount	= waitSemaphores.size();

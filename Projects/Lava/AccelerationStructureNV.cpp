@@ -132,7 +132,7 @@ BottomLevelAccelStructNV::UniqueHandle::UniqueHandle(DeviceLocalMemory deviceMem
 }
 
 
-Result BottomLevelAccelStructNV::Create(const LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries)
+Result BottomLevelAccelStructNV::Create(const LogicalDevice * pLogicalDevice, ArrayProxy<GeometryNV> pGeometries)
 {
 	if (pLogicalDevice == nullptr)							return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())							return Result::eErrorInvalidDeviceHandle;

@@ -167,7 +167,7 @@ namespace Lava
 		uint64_t Handle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_Handle : 0; }
 
 		//!	@brief	Create a new top-level acceleration structure.
-		Result Create(const LogicalDevice * pLogicalDevice, ArrayProxy<const GeometryNV> pGeometries);
+		Result Create(const LogicalDevice * pLogicalDevice, ArrayProxy<GeometryNV> pGeometries);
 
 		//!	@brief	Return memory allocation size.
 		VkDeviceSize MemSize() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_DeviceMemory.Size() : 0; }

@@ -22,7 +22,7 @@ ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShade
 }
 
 
-Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<const uint32_t> pCode, ShaderStage eStage)
+Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<uint32_t> pCode, ShaderStage eStage)
 {
 	if (pCode.empty() == true)			return Result::eErrorInvalidSPIRVCode;
 	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;

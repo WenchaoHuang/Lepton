@@ -31,7 +31,7 @@ namespace Lava
 	public:
 
 		//!	@brief	Queue an image for presentation.
-		Result Present(VkQueue hQueue, ArrayProxy<const VkSemaphore> waitSemaphores = nullptr);
+		Result Present(VkQueue hQueue, ArrayProxy<VkSemaphore> waitSemaphores = nullptr);
 
 		//!	@brief	Reconstruct swap-chain.
 		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount);

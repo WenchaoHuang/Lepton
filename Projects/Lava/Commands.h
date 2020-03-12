@@ -269,13 +269,13 @@ namespace Lava
 		}
 
 		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
-		void CmdSetScissor(ArrayProxy<const VkRect2D> pScissors, uint32_t firstScissor = 0)
+		void CmdSetScissor(ArrayProxy<VkRect2D> pScissors, uint32_t firstScissor = 0)
 		{
 			vkCmdSetScissor(m_hCommandBuffer, firstScissor, pScissors.size(), pScissors.data());
 		}
 
 		//!	@brief	Set the viewport on a command buffer.
-		void CmdSetViewport(ArrayProxy<const VkViewport> pViewports, uint32_t firstViewport = 0)
+		void CmdSetViewport(ArrayProxy<VkViewport> pViewports, uint32_t firstViewport = 0)
 		{
 			vkCmdSetViewport(m_hCommandBuffer, firstViewport, pViewports.size(), pViewports.data());
 		}
@@ -323,40 +323,40 @@ namespace Lava
 		}
 
 		//!	@brief	Copy data from a buffer into an image.
-		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const VkBufferImageCopy> pRegions)
+		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<VkBufferImageCopy> pRegions)
 		{
 			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), pRegions.data());
 		}
 
 		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<const VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
+		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
 
 		//!	@brief	Clear regions of a color image.
-		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<const ImageSubresourceRange> pRanges)
+		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<ImageSubresourceRange> pRanges)
 		{
 			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), &color, pRanges.size(), reinterpret_cast<const VkImageSubresourceRange*>(pRanges.data()));
 		}
 
 		//!	@brief	Insert a image memory dependency.
-		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask, Flags<MemoryDependency> dependencyFlags, ArrayProxy<const ImageMemoryBarrier> pImageMemoryBarriers)
+		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask, Flags<MemoryDependency> dependencyFlags, ArrayProxy<ImageMemoryBarrier> pImageMemoryBarriers)
 		{
 			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
 		}
 
 		//!	@brief	Resolve regions of an image.
-		void CmdResolveImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const ImageResolve> pRegions)
+		void CmdResolveImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<ImageResolve> pRegions)
 		{
 			vkCmdResolveImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageResolve*>(pRegions.data()));
 		}
 
 		//!	@brief	Copy regions of an image, potentially performing format conversion.
-		void CmdBlitImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<const ImageBlit> pRegions, Filter eFilter)
+		void CmdBlitImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<ImageBlit> pRegions, Filter eFilter)
 		{
 			vkCmdBlitImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageBlit*>(pRegions.data()), static_cast<VkFilter>(eFilter));
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<const VkDescriptorSet> pDescriptorSets)
+		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<VkDescriptorSet> pDescriptorSets)
 		{
 			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hPipelineLayout, 0, pDescriptorSets.size(), pDescriptorSets.data(), 0, nullptr);
 		}

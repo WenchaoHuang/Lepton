@@ -29,7 +29,7 @@ namespace Lava
 		Result Create(VkDevice hDevice, const char * pShaderPath, ShaderStage eStage);
 
 		//!	@brief	Create a new shader module.
-		Result Create(VkDevice hDevice, ArrayProxy<const uint32_t> pCode, ShaderStage eStage);
+		Result Create(VkDevice hDevice, ArrayProxy<uint32_t> pCode, ShaderStage eStage);
 
 		//!	@brief	Return device handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
