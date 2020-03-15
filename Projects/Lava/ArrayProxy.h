@@ -48,7 +48,7 @@ namespace Lava
 		const Type & back() const { assert((m_Address != nullptr) && (m_Count != 0)); return *(m_Address + m_Count - 1); }
 
 		//!	@brief	Return reference to the specified element.
-		const Type & operator[](uint32_t pos) const { assert(pos < m_Count); return m_Address[pos]; }
+		const Type & operator[](size_t pos) const { assert(pos < m_Count); return m_Address[pos]; }
 
 		//!	@brief	Return first element of this array.
 		const Type & front() const { assert(m_Address != nullptr); return *m_Address; }
