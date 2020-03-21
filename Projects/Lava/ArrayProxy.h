@@ -5,7 +5,6 @@
 
 #include <array>
 #include <vector>
-#include <assert.h>
 
 namespace Lava
 {
@@ -44,20 +43,20 @@ namespace Lava
 
 	public:
 
-		//!	@brief	Return last element of this array.
-		const Type & back() const { assert((m_Address != nullptr) && (m_Count != 0)); return *(m_Address + m_Count - 1); }
-
-		//!	@brief	Return reference to the specified element.
-		const Type & operator[](size_t pos) const { assert(pos < m_Count); return m_Address[pos]; }
-
-		//!	@brief	Return first element of this array.
-		const Type & front() const { assert(m_Address != nullptr); return *m_Address; }
-
 		//!	@brief	Test if the array is empty.
 		bool empty() const { return (m_Address == nullptr) || (m_Count == 0); }
 
+		//!	@brief	Return reference to the specified element.
+		const Type & operator[](size_t pos) const { return m_Address[pos]; }
+
+		//!	@brief	Return last element of this array.
+		const Type & back() const { return *(m_Address + m_Count - 1); }
+
 		//!	@brief	Get end of the list.
 		const Type * end() const { return m_Address + m_Count; }
+
+		//!	@brief	Return first element of this array.
+		const Type & front() const { return *m_Address; }
 
 		//!	@brief	Get beginning of the list.
 		const Type * begin() const { return m_Address; }
