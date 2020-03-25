@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="1. Context">
+      <UniqueIdentifier>{f79e20d3-23f4-43b4-ae6d-f18997bf509a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\0. Instance">
+      <UniqueIdentifier>{e72290ad-0479-4829-a325-e86deca7155d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources">
+      <UniqueIdentifier>{3032cb43-4fe8-4607-b73b-e0bc05acec6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. Wrappers">
+      <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\1. LogicalDevice">
+      <UniqueIdentifier>{431e0f31-c504-4600-a8fe-aaa20f92c53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Context\2. PhysicalDevice">
+      <UniqueIdentifier>{5253d1d7-ee48-413f-8bfe-8018e65696e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3. Commands">
+      <UniqueIdentifier>{085c6348-8a77-4b5b-ba60-7f4be8fd8493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\0. Sync">
+      <UniqueIdentifier>{b8357a39-19e7-4b4d-af2c-e3999f944ca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\3. Sampler">
+      <UniqueIdentifier>{70159800-4b33-40af-9a07-e9d07b76c4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\6. Win32Surface">
+      <UniqueIdentifier>{85a54d54-3019-4abe-98a7-b36b6c2e046c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\4. Swapchain">
+      <UniqueIdentifier>{ae5d22d0-bcc1-4655-8ed7-e1b05e84d988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\9. ShaderModule">
+      <UniqueIdentifier>{b44ea248-a3e3-4813-a519-3185ec6158d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\5. Framebuffer">
+      <UniqueIdentifier>{5275c891-e9a0-46cb-82ff-63ac4dcef833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\RayTracingExtension">
+      <UniqueIdentifier>{4a1ad575-5b6a-418a-b92d-e1c0c1962f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\1. Buffers">
+      <UniqueIdentifier>{f304ef35-6e04-4752-8c35-6e8c5d79a643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\2. Images">
+      <UniqueIdentifier>{4cbbbcff-f018-4389-acd6-a5c4d6caf1c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\7. DescriptorSet">
+      <UniqueIdentifier>{901bc216-6cee-43c8-939b-949cdca50676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\8. DeviceMemory">
+      <UniqueIdentifier>{bbefa902-6376-42c1-bbba-1ab39c798526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\10. PipelineLayout">
+      <UniqueIdentifier>{31e182d7-9735-439b-8269-8520c6713011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\11. GraphicsPipeline">
+      <UniqueIdentifier>{bb636acc-ce26-4b55-985c-93b0152190de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\12. ComputePipeline">
+      <UniqueIdentifier>{6c0bd692-808b-417f-8991-1c008272c828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\13. RayTracingPipelineNV">
+      <UniqueIdentifier>{00a81edc-b341-4da6-a14d-57b647f203d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Resources\14. AccelerationStructureNV">
+      <UniqueIdentifier>{f10b926b-6e02-4cbb-9876-12c7d06a10e4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Instance.cpp">
+      <Filter>1. Context\0. Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalDevice.cpp">
+      <Filter>1. Context\2. PhysicalDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="LogicalDevice.cpp">
+      <Filter>1. Context\1. LogicalDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32Surface.cpp">
+      <Filter>2. Resources\6. Win32Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="Swapchain.cpp">
+      <Filter>2. Resources\4. Swapchain</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>2. Resources\3. Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>2. Resources\5. Framebuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceMemory.cpp">
+      <Filter>2. Resources\8. DeviceMemory</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderModule.cpp">
+      <Filter>2. Resources\9. ShaderModule</Filter>
+    </ClCompile>
+    <ClCompile Include="Images.cpp">
+      <Filter>2. Resources\2. Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers.cpp">
+      <Filter>2. Resources\1. Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="PipelineLayout.cpp">
+      <Filter>2. Resources\10. PipelineLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands.cpp">
+      <Filter>3. Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>2. Resources\0. Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorSet.cpp">
+      <Filter>2. Resources\7. DescriptorSet</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsPipeline.cpp">
+      <Filter>2. Resources\11. GraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputePipeline.cpp">
+      <Filter>2. Resources\12. ComputePipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="AccelerationStructureNV.cpp">
+      <Filter>2. Resources\14. AccelerationStructureNV</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingPipelineNV.cpp">
+      <Filter>2. Resources\13. RayTracingPipelineNV</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracingAgentNV.cpp">
+      <Filter>2. Resources\RayTracingExtension</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Instance.h">
+      <Filter>1. Context\0. Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalDevice.h">
+      <Filter>1. Context\2. PhysicalDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicalDevice.h">
+      <Filter>1. Context\1. LogicalDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32Surface.h">
+      <Filter>2. Resources\6. Win32Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="Swapchain.h">
+      <Filter>2. Resources\4. Swapchain</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>2. Resources\3. Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>2. Resources\5. Framebuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceMemory.h">
+      <Filter>2. Resources\8. DeviceMemory</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderModule.h">
+      <Filter>2. Resources\9. ShaderModule</Filter>
+    </ClInclude>
+    <ClInclude Include="Images.h">
+      <Filter>2. Resources\2. Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers.h">
+      <Filter>2. Resources\1. Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineLayout.h">
+      <Filter>2. Resources\10. PipelineLayout</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands.h">
+      <Filter>3. Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>2. Resources\0. Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="DescriptorSet.h">
+      <Filter>2. Resources\7. DescriptorSet</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsPipeline.h">
+      <Filter>2. Resources\11. GraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputePipeline.h">
+      <Filter>2. Resources\12. ComputePipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Vulkan.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Flags.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayProxy.h">
+      <Filter>0. Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="AccelerationStructureNV.h">
+      <Filter>2. Resources\14. AccelerationStructureNV</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingPipelineNV.h">
+      <Filter>2. Resources\13. RayTracingPipelineNV</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracingAgentNV.h">
+      <Filter>2. Resources\RayTracingExtension</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
