@@ -81,3 +81,37 @@ namespace Lepton
 	class DeviceLocalBuffer;
 	class RayTracingPipelineNV;
 }
+
+typedef Lepton::Instance					LnInstance;
+typedef Lepton::LogicalDevice				LnLogicalDevice;
+typedef Lepton::PhysicalDevice				LnPhysicalDevice;
+
+typedef Lepton::CommandPool					LnCommandPool;
+typedef Lepton::CommandQueue				LnCommandQueue;
+typedef Lepton::CommandBuffer				LnCommandBuffer;
+
+typedef Lepton::Image1D						LnImage1D;
+typedef Lepton::Image2D						LnImage2D;
+typedef Lepton::Image3D						LnImage3D;
+typedef Lepton::ImageCube					LnImageCube;
+typedef Lepton::Image1DArray				LnImage1DArray;
+typedef Lepton::Image2DArray				LnImage2DArray;
+typedef Lepton::ImageCubeArray				LnImageCubeArray;
+
+typedef Lepton::Event						LnEvent;
+typedef Lepton::Fence						LnFence;
+typedef Lepton::Sampler						LnSampler;
+typedef Lepton::Semaphore					LnSemaphore;
+typedef Lepton::Swapchain					LnSwapchain;
+typedef Lepton::RenderPass					LnRenderPass;
+typedef Lepton::Framebuffer					LnFramebuffer;
+typedef Lepton::ShaderModule				LnShaderModule;
+typedef Lepton::Win32Surface				LnWin32Surface;
+typedef Lepton::DeviceMemory				LnDeviceMemory;
+typedef Lepton::DescriptorSet				LnDescriptorSet;
+typedef Lepton::PipelineLayout				LnPipelineLayout;
+typedef Lepton::ComputePipeline				LnComputePipeline;
+typedef Lepton::GraphicsPipeline			LnGraphicsPipeline;
+typedef Lepton::HostVisibleBuffer			LnHostVisibleBuffer;
+typedef Lepton::DeviceLocalBuffer			LnDeviceLocalBuffer;
+typedef Lepton::RayTracingPipelineNV		LnRayTracingPipeline;
