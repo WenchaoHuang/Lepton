@@ -48,9 +48,6 @@ namespace Lepton
 		//!	@brief	Bitwise operation: Flags &= Flags.
 		constexpr void operator&=(Flags flags) { m_Mask &= flags.m_Mask; }
 
-		//!	@brief	Bitwise operation: ~Flags.
-		constexpr Flags operator~() const { return Flags(~m_Mask); }
-
 		//!	@brief	Convert to VkFlags.
 		constexpr operator VkFlags() const { return m_Mask; }
 

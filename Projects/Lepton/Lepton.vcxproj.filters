@@ -10,9 +10,6 @@
     <Filter Include="2. Resources">
       <UniqueIdentifier>{3032cb43-4fe8-4607-b73b-e0bc05acec6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. Wrappers">
-      <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. Context\1. LogicalDevice">
       <UniqueIdentifier>{431e0f31-c504-4600-a8fe-aaa20f92c53f}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,9 @@
     </Filter>
     <Filter Include="2. Resources\14. AccelerationStructureNV">
       <UniqueIdentifier>{f10b926b-6e02-4cbb-9876-12c7d06a10e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. Wrapper">
+      <UniqueIdentifier>{8ec9c51d-7d26-4493-9b1f-ae80ee846b21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,19 +186,19 @@
       <Filter>2. Resources\12. ComputePipeline</Filter>
     </ClInclude>
     <ClInclude Include="Vulkan.h">
-      <Filter>0. Wrappers</Filter>
+      <Filter>0. Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="Result.h">
-      <Filter>0. Wrappers</Filter>
+      <Filter>0. Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="Flags.h">
-      <Filter>0. Wrappers</Filter>
+      <Filter>0. Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
-      <Filter>0. Wrappers</Filter>
+      <Filter>0. Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="ArrayProxy.h">
-      <Filter>0. Wrappers</Filter>
+      <Filter>0. Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="AccelerationStructureNV.h">
       <Filter>2. Resources\14. AccelerationStructureNV</Filter>
