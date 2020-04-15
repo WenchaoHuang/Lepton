@@ -31,7 +31,7 @@ namespace Lepton
 		constexpr ArrayProxy(std::nullptr_t) : m_Address(nullptr), m_Count(0) {}
 
 		//!	@brief	Construct with a list of data.
-		explicit ArrayProxy(const Type * address, uint32_t count) : m_Address(address), m_Count(count) {}
+		explicit ArrayProxy(uint32_t count, const Type * address) : m_Address(address), m_Count(count) {}
 
 		//!	@brief	Construct with std::initializer_list.
 		ArrayProxy(const std::initializer_list<Type> & rhs) : m_Address(rhs.begin()), m_Count(static_cast<uint32_t>(rhs.size())) {}
@@ -70,8 +70,8 @@ namespace Lepton
 
 	private:
 
-		const Type *		m_Address;
+		const Type *	m_Address;
 
-		uint32_t			m_Count;
+		uint32_t		m_Count;
 	};
 }
