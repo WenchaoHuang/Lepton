@@ -45,7 +45,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Test if the array is empty.
-		bool empty() const { return (m_Address == nullptr) || (m_Count == 0); }
+		constexpr bool empty() const { return (m_Address == nullptr) || (m_Count == 0); }
 
 		//!	@brief	Return reference to the specified element.
 		const Type & operator[](size_t pos) const { assert(pos < m_Count); return m_Address[pos]; }
