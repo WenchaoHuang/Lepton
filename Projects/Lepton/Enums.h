@@ -12,7 +12,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Vulkan boolean type.
+	 *	@brief		Vulkan boolean type.
 	 */
 	enum Bool32 : VkBool32
 	{
@@ -25,7 +25,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying sample counts supported for an image used for storage operations.
+	 *	@brief		Bitmask specifying sample counts supported for an image used for storage operations.
 	 */
 	enum class SampleCount : VkFlags
 	{
@@ -43,7 +43,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying capabilities of queues in a queue family.
+	 *	@brief		Bitmask specifying capabilities of queues in a queue family.
 	 */
 	enum class QueueCapability : VkFlags
 	{
@@ -59,7 +59,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying usage behavior for a command pool.
+	 *	@brief		Bitmask specifying usage behavior for a command pool.
 	 */
 	enum class CommandPoolUsageBehavior : VkFlags
 	{
@@ -73,7 +73,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying usage behavior for command buffer.
+	 *	@brief		Bitmask specifying usage behavior for command buffer.
 	 */
 	enum class CommandBufferUsage
 	{
@@ -87,7 +87,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	 Supported color space of the presentation engine.
+	 *	@brief		Supported color space of the presentation engine.
 	 */
 	enum class ColorSpace
 	{
@@ -113,7 +113,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Presentation transforms supported on a device.
+	 *	@brief		Presentation transforms supported on a device.
 	 */
 	enum class SurfaceTransform : VkFlags
 	{
@@ -133,7 +133,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Alpha compositing modes supported on a device.
+	 *	@brief		Alpha compositing modes supported on a device.
 	 */
 	enum class AlphaCompositingMmode : VkFlags
 	{
@@ -148,7 +148,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying properties for a memory type.
+	 *	@brief		Bitmask specifying properties for a memory type.
 	 */
 	enum class MemoryProperty
 	{
@@ -165,7 +165,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Presentation mode supported for a surface.
+	 *	@brief		Presentation mode supported for a surface.
 	 */
 	enum class PresentMode
 	{
@@ -182,7 +182,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify the bind point of a pipeline object to a command buffer.
+	 *	@brief		Specify the bind point of a pipeline object to a command buffer.
 	 */
 	enum class PipelineBindPoint
 	{
@@ -196,7 +196,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying how execution and memory dependencies are formed.
+	 *	@brief		Bitmask specifying how execution and memory dependencies are formed.
 	 */
 	enum class MemoryDependency : VkFlags
 	{
@@ -210,7 +210,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying a pipeline shader stage.
+	 *	@brief		Bitmask specifying a pipeline shader stage.
 	 */
 	enum class ShaderStage : VkFlags
 	{
@@ -237,7 +237,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying pipeline stages.
+	 *	@brief		Bitmask specifying pipeline stages.
 	 */
 	enum class PipelineStage : VkFlags
 	{
@@ -274,7 +274,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specifies the type of a descriptor in a descriptor set.
+	 *	@brief		Specifies the type of a descriptor in a descriptor set.
 	 */
 	enum class DescriptorType
 	{
@@ -298,7 +298,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask controlling which components are written to the framebuffer.
+	 *	@brief		Bitmask controlling which components are written to the framebuffer.
 	 */
 	enum class ColorComponent : VkFlags
 	{
@@ -313,7 +313,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify rate at which vertex attributes are pulled from buffers.
+	 *	@brief		Specify rate at which vertex attributes are pulled from buffers.
 	 */
 	enum class VertexInputRate
 	{
@@ -326,7 +326,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Interpret polygon front-facing orientation.
+	 *	@brief		Interpret polygon front-facing orientation.
 	 */
 	enum class FrontFace
 	{
@@ -339,7 +339,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask controlling triangle culling.
+	 *	@brief		Bitmask controlling triangle culling.
 	 */
 	enum class CullMode
 	{
@@ -354,7 +354,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Control polygon rasterization mode.
+	 *	@brief		Control polygon rasterization mode.
 	 */
 	enum class PolygonMode
 	{
@@ -369,7 +369,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Supported primitive topologies.
+	 *	@brief		Supported primitive topologies.
 	 */
 	enum class PrimitiveTopology
 	{
@@ -391,7 +391,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Framebuffer blending factors.
+	 *	@brief		Framebuffer blending factors.
 	 */
 	enum class BlendFactor
 	{
@@ -421,7 +421,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Indicate which dynamic state is taken from dynamic state commands.
+	 *	@brief		Indicate which dynamic state is taken from dynamic state commands.
 	 */
 	enum class DynamicState
 	{
@@ -447,7 +447,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying intended usage of an image.
+	 *	@brief		Bitmask specifying intended usage of an image.
 	 */
 	enum class ImageUsage : VkFlags
 	{
@@ -468,7 +468,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying which aspects of an image are included in a view.
+	 *	@brief		Bitmask specifying which aspects of an image are included in a view.
 	 */
 	enum class ImageAspect : VkFlags
 	{
@@ -490,7 +490,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Layout of image and image subresources.
+	 *	@brief		Layout of image and image subresources.
 	 */
 	enum class ImageLayout
 	{
@@ -518,7 +518,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Stencil comparison function.
+	 *	@brief		Stencil comparison function.
 	 */
 	enum class CompareOp
 	{
@@ -537,7 +537,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Stencil comparison function.
+	 *	@brief		Stencil comparison function.
 	 */
 	enum class StencilOp
 	{
@@ -556,7 +556,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Framebuffer logical operations.
+	 *	@brief		Framebuffer logical operations.
 	 */
 	enum class LogicOp
 	{
@@ -583,7 +583,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify filters used for texture lookups.
+	 *	@brief		Specify filters used for texture lookups.
 	 */
 	enum class Filter
 	{
@@ -596,7 +596,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify mipmap mode used for texture lookups.
+	 *	@brief		Specify mipmap mode used for texture lookups.
 	 */
 	enum class MipmapMode
 	{
@@ -609,7 +609,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify behavior of sampling with texture coordinates outside an image.
+	 *	@brief		Specify behavior of sampling with texture coordinates outside an image.
 	 */
 	enum class AddressMode
 	{
@@ -625,7 +625,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify border color used for texture lookups.
+	 *	@brief		Specify border color used for texture lookups.
 	 */
 	enum class BorderColor
 	{
@@ -642,7 +642,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Framebuffer blending operations.
+	 *	@brief		Framebuffer blending operations.
 	 */
 	enum class BlendOp
 	{
@@ -704,7 +704,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify how contents of an attachment are treated at the beginning of a subpass.
+	 *	@brief		Specify how contents of an attachment are treated at the beginning of a subpass.
 	 */
 	enum class AttachmentLoadOp
 	{
@@ -718,7 +718,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify how contents of an attachment are treated at the end of a subpass.
+	 *	@brief		Specify how contents of an attachment are treated at the end of a subpass.
 	 */
 	enum class AttachmentStoreOp
 	{
@@ -731,7 +731,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Specify how commands in the first subpass of a render pass are provided.
+	 *	@brief		Specify how commands in the first subpass of a render pass are provided.
 	 */
 	enum class SubpassContents
 	{
@@ -744,7 +744,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Bitmask specifying memory access types that will participate in a memory dependency.
+	 *	@brief		Bitmask specifying memory access types that will participate in a memory dependency.
 	 */
 	enum class MemoryAccess : VkFlags
 	{
@@ -783,7 +783,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Type of index buffer indices.
+	 *	@brief		Type of index buffer indices.
 	 */
 	enum class IndexType
 	{
@@ -797,7 +797,7 @@ namespace Lepton
 	*********************************************************************/
 
 	/**
-	 *	@brief	Common available image formats.
+	 *	@brief		Common available image formats.
 	 */
 	enum class Format
 	{
