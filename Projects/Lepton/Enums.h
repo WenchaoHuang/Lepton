@@ -264,7 +264,7 @@ namespace Lepton
 		eTransformFeedbackEXT				= VK_PIPELINE_STAGE_TRANSFORM_FEEDBACK_BIT_EXT,
 		eShadingRateImageNV					= VK_PIPELINE_STAGE_SHADING_RATE_IMAGE_BIT_NV,
 		eRayTracingShaderNV					= VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_NV,
-		eCommandProcessNVX					= VK_PIPELINE_STAGE_COMMAND_PROCESS_BIT_NVX,
+		eCommandProcessNVX					= VK_PIPELINE_STAGE_COMMAND_PREPROCESS_BIT_NV,
 		eTaskShaderNV						= VK_PIPELINE_STAGE_TASK_SHADER_BIT_NV,
 		eMeshShaderNV						= VK_PIPELINE_STAGE_MESH_SHADER_BIT_NV,
 	};
@@ -773,9 +773,9 @@ namespace Lepton
 		eConditionalRenderingReadEXT			= VK_ACCESS_CONDITIONAL_RENDERING_READ_BIT_EXT,
 		eAccelerationStructureReadNV			= VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_NV,
 		eFragmentDensityMapReadEXT				= VK_ACCESS_FRAGMENT_DENSITY_MAP_READ_BIT_EXT,
-		eCommandProcessWriteNVX					= VK_ACCESS_COMMAND_PROCESS_WRITE_BIT_NVX,
+		eCommandPreprocessWriteNV				= VK_ACCESS_COMMAND_PREPROCESS_WRITE_BIT_NV,
+		eCommandPreprocessReadNV				= VK_ACCESS_COMMAND_PREPROCESS_READ_BIT_NV,
 		eShadingRateImageReadNV					= VK_ACCESS_SHADING_RATE_IMAGE_READ_BIT_NV,
-		eCommandProcessReadNVX					= VK_ACCESS_COMMAND_PROCESS_READ_BIT_NVX,
 	};
 
 	/*********************************************************************
