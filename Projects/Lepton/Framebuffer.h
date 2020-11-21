@@ -33,7 +33,7 @@ namespace Lepton
 	{
 		const VkFlags					flags						= 0;
 		PipelineBindPoint				pipelineBindPoint			= PipelineBindPoint::eGraphics;
-		uint32_t                        inputAttachmentCount		= 0;
+		uint32_t						inputAttachmentCount		= 0;
 		const AttachmentReference *		pInputAttachments			= nullptr;
 		uint32_t						colorAttachmentCount		= 0;
 		const AttachmentReference *		pColorAttachments			= nullptr;

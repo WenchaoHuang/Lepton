@@ -75,7 +75,7 @@ namespace Lepton
 	/**
 	 *	@brief		Bitmask specifying usage behavior for command buffer.
 	 */
-	enum class CommandBufferUsage
+	enum class CommandBufferUsage : VkFlags
 	{
 		eOneTimeSubmit			= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
 		eSimultaneousUse		= VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT,
@@ -93,18 +93,19 @@ namespace Lepton
 	{
 		eSrgbNonlinear					= VK_COLOR_SPACE_SRGB_NONLINEAR_KHR,
 		eExtendedSrgbNonlinearEXT		= VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT,
-		eDisplayP3NonlinearEXT			= VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT,
 		eExtendedSrgbLinearEXT			= VK_COLOR_SPACE_EXTENDED_SRGB_LINEAR_EXT,
+		eDisplayP3NonlinearEXT			= VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT,
 		eAdobergbNonlinearEXT			= VK_COLOR_SPACE_ADOBERGB_NONLINEAR_EXT,
+		eDisplayP3LinearEXT				= VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT,
 		eDciP3NonlinearEXT				= VK_COLOR_SPACE_DCI_P3_NONLINEAR_EXT,
 		eBt709NonlinearEXT				= VK_COLOR_SPACE_BT709_NONLINEAR_EXT,
 		eAdobergbLinearEXT				= VK_COLOR_SPACE_ADOBERGB_LINEAR_EXT,
+		eDisplayNativeAMD				= VK_COLOR_SPACE_DISPLAY_NATIVE_AMD,
 		eBt2020LinearEXT				= VK_COLOR_SPACE_BT2020_LINEAR_EXT,
-		eDciP3LinearEXT					= VK_COLOR_SPACE_DCI_P3_LINEAR_EXT,
 		eBt709LinearEXT					= VK_COLOR_SPACE_BT709_LINEAR_EXT,
 		eHdr10St2084EXT					= VK_COLOR_SPACE_HDR10_ST2084_EXT,
-		eDolbyvisionEXT					= VK_COLOR_SPACE_DOLBYVISION_EXT,
 		ePassThroughEXT					= VK_COLOR_SPACE_PASS_THROUGH_EXT,
+		eDolbyvisionEXT					= VK_COLOR_SPACE_DOLBYVISION_EXT,
 		eHdr10HlgEXT					= VK_COLOR_SPACE_HDR10_HLG_EXT,
 	};
 
@@ -150,7 +151,7 @@ namespace Lepton
 	/**
 	 *	@brief		Bitmask specifying properties for a memory type.
 	 */
-	enum class MemoryProperty
+	enum class MemoryProperty : VkFlags
 	{
 		eProtected				= VK_MEMORY_PROPERTY_PROTECTED_BIT,
 		eHostCached				= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
@@ -158,6 +159,8 @@ namespace Lepton
 		eDeviceLocal			= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
 		eHostCoherent			= VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 		eLazilyAllocated		= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT,
+		eDeviceCoherentAMD		= VK_MEMORY_PROPERTY_DEVICE_COHERENT_BIT_AMD,
+		eDeviceUncachedAMD		= VK_MEMORY_PROPERTY_DEVICE_UNCACHED_BIT_AMD,
 	};
 
 	/*********************************************************************
@@ -188,7 +191,7 @@ namespace Lepton
 	{
 		eCompute			= VK_PIPELINE_BIND_POINT_COMPUTE,
 		eGraphics			= VK_PIPELINE_BIND_POINT_GRAPHICS,
-		eRayTracingNV		= VK_PIPELINE_BIND_POINT_RAY_TRACING_NV,
+		eRayTracing			= VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR,
 	};
 
 	/*********************************************************************
@@ -302,10 +305,10 @@ namespace Lepton
 	 */
 	enum class ColorComponent : VkFlags
 	{
-		eRed		= VK_COLOR_COMPONENT_R_BIT,
-		eBlue		= VK_COLOR_COMPONENT_B_BIT,
-		eGreen		= VK_COLOR_COMPONENT_G_BIT,
-		eAlpha		= VK_COLOR_COMPONENT_A_BIT,
+		eR		= VK_COLOR_COMPONENT_R_BIT,
+		eB		= VK_COLOR_COMPONENT_B_BIT,
+		eG		= VK_COLOR_COMPONENT_G_BIT,
+		eA		= VK_COLOR_COMPONENT_A_BIT,
 	};
 
 	/*********************************************************************
@@ -589,6 +592,7 @@ namespace Lepton
 	{
 		eLinear			= VK_FILTER_LINEAR,
 		eNearest		= VK_FILTER_NEAREST,
+		eCubicImg		= VK_FILTER_CUBIC_IMG,
 	};
 
 	/*********************************************************************
@@ -724,6 +728,7 @@ namespace Lepton
 	{
 		eStore			= VK_ATTACHMENT_STORE_OP_STORE,
 		eDontCare		= VK_ATTACHMENT_STORE_OP_DONT_CARE,
+		eNoneQCOM		= VK_ATTACHMENT_STORE_OP_NONE_QCOM,
 	};
 
 	/*********************************************************************
@@ -790,6 +795,7 @@ namespace Lepton
 		eUint16		= VK_INDEX_TYPE_UINT16,
 		eUint32		= VK_INDEX_TYPE_UINT32,
 		eNoneNV		= VK_INDEX_TYPE_NONE_NV,
+		eUint8EXT	= VK_INDEX_TYPE_UINT8_EXT,
 	};
 
 	/*********************************************************************

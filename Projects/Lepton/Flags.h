@@ -3,21 +3,23 @@
 *************************************************************************/
 #pragma once
 
-#include <type_traits>
+#include <concepts>
 #include <vulkan/vulkan.h>
 
 namespace Lepton
 {
+	//!	@brief		Define what bit-enumerated type is.
+	template<typename Type> concept BitEnum = std::is_enum<Type>::value && std::same_as<std::underlying_type_t<Type>, VkFlags>;
+
 	/*********************************************************************
 	****************************    Flags    *****************************
 	*********************************************************************/
 
 	/**
-	 *	@brief	Template for Vulkan enumeration bitmask.
+	 *	@brief		Template for Vulkan enumeration bitmask.
 	 */
-	template<typename EnumType> class Flags
+	template<BitEnum Type> class Flags
 	{
-		static_assert(std::is_enum<EnumType>::value, "Invalid type!");
 
 	public:
 
@@ -28,13 +30,13 @@ namespace Lepton
 		constexpr Flags(VkFlags flags) : m_Mask(flags) {}
 
 		//!	@brief	Constructed by a given bitmask.
-		constexpr Flags(EnumType bit) : m_Mask(static_cast<VkFlags>(bit)) {}
+		constexpr Flags(Type bit) : m_Mask(static_cast<VkFlags>(bit)) {}
 
-		//!	@brief	Bitwise operation: EnumType | Flags.
-		constexpr friend Flags operator|(EnumType bit, Flags flags) { return static_cast<VkFlags>(bit) | flags.m_Mask; }
+		//!	@brief	Bitwise operation: Type | Flags.
+		constexpr friend Flags operator|(Type bit, Flags flags) { return Flags(static_cast<VkFlags>(bit) | flags.m_Mask); }
 
-		//!	@brief	Bitwise operation: EnumType & Flags.
-		constexpr friend Flags operator&(EnumType bit, Flags flags) { return static_cast<VkFlags>(bit) & flags.m_Mask; }
+		//!	@brief	Bitwise operation: Type & Flags.
+		constexpr friend Flags operator&(Type bit, Flags flags) { return Flags(static_cast<VkFlags>(bit) & flags.m_Mask); }
 
 		//!	@brief	Bitwise operation: Flags | Flags.
 		constexpr Flags operator|(Flags flags) const { return Flags(m_Mask | flags.m_Mask); }
@@ -48,7 +50,10 @@ namespace Lepton
 		//!	@brief	Bitwise operation: Flags &= Flags.
 		constexpr void operator&=(Flags flags) { m_Mask &= flags.m_Mask; }
 
-		//!	@brief	Convert to VkFlags.
+		//!	@brief	Bitwise operation: ~Flags.
+		constexpr Flags operator~() const { return Flags(~m_Mask); }
+
+		//!	@brief	Cast to VkFlags.
 		constexpr operator VkFlags() const { return m_Mask; }
 
 	private:
@@ -60,27 +65,18 @@ namespace Lepton
 	**********************    Bitwise operators    ***********************
 	*********************************************************************/
 
-	//!	@brief	Bitwise operation: EnumType & EnumType.
-	template<typename EnumType> constexpr Flags<EnumType> operator&(EnumType a, EnumType b)
+	template<BitEnum Type> constexpr Flags<Type> operator|(Type a, Type b)
 	{
-		static_assert(std::is_enum<EnumType>::value, "Invalid type!");
-
-		return Flags<EnumType>(static_cast<VkFlags>(a) & static_cast<VkFlags>(b));
+		return Flags<Type>(static_cast<VkFlags>(a) | static_cast<VkFlags>(b));
 	}
 
-	//!	@brief	Bitwise operation: EnumType | EnumType.
-	template<typename EnumType> constexpr Flags<EnumType> operator|(EnumType a, EnumType b)
+	template<BitEnum Type> constexpr Flags<Type> operator&(Type a, Type b)
 	{
-		static_assert(std::is_enum<EnumType>::value, "Invalid type!");
-
-		return Flags<EnumType>(static_cast<VkFlags>(a) | static_cast<VkFlags>(b));
+		return Flags<Type>(static_cast<VkFlags>(a) & static_cast<VkFlags>(b));
 	}
 
-	//!	@brief	Bitwise operation: ~EnumType.
-	template<typename EnumType> constexpr Flags<EnumType> operator~(EnumType a)
+	template<BitEnum Type> constexpr Flags<Type> operator~(Type a)
 	{
-		static_assert(std::is_enum<EnumType>::value, "Invalid type!");
-
-		return Flags<EnumType>(~static_cast<VkFlags>(a));
+		return Flags<Type>(~static_cast<VkFlags>(a));
 	}
 }

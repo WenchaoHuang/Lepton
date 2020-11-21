@@ -144,7 +144,7 @@ namespace Lepton
 			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
 			BlendFactor					dstAlphaBlendFactor		= BlendFactor::eZero;
 			BlendOp						alphaBlendOp			= BlendOp::eAdd;
-			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eRed | ColorComponent::eGreen | ColorComponent::eBlue | ColorComponent::eAlpha;
+			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eR | ColorComponent::eG | ColorComponent::eB | ColorComponent::eA;
 		};
 		
 		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "Struct and wrapper have different size!");

@@ -119,7 +119,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 }
 
 
-template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::UniqueHandle::~UniqueHandle()
+template<VkImageType eImageType, VkImageViewType eViewType> BaseImage<eImageType, eViewType>::UniqueHandle::~UniqueHandle() noexcept
 {
 	if (m_hImage != VK_NULL_HANDLE)
 	{
