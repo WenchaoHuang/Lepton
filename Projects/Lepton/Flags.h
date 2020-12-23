@@ -24,41 +24,41 @@ namespace Lepton
 	public:
 
 		//!	@brief	Default constructor.
-		constexpr Flags() : m_Mask(0) {}
+		constexpr Flags() : m_flags(0) {}
 
 		//!	@brief	Constructed by another flags.
-		constexpr Flags(VkFlags flags) : m_Mask(flags) {}
+		constexpr Flags(VkFlags flags) : m_flags(flags) {}
 
 		//!	@brief	Constructed by a given bitmask.
-		constexpr Flags(Type bit) : m_Mask(static_cast<VkFlags>(bit)) {}
+		constexpr Flags(Type bitMask) : m_flags(static_cast<VkFlags>(bitMask)) {}
 
 		//!	@brief	Bitwise operation: Type | Flags.
-		constexpr friend Flags operator|(Type bit, Flags flags) { return Flags(static_cast<VkFlags>(bit) | flags.m_Mask); }
+		constexpr friend Flags operator|(Type bitMask, Flags flags) { return Flags(static_cast<VkFlags>(bitMask) | flags.m_flags); }
 
 		//!	@brief	Bitwise operation: Type & Flags.
-		constexpr friend Flags operator&(Type bit, Flags flags) { return Flags(static_cast<VkFlags>(bit) & flags.m_Mask); }
+		constexpr friend Flags operator&(Type bitMask, Flags flags) { return Flags(static_cast<VkFlags>(bitMask) & flags.m_flags); }
 
 		//!	@brief	Bitwise operation: Flags | Flags.
-		constexpr Flags operator|(Flags flags) const { return Flags(m_Mask | flags.m_Mask); }
+		constexpr Flags operator|(Flags flags) const { return Flags(m_flags | flags.m_flags); }
 
 		//!	@brief	Bitwise operation: Flags & Flags.
-		constexpr Flags operator&(Flags flags) const { return Flags(m_Mask & flags.m_Mask); }
+		constexpr Flags operator&(Flags flags) const { return Flags(m_flags & flags.m_flags); }
 
 		//!	@brief	Bitwise operation: Flags |= Flags.
-		constexpr void operator|=(Flags flags) { m_Mask |= flags.m_Mask; }
+		constexpr void operator|=(Flags flags) { m_flags |= flags.m_flags; }
 
 		//!	@brief	Bitwise operation: Flags &= Flags.
-		constexpr void operator&=(Flags flags) { m_Mask &= flags.m_Mask; }
+		constexpr void operator&=(Flags flags) { m_flags &= flags.m_flags; }
 
 		//!	@brief	Bitwise operation: ~Flags.
-		constexpr Flags operator~() const { return Flags(~m_Mask); }
+		constexpr Flags operator~() const { return Flags(~m_flags); }
 
 		//!	@brief	Cast to VkFlags.
-		constexpr operator VkFlags() const { return m_Mask; }
+		constexpr operator VkFlags() const { return m_flags; }
 
 	private:
 
-		VkFlags		m_Mask;
+		VkFlags		m_flags;
 	};
 
 	/*********************************************************************
