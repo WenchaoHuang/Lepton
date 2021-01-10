@@ -22,13 +22,13 @@ namespace Lepton
 	public:
 
 		//!	@brief	Default constructor.
-		constexpr ArrayProxy() : m_address(nullptr), m_count(0) {}
-
-		//!	@brief	Construct with an instance.
-		ArrayProxy(const Type & inst) : m_address(&inst), m_count(1) {}
+		ArrayProxy() noexcept : m_address(nullptr), m_count(0) {}
 
 		//!	@brief	Only used in this case: ArrayProxy<T> = nullptr.
-		constexpr ArrayProxy(std::nullptr_t) : m_address(nullptr), m_count(0) {}
+		ArrayProxy(std::nullptr_t) noexcept : m_address(nullptr), m_count(0) {}
+
+		//!	@brief	Construct with an instance.
+		ArrayProxy(const Type & inst) noexcept : m_address(&inst), m_count(1) {}
 
 		//!	@brief	Construct with a list of data.
 		explicit ArrayProxy(const Type * address, uint32_t count) : m_address(address), m_count(count) {}
@@ -45,7 +45,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Test if the array is empty.
-		constexpr bool empty() const { return (m_address == nullptr) || (m_count == 0); }
+		bool empty() const noexcept { return (m_address == nullptr) || (m_count == 0); }
 
 		//!	@brief	Return reference to the specified element.
 		const Type & operator[](size_t pos) const { assert(pos < m_count); return m_address[pos]; }
