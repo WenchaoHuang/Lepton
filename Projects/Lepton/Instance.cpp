@@ -12,13 +12,7 @@ using namespace Lepton;
 *************************************************************************/
 Instance::Instance() : m_hInstance(VK_NULL_HANDLE)
 {
-	uint32_t extensionCount = 0;
 
-	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-
-	m_AvailableExtensions.resize(extensionCount);
-
-	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, m_AvailableExtensions.data());
 }
 
 
@@ -81,23 +75,6 @@ bool Instance::IsExtensionEnabled(std::string extensionName) const
 }
 
 
-const std::vector<VkLayerProperties> & Instance::GetAvailableLayers() const
-{
-	if (m_AvailableLayers.empty())
-	{
-		uint32_t layerCount = 0;
-
-		vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-
-		m_AvailableLayers.resize(layerCount);
-
-		vkEnumerateInstanceLayerProperties(&layerCount, m_AvailableLayers.data());
-	}
-
-	return m_AvailableLayers;
-}
-
-
 bool Instance::IsExtensionAvailable(std::string extensionName) const
 {
 	for (size_t i = 0; i < m_AvailableExtensions.size(); i++)
@@ -114,7 +91,7 @@ bool Instance::IsExtensionAvailable(std::string extensionName) const
 
 bool Instance::IsLayerAvailable(std::string layerName) const
 {
-	auto & AvailableLayers = this->GetAvailableLayers();
+	auto AvailableLayers = this->GetAvailableLayers();
 
 	for (size_t i = 0; i < AvailableLayers.size(); i++)
 	{
@@ -145,6 +122,38 @@ void Instance::Destroy()
 
 		m_pExtensions.clear();
 	}
+}
+
+
+std::vector<VkExtensionProperties> Instance::GetAvailableExtensions()
+{
+	uint32_t extensionCount = 0;
+
+	std::vector<VkExtensionProperties> availableExtensions;
+
+	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+	availableExtensions.resize(extensionCount);
+
+	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, availableExtensions.data());
+
+	return availableExtensions;
+}
+
+
+std::vector<VkLayerProperties> Instance::GetAvailableLayers()
+{
+	uint32_t layerCount = 0;
+
+	std::vector<VkLayerProperties> availableLayers;
+
+	vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+	availableLayers.resize(layerCount);
+
+	vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+
+	return availableLayers;
 }
 
 

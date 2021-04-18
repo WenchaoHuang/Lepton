@@ -29,6 +29,14 @@ namespace Lepton
 
 	public:
 
+		//!	@brief	Return array of available validation layers.
+		static std::vector<VkLayerProperties> GetAvailableLayers();
+
+		//!	@brief	Return array of available extensions.
+		static std::vector<VkExtensionProperties> GetAvailableExtensions();
+
+	public:
+
 		//!	@brief	Return Vulkan type of this object.
 		VkInstance Handle() const { return m_hInstance; }
 
@@ -38,14 +46,8 @@ namespace Lepton
 		//!	@brief	Create a new instance object.
 		Result Create(ArrayProxy<const char*> pExtensions = nullptr, ArrayProxy<const char*> pLayers = nullptr);
 
-		//!	@brief	Return array of available extensions.
-		const std::vector<VkExtensionProperties> & GetAvailableExtensions() const { return m_AvailableExtensions; }
-
 		//!	@brief	Return array of physical devices.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }
-
-		//!	@brief	Return array of available validation layers.
-		const std::vector<VkLayerProperties> & GetAvailableLayers() const;
 
 		//!	@brief	Check if extension is available.
 		bool IsExtensionAvailable(std::string extensionName) const;
