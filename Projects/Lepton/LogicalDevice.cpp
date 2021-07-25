@@ -66,7 +66,7 @@ Result LogicalDevice::StartUp(const VkPhysicalDeviceFeatures * pEnabledFeatures)
 
 	VkResult eResult = vkCreateDevice(m_pPhysicalDevice->Handle(), &DeviceCreateInfo, nullptr, &hDevice);
 
-	if (eResult == VK_NULL_HANDLE)
+	if (eResult == VK_SUCCESS)
 	{
 		for (uint32_t familyIndex = 0; familyIndex < m_PerFamilQueues.size(); familyIndex++)
 		{
