@@ -33,7 +33,7 @@ Result HostVisibleBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceS
 	CreateInfo.pNext						= nullptr;
 	CreateInfo.flags						= 0;
 	CreateInfo.size							= size;
-	CreateInfo.usage						= 0x00001FFF;		//!	For all usages.
+	CreateInfo.usage						= VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
 	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount		= 0;
 	CreateInfo.pQueueFamilyIndices			= nullptr;
