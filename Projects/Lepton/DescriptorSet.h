@@ -116,6 +116,9 @@ namespace Lepton
 
 	public:
 
+		//!	@brief	Return VkDescriptorPool handle.
+		VkDescriptorPool Handle() const { return m_hDescriptorPool; }
+
 		//!	@brief	Whether this descriptor pool handle is valid.
 		bool IsValid() const { return m_hDescriptorPool != VK_NULL_HANDLE; }
 
