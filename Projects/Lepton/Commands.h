@@ -329,7 +329,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<VkClearValue> pClearValues, SubpassContents eContents = SubpassContents::eInline);
+		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<VkClearValue> pClearValues = {}, SubpassContents eContents = SubpassContents::eInline);
 
 		//!	@brief	Clear regions of a color image.
 		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<ImageSubresourceRange> pRanges)
