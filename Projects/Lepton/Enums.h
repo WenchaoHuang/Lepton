@@ -297,6 +297,22 @@ namespace Lepton
 	};
 
 	/*********************************************************************
+	*******************    DescriptorPoolCreateFlag    *******************
+	*********************************************************************/
+
+	/**
+	 *	@brief		Bitmask specifying certain supported operations on a descriptor pool
+	 */
+	enum class DescriptorPoolCreateFlag : VkFlags
+	{
+		eHostOnly						= VK_DESCRIPTOR_POOL_CREATE_HOST_ONLY_BIT_EXT,
+		eUpdateAfterBind				= VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT,
+		eFreeDescriptorSet				= VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT,
+		eAllowOverallocationSets		= VK_DESCRIPTOR_POOL_CREATE_ALLOW_OVERALLOCATION_SETS_BIT_NV,
+		eAllowOverallocationPools		= VK_DESCRIPTOR_POOL_CREATE_ALLOW_OVERALLOCATION_POOLS_BIT_NV,
+	};
+
+	/*********************************************************************
 	************************    ColorComponent    ************************
 	*********************************************************************/
 

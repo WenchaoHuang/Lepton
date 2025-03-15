@@ -85,7 +85,7 @@ DescriptorPool::DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> 
 }
 
 
-Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets)
+Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, Flags<DescriptorPoolCreateFlag> flags)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 
@@ -94,7 +94,7 @@ Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> p
 		VkDescriptorPoolCreateInfo		CreateInfo = {};
 		CreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 		CreateInfo.pNext				= nullptr;
-		CreateInfo.flags				= 0;
+		CreateInfo.flags				= flags;
 		CreateInfo.maxSets				= maxSets;
 		CreateInfo.poolSizeCount		= pDescriptorPoolSizes.size();
 		CreateInfo.pPoolSizes			= reinterpret_cast<const VkDescriptorPoolSize*>(pDescriptorPoolSizes.data());
