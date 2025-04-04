@@ -75,12 +75,19 @@ namespace Lepton
 	class Win32Surface;
 	class DeviceMemory;
 	class DescriptorSet;
+	class DescriptorPool;
 	class PipelineLayout;
 	class ComputePipeline;
 	class GraphicsPipeline;
 	class HostVisibleBuffer;
 	class DeviceLocalBuffer;
 	class RayTracingPipelineNV;
+
+	struct SurfaceFormat;
+	struct DescriptorPoolSize;
+
+	enum class DescriptorType;
+	enum class PresentMode;
 }
 
 typedef Lepton::Instance					LnInstance;
@@ -109,10 +116,17 @@ typedef Lepton::Framebuffer					LnFramebuffer;
 typedef Lepton::ShaderModule				LnShaderModule;
 typedef Lepton::Win32Surface				LnWin32Surface;
 typedef Lepton::DeviceMemory				LnDeviceMemory;
-typedef Lepton::DescriptorSet				LnDescriptorSet;
 typedef Lepton::PipelineLayout				LnPipelineLayout;
 typedef Lepton::ComputePipeline				LnComputePipeline;
 typedef Lepton::GraphicsPipeline			LnGraphicsPipeline;
 typedef Lepton::HostVisibleBuffer			LnHostVisibleBuffer;
 typedef Lepton::DeviceLocalBuffer			LnDeviceLocalBuffer;
 typedef Lepton::RayTracingPipelineNV		LnRayTracingPipeline;
+
+typedef Lepton::PresentMode					LnPresentMode;
+typedef Lepton::SurfaceFormat				LnSurfaceFormat;
+
+typedef Lepton::DescriptorSet				LnDescriptorSet;
+typedef Lepton::DescriptorType				LnDescriptorType;
+typedef Lepton::DescriptorPool				LnDescriptorPool;
+typedef Lepton::DescriptorPoolSize			LnDescriptorPoolSize;
