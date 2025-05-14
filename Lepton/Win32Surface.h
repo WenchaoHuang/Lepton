@@ -39,7 +39,7 @@ namespace Lepton
 		uint32_t							maxImageArrayLayers			= 0;
 		vk::SurfaceTransformFlagsKHR		supportedTransforms			= vk::SurfaceTransformFlagsKHR(0);
 		vk::SurfaceTransformFlagBitsKHR		currentTransform			= vk::SurfaceTransformFlagBitsKHR::eIdentity;
-		Flags<AlphaCompositingMmode>		supportedCompositeAlpha		= 0;
+		vk::CompositeAlphaFlagsKHR			supportedCompositeAlpha		= vk::CompositeAlphaFlagsKHR(0);
 		Flags<ImageUsage>					supportedUsageFlags			= 0;
 	};
 

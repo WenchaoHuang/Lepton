@@ -8,21 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	********************    AlphaCompositingMmode    *********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Alpha compositing modes supported on a device.
-	 */
-	enum class AlphaCompositingMmode : VkFlags
-	{
-		eOpaque				= VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
-		eInherit			= VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR,
-		ePreMultiplied		= VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR,
-		ePostMultiplied		= VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR,
-	};
-
-	/*********************************************************************
 	************************    MemoryProperty    ************************
 	*********************************************************************/
 
