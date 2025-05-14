@@ -16,7 +16,7 @@ namespace Lepton
 	 */
 	struct PushConstantRange
 	{
-		vk::Flags<ShaderStage>		stageFlags		= ShaderStage::eAllGraphics;
+		vk::ShaderStageFlags		stageFlags		= vk::ShaderStageFlagBits::eAllGraphics;
 		uint32_t					offset			= 0;
 		uint32_t					size			= 0;
 	};

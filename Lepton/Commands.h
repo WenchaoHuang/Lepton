@@ -311,7 +311,7 @@ namespace Lepton
 		}
 
 		//!	@brief	 Update the values of push constants.
-		void CmdPushConstants(VkPipelineLayout hPipelineLayout, vk::Flags<ShaderStage> eStages, uint32_t offset, uint32_t size, const void * pValues)
+		void CmdPushConstants(VkPipelineLayout hPipelineLayout, vk::ShaderStageFlags eStages, uint32_t offset, uint32_t size, const void * pValues)
 		{
 			vkCmdPushConstants(m_hCommandBuffer, hPipelineLayout, (VkFlags)eStages, offset, size, pValues);
 		}
