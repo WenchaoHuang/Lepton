@@ -54,15 +54,15 @@ namespace Lepton
 	 */
 	struct AttachmentDescription
 	{
-		const VkFlags			flags				= 0;
-		Format					format				= Format::eUndefined;
-		SampleCount				samples				= SampleCount::x1;
-		AttachmentLoadOp		loadOp				= AttachmentLoadOp::eClear;
-		AttachmentStoreOp		storeOp				= AttachmentStoreOp::eStore;
-		AttachmentLoadOp		stencilLoadOp		= AttachmentLoadOp::eDontCare;
-		AttachmentStoreOp		stencilStoreOp		= AttachmentStoreOp::eDontCare;
-		ImageLayout				initialLayout		= ImageLayout::eUndefined;
-		ImageLayout				finalLayout			= ImageLayout::eUndefined;
+		const VkFlags					flags				= 0;
+		Format							format				= Format::eUndefined;
+		vk::SampleCountFlagBits			samples				= vk::SampleCountFlagBits::e1;
+		AttachmentLoadOp				loadOp				= AttachmentLoadOp::eClear;
+		AttachmentStoreOp				storeOp				= AttachmentStoreOp::eStore;
+		AttachmentLoadOp				stencilLoadOp		= AttachmentLoadOp::eDontCare;
+		AttachmentStoreOp				stencilStoreOp		= AttachmentStoreOp::eDontCare;
+		ImageLayout						initialLayout		= ImageLayout::eUndefined;
+		ImageLayout						finalLayout			= ImageLayout::eUndefined;
 	};
 
 	static_assert(sizeof(AttachmentDescription) == sizeof(VkAttachmentDescription), "Struct and wrapper have different size!");

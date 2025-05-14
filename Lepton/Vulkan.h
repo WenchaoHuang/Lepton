@@ -3,6 +3,13 @@
 *************************************************************************/
 #pragma once
 
+#ifndef NOMINMAX
+	#define NOMINMAX
+#endif
+
+#undef min
+#undef max
+
 #include <string>
 #include <memory>
 #include "Enums.h"

@@ -121,11 +121,11 @@ namespace Lepton
 		 */
 		struct MultisampleStateInfo
 		{
-			SampleCount		rasterizationSamples		= SampleCount::x1;
-			Bool32			alphaToCoverageEnable		= eFalse;
-			Bool32			sampleShadingEnable			= eFalse;
-			Bool32			alphaToOneEnable			= eFalse;
-			float			minSampleShading			= 0.0f;
+			vk::SampleCountFlagBits		rasterizationSamples		= vk::SampleCountFlagBits::e1;
+			Bool32						alphaToCoverageEnable		= eFalse;
+			Bool32						sampleShadingEnable			= eFalse;
+			Bool32						alphaToOneEnable			= eFalse;
+			float						minSampleShading			= 0.0f;
 		};
 
 		/*****************************************************************

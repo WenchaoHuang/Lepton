@@ -3,7 +3,7 @@
 *************************************************************************/
 #pragma once
 
-#include <vulkan/vulkan.h>
+#include <vulkan/vulkan.hpp>
 
 namespace Lepton
 {
@@ -18,24 +18,6 @@ namespace Lepton
 	{
 		eTrue		= VK_TRUE,
 		eFalse		= VK_FALSE,
-	};
-
-	/*********************************************************************
-	*************************    SampleCount    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying sample counts supported for an image used for storage operations.
-	 */
-	enum class SampleCount : VkFlags
-	{
-		x1		= VK_SAMPLE_COUNT_1_BIT,
-		x2		= VK_SAMPLE_COUNT_2_BIT,
-		x4		= VK_SAMPLE_COUNT_4_BIT,
-		x8		= VK_SAMPLE_COUNT_8_BIT,
-		x16		= VK_SAMPLE_COUNT_16_BIT,
-		x32		= VK_SAMPLE_COUNT_32_BIT,
-		x64		= VK_SAMPLE_COUNT_64_BIT,
 	};
 
 	/*********************************************************************

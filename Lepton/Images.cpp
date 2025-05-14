@@ -30,7 +30,7 @@ template<VkImageType eImageType, VkImageViewType eViewType>
 Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDevice,
 												Format eFormat, VkExtent3D extent,
 												uint32_t mipLevels, uint32_t arrayLayers,
-												SampleCount eSamples, Flags<ImageUsage> eUsages,
+												vk::SampleCountFlagBits eSamples, Flags<ImageUsage> eUsages,
 												Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags)
 {
 	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
