@@ -8,25 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	**************************    StencilOp    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Stencil comparison function.
-	 */
-	enum class StencilOp
-	{
-		eKeep					= VK_STENCIL_OP_KEEP,
-		eZero					= VK_STENCIL_OP_ZERO,
-		eInvert					= VK_STENCIL_OP_INVERT,
-		eReplace				= VK_STENCIL_OP_REPLACE,
-		eIncrementAndWrap		= VK_STENCIL_OP_INCREMENT_AND_WRAP,
-		eDecrementAndWrap		= VK_STENCIL_OP_DECREMENT_AND_WRAP,
-		eIncrementAndClamp		= VK_STENCIL_OP_INCREMENT_AND_CLAMP,
-		eDecrementAndClamp		= VK_STENCIL_OP_DECREMENT_AND_CLAMP,
-	};
-
-	/*********************************************************************
 	****************************    Filter    ****************************
 	*********************************************************************/
 

@@ -62,9 +62,9 @@ namespace Lepton
 		 */
 		struct StencilOpState
 		{
-			StencilOp			failOp			= StencilOp::eKeep;
-			StencilOp			passOp			= StencilOp::eKeep;
-			StencilOp			depthFailOp		= StencilOp::eKeep;
+			vk::StencilOp		failOp			= vk::StencilOp::eKeep;
+			vk::StencilOp		passOp			= vk::StencilOp::eKeep;
+			vk::StencilOp		depthFailOp		= vk::StencilOp::eKeep;
 			vk::CompareOp		compareOp		= vk::CompareOp::eNever;
 			uint32_t			compareMask		= 0;
 			uint32_t			writeMask		= 0;
