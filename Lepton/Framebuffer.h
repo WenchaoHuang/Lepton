@@ -80,8 +80,8 @@ namespace Lepton
 		uint32_t						dstSubpass			= 0;
 		vk::PipelineStageFlags			srcStageMask		= vk::PipelineStageFlags(0);
 		vk::PipelineStageFlags			dstStageMask		= vk::PipelineStageFlags(0);
-		vk::Flags<MemoryAccess>			srcAccessMask		= vk::Flags<MemoryAccess>(0);
-		vk::Flags<MemoryAccess>			dstAccessMask		= vk::Flags<MemoryAccess>(0);
+		vk::AccessFlags					srcAccessMask		= vk::AccessFlags(0);
+		vk::AccessFlags					dstAccessMask		= vk::AccessFlags(0);
 		vk::DependencyFlags				dependencyFlags		= vk::DependencyFlagBits(0);
 	};
 

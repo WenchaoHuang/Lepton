@@ -353,45 +353,6 @@ namespace Lepton
 	};
 
 	/*********************************************************************
-	*************************    MemoryAccess    *************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying memory access types that will participate in a memory dependency.
-	 */
-	enum class MemoryAccess : VkFlags
-	{
-		eHostRead								= VK_ACCESS_HOST_READ_BIT,
-		eHostWrite								= VK_ACCESS_HOST_WRITE_BIT,
-		eIndexRead								= VK_ACCESS_INDEX_READ_BIT,
-		eShaderRead								= VK_ACCESS_SHADER_READ_BIT,
-		eMemoryRead								= VK_ACCESS_MEMORY_READ_BIT,
-		eUniformRead							= VK_ACCESS_UNIFORM_READ_BIT,
-		eMemoryWrite							= VK_ACCESS_MEMORY_WRITE_BIT,
-		eShaderWrite							= VK_ACCESS_SHADER_WRITE_BIT,
-		eTransferRead							= VK_ACCESS_TRANSFER_READ_BIT,
-		eTransferWrite							= VK_ACCESS_TRANSFER_WRITE_BIT,
-		eIndirectCommandRead					= VK_ACCESS_INDIRECT_COMMAND_READ_BIT,
-		eVertexAttributeRead					= VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT,
-		eInputAttachmentRead					= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT,
-		eColorAttachmentRead					= VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
-		eColorAttachmentWrite					= VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-		eTransformFeedbackWriteEXT				= VK_ACCESS_TRANSFORM_FEEDBACK_WRITE_BIT_EXT,
-		eDepthStencilAttachmentRead				= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT,
-		eDepthStencilAttachmentWrite			= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
-		eColorAttachmentReadNoncoherentEXT		= VK_ACCESS_COLOR_ATTACHMENT_READ_NONCOHERENT_BIT_EXT,
-		eTransformFeedbackCounterWriteEXT		= VK_ACCESS_TRANSFORM_FEEDBACK_COUNTER_WRITE_BIT_EXT,
-		eTransformFeedbackCounterReadEXT		= VK_ACCESS_TRANSFORM_FEEDBACK_COUNTER_READ_BIT_EXT,
-		eAccelerationStructureWriteNV			= VK_ACCESS_ACCELERATION_STRUCTURE_WRITE_BIT_NV,
-		eConditionalRenderingReadEXT			= VK_ACCESS_CONDITIONAL_RENDERING_READ_BIT_EXT,
-		eAccelerationStructureReadNV			= VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_NV,
-		eFragmentDensityMapReadEXT				= VK_ACCESS_FRAGMENT_DENSITY_MAP_READ_BIT_EXT,
-		eCommandPreprocessWriteNV				= VK_ACCESS_COMMAND_PREPROCESS_WRITE_BIT_NV,
-		eCommandPreprocessReadNV				= VK_ACCESS_COMMAND_PREPROCESS_READ_BIT_NV,
-		eShadingRateImageReadNV					= VK_ACCESS_SHADING_RATE_IMAGE_READ_BIT_NV,
-	};
-
-	/*********************************************************************
 	**************************    IndexType    ***************************
 	*********************************************************************/
 

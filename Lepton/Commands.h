@@ -37,8 +37,8 @@ namespace Lepton
 	{
 		const VkStructureType			sType					= VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 		const void * const				pNext					= nullptr;
-		vk::Flags<MemoryAccess>			srcAccessMask			= vk::Flags<MemoryAccess>(0);
-		vk::Flags<MemoryAccess>			dstAccessMask			= vk::Flags<MemoryAccess>(0);
+		vk::AccessFlags					srcAccessMask			= vk::AccessFlags(0);
+		vk::AccessFlags					dstAccessMask			= vk::AccessFlags(0);
 		ImageLayout						oldLayout				= ImageLayout::eUndefined;
 		ImageLayout						newLayout				= ImageLayout::eUndefined;
 		const uint32_t					srcQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
