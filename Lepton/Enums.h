@@ -8,32 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*************************    DynamicState    *************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Indicate which dynamic state is taken from dynamic state commands.
-	 */
-	enum class DynamicState
-	{
-		eScissor							= VK_DYNAMIC_STATE_SCISSOR,
-		eViewport							= VK_DYNAMIC_STATE_VIEWPORT,
-		eLineWidth							= VK_DYNAMIC_STATE_LINE_WIDTH,
-		eDepthBias							= VK_DYNAMIC_STATE_DEPTH_BIAS,
-		eDepthBounds						= VK_DYNAMIC_STATE_DEPTH_BOUNDS,
-		eBlendConstants						= VK_DYNAMIC_STATE_BLEND_CONSTANTS,
-		eStencilWriteMask					= VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
-		eStencilReference					= VK_DYNAMIC_STATE_STENCIL_REFERENCE,
-		eStencilCompareMask					= VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
-		eSampleLocationsEXT					= VK_DYNAMIC_STATE_SAMPLE_LOCATIONS_EXT,
-		eViewportWScalingNV					= VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_NV,
-		eExclusiveScissorNV					= VK_DYNAMIC_STATE_EXCLUSIVE_SCISSOR_NV,
-		eDiscardRectangleEXT				= VK_DYNAMIC_STATE_DISCARD_RECTANGLE_EXT,
-		eViewportCoarseSampleOrderNV		= VK_DYNAMIC_STATE_VIEWPORT_COARSE_SAMPLE_ORDER_NV,
-		eViewportShadingRatePaletteNV		= VK_DYNAMIC_STATE_VIEWPORT_SHADING_RATE_PALETTE_NV,
-	};
-
-	/*********************************************************************
 	**************************    ImageUsage    **************************
 	*********************************************************************/
 

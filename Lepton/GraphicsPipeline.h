@@ -35,7 +35,7 @@ namespace Lepton
 		using InputAssemblyStateInfo = vk::PrimitiveTopology;
 
 		//!	@brief	Parameters of a newly created pipeline dynamic state.
-		using DynamicStateInfo = std::vector<DynamicState>;
+		using DynamicStateInfo = std::vector<vk::DynamicState>;
 
 		//!	@brief	Parameters of a newly created pipeline shader stages.
 		using ShaderStagesInfo = std::vector<ShaderModule>;
