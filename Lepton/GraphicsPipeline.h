@@ -101,7 +101,7 @@ namespace Lepton
 		struct RasterizationStateInfo
 		{
 			CullMode		cullMode					= CullMode::eNone;
-			FrontFace		frontFace					= FrontFace::eCounterClockwise;
+			vk::FrontFace	frontFace					= vk::FrontFace::eCounterClockwise;
 			PolygonMode		polygonMode					= PolygonMode::eFill;
 			vk::Bool32		depthBiasEnable				= false;
 			vk::Bool32		depthClampEnable			= false;
