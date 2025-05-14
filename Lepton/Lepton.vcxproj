@@ -127,7 +127,6 @@
     <ClInclude Include="ComputePipeline.h" />
     <ClInclude Include="DescriptorSet.h" />
     <ClInclude Include="DeviceMemory.h" />
-    <ClInclude Include="Enums.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Images.h" />
     <ClInclude Include="Instance.h" />

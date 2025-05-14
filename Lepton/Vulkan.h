@@ -12,7 +12,7 @@
 
 #include <string>
 #include <memory>
-#include "Enums.h"
+#include <vulkan/vulkan.hpp>
 #include "Result.h"
 #include "ArrayProxy.h"
 

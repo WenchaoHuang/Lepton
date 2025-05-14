@@ -287,7 +287,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Bind an index buffer to a command buffer.
-		void CmdBindIndexBuffer(VkBuffer hBuffer, IndexType eIndexType, VkDeviceSize offset = 0)
+		void CmdBindIndexBuffer(VkBuffer hBuffer, vk::IndexType eIndexType, VkDeviceSize offset = 0)
 		{
 			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, offset, static_cast<VkIndexType>(eIndexType));
 		}

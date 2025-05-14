@@ -52,7 +52,7 @@ namespace Lepton
 		VkBuffer					indexData			= VK_NULL_HANDLE;
 		VkDeviceSize				indexOffset			= 0;
 		uint32_t					indexCount			= 0;
-		IndexType					indexType			= IndexType::eUint32;
+		vk::IndexType				indexType			= vk::IndexType::eUint32;
 		VkBuffer					transformData		= VK_NULL_HANDLE;
 		VkDeviceSize				transformOffset		= 0;
 	};
