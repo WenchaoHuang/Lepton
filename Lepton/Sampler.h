@@ -20,9 +20,9 @@ namespace Lepton
 		vk::Filter					minFilter					= vk::Filter::eNearest;
 		vk::CompareOp				compareOp					= vk::CompareOp::eNever;
 		vk::SamplerMipmapMode		mipmapMode					= vk::SamplerMipmapMode::eNearest;
-		AddressMode					addressModeU				= AddressMode::eRepeat;
-		AddressMode					addressModeV				= AddressMode::eRepeat;
-		AddressMode					addressModeW				= AddressMode::eRepeat;
+		vk::SamplerAddressMode		addressModeU				= vk::SamplerAddressMode::eRepeat;
+		vk::SamplerAddressMode		addressModeV				= vk::SamplerAddressMode::eRepeat;
+		vk::SamplerAddressMode		addressModeW				= vk::SamplerAddressMode::eRepeat;
 		BorderColor					borderColor					= BorderColor::eFloatTransparentBlack;
 		vk::Bool32					unnormalizedCoordinates		= false;
 		vk::Bool32					anisotropyEnable			= false;

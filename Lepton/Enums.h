@@ -8,22 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*************************    AddressMode    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify behavior of sampling with texture coordinates outside an image.
-	 */
-	enum class AddressMode
-	{
-		eRepeat					= VK_SAMPLER_ADDRESS_MODE_REPEAT,
-		eClampToEdge			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,
-		eClampToBorder			= VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER,
-		eMirroredRepeat			= VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT,
-		eMirrorClampToEdge		= VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE,
-	};
-
-	/*********************************************************************
 	*************************    BorderColor    **************************
 	*********************************************************************/
 
