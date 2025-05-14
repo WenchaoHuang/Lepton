@@ -174,7 +174,7 @@ namespace Lepton
 		//!	@brief	Whether this descriptor set handle is valid.
 		bool IsValid() const { return m_hDescriptorSet != VK_NULL_HANDLE; }
 
-		void UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
+		void UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, vk::ImageLayout eImageLayout);
 
 	private:
 

@@ -39,8 +39,8 @@ namespace Lepton
 		const void * const				pNext					= nullptr;
 		vk::AccessFlags					srcAccessMask			= vk::AccessFlags(0);
 		vk::AccessFlags					dstAccessMask			= vk::AccessFlags(0);
-		ImageLayout						oldLayout				= ImageLayout::eUndefined;
-		ImageLayout						newLayout				= ImageLayout::eUndefined;
+		vk::ImageLayout					oldLayout				= vk::ImageLayout::eUndefined;
+		vk::ImageLayout					newLayout				= vk::ImageLayout::eUndefined;
 		const uint32_t					srcQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
 		const uint32_t					dstQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
 		VkImage							image					= VK_NULL_HANDLE;
@@ -323,7 +323,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Copy data from a buffer into an image.
-		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<VkBufferImageCopy> pRegions)
+		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, vk::ImageLayout eDstImageLayout, ArrayProxy<VkBufferImageCopy> pRegions)
 		{
 			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), pRegions.data());
 		}
@@ -332,7 +332,7 @@ namespace Lepton
 		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<VkClearValue> pClearValues = {}, SubpassContents eContents = SubpassContents::eInline);
 
 		//!	@brief	Clear regions of a color image.
-		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<ImageSubresourceRange> pRanges)
+		void CmdClearColorImage(VkImage hImage, vk::ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<ImageSubresourceRange> pRanges)
 		{
 			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), &color, pRanges.size(), reinterpret_cast<const VkImageSubresourceRange*>(pRanges.data()));
 		}
@@ -344,13 +344,13 @@ namespace Lepton
 		}
 
 		//!	@brief	Resolve regions of an image.
-		void CmdResolveImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<ImageResolve> pRegions)
+		void CmdResolveImage(VkImage hSrcImage, vk::ImageLayout eSrcImageLayout, VkImage hDstImage, vk::ImageLayout eDstImageLayout, ArrayProxy<ImageResolve> pRegions)
 		{
 			vkCmdResolveImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageResolve*>(pRegions.data()));
 		}
 
 		//!	@brief	Copy regions of an image, potentially performing format conversion.
-		void CmdBlitImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<ImageBlit> pRegions, Filter eFilter)
+		void CmdBlitImage(VkImage hSrcImage, vk::ImageLayout eSrcImageLayout, VkImage hDstImage, vk::ImageLayout eDstImageLayout, ArrayProxy<ImageBlit> pRegions, Filter eFilter)
 		{
 			vkCmdBlitImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageBlit*>(pRegions.data()), static_cast<VkFilter>(eFilter));
 		}

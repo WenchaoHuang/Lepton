@@ -206,7 +206,7 @@ DescriptorSet::DescriptorSet(VkDevice hDevice, VkDescriptorSet hDescriptorSet, D
 }
 
 
-void DescriptorSet::UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
+void DescriptorSet::UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, vk::ImageLayout eImageLayout)
 {
 	auto & LayoutBindings = m_DescriptorSetLayout.GetLayoutBindings();
 

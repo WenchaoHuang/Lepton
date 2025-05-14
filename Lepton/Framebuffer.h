@@ -16,8 +16,8 @@ namespace Lepton
 	 */
 	struct AttachmentReference
 	{
-		uint32_t		attachment		= 0;
-		ImageLayout		layout			= ImageLayout::eUndefined;
+		uint32_t			attachment		= 0;
+		vk::ImageLayout		layout			= vk::ImageLayout::eUndefined;
 	};
 
 	static_assert(sizeof(AttachmentReference) == sizeof(VkAttachmentReference), "Struct and wrapper have different size!");
@@ -61,8 +61,8 @@ namespace Lepton
 		AttachmentStoreOp				storeOp				= AttachmentStoreOp::eStore;
 		AttachmentLoadOp				stencilLoadOp		= AttachmentLoadOp::eDontCare;
 		AttachmentStoreOp				stencilStoreOp		= AttachmentStoreOp::eDontCare;
-		ImageLayout						initialLayout		= ImageLayout::eUndefined;
-		ImageLayout						finalLayout			= ImageLayout::eUndefined;
+		vk::ImageLayout					initialLayout		= vk::ImageLayout::eUndefined;
+		vk::ImageLayout					finalLayout			= vk::ImageLayout::eUndefined;
 	};
 
 	static_assert(sizeof(AttachmentDescription) == sizeof(VkAttachmentDescription), "Struct and wrapper have different size!");
