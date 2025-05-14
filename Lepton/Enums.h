@@ -8,19 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	***********************    SubpassContents    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify how commands in the first subpass of a render pass are provided.
-	 */
-	enum class SubpassContents
-	{
-		eInline							= VK_SUBPASS_CONTENTS_INLINE,
-		eSecondaryCommandBuffers		= VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS,
-	};
-
-	/*********************************************************************
 	**************************    IndexType    ***************************
 	*********************************************************************/
 

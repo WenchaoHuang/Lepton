@@ -145,7 +145,7 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 
 
 void CommandBuffer::CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea,
-									   ArrayProxy<VkClearValue> pClearValues, SubpassContents eContents)
+									   ArrayProxy<VkClearValue> pClearValues, vk::SubpassContents eContents)
 {
 	VkRenderPassBeginInfo			BeginInfo = {};
 	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
