@@ -8,21 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*************************    PolygonMode    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Control polygon rasterization mode.
-	 */
-	enum class PolygonMode
-	{
-		eFill					= VK_POLYGON_MODE_FILL,
-		eLine					= VK_POLYGON_MODE_LINE,
-		ePoint					= VK_POLYGON_MODE_POINT,
-		eFillRectangleNV		= VK_POLYGON_MODE_FILL_RECTANGLE_NV,
-	};
-
-	/*********************************************************************
 	**********************    PrimitiveTopology    ***********************
 	*********************************************************************/
 

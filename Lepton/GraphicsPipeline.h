@@ -102,7 +102,7 @@ namespace Lepton
 		{
 			vk::CullModeFlagBits		cullMode					= vk::CullModeFlagBits::eNone;
 			vk::FrontFace				frontFace					= vk::FrontFace::eCounterClockwise;
-			PolygonMode					polygonMode					= PolygonMode::eFill;
+			vk::PolygonMode				polygonMode					= vk::PolygonMode::eFill;
 			vk::Bool32					depthBiasEnable				= false;
 			vk::Bool32					depthClampEnable			= false;
 			vk::Bool32					rasterizerDiscardEnable		= false;
