@@ -185,9 +185,9 @@ std::vector<SurfaceFormat> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR hSurfa
 }
 
 
-std::vector<PresentMode> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
+std::vector<vk::PresentModeKHR> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
 {
-	std::vector<PresentMode> PresentModes;
+	std::vector<vk::PresentModeKHR> PresentModes;
 
 	if (hSurface != VK_NULL_HANDLE)
 	{

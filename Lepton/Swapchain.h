@@ -34,7 +34,7 @@ namespace Lepton
 		Result Present(VkQueue hQueue, ArrayProxy<VkSemaphore> waitSemaphores = nullptr);
 
 		//!	@brief	Reconstruct swap-chain.
-		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount);
+		Result Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, vk::PresentModeKHR ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount);
 
 		//!	@brief	Retrieve the index of the next available presentable image.
 		uint32_t AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence = VK_NULL_HANDLE, uint64_t timeout = LAVA_DEFAULT_TIMEOUT);

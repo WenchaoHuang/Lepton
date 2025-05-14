@@ -22,7 +22,7 @@ Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE)
 }
 
 
-Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
+Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, vk::PresentModeKHR ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
 {
 	if (hDevice == VK_NULL_HANDLE)			return Result::eErrorInvalidDeviceHandle;
 	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidSurfaceHandle;

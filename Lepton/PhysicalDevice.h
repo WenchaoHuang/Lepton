@@ -49,7 +49,7 @@ namespace Lepton
 		std::vector<SurfaceFormat> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	Query supported presentation modes.
-		std::vector<PresentMode> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
+		std::vector<vk::PresentModeKHR> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	Query if presentation is supported.
 		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
