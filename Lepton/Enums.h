@@ -8,30 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	************************    DescriptorType    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specifies the type of a descriptor in a descriptor set.
-	 */
-	enum class DescriptorType
-	{
-		eSampler						= VK_DESCRIPTOR_TYPE_SAMPLER,
-		eSampledImage					= VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE,
-		eStorageImage					= VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
-		eUniformBuffer					= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-		eStorageBuffer					= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
-		eInputAttachment				= VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT,
-		eStorageTexelBuffer				= VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER,
-		eUniformTexelBuffer				= VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER,
-		eCombinedImageSampler			= VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-		eUniformBufferDynamic			= VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
-		eStorageBufferDynamic			= VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
-		eInlineUniformBlockEXT			= VK_DESCRIPTOR_TYPE_INLINE_UNIFORM_BLOCK_EXT,
-		eAccelerationStructureNV		= VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_NV,
-	};
-
-	/*********************************************************************
 	*******************    DescriptorPoolCreateFlag    *******************
 	*********************************************************************/
 

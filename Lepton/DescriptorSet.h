@@ -18,7 +18,7 @@ namespace Lepton
 	struct DescriptorSetLayoutBinding
 	{
 		vk::ShaderStageFlags		stageFlags			= vk::ShaderStageFlagBits::eAllGraphics;
-		DescriptorType				descriptorType		= DescriptorType::eSampler;
+		vk::DescriptorType			descriptorType		= vk::DescriptorType::eSampler;
 		uint32_t					descriptorCount		= 1;
 	};
 
@@ -31,7 +31,7 @@ namespace Lepton
 	 */
 	struct DescriptorPoolSize
 	{
-		DescriptorType			type				= DescriptorType::eSampler;
+		vk::DescriptorType		type				= vk::DescriptorType::eSampler;
 		uint32_t				descriptorCount		= 0;
 	};
 
