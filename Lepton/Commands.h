@@ -219,7 +219,7 @@ namespace Lepton
 		Result Reset(VkCommandBufferResetFlags eResetFlags = 0) { return LAVA_RESULT_CAST(vkResetCommandBuffer(m_hCommandBuffer, eResetFlags)); }
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		Result Submit(VkSemaphore hWaitSemaphore, vk::Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		Result Submit(VkSemaphore hWaitSemaphore, vk::PipelineStageFlags eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
 			m_SubmitInfo.signalSemaphoreCount	= uint32_t(hSignalSemaphore != VK_NULL_HANDLE);
 			m_SubmitInfo.waitSemaphoreCount		= uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
@@ -338,7 +338,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Insert a image memory dependency.
-		void CmdImageMemoryBarrier(vk::Flags<PipelineStage> srcStageMask, vk::Flags<PipelineStage> dstStageMask, vk::DependencyFlags dependencyFlags, ArrayProxy<ImageMemoryBarrier> pImageMemoryBarriers)
+		void CmdImageMemoryBarrier(vk::PipelineStageFlags srcStageMask, vk::PipelineStageFlags dstStageMask, vk::DependencyFlags dependencyFlags, ArrayProxy<ImageMemoryBarrier> pImageMemoryBarriers)
 		{
 			vkCmdPipelineBarrier(m_hCommandBuffer, (VkFlags)srcStageMask, (VkFlags)dstStageMask, (VkFlags)dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
 		}

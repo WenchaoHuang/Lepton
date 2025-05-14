@@ -8,43 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	************************    PipelineStage    *************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying pipeline stages.
-	 */
-	enum class PipelineStage : VkFlags
-	{
-		eHost								= VK_PIPELINE_STAGE_HOST_BIT,
-		eTransfer							= VK_PIPELINE_STAGE_TRANSFER_BIT,
-		eTopOfPipe							= VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-		eVertexInput						= VK_PIPELINE_STAGE_VERTEX_INPUT_BIT,
-		eAllGraphics						= VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT,
-		eAllCommands						= VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-		eBottomOfPipe						= VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
-		eDrawIndirect						= VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT,
-		eVertexShader						= VK_PIPELINE_STAGE_VERTEX_SHADER_BIT,
-		eComputeShader						= VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-		eGeometryShader						= VK_PIPELINE_STAGE_GEOMETRY_SHADER_BIT,
-		eFragmentShader						= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
-		eLateFragmentTests					= VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
-		eEarlyFragmentTests					= VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
-		eColorAttachmentOutput				= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-		eTessellationControlShader			= VK_PIPELINE_STAGE_TESSELLATION_CONTROL_SHADER_BIT,
-		eTessellationEvaluationShader		= VK_PIPELINE_STAGE_TESSELLATION_EVALUATION_SHADER_BIT,
-		eAccelerationStructureBuildNV		= VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_NV,
-		eFragmentDensityProcessEXT			= VK_PIPELINE_STAGE_FRAGMENT_DENSITY_PROCESS_BIT_EXT,
-		eConditionalRenderingEXT			= VK_PIPELINE_STAGE_CONDITIONAL_RENDERING_BIT_EXT,
-		eTransformFeedbackEXT				= VK_PIPELINE_STAGE_TRANSFORM_FEEDBACK_BIT_EXT,
-		eShadingRateImageNV					= VK_PIPELINE_STAGE_SHADING_RATE_IMAGE_BIT_NV,
-		eRayTracingShaderNV					= VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_NV,
-		eCommandProcessNVX					= VK_PIPELINE_STAGE_COMMAND_PREPROCESS_BIT_NV,
-		eTaskShaderNV						= VK_PIPELINE_STAGE_TASK_SHADER_BIT_NV,
-		eMeshShaderNV						= VK_PIPELINE_STAGE_MESH_SHADER_BIT_NV,
-	};
-
-	/*********************************************************************
 	************************    DescriptorType    ************************
 	*********************************************************************/
 
