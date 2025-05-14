@@ -88,7 +88,7 @@ namespace Lepton
 		GeometryTypeNV				geometryType		= GeometryTypeNV::eTriangles;
 		GeometryTrianglesNV			triangles;
 		GeometryAABBNV				aabbs;
-		Flags<GeometryFlagNV>		flags				= 0;
+		vk::GeometryFlagsKHR		flags				= vk::GeometryFlagsKHR(0);
 	};
 
 	static_assert(sizeof(GeometryNV) == sizeof(VkGeometryNV), "Struct and wrapper have different size!");

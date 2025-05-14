@@ -128,7 +128,6 @@
     <ClInclude Include="DescriptorSet.h" />
     <ClInclude Include="DeviceMemory.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="Flags.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Images.h" />
     <ClInclude Include="Instance.h" />

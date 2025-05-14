@@ -76,13 +76,13 @@ namespace Lepton
 	 */
 	struct SubpassDependency
 	{
-		uint32_t					srcSubpass			= 0;
-		uint32_t					dstSubpass			= 0;
-		Flags<PipelineStage>		srcStageMask		= 0;
-		Flags<PipelineStage>		dstStageMask		= 0;
-		Flags<MemoryAccess>			srcAccessMask		= 0;
-		Flags<MemoryAccess>			dstAccessMask		= 0;
-		Flags<MemoryDependency>		dependencyFlags		= 0;
+		uint32_t						srcSubpass			= 0;
+		uint32_t						dstSubpass			= 0;
+		vk::Flags<PipelineStage>		srcStageMask		= vk::Flags<PipelineStage>(0);
+		vk::Flags<PipelineStage>		dstStageMask		= vk::Flags<PipelineStage>(0);
+		vk::Flags<MemoryAccess>			srcAccessMask		= vk::Flags<MemoryAccess>(0);
+		vk::Flags<MemoryAccess>			dstAccessMask		= vk::Flags<MemoryAccess>(0);
+		vk::Flags<MemoryDependency>		dependencyFlags		= vk::Flags<MemoryDependency>(0);
 	};
 
 	static_assert(sizeof(SubpassDependency) == sizeof(VkSubpassDependency), "Struct and wrapper have different size!");

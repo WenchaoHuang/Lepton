@@ -17,11 +17,11 @@ namespace Lepton
 	 */
 	struct ImageSubresourceRange
 	{
-		Flags<ImageAspect>		aspectMask			= 0;
-		uint32_t				baseMipLevel		= 0;
-		uint32_t				levelCount			= 1;
-		uint32_t				baseArrayLayer		= 0;
-		uint32_t				layerCount			= 1;
+		vk::Flags<ImageAspect>		aspectMask			= vk::Flags<ImageAspect>(0);
+		uint32_t					baseMipLevel		= 0;
+		uint32_t					levelCount			= 1;
+		uint32_t					baseArrayLayer		= 0;
+		uint32_t					layerCount			= 1;
 	};
 
 	static_assert(sizeof(ImageSubresourceRange) == sizeof(VkImageSubresourceRange), "Struct and wrapper have different size!");
@@ -35,26 +35,26 @@ namespace Lepton
 	 */
 	struct ImageMemoryBarrier
 	{
-		const VkStructureType		sType					= VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		const void * const			pNext					= nullptr;
-		Flags<MemoryAccess>			srcAccessMask			= 0;
-		Flags<MemoryAccess>			dstAccessMask			= 0;
-		ImageLayout					oldLayout				= ImageLayout::eUndefined;
-		ImageLayout					newLayout				= ImageLayout::eUndefined;
-		const uint32_t				srcQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
-		const uint32_t				dstQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
-		VkImage						image					= VK_NULL_HANDLE;
-		ImageSubresourceRange		subresourceRange		= {};
+		const VkStructureType			sType					= VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		const void * const				pNext					= nullptr;
+		vk::Flags<MemoryAccess>			srcAccessMask			= vk::Flags<MemoryAccess>(0);
+		vk::Flags<MemoryAccess>			dstAccessMask			= vk::Flags<MemoryAccess>(0);
+		ImageLayout						oldLayout				= ImageLayout::eUndefined;
+		ImageLayout						newLayout				= ImageLayout::eUndefined;
+		const uint32_t					srcQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
+		const uint32_t					dstQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
+		VkImage							image					= VK_NULL_HANDLE;
+		ImageSubresourceRange			subresourceRange		= {};
 	};
 
 	static_assert(sizeof(ImageMemoryBarrier) == sizeof(VkImageMemoryBarrier), "Struct and wrapper have different size!");
 
 	struct ImageSubresourceLayers
 	{
-		Flags<ImageAspect>		aspectMask;
-		uint32_t				mipLevel;
-		uint32_t				baseArrayLayer;
-		uint32_t				layerCount;
+		vk::Flags<ImageAspect>		aspectMask;
+		uint32_t					mipLevel;
+		uint32_t					baseArrayLayer;
+		uint32_t					layerCount;
 	};
 
 	struct ImageBlit
@@ -219,7 +219,7 @@ namespace Lepton
 		Result Reset(VkCommandBufferResetFlags eResetFlags = 0) { return LAVA_RESULT_CAST(vkResetCommandBuffer(m_hCommandBuffer, eResetFlags)); }
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		Result Submit(VkSemaphore hWaitSemaphore, Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		Result Submit(VkSemaphore hWaitSemaphore, vk::Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
 			m_SubmitInfo.signalSemaphoreCount	= uint32_t(hSignalSemaphore != VK_NULL_HANDLE);
 			m_SubmitInfo.waitSemaphoreCount		= uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
@@ -311,9 +311,9 @@ namespace Lepton
 		}
 
 		//!	@brief	 Update the values of push constants.
-		void CmdPushConstants(VkPipelineLayout hPipelineLayout, Flags<ShaderStage> eStages, uint32_t offset, uint32_t size, const void * pValues)
+		void CmdPushConstants(VkPipelineLayout hPipelineLayout, vk::Flags<ShaderStage> eStages, uint32_t offset, uint32_t size, const void * pValues)
 		{
-			vkCmdPushConstants(m_hCommandBuffer, hPipelineLayout, eStages, offset, size, pValues);
+			vkCmdPushConstants(m_hCommandBuffer, hPipelineLayout, (VkFlags)eStages, offset, size, pValues);
 		}
 
 		//!	@brief	 Issue an indexed draw into a command buffer.
@@ -338,9 +338,9 @@ namespace Lepton
 		}
 
 		//!	@brief	Insert a image memory dependency.
-		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask, Flags<MemoryDependency> dependencyFlags, ArrayProxy<ImageMemoryBarrier> pImageMemoryBarriers)
+		void CmdImageMemoryBarrier(vk::Flags<PipelineStage> srcStageMask, vk::Flags<PipelineStage> dstStageMask, vk::DependencyFlags dependencyFlags, ArrayProxy<ImageMemoryBarrier> pImageMemoryBarriers)
 		{
-			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
+			vkCmdPipelineBarrier(m_hCommandBuffer, (VkFlags)srcStageMask, (VkFlags)dstStageMask, (VkFlags)dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
 		}
 
 		//!	@brief	Resolve regions of an image.

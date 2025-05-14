@@ -40,7 +40,7 @@ namespace Lepton
 		vk::SurfaceTransformFlagsKHR		supportedTransforms			= vk::SurfaceTransformFlagsKHR(0);
 		vk::SurfaceTransformFlagBitsKHR		currentTransform			= vk::SurfaceTransformFlagBitsKHR::eIdentity;
 		vk::CompositeAlphaFlagsKHR			supportedCompositeAlpha		= vk::CompositeAlphaFlagsKHR(0);
-		Flags<ImageUsage>					supportedUsageFlags			= 0;
+		vk::Flags<ImageUsage>				supportedUsageFlags			= vk::Flags<ImageUsage>(0);
 	};
 
 	static_assert(sizeof(SurfaceCapabilities) == sizeof(VkSurfaceCapabilitiesKHR), "Struct and wrapper have different size!");

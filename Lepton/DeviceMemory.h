@@ -44,7 +44,7 @@ namespace Lepton
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
 
 		//!	@brief	Allocate device memory.
-		Result Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequirements memoryRequirements, Flags<MemoryProperty> eProperties);
+		Result Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequirements memoryRequirements, vk::MemoryPropertyFlags eProperties);
 
 		//!	@brief	Convert to VkDeviceMemory.
 		operator VkDeviceMemory() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDeviceMemory : VK_NULL_HANDLE; }

@@ -66,13 +66,13 @@ VkFormatProperties PhysicalDevice::GetFormatProperties(Format eFormat) const
 }
 
 
-uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const
+uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, vk::MemoryPropertyFlags eProperties) const
 {
 	for (uint32_t i = 0; i < m_MemoryProperties.memoryTypeCount; i++)
 	{
 		if ((memoryTypeBits & 0x0001u) == 0x0001u)
 		{
-			if ((m_MemoryProperties.memoryTypes[i].propertyFlags & eProperties) == eProperties)
+			if ((vk::MemoryPropertyFlags(m_MemoryProperties.memoryTypes[i].propertyFlags) & eProperties) == eProperties)
 			{
 				return i;
 			}

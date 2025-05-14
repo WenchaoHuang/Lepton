@@ -16,9 +16,9 @@ namespace Lepton
 	 */
 	struct PushConstantRange
 	{
-		Flags<ShaderStage>		stageFlags		= ShaderStage::eAllGraphics;
-		uint32_t				offset			= 0;
-		uint32_t				size			= 0;
+		vk::Flags<ShaderStage>		stageFlags		= ShaderStage::eAllGraphics;
+		uint32_t					offset			= 0;
+		uint32_t					size			= 0;
 	};
 
 	static_assert(sizeof(PushConstantRange) == sizeof(VkPushConstantRange), "Struct and wrapper have different size!");

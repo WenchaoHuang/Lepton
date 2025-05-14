@@ -55,7 +55,7 @@ namespace Lepton
 		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
 
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const;
+		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, vk::MemoryPropertyFlags eProperties) const;
 
 		//!	@brief	Return the physical properties.
 		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties.properties; }

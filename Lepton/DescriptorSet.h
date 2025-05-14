@@ -17,9 +17,9 @@ namespace Lepton
 	 */
 	struct DescriptorSetLayoutBinding
 	{
-		Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
-		DescriptorType			descriptorType		= DescriptorType::eSampler;
-		uint32_t				descriptorCount		= 1;
+		vk::Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
+		DescriptorType				descriptorType		= DescriptorType::eSampler;
+		uint32_t					descriptorCount		= 1;
 	};
 
 	/*********************************************************************
@@ -123,7 +123,7 @@ namespace Lepton
 		bool IsValid() const { return m_hDescriptorPool != VK_NULL_HANDLE; }
 
 		//!	@brief	Create a new descriptor pool object.
-		Result Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, Flags<DescriptorPoolCreateFlag> flags = DescriptorPoolCreateFlag::eFreeDescriptorSet);
+		Result Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::Flags<DescriptorPoolCreateFlag> flags = DescriptorPoolCreateFlag::eFreeDescriptorSet);
 
 		//!	@brief	Allocate a new descriptor set object.
 		DescriptorSet * AllocateDescriptorSet(DescriptorSetLayout descriptorSetLayout);

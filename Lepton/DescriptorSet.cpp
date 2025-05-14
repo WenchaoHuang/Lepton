@@ -27,7 +27,7 @@ Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLay
 		for (uint32_t i = 0; i < pLayoutBindings.size(); i++)
 		{
 			layoutBindings[i].binding					= i;
-			layoutBindings[i].stageFlags				= pLayoutBindings[i].stageFlags;
+			layoutBindings[i].stageFlags				= (VkFlags)pLayoutBindings[i].stageFlags;
 			layoutBindings[i].descriptorType			= static_cast<VkDescriptorType>(pLayoutBindings[i].descriptorType);
 			layoutBindings[i].descriptorCount			= pLayoutBindings[i].descriptorCount;
 			layoutBindings[i].pImmutableSamplers		= nullptr;
@@ -85,7 +85,7 @@ DescriptorPool::DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> 
 }
 
 
-Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, Flags<DescriptorPoolCreateFlag> flags)
+Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::Flags<DescriptorPoolCreateFlag> flags)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 
@@ -94,7 +94,7 @@ Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> p
 		VkDescriptorPoolCreateInfo		CreateInfo = {};
 		CreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 		CreateInfo.pNext				= nullptr;
-		CreateInfo.flags				= flags;
+		CreateInfo.flags				= (VkFlags)flags;
 		CreateInfo.maxSets				= maxSets;
 		CreateInfo.poolSizeCount		= pDescriptorPoolSizes.size();
 		CreateInfo.pPoolSizes			= reinterpret_cast<const VkDescriptorPoolSize*>(pDescriptorPoolSizes.data());

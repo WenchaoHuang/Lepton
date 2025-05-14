@@ -137,14 +137,14 @@ namespace Lepton
 		 */
 		struct ColorBlendAttachmentState
 		{
-			vk::Bool32					blendEnable				= true;
-			BlendFactor					srcColorBlendFactor		= BlendFactor::eSrcAlpha;
-			BlendFactor					dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
-			BlendOp						colorBlendOp			= BlendOp::eAdd;
-			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
-			BlendFactor					dstAlphaBlendFactor		= BlendFactor::eZero;
-			BlendOp						alphaBlendOp			= BlendOp::eAdd;
-			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eR | ColorComponent::eG | ColorComponent::eB | ColorComponent::eA;
+			vk::Bool32						blendEnable				= true;
+			BlendFactor						srcColorBlendFactor		= BlendFactor::eSrcAlpha;
+			BlendFactor						dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
+			BlendOp							colorBlendOp			= BlendOp::eAdd;
+			BlendFactor						srcAlphaBlendFactor		= BlendFactor::eZero;
+			BlendFactor						dstAlphaBlendFactor		= BlendFactor::eZero;
+			BlendOp							alphaBlendOp			= BlendOp::eAdd;
+			vk::ColorComponentFlags			colorWriteMask			= vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 		};
 		
 		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "Struct and wrapper have different size!");
