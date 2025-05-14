@@ -8,25 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	************************    MemoryProperty    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying properties for a memory type.
-	 */
-	enum class MemoryProperty : VkFlags
-	{
-		eProtected				= VK_MEMORY_PROPERTY_PROTECTED_BIT,
-		eHostCached				= VK_MEMORY_PROPERTY_HOST_CACHED_BIT,
-		eHostVisible			= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-		eDeviceLocal			= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-		eHostCoherent			= VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-		eLazilyAllocated		= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT,
-		eDeviceCoherentAMD		= VK_MEMORY_PROPERTY_DEVICE_COHERENT_BIT_AMD,
-		eDeviceUncachedAMD		= VK_MEMORY_PROPERTY_DEVICE_UNCACHED_BIT_AMD,
-	};
-
-	/*********************************************************************
 	*************************    PresentMode    **************************
 	*********************************************************************/
 
