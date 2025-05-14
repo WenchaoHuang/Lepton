@@ -24,9 +24,9 @@ namespace Lepton
 		AddressMode			addressModeV				= AddressMode::eRepeat;
 		AddressMode			addressModeW				= AddressMode::eRepeat;
 		BorderColor			borderColor					= BorderColor::eFloatTransparentBlack;
-		Bool32				unnormalizedCoordinates		= eFalse;
-		Bool32				anisotropyEnable			= eFalse;
-		Bool32				compareEnable				= eFalse;
+		vk::Bool32			unnormalizedCoordinates		= false;
+		vk::Bool32			anisotropyEnable			= false;
+		vk::Bool32			compareEnable				= false;
 		float				maxAnisotropy				= 1.0f;
 		float				mipLodBias					= 0.0f;
 		float				minLod						= 0.0f;

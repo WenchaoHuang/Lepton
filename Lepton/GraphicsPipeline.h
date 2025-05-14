@@ -80,10 +80,10 @@ namespace Lepton
 		 */
 		struct DepthStencilStateInfo
 		{
-			Bool32				depthTestEnable				= eFalse;
-			Bool32				depthWriteEnable			= eFalse;
-			Bool32				depthBoundsTestEnable		= eFalse;
-			Bool32				stencilTestEnable			= eFalse;
+			vk::Bool32			depthTestEnable				= false;
+			vk::Bool32			depthWriteEnable			= false;
+			vk::Bool32			depthBoundsTestEnable		= false;
+			vk::Bool32			stencilTestEnable			= false;
 			CompareOp			depthCompareOp				= CompareOp::eNever;
 			StencilOpState		front						= {};
 			StencilOpState		back						= {};
@@ -103,9 +103,9 @@ namespace Lepton
 			CullMode		cullMode					= CullMode::eNone;
 			FrontFace		frontFace					= FrontFace::eCounterClockwise;
 			PolygonMode		polygonMode					= PolygonMode::eFill;
-			Bool32			depthBiasEnable				= eFalse;
-			Bool32			depthClampEnable			= eFalse;
-			Bool32			rasterizerDiscardEnable		= eFalse;
+			vk::Bool32		depthBiasEnable				= false;
+			vk::Bool32		depthClampEnable			= false;
+			vk::Bool32		rasterizerDiscardEnable		= false;
 			float			depthBiasConstantFactor		= 0.0f;
 			float			depthBiasSlopeFactor		= 0.0f;
 			float			depthBiasClamp				= 0.0f;
@@ -122,9 +122,9 @@ namespace Lepton
 		struct MultisampleStateInfo
 		{
 			vk::SampleCountFlagBits		rasterizationSamples		= vk::SampleCountFlagBits::e1;
-			Bool32						alphaToCoverageEnable		= eFalse;
-			Bool32						sampleShadingEnable			= eFalse;
-			Bool32						alphaToOneEnable			= eFalse;
+			vk::Bool32					alphaToCoverageEnable		= false;
+			vk::Bool32					sampleShadingEnable			= false;
+			vk::Bool32					alphaToOneEnable			= false;
 			float						minSampleShading			= 0.0f;
 		};
 
@@ -137,7 +137,7 @@ namespace Lepton
 		 */
 		struct ColorBlendAttachmentState
 		{
-			Bool32						blendEnable				= eTrue;
+			vk::Bool32					blendEnable				= true;
 			BlendFactor					srcColorBlendFactor		= BlendFactor::eSrcAlpha;
 			BlendFactor					dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
 			BlendOp						colorBlendOp			= BlendOp::eAdd;
@@ -158,7 +158,7 @@ namespace Lepton
 		 */
 		struct ColorBlendStateInfo
 		{
-			Bool32										logicOpEnable			= eFalse;
+			vk::Bool32									logicOpEnable			= false;
 			LogicOp										logicOp					= LogicOp::eClear;
 			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;
