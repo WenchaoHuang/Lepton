@@ -37,8 +37,8 @@ namespace Lepton
 		VkExtent2D							minImageExtent				= { 0, 0 };
 		VkExtent2D							maxImageExtent				= { 0, 0 };
 		uint32_t							maxImageArrayLayers			= 0;
-		Flags<SurfaceTransform>				supportedTransforms			= 0;
-		SurfaceTransform					currentTransform			= SurfaceTransform::eIdentity;
+		vk::SurfaceTransformFlagsKHR		supportedTransforms			= vk::SurfaceTransformFlagsKHR(0);
+		vk::SurfaceTransformFlagBitsKHR		currentTransform			= vk::SurfaceTransformFlagBitsKHR::eIdentity;
 		Flags<AlphaCompositingMmode>		supportedCompositeAlpha		= 0;
 		Flags<ImageUsage>					supportedUsageFlags			= 0;
 	};

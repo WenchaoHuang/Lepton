@@ -7,26 +7,6 @@
 
 namespace Lepton
 {
-	/**********************************************************************
-	**********************    SurfaceTransform    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Presentation transforms supported on a device.
-	 */
-	enum class SurfaceTransform : VkFlags
-	{
-		eInherit						= VK_SURFACE_TRANSFORM_INHERIT_BIT_KHR,
-		eIdentity						= VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-		eRotate90						= VK_SURFACE_TRANSFORM_ROTATE_90_BIT_KHR,
-		eRotate180						= VK_SURFACE_TRANSFORM_ROTATE_180_BIT_KHR,
-		eRotate270						= VK_SURFACE_TRANSFORM_ROTATE_270_BIT_KHR,
-		eHorizontalMirror				= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_BIT_KHR,
-		eHorizontalMirrorRotate90		= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_90_BIT_KHR,
-		eHorizontalMirrorRotate180		= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_180_BIT_KHR,
-		eHorizontalMirrorRotate270		= VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_270_BIT_KHR,
-	};
-
 	/*********************************************************************
 	********************    AlphaCompositingMmode    *********************
 	*********************************************************************/
