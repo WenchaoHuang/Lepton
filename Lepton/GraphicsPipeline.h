@@ -159,7 +159,7 @@ namespace Lepton
 		struct ColorBlendStateInfo
 		{
 			vk::Bool32									logicOpEnable			= false;
-			LogicOp										logicOp					= LogicOp::eClear;
+			vk::LogicOp									logicOp					= vk::LogicOp::eClear;
 			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;
 		};

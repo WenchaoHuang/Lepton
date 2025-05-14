@@ -225,33 +225,6 @@ namespace Lepton
 	};
 
 	/*********************************************************************
-	***************************    LogicOp    ****************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Framebuffer logical operations.
-	 */
-	enum class LogicOp
-	{
-		eOr					= VK_LOGIC_OP_OR,
-		eNor				= VK_LOGIC_OP_NOR,
-		eXor				= VK_LOGIC_OP_XOR,
-		eSet				= VK_LOGIC_OP_SET,
-		eAnd				= VK_LOGIC_OP_AND,
-		eNand				= VK_LOGIC_OP_NAND,
-		eCopy				= VK_LOGIC_OP_COPY,
-		eNoOp				= VK_LOGIC_OP_NO_OP,
-		eClear				= VK_LOGIC_OP_CLEAR,
-		eInvert				= VK_LOGIC_OP_INVERT,
-		eOrReverse			= VK_LOGIC_OP_OR_REVERSE,
-		eEquivalent			= VK_LOGIC_OP_EQUIVALENT,
-		eOrInverted			= VK_LOGIC_OP_OR_INVERTED,
-		eAndReverse			= VK_LOGIC_OP_AND_REVERSE,
-		eAndInverted		= VK_LOGIC_OP_AND_INVERTED,
-		eCopyInverted		= VK_LOGIC_OP_COPY_INVERTED,
-	};
-
-	/*********************************************************************
 	****************************    Filter    ****************************
 	*********************************************************************/
 
