@@ -22,7 +22,7 @@ Swapchain::Swapchain() : m_hDevice(VK_NULL_HANDLE), m_hSwapchain(VK_NULL_HANDLE)
 }
 
 
-Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, PresentMode ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
+Result Swapchain::Reconstruct(VkDevice hDevice, VkSurfaceKHR hSurface, vk::PresentModeKHR ePresentMode, VkExtent2D imageExtent, uint32_t minImageCount)
 {
 	if (hDevice == VK_NULL_HANDLE)			return Result::eErrorInvalidDeviceHandle;
 	if (hSurface == VK_NULL_HANDLE)			return Result::eErrorInvalidSurfaceHandle;
@@ -106,7 +106,7 @@ uint32_t Swapchain::AcquireNextImageIndex(VkSemaphore hSemaphore, VkFence hFence
 }
 
 
-Result Swapchain::Present(VkQueue hQueue, ArrayProxy<VkSemaphore> waitSemaphores)
+Result Swapchain::Present(VkQueue hQueue, vk::ArrayProxy<VkSemaphore> waitSemaphores)
 {
 	m_PresentInfo.pWaitSemaphores		= waitSemaphores.data();
 	m_PresentInfo.waitSemaphoreCount	= waitSemaphores.size();

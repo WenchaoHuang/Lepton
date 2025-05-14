@@ -9,72 +9,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	********************    ImageSubresourceRange    *********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying an image subresource range.
-	 */
-	struct ImageSubresourceRange
-	{
-		Flags<ImageAspect>		aspectMask			= 0;
-		uint32_t				baseMipLevel		= 0;
-		uint32_t				levelCount			= 1;
-		uint32_t				baseArrayLayer		= 0;
-		uint32_t				layerCount			= 1;
-	};
-
-	static_assert(sizeof(ImageSubresourceRange) == sizeof(VkImageSubresourceRange), "Struct and wrapper have different size!");
-
-	/*********************************************************************
-	********************    ImageSubresourceRange    *********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying the parameters of an image memory barrier.
-	 */
-	struct ImageMemoryBarrier
-	{
-		const VkStructureType		sType					= VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		const void * const			pNext					= nullptr;
-		Flags<MemoryAccess>			srcAccessMask			= 0;
-		Flags<MemoryAccess>			dstAccessMask			= 0;
-		ImageLayout					oldLayout				= ImageLayout::eUndefined;
-		ImageLayout					newLayout				= ImageLayout::eUndefined;
-		const uint32_t				srcQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
-		const uint32_t				dstQueueFamilyIndex		= VK_QUEUE_FAMILY_IGNORED;
-		VkImage						image					= VK_NULL_HANDLE;
-		ImageSubresourceRange		subresourceRange		= {};
-	};
-
-	static_assert(sizeof(ImageMemoryBarrier) == sizeof(VkImageMemoryBarrier), "Struct and wrapper have different size!");
-
-	struct ImageSubresourceLayers
-	{
-		Flags<ImageAspect>		aspectMask;
-		uint32_t				mipLevel;
-		uint32_t				baseArrayLayer;
-		uint32_t				layerCount;
-	};
-
-	struct ImageBlit
-	{
-		ImageSubresourceLayers		srcSubresource;
-		VkOffset3D					srcOffsets[2];
-		ImageSubresourceLayers		dstSubresource;
-		VkOffset3D					dstOffsets[2];
-	};
-
-	struct ImageResolve
-	{
-		ImageSubresourceLayers		srcSubresource;
-		VkOffset3D					srcOffset;
-		ImageSubresourceLayers		dstSubresource;
-		VkOffset3D					dstOffset;
-		VkExtent3D					extent;
-	};
-
-	/*********************************************************************
 	*************************    CommandQueue    *************************
 	*********************************************************************/
 
@@ -88,7 +22,7 @@ namespace Lepton
 	private:
 
 		//!	@brief	Create command queue object.
-		CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilities, float priority);
+		CommandQueue(uint32_t familyIndex, vk::QueueFlags eCapabilities, float priority);
 
 		//!	@brief	Destroy command queue object.
 		~CommandQueue() noexcept;
@@ -111,10 +45,10 @@ namespace Lepton
 		bool IsReady() const { return m_hQueue != VK_NULL_HANDLE; }
 
 		//!	@brief	If this queue has the specify capability.
-		bool Has(QueueCapability eCapabilities) const { return (m_eCapabilities & eCapabilities) != 0; }
+		bool Has(vk::QueueFlagBits eCapabilities) const { return bool(m_eCapabilities & eCapabilities); }
 
 		//!	@brief	Create a new command pool object.
-		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
+		CommandPool * CreateCommandPool(vk::CommandPoolCreateFlags eUsageBehaviors = vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
 
 		//!	@brief	Destroy a command pool object.
 		Result DestroyCommandPool(CommandPool * pCommandPool);
@@ -131,7 +65,7 @@ namespace Lepton
 
 		std::set<CommandPool*>				m_pCommandPools;
 
-		const Flags<QueueCapability>		m_eCapabilities;
+		const vk::QueueFlags				m_eCapabilities;
 	};
 
 	/*********************************************************************
@@ -148,7 +82,7 @@ namespace Lepton
 	private:
 
 		//!	@brief	Create command pool object.
-		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, Flags<CommandPoolUsageBehavior> eUsageBehaviors);
+		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, vk::CommandPoolCreateFlags eUsageBehaviors);
 
 		//!	@brief	Destroy command pool object.
 		~CommandPool() noexcept;
@@ -169,15 +103,15 @@ namespace Lepton
 
 	private:
 
-		const VkQueue								m_hQueue;
+		const VkQueue							m_hQueue;
 
-		const VkDevice								m_hDevice;
+		const VkDevice							m_hDevice;
 
-		const VkCommandPool							m_hCommandPool;
+		const VkCommandPool						m_hCommandPool;
 
-		std::set<CommandBuffer*>					m_pCommandBuffers;
+		std::set<CommandBuffer*>				m_pCommandBuffers;
 		
-		const Flags<CommandPoolUsageBehavior>		m_eUsageBehaviors;
+		const vk::CommandPoolCreateFlags		m_eUsageBehaviors;
 	};
 
 	/*********************************************************************
@@ -208,9 +142,9 @@ namespace Lepton
 		Result EndRecord() { return LAVA_RESULT_CAST(vkEndCommandBuffer(m_hCommandBuffer)); }
 
 		//!	@brief	Start recording command buffer.
-		Result BeginRecord(Flags<CommandBufferUsage> eUsages = 0)
+		Result BeginRecord(vk::CommandBufferUsageFlags eUsages = vk::CommandBufferUsageFlagBits(0))
 		{
-			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, eUsages, nullptr };
+			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, (VkFlags)eUsages, nullptr };
 
 			return LAVA_RESULT_CAST(vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo));
 		}
@@ -219,7 +153,7 @@ namespace Lepton
 		Result Reset(VkCommandBufferResetFlags eResetFlags = 0) { return LAVA_RESULT_CAST(vkResetCommandBuffer(m_hCommandBuffer, eResetFlags)); }
 
 		//!	@brief	Submits a sequence of semaphores or command buffers to a queue.
-		Result Submit(VkSemaphore hWaitSemaphore, Flags<PipelineStage> eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
+		Result Submit(VkSemaphore hWaitSemaphore, vk::PipelineStageFlags eWaitDstStageMask, VkSemaphore hSignalSemaphore, VkFence hFence = VK_NULL_HANDLE)
 		{
 			m_SubmitInfo.signalSemaphoreCount	= uint32_t(hSignalSemaphore != VK_NULL_HANDLE);
 			m_SubmitInfo.waitSemaphoreCount		= uint32_t(hWaitSemaphore != VK_NULL_HANDLE);
@@ -269,13 +203,13 @@ namespace Lepton
 		}
 
 		//!	@brief	Set the dynamic scissor rectangles on a command buffer.
-		void CmdSetScissor(ArrayProxy<VkRect2D> pScissors, uint32_t firstScissor = 0)
+		void CmdSetScissor(vk::ArrayProxy<VkRect2D> pScissors, uint32_t firstScissor = 0)
 		{
 			vkCmdSetScissor(m_hCommandBuffer, firstScissor, pScissors.size(), pScissors.data());
 		}
 
 		//!	@brief	Set the viewport on a command buffer.
-		void CmdSetViewport(ArrayProxy<VkViewport> pViewports, uint32_t firstViewport = 0)
+		void CmdSetViewport(vk::ArrayProxy<VkViewport> pViewports, uint32_t firstViewport = 0)
 		{
 			vkCmdSetViewport(m_hCommandBuffer, firstViewport, pViewports.size(), pViewports.data());
 		}
@@ -287,7 +221,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Bind an index buffer to a command buffer.
-		void CmdBindIndexBuffer(VkBuffer hBuffer, IndexType eIndexType, VkDeviceSize offset = 0)
+		void CmdBindIndexBuffer(VkBuffer hBuffer, vk::IndexType eIndexType, VkDeviceSize offset = 0)
 		{
 			vkCmdBindIndexBuffer(m_hCommandBuffer, hBuffer, offset, static_cast<VkIndexType>(eIndexType));
 		}
@@ -311,9 +245,9 @@ namespace Lepton
 		}
 
 		//!	@brief	 Update the values of push constants.
-		void CmdPushConstants(VkPipelineLayout hPipelineLayout, Flags<ShaderStage> eStages, uint32_t offset, uint32_t size, const void * pValues)
+		void CmdPushConstants(VkPipelineLayout hPipelineLayout, vk::ShaderStageFlags eStages, uint32_t offset, uint32_t size, const void * pValues)
 		{
-			vkCmdPushConstants(m_hCommandBuffer, hPipelineLayout, eStages, offset, size, pValues);
+			vkCmdPushConstants(m_hCommandBuffer, hPipelineLayout, (VkFlags)eStages, offset, size, pValues);
 		}
 
 		//!	@brief	 Issue an indexed draw into a command buffer.
@@ -323,40 +257,40 @@ namespace Lepton
 		}
 
 		//!	@brief	Copy data from a buffer into an image.
-		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<VkBufferImageCopy> pRegions)
+		void CmdCopyBufferToImage(VkBuffer hSrcBuffer, VkImage hDstImage, vk::ImageLayout eDstImageLayout, vk::ArrayProxy<VkBufferImageCopy> pRegions)
 		{
 			vkCmdCopyBufferToImage(m_hCommandBuffer, hSrcBuffer, hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), pRegions.data());
 		}
 
 		//!	@brief	Begin a new render pass.
-		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, ArrayProxy<VkClearValue> pClearValues = {}, SubpassContents eContents = SubpassContents::eInline);
+		void CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea, vk::ArrayProxy<VkClearValue> pClearValues = {}, vk::SubpassContents eContents = vk::SubpassContents::eInline);
 
 		//!	@brief	Clear regions of a color image.
-		void CmdClearColorImage(VkImage hImage, ImageLayout eImageLayout, const VkClearColorValue & color, ArrayProxy<ImageSubresourceRange> pRanges)
+		void CmdClearColorImage(VkImage hImage, vk::ImageLayout eImageLayout, const VkClearColorValue & color, vk::ArrayProxy<vk::ImageSubresourceRange> pRanges)
 		{
 			vkCmdClearColorImage(m_hCommandBuffer, hImage, static_cast<VkImageLayout>(eImageLayout), &color, pRanges.size(), reinterpret_cast<const VkImageSubresourceRange*>(pRanges.data()));
 		}
 
 		//!	@brief	Insert a image memory dependency.
-		void CmdImageMemoryBarrier(Flags<PipelineStage> srcStageMask, Flags<PipelineStage> dstStageMask, Flags<MemoryDependency> dependencyFlags, ArrayProxy<ImageMemoryBarrier> pImageMemoryBarriers)
+		void CmdImageMemoryBarrier(vk::PipelineStageFlags srcStageMask, vk::PipelineStageFlags dstStageMask, vk::DependencyFlags dependencyFlags, vk::ArrayProxy<vk::ImageMemoryBarrier> pImageMemoryBarriers)
 		{
-			vkCmdPipelineBarrier(m_hCommandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
+			vkCmdPipelineBarrier(m_hCommandBuffer, (VkFlags)srcStageMask, (VkFlags)dstStageMask, (VkFlags)dependencyFlags, 0, nullptr, 0, nullptr, pImageMemoryBarriers.size(), reinterpret_cast<const VkImageMemoryBarrier*>(pImageMemoryBarriers.data()));
 		}
 
 		//!	@brief	Resolve regions of an image.
-		void CmdResolveImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<ImageResolve> pRegions)
+		void CmdResolveImage(VkImage hSrcImage, vk::ImageLayout eSrcImageLayout, VkImage hDstImage, vk::ImageLayout eDstImageLayout, vk::ArrayProxy<vk::ImageResolve> pRegions)
 		{
 			vkCmdResolveImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageResolve*>(pRegions.data()));
 		}
 
 		//!	@brief	Copy regions of an image, potentially performing format conversion.
-		void CmdBlitImage(VkImage hSrcImage, ImageLayout eSrcImageLayout, VkImage hDstImage, ImageLayout eDstImageLayout, ArrayProxy<ImageBlit> pRegions, Filter eFilter)
+		void CmdBlitImage(VkImage hSrcImage, vk::ImageLayout eSrcImageLayout, VkImage hDstImage, vk::ImageLayout eDstImageLayout, vk::ArrayProxy<vk::ImageBlit> pRegions, vk::Filter eFilter)
 		{
 			vkCmdBlitImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageBlit*>(pRegions.data()), static_cast<VkFilter>(eFilter));
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<VkDescriptorSet> pDescriptorSets)
+		void CmdBindDescriptorSets(vk::PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, vk::ArrayProxy<VkDescriptorSet> pDescriptorSets)
 		{
 			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hPipelineLayout, 0, pDescriptorSets.size(), pDescriptorSets.data(), 0, nullptr);
 		}

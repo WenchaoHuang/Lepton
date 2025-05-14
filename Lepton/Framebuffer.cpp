@@ -15,8 +15,8 @@ RenderPass::UniqueHandle::UniqueHandle(VkDevice hDevice, VkRenderPass hRenderPas
 }
 
 
-Result RenderPass::Create(VkDevice hDevice, ArrayProxy<AttachmentDescription> attachmentDescriptions,
-						  ArrayProxy<SubpassDescription> subpassDescriptions, ArrayProxy<SubpassDependency> subpassDependencies)
+Result RenderPass::Create(VkDevice hDevice, vk::ArrayProxy<vk::AttachmentDescription> attachmentDescriptions,
+						  vk::ArrayProxy<vk::SubpassDescription> subpassDescriptions, vk::ArrayProxy<vk::SubpassDependency> subpassDependencies)
 {
 	if (hDevice == VK_NULL_HANDLE)		Result::eErrorInvalidDeviceHandle;
 
@@ -63,7 +63,7 @@ Framebuffer::UniqueHandle::UniqueHandle(RenderPass renderPass, VkFramebuffer hFr
 }
 
 
-Result Framebuffer::Create(RenderPass renderPass, ArrayProxy<VkImageView> attachments, VkExtent2D extent)
+Result Framebuffer::Create(RenderPass renderPass, vk::ArrayProxy<VkImageView> attachments, VkExtent2D extent)
 {
 	if (!renderPass.IsValid())			Result::eErrorInvalidRenderPassHandle;
 

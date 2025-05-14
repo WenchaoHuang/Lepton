@@ -28,10 +28,10 @@ UniqueHandle::UniqueHandle(DeviceLocalMemory deviceMemory, VkImage hImage, VkIma
 
 template<VkImageType eImageType, VkImageViewType eViewType>
 Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDevice,
-												Format eFormat, VkExtent3D extent,
+												vk::Format eFormat, VkExtent3D extent,
 												uint32_t mipLevels, uint32_t arrayLayers,
-												SampleCount eSamples, Flags<ImageUsage> eUsages,
-												Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags)
+												vk::SampleCountFlagBits eSamples, vk::ImageUsageFlags eUsages,
+												vk::ImageAspectFlags eAspects, VkImageCreateFlags eCreateFlags)
 {
 	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
@@ -47,7 +47,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 	CreateInfo.arrayLayers					= arrayLayers;
 	CreateInfo.samples						= static_cast<VkSampleCountFlagBits>(eSamples);
 	CreateInfo.tiling						= VK_IMAGE_TILING_OPTIMAL;
-	CreateInfo.usage						= eUsages;
+	CreateInfo.usage						= VkFlags(eUsages);
 	CreateInfo.sharingMode					= VK_SHARING_MODE_EXCLUSIVE;
 	CreateInfo.queueFamilyIndexCount		= 0;
 	CreateInfo.pQueueFamilyIndices			= nullptr;
@@ -86,7 +86,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 				ViewCreateInfo.components.a							= VK_COMPONENT_SWIZZLE_A;
 				ViewCreateInfo.subresourceRange.baseArrayLayer		= 0;
 				ViewCreateInfo.subresourceRange.baseMipLevel		= 0;
-				ViewCreateInfo.subresourceRange.aspectMask			= eAspects;
+				ViewCreateInfo.subresourceRange.aspectMask			= (VkFlags)eAspects;
 				ViewCreateInfo.subresourceRange.layerCount			= arrayLayers;
 				ViewCreateInfo.subresourceRange.levelCount			= mipLevels;
 

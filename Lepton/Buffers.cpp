@@ -48,7 +48,7 @@ Result HostVisibleBuffer::Create(const LogicalDevice * pLogicalDevice, VkDeviceS
 
 		vkGetBufferMemoryRequirements(pLogicalDevice->Handle(), hNewBuffer, &Requirements);
 
-		eResult = m_Memory.Allocate(pLogicalDevice, Requirements, MemoryProperty::eHostVisible | MemoryProperty::eHostCoherent);
+		eResult = m_Memory.Allocate(pLogicalDevice, Requirements, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent);
 
 		if (eResult != Result::eSuccess)
 		{

@@ -12,13 +12,13 @@ using namespace Lepton;
 /*************************************************************************
 **********************    GraphicsPipelineParam    ***********************
 *************************************************************************/
-GraphicsPipelineParam::GraphicsPipelineParam() : inputAssemblyState(PrimitiveTopology::eTriangleList), tessellationState(0)
+GraphicsPipelineParam::GraphicsPipelineParam() : inputAssemblyState(vk::PrimitiveTopology::eTriangleList), tessellationState(0)
 {
 
 }
 
 
-void GraphicsPipelineParam::VertexInputStateInfo::SetLocation(uint32_t Location, uint32_t Binding, Format eFormat, uint32_t Offset)
+void GraphicsPipelineParam::VertexInputStateInfo::SetLocation(uint32_t Location, uint32_t Binding, vk::Format eFormat, uint32_t Offset)
 {
 	for (size_t i = 0; i < attributeDescriptions.size(); i++)
 	{
@@ -38,7 +38,7 @@ void GraphicsPipelineParam::VertexInputStateInfo::SetLocation(uint32_t Location,
 }
 
 
-void GraphicsPipelineParam::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VertexInputRate eInputRate)
+void GraphicsPipelineParam::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, vk::VertexInputRate eInputRate)
 {
 	for (size_t i = 0; i < bindingDescriptions.size(); i++)
 	{

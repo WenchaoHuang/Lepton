@@ -10,7 +10,7 @@ using namespace Lepton;
 /*************************************************************************
 ***************************    ShaderModule    ***************************
 *************************************************************************/
-ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShaderModule, ShaderStage eStage) : m_hDevice(hDevice)
+ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShaderModule, vk::ShaderStageFlagBits eStage) : m_hDevice(hDevice)
 {
 	m_StageInfo.sType					= VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	m_StageInfo.pNext					= nullptr;
@@ -22,7 +22,7 @@ ShaderModule::UniqueHandle::UniqueHandle(VkDevice hDevice, VkShaderModule hShade
 }
 
 
-Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<uint32_t> pCode, ShaderStage eStage)
+Result ShaderModule::Create(VkDevice hDevice, vk::ArrayProxy<uint32_t> pCode, vk::ShaderStageFlagBits eStage)
 {
 	if (pCode.empty() == true)			return Result::eErrorInvalidSPIRVCode;
 	if (hDevice == VK_NULL_HANDLE)		return Result::eErrorInvalidDeviceHandle;
@@ -47,7 +47,7 @@ Result ShaderModule::Create(VkDevice hDevice, ArrayProxy<uint32_t> pCode, Shader
 }
 
 
-Result ShaderModule::Create(VkDevice hDevice, const char * pShaderPath, ShaderStage eShaderStage)
+Result ShaderModule::Create(VkDevice hDevice, const char * pShaderPath, vk::ShaderStageFlagBits eShaderStage)
 {
 	std::vector<uint32_t> ShaderCode;
 

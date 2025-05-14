@@ -11,14 +11,14 @@ using namespace Lepton;
 *************************************************************************/
 PipelineLayout::UniqueHandle::UniqueHandle(VkDevice hDevice, VkPipelineLayout hPipelineLayout,
 										   const std::vector<DescriptorSetLayout> & DescriptorSetLayouts,
-										   const std::vector<PushConstantRange> & PushConstantRanges)
+										   const std::vector<vk::PushConstantRange> & PushConstantRanges)
 	: m_hDevice(hDevice), m_hPipelineLayout(hPipelineLayout), m_DescriptorSetLayouts(DescriptorSetLayouts), m_PushConstantRanges(PushConstantRanges)
 {
 
 }
 
 
-Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayout> pDescriptorSetLayouts, ArrayProxy<PushConstantRange> pPushConstantRanges)
+Result PipelineLayout::Create(VkDevice hDevice, vk::ArrayProxy<DescriptorSetLayout> pDescriptorSetLayouts, vk::ArrayProxy<vk::PushConstantRange> pPushConstantRanges)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 
@@ -30,9 +30,9 @@ Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayout> 
 
 		for (uint32_t i = 0; i < pDescriptorSetLayouts.size(); i++)
 		{
-			if (pDescriptorSetLayouts[i].GetDeviceHandle() != hDevice)		return eResult;
+			if ((pDescriptorSetLayouts.data() + i)->GetDeviceHandle() != hDevice)		return eResult;
 			
-			hDescriptorSetLayouts[i] = pDescriptorSetLayouts[i];
+			hDescriptorSetLayouts[i] = *(pDescriptorSetLayouts.data() + i);
 		}
 
 		VkPipelineLayoutCreateInfo				CreateInfo = {};
@@ -50,17 +50,17 @@ Result PipelineLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayout> 
 
 		if (eResult == Result::eSuccess)
 		{
-			std::vector<PushConstantRange>		PushConstantRanges(pPushConstantRanges.size());
-			std::vector<DescriptorSetLayout>	DescriptorSetLayouts(pDescriptorSetLayouts.size());
+			std::vector<vk::PushConstantRange>		PushConstantRanges(pPushConstantRanges.size());
+			std::vector<DescriptorSetLayout>		DescriptorSetLayouts(pDescriptorSetLayouts.size());
 
 			for (uint32_t i = 0; i < PushConstantRanges.size(); i++)
 			{
-				PushConstantRanges[i] = pPushConstantRanges[i];
+				PushConstantRanges[i] = *(pPushConstantRanges.data() + i);
 			}
 
 			for (uint32_t i = 0; i < DescriptorSetLayouts.size(); i++)
 			{
-				DescriptorSetLayouts[i] = pDescriptorSetLayouts[i];
+				DescriptorSetLayouts[i] = *(pDescriptorSetLayouts.data() + i);
 			}
 
 			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hPipelineLayou, DescriptorSetLayouts, PushConstantRanges);

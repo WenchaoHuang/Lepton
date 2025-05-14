@@ -9,14 +9,14 @@ using namespace Lepton;
 /*************************************************************************
 ***********************    DescriptorSetLayout    ************************
 *************************************************************************/
-DescriptorSetLayout::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDescriptorSetLayout hDescriptorSetLayout, const std::vector<DescriptorSetLayoutBinding> & LayoutBindings)
+DescriptorSetLayout::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDescriptorSetLayout hDescriptorSetLayout, const std::vector<vk::DescriptorSetLayoutBinding> & LayoutBindings)
 	: m_hDevice(hDevice), m_hDescriptorSetLayout(hDescriptorSetLayout), m_LayoutBindings(LayoutBindings)
 {
 
 }
 
 
-Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayoutBinding> pLayoutBindings)
+Result DescriptorSetLayout::Create(VkDevice hDevice, vk::ArrayProxy<vk::DescriptorSetLayoutBinding> pLayoutBindings)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 
@@ -27,9 +27,9 @@ Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLay
 		for (uint32_t i = 0; i < pLayoutBindings.size(); i++)
 		{
 			layoutBindings[i].binding					= i;
-			layoutBindings[i].stageFlags				= pLayoutBindings[i].stageFlags;
-			layoutBindings[i].descriptorType			= static_cast<VkDescriptorType>(pLayoutBindings[i].descriptorType);
-			layoutBindings[i].descriptorCount			= pLayoutBindings[i].descriptorCount;
+			layoutBindings[i].stageFlags				= (VkFlags)(pLayoutBindings.data() + i)->stageFlags;
+			layoutBindings[i].descriptorType			= static_cast<VkDescriptorType>((pLayoutBindings.data() + i)->descriptorType);
+			layoutBindings[i].descriptorCount			= (pLayoutBindings.data() + i)->descriptorCount;
 			layoutBindings[i].pImmutableSamplers		= nullptr;
 		}
 
@@ -46,11 +46,11 @@ Result DescriptorSetLayout::Create(VkDevice hDevice, ArrayProxy<DescriptorSetLay
 
 		if (eResult == Result::eSuccess)
 		{
-			std::vector<DescriptorSetLayoutBinding>		LayoutBindings(pLayoutBindings.size());
+			std::vector<vk::DescriptorSetLayoutBinding>		LayoutBindings(pLayoutBindings.size());
 
 			for (uint32_t i = 0; i < pLayoutBindings.size(); i++)
 			{
-				LayoutBindings[i] = pLayoutBindings[i];
+				LayoutBindings[i] = *(pLayoutBindings.data() + i);
 			}
 
 			m_spUniqueHandle = std::make_shared<UniqueHandle>(hDevice, hDescriptorSetLayout, LayoutBindings);
@@ -75,17 +75,17 @@ DescriptorSetLayout::UniqueHandle::~UniqueHandle() noexcept
 *************************************************************************/
 DescriptorPool::DescriptorPool() : m_hDevice(VK_NULL_HANDLE), m_hDescriptorPool(VK_NULL_HANDLE), m_MaxSets(0)
 {
-
+	
 }
 
 
-DescriptorPool::DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets) : DescriptorPool()
+DescriptorPool::DescriptorPool(VkDevice hDevice, vk::ArrayProxy<vk::DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets) : DescriptorPool()
 {
 	this->Create(hDevice, pDescriptorPoolSizes, maxSets);
 }
 
 
-Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, Flags<DescriptorPoolCreateFlag> flags)
+Result DescriptorPool::Create(VkDevice hDevice, vk::ArrayProxy<vk::DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::DescriptorPoolCreateFlags flags)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 
@@ -94,7 +94,7 @@ Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> p
 		VkDescriptorPoolCreateInfo		CreateInfo = {};
 		CreateInfo.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 		CreateInfo.pNext				= nullptr;
-		CreateInfo.flags				= flags;
+		CreateInfo.flags				= (VkFlags)flags;
 		CreateInfo.maxSets				= maxSets;
 		CreateInfo.poolSizeCount		= pDescriptorPoolSizes.size();
 		CreateInfo.pPoolSizes			= reinterpret_cast<const VkDescriptorPoolSize*>(pDescriptorPoolSizes.data());
@@ -111,7 +111,7 @@ Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> p
 
 			for (uint32_t i = 0; i < pDescriptorPoolSizes.size(); i++)
 			{
-				m_DescriptorPoolSizes[i] = pDescriptorPoolSizes[i];
+				m_DescriptorPoolSizes[i] = *(pDescriptorPoolSizes.data() + i);
 			}
 
 			m_hDescriptorPool = hDescriptorPool;
@@ -206,7 +206,7 @@ DescriptorSet::DescriptorSet(VkDevice hDevice, VkDescriptorSet hDescriptorSet, D
 }
 
 
-void DescriptorSet::UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout)
+void DescriptorSet::UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, vk::ImageLayout eImageLayout)
 {
 	auto & LayoutBindings = m_DescriptorSetLayout.GetLayoutBindings();
 

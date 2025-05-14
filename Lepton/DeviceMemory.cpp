@@ -18,7 +18,7 @@ DeviceMemory::UniqueHandle::UniqueHandle(VkDevice hDevice, VkDeviceMemory hDevic
 }
 
 
-Result DeviceMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequirements memoryRequirements, Flags<MemoryProperty> eProperties)
+Result DeviceMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemoryRequirements memoryRequirements, vk::MemoryPropertyFlags eProperties)
 {
 	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
@@ -102,7 +102,7 @@ Result DeviceLocalMemory::Allocate(const LogicalDevice * pLogicalDevice, VkMemor
 	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
 
-	uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, MemoryProperty::eDeviceLocal);
+	uint32_t memoryTypeIndex = pLogicalDevice->GetPhysicalDevice()->GetMemoryTypeIndex(memoryRequirements.memoryTypeBits, vk::MemoryPropertyFlagBits::eDeviceLocal);
 
 	if (memoryTypeIndex == LAVA_INVALID_INDEX)		return Result::eErrorInvalidMemoryTypeBits;
 

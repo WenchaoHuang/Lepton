@@ -9,33 +9,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	******************    DescriptorSetLayoutBinding    ******************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a descriptor set layout binding.
-	 */
-	struct DescriptorSetLayoutBinding
-	{
-		Flags<ShaderStage>		stageFlags			= ShaderStage::eAllGraphics;
-		DescriptorType			descriptorType		= DescriptorType::eSampler;
-		uint32_t				descriptorCount		= 1;
-	};
-
-	/*********************************************************************
-	**********************    DescriptorPoolSize    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying descriptor pool size.
-	 */
-	struct DescriptorPoolSize
-	{
-		DescriptorType			type				= DescriptorType::eSampler;
-		uint32_t				descriptorCount		= 0;
-	};
-
-	/*********************************************************************
 	*********************    DescriptorSetLayout    **********************
 	*********************************************************************/
 
@@ -54,10 +27,10 @@ namespace Lepton
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new descriptor set layout object.
-		Result Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayoutBinding> pLayoutBindings);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<vk::DescriptorSetLayoutBinding> pLayoutBindings);
 
 		//!	@brief	Return descriptor bindings.
-		const std::vector<DescriptorSetLayoutBinding> & GetLayoutBindings() const { return m_spUniqueHandle->m_LayoutBindings; }
+		const std::vector<vk::DescriptorSetLayoutBinding> & GetLayoutBindings() const { return m_spUniqueHandle->m_LayoutBindings; }
 
 		//!	@brief	Return VkDevice handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
@@ -77,19 +50,19 @@ namespace Lepton
 		public:
 
 			//!	@brief	Constructor (handles must be initialized).
-			UniqueHandle(VkDevice, VkDescriptorSetLayout, const std::vector<DescriptorSetLayoutBinding>&);
+			UniqueHandle(VkDevice, VkDescriptorSetLayout, const std::vector<vk::DescriptorSetLayoutBinding>&);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;
 
 		public:
 
-			const VkDevice										m_hDevice;
-			const VkDescriptorSetLayout							m_hDescriptorSetLayout;
-			const std::vector<DescriptorSetLayoutBinding>		m_LayoutBindings;
+			const VkDevice											m_hDevice;
+			const VkDescriptorSetLayout								m_hDescriptorSetLayout;
+			const std::vector<vk::DescriptorSetLayoutBinding>		m_LayoutBindings;
 		};
 
-		std::shared_ptr<UniqueHandle>							m_spUniqueHandle;
+		std::shared_ptr<UniqueHandle>								m_spUniqueHandle;
 	};
 
 	/*********************************************************************
@@ -109,7 +82,7 @@ namespace Lepton
 		DescriptorPool();
 
 		//!	@brief	Create and initialize immediately.
-		explicit DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets);
+		explicit DescriptorPool(VkDevice hDevice, vk::ArrayProxy<vk::DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets);
 
 		//!	@brief	Destroy descriptor pool object.
 		~DescriptorPool();
@@ -123,7 +96,7 @@ namespace Lepton
 		bool IsValid() const { return m_hDescriptorPool != VK_NULL_HANDLE; }
 
 		//!	@brief	Create a new descriptor pool object.
-		Result Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, Flags<DescriptorPoolCreateFlag> flags = DescriptorPoolCreateFlag::eFreeDescriptorSet);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<vk::DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::DescriptorPoolCreateFlags flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet);
 
 		//!	@brief	Allocate a new descriptor set object.
 		DescriptorSet * AllocateDescriptorSet(DescriptorSetLayout descriptorSetLayout);
@@ -136,15 +109,15 @@ namespace Lepton
 
 	private:
 
-		uint32_t							m_MaxSets;
+		uint32_t								m_MaxSets;
 
-		VkDevice							m_hDevice;
+		VkDevice								m_hDevice;
 
-		VkDescriptorPool					m_hDescriptorPool;
+		VkDescriptorPool						m_hDescriptorPool;
 
-		std::set<DescriptorSet*>			m_pDescriptorSets;
+		std::set<DescriptorSet*>				m_pDescriptorSets;
 
-		std::vector<DescriptorPoolSize>		m_DescriptorPoolSizes;
+		std::vector<vk::DescriptorPoolSize>		m_DescriptorPoolSizes;
 	};
 
 	/*********************************************************************
@@ -174,7 +147,7 @@ namespace Lepton
 		//!	@brief	Whether this descriptor set handle is valid.
 		bool IsValid() const { return m_hDescriptorSet != VK_NULL_HANDLE; }
 
-		void UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, ImageLayout eImageLayout);
+		void UpdateImage(uint32_t dstBinding, uint32_t dstArrayElement, VkSampler hSampler, VkImageView hImageView, vk::ImageLayout eImageLayout);
 
 	private:
 

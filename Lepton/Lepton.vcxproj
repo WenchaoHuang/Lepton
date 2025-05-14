@@ -121,14 +121,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AccelerationStructureNV.h" />
-    <ClInclude Include="ArrayProxy.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="ComputePipeline.h" />
     <ClInclude Include="DescriptorSet.h" />
     <ClInclude Include="DeviceMemory.h" />
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="Flags.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Images.h" />
     <ClInclude Include="Instance.h" />

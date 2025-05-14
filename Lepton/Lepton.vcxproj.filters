@@ -191,15 +191,6 @@
     <ClInclude Include="Result.h">
       <Filter>0. Wrapper</Filter>
     </ClInclude>
-    <ClInclude Include="Flags.h">
-      <Filter>0. Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>0. Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrayProxy.h">
-      <Filter>0. Wrapper</Filter>
-    </ClInclude>
     <ClInclude Include="AccelerationStructureNV.h">
       <Filter>2. Resources\14. AccelerationStructureNV</Filter>
     </ClInclude>

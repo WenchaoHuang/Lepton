@@ -26,10 +26,10 @@ namespace Lepton
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new shader module.
-		Result Create(VkDevice hDevice, const char * pShaderPath, ShaderStage eStage);
+		Result Create(VkDevice hDevice, const char * pShaderPath, vk::ShaderStageFlagBits eStage);
 
 		//!	@brief	Create a new shader module.
-		Result Create(VkDevice hDevice, ArrayProxy<uint32_t> pCode, ShaderStage eStage);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<uint32_t> pCode, vk::ShaderStageFlagBits eStage);
 
 		//!	@brief	Return device handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
@@ -49,7 +49,7 @@ namespace Lepton
 		public:
 
 			//!	@brief	Constructor (handles must be initialized).
-			UniqueHandle(VkDevice, VkShaderModule, ShaderStage);
+			UniqueHandle(VkDevice, VkShaderModule, vk::ShaderStageFlagBits);
 
 			//!	@brief	Where resource will be released.
 			~UniqueHandle() noexcept;

@@ -16,21 +16,21 @@ namespace Lepton
 	 */
 	struct SamplerParam
 	{
-		Filter				magFilter					= Filter::eNearest;
-		Filter				minFilter					= Filter::eNearest;
-		CompareOp			compareOp					= CompareOp::eNever;
-		MipmapMode			mipmapMode					= MipmapMode::eNearest;
-		AddressMode			addressModeU				= AddressMode::eRepeat;
-		AddressMode			addressModeV				= AddressMode::eRepeat;
-		AddressMode			addressModeW				= AddressMode::eRepeat;
-		BorderColor			borderColor					= BorderColor::eFloatTransparentBlack;
-		Bool32				unnormalizedCoordinates		= eFalse;
-		Bool32				anisotropyEnable			= eFalse;
-		Bool32				compareEnable				= eFalse;
-		float				maxAnisotropy				= 1.0f;
-		float				mipLodBias					= 0.0f;
-		float				minLod						= 0.0f;
-		float				maxLod						= 0.0f;
+		vk::Filter					magFilter					= vk::Filter::eNearest;
+		vk::Filter					minFilter					= vk::Filter::eNearest;
+		vk::CompareOp				compareOp					= vk::CompareOp::eNever;
+		vk::SamplerMipmapMode		mipmapMode					= vk::SamplerMipmapMode::eNearest;
+		vk::SamplerAddressMode		addressModeU				= vk::SamplerAddressMode::eRepeat;
+		vk::SamplerAddressMode		addressModeV				= vk::SamplerAddressMode::eRepeat;
+		vk::SamplerAddressMode		addressModeW				= vk::SamplerAddressMode::eRepeat;
+		vk::BorderColor				borderColor					= vk::BorderColor::eFloatTransparentBlack;
+		vk::Bool32					unnormalizedCoordinates		= false;
+		vk::Bool32					anisotropyEnable			= false;
+		vk::Bool32					compareEnable				= false;
+		float						maxAnisotropy				= 1.0f;
+		float						mipLodBias					= 0.0f;
+		float						minLod						= 0.0f;
+		float						maxLod						= 0.0f;
 	};
 
 	/*********************************************************************

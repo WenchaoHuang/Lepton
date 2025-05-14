@@ -48,11 +48,11 @@ namespace Lepton
 		VkDeviceSize				vertexOffset		= 0;
 		uint32_t					vertexCount			= 0;
 		VkDeviceSize				vertexStride		= 0;
-		Format						vertexFormat		= Format::eRGBA32Sfloat;
+		vk::Format					vertexFormat		= vk::Format::eR32G32B32A32Sfloat;
 		VkBuffer					indexData			= VK_NULL_HANDLE;
 		VkDeviceSize				indexOffset			= 0;
 		uint32_t					indexCount			= 0;
-		IndexType					indexType			= IndexType::eUint32;
+		vk::IndexType				indexType			= vk::IndexType::eUint32;
 		VkBuffer					transformData		= VK_NULL_HANDLE;
 		VkDeviceSize				transformOffset		= 0;
 	};
@@ -88,7 +88,7 @@ namespace Lepton
 		GeometryTypeNV				geometryType		= GeometryTypeNV::eTriangles;
 		GeometryTrianglesNV			triangles;
 		GeometryAABBNV				aabbs;
-		Flags<GeometryFlagNV>		flags				= 0;
+		vk::GeometryFlagsKHR		flags				= vk::GeometryFlagsKHR(0);
 	};
 
 	static_assert(sizeof(GeometryNV) == sizeof(VkGeometryNV), "Struct and wrapper have different size!");
@@ -167,7 +167,7 @@ namespace Lepton
 		uint64_t Handle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_Handle : 0; }
 
 		//!	@brief	Create a new top-level acceleration structure.
-		Result Create(const LogicalDevice * pLogicalDevice, ArrayProxy<GeometryNV> pGeometries);
+		Result Create(const LogicalDevice * pLogicalDevice, vk::ArrayProxy<GeometryNV> pGeometries);
 
 		//!	@brief	Return memory allocation size.
 		VkDeviceSize MemSize() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_DeviceMemory.Size() : 0; }

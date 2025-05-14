@@ -32,10 +32,10 @@ namespace Lepton
 		using TessellationStateInfo = uint32_t;
 
 		//!	@brief	Parameter of a newly created pipeline input assembly state.
-		using InputAssemblyStateInfo = PrimitiveTopology;
+		using InputAssemblyStateInfo = vk::PrimitiveTopology;
 
 		//!	@brief	Parameters of a newly created pipeline dynamic state.
-		using DynamicStateInfo = std::vector<DynamicState>;
+		using DynamicStateInfo = std::vector<vk::DynamicState>;
 
 		//!	@brief	Parameters of a newly created pipeline shader stages.
 		using ShaderStagesInfo = std::vector<ShaderModule>;
@@ -62,13 +62,13 @@ namespace Lepton
 		 */
 		struct StencilOpState
 		{
-			StencilOp		failOp			= StencilOp::eKeep;
-			StencilOp		passOp			= StencilOp::eKeep;
-			StencilOp		depthFailOp		= StencilOp::eKeep;
-			CompareOp		compareOp		= CompareOp::eNever;
-			uint32_t		compareMask		= 0;
-			uint32_t		writeMask		= 0;
-			uint32_t		reference		= 0;
+			vk::StencilOp		failOp			= vk::StencilOp::eKeep;
+			vk::StencilOp		passOp			= vk::StencilOp::eKeep;
+			vk::StencilOp		depthFailOp		= vk::StencilOp::eKeep;
+			vk::CompareOp		compareOp		= vk::CompareOp::eNever;
+			uint32_t			compareMask		= 0;
+			uint32_t			writeMask		= 0;
+			uint32_t			reference		= 0;
 		};
 
 		/*****************************************************************
@@ -80,11 +80,11 @@ namespace Lepton
 		 */
 		struct DepthStencilStateInfo
 		{
-			Bool32				depthTestEnable				= eFalse;
-			Bool32				depthWriteEnable			= eFalse;
-			Bool32				depthBoundsTestEnable		= eFalse;
-			Bool32				stencilTestEnable			= eFalse;
-			CompareOp			depthCompareOp				= CompareOp::eNever;
+			vk::Bool32			depthTestEnable				= false;
+			vk::Bool32			depthWriteEnable			= false;
+			vk::Bool32			depthBoundsTestEnable		= false;
+			vk::Bool32			stencilTestEnable			= false;
+			vk::CompareOp		depthCompareOp				= vk::CompareOp::eNever;
 			StencilOpState		front						= {};
 			StencilOpState		back						= {};
 			float				minDepthBounds				= 0.0f;
@@ -100,16 +100,16 @@ namespace Lepton
 		 */
 		struct RasterizationStateInfo
 		{
-			CullMode		cullMode					= CullMode::eNone;
-			FrontFace		frontFace					= FrontFace::eCounterClockwise;
-			PolygonMode		polygonMode					= PolygonMode::eFill;
-			Bool32			depthBiasEnable				= eFalse;
-			Bool32			depthClampEnable			= eFalse;
-			Bool32			rasterizerDiscardEnable		= eFalse;
-			float			depthBiasConstantFactor		= 0.0f;
-			float			depthBiasSlopeFactor		= 0.0f;
-			float			depthBiasClamp				= 0.0f;
-			float			lineWidth					= 1.0f;
+			vk::CullModeFlagBits		cullMode					= vk::CullModeFlagBits::eNone;
+			vk::FrontFace				frontFace					= vk::FrontFace::eCounterClockwise;
+			vk::PolygonMode				polygonMode					= vk::PolygonMode::eFill;
+			vk::Bool32					depthBiasEnable				= false;
+			vk::Bool32					depthClampEnable			= false;
+			vk::Bool32					rasterizerDiscardEnable		= false;
+			float						depthBiasConstantFactor		= 0.0f;
+			float						depthBiasSlopeFactor		= 0.0f;
+			float						depthBiasClamp				= 0.0f;
+			float						lineWidth					= 1.0f;
 		};
 
 		/*****************************************************************
@@ -121,11 +121,11 @@ namespace Lepton
 		 */
 		struct MultisampleStateInfo
 		{
-			SampleCount		rasterizationSamples		= SampleCount::x1;
-			Bool32			alphaToCoverageEnable		= eFalse;
-			Bool32			sampleShadingEnable			= eFalse;
-			Bool32			alphaToOneEnable			= eFalse;
-			float			minSampleShading			= 0.0f;
+			vk::SampleCountFlagBits		rasterizationSamples		= vk::SampleCountFlagBits::e1;
+			vk::Bool32					alphaToCoverageEnable		= false;
+			vk::Bool32					sampleShadingEnable			= false;
+			vk::Bool32					alphaToOneEnable			= false;
+			float						minSampleShading			= 0.0f;
 		};
 
 		/*****************************************************************
@@ -137,14 +137,14 @@ namespace Lepton
 		 */
 		struct ColorBlendAttachmentState
 		{
-			Bool32						blendEnable				= eTrue;
-			BlendFactor					srcColorBlendFactor		= BlendFactor::eSrcAlpha;
-			BlendFactor					dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
-			BlendOp						colorBlendOp			= BlendOp::eAdd;
-			BlendFactor					srcAlphaBlendFactor		= BlendFactor::eZero;
-			BlendFactor					dstAlphaBlendFactor		= BlendFactor::eZero;
-			BlendOp						alphaBlendOp			= BlendOp::eAdd;
-			Flags<ColorComponent>		colorWriteMask			= ColorComponent::eR | ColorComponent::eG | ColorComponent::eB | ColorComponent::eA;
+			vk::Bool32						blendEnable				= true;
+			vk::BlendFactor					srcColorBlendFactor		= vk::BlendFactor::eSrcAlpha;
+			vk::BlendFactor					dstColorBlendFactor		= vk::BlendFactor::eOneMinusSrcAlpha;
+			vk::BlendOp						colorBlendOp			= vk::BlendOp::eAdd;
+			vk::BlendFactor					srcAlphaBlendFactor		= vk::BlendFactor::eZero;
+			vk::BlendFactor					dstAlphaBlendFactor		= vk::BlendFactor::eZero;
+			vk::BlendOp						alphaBlendOp			= vk::BlendOp::eAdd;
+			vk::ColorComponentFlags			colorWriteMask			= vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 		};
 		
 		static_assert(sizeof(ColorBlendAttachmentState) == sizeof(VkPipelineColorBlendAttachmentState), "Struct and wrapper have different size!");
@@ -158,8 +158,8 @@ namespace Lepton
 		 */
 		struct ColorBlendStateInfo
 		{
-			Bool32										logicOpEnable			= eFalse;
-			LogicOp										logicOp					= LogicOp::eClear;
+			vk::Bool32									logicOpEnable			= false;
+			vk::LogicOp									logicOp					= vk::LogicOp::eClear;
 			float										blendConstants[4]		= { 1.0f, 1.0f, 1.0f, 1.0f };
 			std::vector<ColorBlendAttachmentState>		attachments;
 		};
@@ -178,10 +178,10 @@ namespace Lepton
 		public:
 
 			//!	@brief	Specify vertex attribute location.
-			void SetLocation(uint32_t location, uint32_t binding, Format eFormat, uint32_t offset);
+			void SetLocation(uint32_t location, uint32_t binding, vk::Format eFormat, uint32_t offset);
 
 			//!	@brief	Specify vertex input binding.
-			void SetBinding(uint32_t binding, uint32_t stride, VertexInputRate eInputRate = VertexInputRate::eVertex);
+			void SetBinding(uint32_t binding, uint32_t stride, vk::VertexInputRate eInputRate = vk::VertexInputRate::eVertex);
 
 		private:
 

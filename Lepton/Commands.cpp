@@ -10,19 +10,19 @@ using namespace Lepton;
 /*************************************************************************
 ***************************    CommandQueue    ***************************
 *************************************************************************/
-CommandQueue::CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilities, float priority)
+CommandQueue::CommandQueue(uint32_t familyIndex, vk::QueueFlags eCapabilities, float priority)
 	: m_hDevice(VK_NULL_HANDLE), m_hQueue(VK_NULL_HANDLE), m_FamilyIndex(familyIndex), m_eCapabilities(eCapabilities), m_Priority(priority)
 {
 
 }
 
 
-CommandPool * CommandQueue::CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors)
+CommandPool * CommandQueue::CreateCommandPool(vk::CommandPoolCreateFlags eUsageBehaviors)
 {
 	VkCommandPoolCreateInfo			CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= eUsageBehaviors;
+	CreateInfo.flags				= VkFlags(eUsageBehaviors);
 	CreateInfo.queueFamilyIndex		= m_FamilyIndex;
 
 	VkCommandPool hCommandPool = VK_NULL_HANDLE;
@@ -65,7 +65,7 @@ CommandQueue::~CommandQueue() noexcept
 /*************************************************************************
 ***************************    CommandPool    ****************************
 *************************************************************************/
-CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, Flags<CommandPoolUsageBehavior> eUsageBehaviors)
+CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, vk::CommandPoolCreateFlags eUsageBehaviors)
 	: m_hDevice(hDevice), m_hQueue(hQueue), m_hCommandPool(hCommnadPool), m_eUsageBehaviors(eUsageBehaviors)
 {
 
@@ -145,7 +145,7 @@ CommandBuffer::CommandBuffer(VkQueue hQueue, VkCommandBuffer hCommandBuffer)
 
 
 void CommandBuffer::CmdBeginRenderPass(Framebuffer framebuffer, VkRect2D renderArea,
-									   ArrayProxy<VkClearValue> pClearValues, SubpassContents eContents)
+									   vk::ArrayProxy<VkClearValue> pClearValues, vk::SubpassContents eContents)
 {
 	VkRenderPassBeginInfo			BeginInfo = {};
 	BeginInfo.sType					= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

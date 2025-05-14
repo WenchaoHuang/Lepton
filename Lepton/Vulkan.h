@@ -3,12 +3,17 @@
 *************************************************************************/
 #pragma once
 
+#ifndef NOMINMAX
+	#define NOMINMAX
+#endif
+
+#undef min
+#undef max
+
 #include <string>
 #include <memory>
-#include "Enums.h"
-#include "Flags.h"
+#include <vulkan/vulkan.hpp>
 #include "Result.h"
-#include "ArrayProxy.h"
 
 #define LAVA_INVALID_INDEX				UINT32_MAX
 #define LAVA_DEFAULT_TIMEOUT			100000000000L	//!	100s.
@@ -82,12 +87,6 @@ namespace Lepton
 	class HostVisibleBuffer;
 	class DeviceLocalBuffer;
 	class RayTracingPipelineNV;
-
-	struct SurfaceFormat;
-	struct DescriptorPoolSize;
-
-	enum class DescriptorType;
-	enum class PresentMode;
 }
 
 typedef Lepton::Instance					LnInstance;
@@ -123,10 +122,5 @@ typedef Lepton::HostVisibleBuffer			LnHostVisibleBuffer;
 typedef Lepton::DeviceLocalBuffer			LnDeviceLocalBuffer;
 typedef Lepton::RayTracingPipelineNV		LnRayTracingPipeline;
 
-typedef Lepton::PresentMode					LnPresentMode;
-typedef Lepton::SurfaceFormat				LnSurfaceFormat;
-
 typedef Lepton::DescriptorSet				LnDescriptorSet;
-typedef Lepton::DescriptorType				LnDescriptorType;
 typedef Lepton::DescriptorPool				LnDescriptorPool;
-typedef Lepton::DescriptorPoolSize			LnDescriptorPoolSize;

@@ -8,86 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*********************    AttachmentReference    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying an attachment reference.
-	 */
-	struct AttachmentReference
-	{
-		uint32_t		attachment		= 0;
-		ImageLayout		layout			= ImageLayout::eUndefined;
-	};
-
-	static_assert(sizeof(AttachmentReference) == sizeof(VkAttachmentReference), "Struct and wrapper have different size!");
-	
-	/*********************************************************************
-	**********************    SubpassDescription    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a subpass description.
-	 */
-	struct SubpassDescription
-	{
-		const VkFlags					flags						= 0;
-		PipelineBindPoint				pipelineBindPoint			= PipelineBindPoint::eGraphics;
-		uint32_t						inputAttachmentCount		= 0;
-		const AttachmentReference *		pInputAttachments			= nullptr;
-		uint32_t						colorAttachmentCount		= 0;
-		const AttachmentReference *		pColorAttachments			= nullptr;
-		const AttachmentReference *		pResolveAttachments			= nullptr;
-		const AttachmentReference *		pDepthStencilAttachment		= nullptr;
-		uint32_t						preserveAttachmentCount		= 0;
-		const uint32_t *				pPreserveAttachments		= nullptr;
-	};
-
-	static_assert(sizeof(SubpassDescription) == sizeof(VkSubpassDescription), "Struct and wrapper have different size!");
-
-	/*********************************************************************
-	********************    AttachmentDescription    *********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying an attachment description.
-	 */
-	struct AttachmentDescription
-	{
-		const VkFlags			flags				= 0;
-		Format					format				= Format::eUndefined;
-		SampleCount				samples				= SampleCount::x1;
-		AttachmentLoadOp		loadOp				= AttachmentLoadOp::eClear;
-		AttachmentStoreOp		storeOp				= AttachmentStoreOp::eStore;
-		AttachmentLoadOp		stencilLoadOp		= AttachmentLoadOp::eDontCare;
-		AttachmentStoreOp		stencilStoreOp		= AttachmentStoreOp::eDontCare;
-		ImageLayout				initialLayout		= ImageLayout::eUndefined;
-		ImageLayout				finalLayout			= ImageLayout::eUndefined;
-	};
-
-	static_assert(sizeof(AttachmentDescription) == sizeof(VkAttachmentDescription), "Struct and wrapper have different size!");
-
-	/*********************************************************************
-	**********************    SubpassDependency    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief	Structure specifying a subpass dependency.
-	 */
-	struct SubpassDependency
-	{
-		uint32_t					srcSubpass			= 0;
-		uint32_t					dstSubpass			= 0;
-		Flags<PipelineStage>		srcStageMask		= 0;
-		Flags<PipelineStage>		dstStageMask		= 0;
-		Flags<MemoryAccess>			srcAccessMask		= 0;
-		Flags<MemoryAccess>			dstAccessMask		= 0;
-		Flags<MemoryDependency>		dependencyFlags		= 0;
-	};
-
-	static_assert(sizeof(SubpassDependency) == sizeof(VkSubpassDependency), "Struct and wrapper have different size!");
-
-	/*********************************************************************
 	**************************    RenderPass    **************************
 	*********************************************************************/
 
@@ -106,8 +26,8 @@ namespace Lepton
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new render pass object.
-		Result Create(VkDevice hDevice, ArrayProxy<AttachmentDescription> attachmentDescriptions,
-					  ArrayProxy<SubpassDescription> subpassDescriptions, ArrayProxy<SubpassDependency> subpassDependencies);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<vk::AttachmentDescription> attachmentDescriptions,
+					  vk::ArrayProxy<vk::SubpassDescription> subpassDescriptions, vk::ArrayProxy<vk::SubpassDependency> subpassDependencies);
 
 		//!	@brief	Return VkDevice handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
@@ -166,7 +86,7 @@ namespace Lepton
 		RenderPass GetRenderPass() const { return m_spUniqueHandle->m_RenderPass; }
 
 		//!	@brief	Create a new framebuffer object.
-		Result Create(RenderPass renderPass, ArrayProxy<VkImageView> attachments, VkExtent2D extent);
+		Result Create(RenderPass renderPass, vk::ArrayProxy<VkImageView> attachments, VkExtent2D extent);
 
 		//!	@brief	Convert to VkFramebuffer.
 		operator VkFramebuffer() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hFramebuffer : VK_NULL_HANDLE; }

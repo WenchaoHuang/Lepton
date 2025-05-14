@@ -97,7 +97,7 @@ CommandQueue * LogicalDevice::PreInstallQueue(uint32_t familyIndex, float priori
 	{
 		priority = std::clamp(priority, 0.0f, 1.0f);
 
-		CommandQueue * pCommandQueue = new CommandQueue(familyIndex, QueueFamilyProperties[familyIndex].queueFlags, priority);
+		CommandQueue * pCommandQueue = new CommandQueue(familyIndex, vk::QueueFlags(QueueFamilyProperties[familyIndex].queueFlags), priority);
 
 		m_PerFamilQueues[familyIndex].push_back(pCommandQueue);
 

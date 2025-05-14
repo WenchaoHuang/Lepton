@@ -16,7 +16,7 @@ Instance::Instance() : m_hInstance(VK_NULL_HANDLE)
 }
 
 
-Result Instance::Create(ArrayProxy<const char*> pExtensions, ArrayProxy<const char*> pLayers)
+Result Instance::Create(vk::ArrayProxy<const char*> pExtensions, vk::ArrayProxy<const char*> pLayers)
 {
 	VkApplicationInfo						AppInfo = {};
 	AppInfo.sType							= VK_STRUCTURE_TYPE_APPLICATION_INFO;

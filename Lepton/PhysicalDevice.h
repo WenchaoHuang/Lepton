@@ -43,19 +43,19 @@ namespace Lepton
 		const std::vector<VkQueueFamilyProperties> & GetQueueFamilies() const;
 
 		//!	@brief	Query surface capabilities.
-		SurfaceCapabilities GetSurfaceCapabilities(VkSurfaceKHR hSurface) const;
+		vk::SurfaceCapabilitiesKHR GetSurfaceCapabilities(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	Get color formats supported by the surface.
-		std::vector<SurfaceFormat> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
+		std::vector<vk::SurfaceFormatKHR> GetSurfaceFormats(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	Query supported presentation modes.
-		std::vector<PresentMode> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
+		std::vector<vk::PresentModeKHR> GetSurfacePresentModes(VkSurfaceKHR hSurface) const;
 
 		//!	@brief	Query if presentation is supported.
 		bool IsSurfaceSupported(VkSurfaceKHR hSurface, uint32_t queueFamilyIndex) const;
 
 		//!	@brief	Get the index of a memory type that has all the requested property bits set.
-		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const;
+		uint32_t GetMemoryTypeIndex(uint32_t memoryTypeBits, vk::MemoryPropertyFlags eProperties) const;
 
 		//!	@brief	Return the physical properties.
 		const VkPhysicalDeviceProperties & GetProperties() const { return m_Properties.properties; }
@@ -79,7 +79,7 @@ namespace Lepton
 		uint32_t GetComputeQueueFamilyIndex() const;
 
 		//!	@brief	Return the format properties.
-		VkFormatProperties GetFormatProperties(Format eFormat) const;
+		VkFormatProperties GetFormatProperties(vk::Format eFormat) const;
 
 		//!	@brief	Destroy a existed logical device.
 		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);

@@ -56,7 +56,7 @@ Result PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
 }
 
 
-VkFormatProperties PhysicalDevice::GetFormatProperties(Format eFormat) const
+VkFormatProperties PhysicalDevice::GetFormatProperties(vk::Format eFormat) const
 {
 	VkFormatProperties FormatProperties = {};
 
@@ -66,13 +66,13 @@ VkFormatProperties PhysicalDevice::GetFormatProperties(Format eFormat) const
 }
 
 
-uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, Flags<MemoryProperty> eProperties) const
+uint32_t PhysicalDevice::GetMemoryTypeIndex(uint32_t memoryTypeBits, vk::MemoryPropertyFlags eProperties) const
 {
 	for (uint32_t i = 0; i < m_MemoryProperties.memoryTypeCount; i++)
 	{
 		if ((memoryTypeBits & 0x0001u) == 0x0001u)
 		{
-			if ((m_MemoryProperties.memoryTypes[i].propertyFlags & eProperties) == eProperties)
+			if ((vk::MemoryPropertyFlags(m_MemoryProperties.memoryTypes[i].propertyFlags) & eProperties) == eProperties)
 			{
 				return i;
 			}
@@ -166,9 +166,9 @@ uint32_t PhysicalDevice::GetComputeQueueFamilyIndex() const
 }
 
 
-std::vector<SurfaceFormat> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR hSurface) const
+std::vector<vk::SurfaceFormatKHR> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR hSurface) const
 {
-	std::vector<SurfaceFormat> SurfaceFormats;
+	std::vector<vk::SurfaceFormatKHR> SurfaceFormats;
 
 	if (hSurface != VK_NULL_HANDLE)
 	{
@@ -185,9 +185,9 @@ std::vector<SurfaceFormat> PhysicalDevice::GetSurfaceFormats(VkSurfaceKHR hSurfa
 }
 
 
-std::vector<PresentMode> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
+std::vector<vk::PresentModeKHR> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSurface) const
 {
-	std::vector<PresentMode> PresentModes;
+	std::vector<vk::PresentModeKHR> PresentModes;
 
 	if (hSurface != VK_NULL_HANDLE)
 	{
@@ -204,9 +204,9 @@ std::vector<PresentMode> PhysicalDevice::GetSurfacePresentModes(VkSurfaceKHR hSu
 }
 
 
-SurfaceCapabilities PhysicalDevice::GetSurfaceCapabilities(VkSurfaceKHR hSurface) const
+vk::SurfaceCapabilitiesKHR PhysicalDevice::GetSurfaceCapabilities(VkSurfaceKHR hSurface) const
 {
-	SurfaceCapabilities capabilities;
+	vk::SurfaceCapabilitiesKHR capabilities;
 
 	if (hSurface != VK_NULL_HANDLE)
 	{
