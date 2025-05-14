@@ -12,7 +12,7 @@ using namespace Lepton;
 /*************************************************************************
 **********************    GraphicsPipelineParam    ***********************
 *************************************************************************/
-GraphicsPipelineParam::GraphicsPipelineParam() : inputAssemblyState(PrimitiveTopology::eTriangleList), tessellationState(0)
+GraphicsPipelineParam::GraphicsPipelineParam() : inputAssemblyState(vk::PrimitiveTopology::eTriangleList), tessellationState(0)
 {
 
 }

@@ -8,28 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	**********************    PrimitiveTopology    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Supported primitive topologies.
-	 */
-	enum class PrimitiveTopology
-	{
-		eLineList						= VK_PRIMITIVE_TOPOLOGY_LINE_LIST,
-		ePointList						= VK_PRIMITIVE_TOPOLOGY_POINT_LIST,
-		eLineStrip						= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP,
-		ePatchList						= VK_PRIMITIVE_TOPOLOGY_PATCH_LIST,
-		eTriangleFan					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN,
-		eTriangleList					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
-		eTriangleStrip					= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP,
-		eLineListWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_LIST_WITH_ADJACENCY,
-		eLineStripWithAdjacency			= VK_PRIMITIVE_TOPOLOGY_LINE_STRIP_WITH_ADJACENCY,
-		eTriangleListWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST_WITH_ADJACENCY,
-		eTriangleStripWithAdjacency		= VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_WITH_ADJACENCY,
-	};
-
-	/*********************************************************************
 	*************************    BlendFactor    **************************
 	*********************************************************************/
 

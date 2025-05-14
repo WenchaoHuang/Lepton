@@ -32,7 +32,7 @@ namespace Lepton
 		using TessellationStateInfo = uint32_t;
 
 		//!	@brief	Parameter of a newly created pipeline input assembly state.
-		using InputAssemblyStateInfo = PrimitiveTopology;
+		using InputAssemblyStateInfo = vk::PrimitiveTopology;
 
 		//!	@brief	Parameters of a newly created pipeline dynamic state.
 		using DynamicStateInfo = std::vector<DynamicState>;
