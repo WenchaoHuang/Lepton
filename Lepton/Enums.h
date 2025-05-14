@@ -8,28 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*************************    ImageAspect    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying which aspects of an image are included in a view.
-	 */
-	enum class ImageAspect : VkFlags
-	{
-		eColor					= VK_IMAGE_ASPECT_COLOR_BIT,
-		eDepth					= VK_IMAGE_ASPECT_DEPTH_BIT,
-		eStencil				= VK_IMAGE_ASPECT_STENCIL_BIT,
-		ePlane0					= VK_IMAGE_ASPECT_PLANE_0_BIT,
-		ePlane1					= VK_IMAGE_ASPECT_PLANE_1_BIT,
-		ePlane2					= VK_IMAGE_ASPECT_PLANE_2_BIT,
-		eMetadata				= VK_IMAGE_ASPECT_METADATA_BIT,
-		eMemoryPlane0EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT_EXT,
-		eMemoryPlane1EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_1_BIT_EXT,
-		eMemoryPlane2EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_2_BIT_EXT,
-		eMemoryPlane3EXT		= VK_IMAGE_ASPECT_MEMORY_PLANE_3_BIT_EXT,
-	};
-
-	/*********************************************************************
 	**************************    CompareOp    ***************************
 	*********************************************************************/
 

@@ -17,7 +17,7 @@ namespace Lepton
 	 */
 	struct ImageSubresourceRange
 	{
-		vk::Flags<ImageAspect>		aspectMask			= vk::Flags<ImageAspect>(0);
+		vk::ImageAspectFlags		aspectMask			= vk::ImageAspectFlags(0);
 		uint32_t					baseMipLevel		= 0;
 		uint32_t					levelCount			= 1;
 		uint32_t					baseArrayLayer		= 0;
@@ -51,7 +51,7 @@ namespace Lepton
 
 	struct ImageSubresourceLayers
 	{
-		vk::Flags<ImageAspect>		aspectMask;
+		vk::ImageAspectFlags		aspectMask;
 		uint32_t					mipLevel;
 		uint32_t					baseArrayLayer;
 		uint32_t					layerCount;

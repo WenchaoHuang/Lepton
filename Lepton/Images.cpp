@@ -31,7 +31,7 @@ Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDe
 												vk::Format eFormat, VkExtent3D extent,
 												uint32_t mipLevels, uint32_t arrayLayers,
 												vk::SampleCountFlagBits eSamples, vk::ImageUsageFlags eUsages,
-												vk::Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags)
+												vk::ImageAspectFlags eAspects, VkImageCreateFlags eCreateFlags)
 {
 	if (pLogicalDevice == nullptr)			return Result::eErrorInvalidDeviceHandle;
 	if (!pLogicalDevice->IsReady())			return Result::eErrorInvalidDeviceHandle;
