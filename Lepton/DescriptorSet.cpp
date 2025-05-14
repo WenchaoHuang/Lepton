@@ -85,7 +85,7 @@ DescriptorPool::DescriptorPool(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> 
 }
 
 
-Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::Flags<DescriptorPoolCreateFlag> flags)
+Result DescriptorPool::Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::DescriptorPoolCreateFlags flags)
 {
 	Result eResult = Result::eErrorInvalidDeviceHandle;
 

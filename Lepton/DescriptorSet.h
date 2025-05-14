@@ -123,7 +123,7 @@ namespace Lepton
 		bool IsValid() const { return m_hDescriptorPool != VK_NULL_HANDLE; }
 
 		//!	@brief	Create a new descriptor pool object.
-		Result Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::Flags<DescriptorPoolCreateFlag> flags = DescriptorPoolCreateFlag::eFreeDescriptorSet);
+		Result Create(VkDevice hDevice, ArrayProxy<DescriptorPoolSize> pDescriptorPoolSizes, uint32_t maxSets, vk::DescriptorPoolCreateFlags flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet);
 
 		//!	@brief	Allocate a new descriptor set object.
 		DescriptorSet * AllocateDescriptorSet(DescriptorSetLayout descriptorSetLayout);
