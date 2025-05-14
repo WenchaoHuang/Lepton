@@ -7,21 +7,6 @@
 
 namespace Lepton
 {
-
-	/*********************************************************************
-	**********************    AttachmentStoreOp    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify how contents of an attachment are treated at the end of a subpass.
-	 */
-	enum class AttachmentStoreOp
-	{
-		eStore			= VK_ATTACHMENT_STORE_OP_STORE,
-		eDontCare		= VK_ATTACHMENT_STORE_OP_DONT_CARE,
-		eNoneQCOM		= VK_ATTACHMENT_STORE_OP_NONE_QCOM,
-	};
-
 	/*********************************************************************
 	***********************    SubpassContents    ************************
 	*********************************************************************/
