@@ -57,9 +57,9 @@ namespace Lepton
 		const VkFlags					flags				= 0;
 		vk::Format						format				= vk::Format::eUndefined;
 		vk::SampleCountFlagBits			samples				= vk::SampleCountFlagBits::e1;
-		AttachmentLoadOp				loadOp				= AttachmentLoadOp::eClear;
+		vk::AttachmentLoadOp			loadOp				= vk::AttachmentLoadOp::eClear;
 		AttachmentStoreOp				storeOp				= AttachmentStoreOp::eStore;
-		AttachmentLoadOp				stencilLoadOp		= AttachmentLoadOp::eDontCare;
+		vk::AttachmentLoadOp			stencilLoadOp		= vk::AttachmentLoadOp::eDontCare;
 		AttachmentStoreOp				stencilStoreOp		= AttachmentStoreOp::eDontCare;
 		vk::ImageLayout					initialLayout		= vk::ImageLayout::eUndefined;
 		vk::ImageLayout					finalLayout			= vk::ImageLayout::eUndefined;

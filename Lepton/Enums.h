@@ -7,19 +7,6 @@
 
 namespace Lepton
 {
-	/*********************************************************************
-	***********************    AttachmentLoadOp    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify how contents of an attachment are treated at the beginning of a subpass.
-	 */
-	enum class AttachmentLoadOp
-	{
-		eLoad			= VK_ATTACHMENT_LOAD_OP_LOAD,
-		eClear			= VK_ATTACHMENT_LOAD_OP_CLEAR,
-		eDontCare		= VK_ATTACHMENT_LOAD_OP_DONT_CARE,
-	};
 
 	/*********************************************************************
 	**********************    AttachmentStoreOp    ***********************
