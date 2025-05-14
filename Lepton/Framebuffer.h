@@ -82,7 +82,7 @@ namespace Lepton
 		vk::Flags<PipelineStage>		dstStageMask		= vk::Flags<PipelineStage>(0);
 		vk::Flags<MemoryAccess>			srcAccessMask		= vk::Flags<MemoryAccess>(0);
 		vk::Flags<MemoryAccess>			dstAccessMask		= vk::Flags<MemoryAccess>(0);
-		vk::Flags<MemoryDependency>		dependencyFlags		= vk::Flags<MemoryDependency>(0);
+		vk::DependencyFlags				dependencyFlags		= vk::DependencyFlagBits(0);
 	};
 
 	static_assert(sizeof(SubpassDependency) == sizeof(VkSubpassDependency), "Struct and wrapper have different size!");

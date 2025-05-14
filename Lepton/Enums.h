@@ -7,21 +7,6 @@
 
 namespace Lepton
 {
-
-	/*********************************************************************
-	***********************    MemoryDependency    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying how execution and memory dependencies are formed.
-	 */
-	enum class MemoryDependency : VkFlags
-	{
-		eByRegion			= VK_DEPENDENCY_BY_REGION_BIT,
-		eViewLocal			= VK_DEPENDENCY_VIEW_LOCAL_BIT,
-		eDeviceGroup		= VK_DEPENDENCY_DEVICE_GROUP_BIT,
-	};
-
 	/*********************************************************************
 	*************************    ShaderStage    **************************
 	*********************************************************************/
