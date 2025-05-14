@@ -16,8 +16,8 @@ namespace Lepton
 	 */
 	struct SurfaceFormat
 	{
-		Format			format			= Format::eUndefined;
-		ColorSpace		colorSpace		= ColorSpace::eSrgbNonlinear;
+		Format					format			= Format::eUndefined;
+		vk::ColorSpaceKHR		colorSpace		= vk::ColorSpaceKHR::eSrgbNonlinear;
 	};
 
 	static_assert(sizeof(SurfaceFormat) == sizeof(VkSurfaceKHR), "Struct and wrapper have different size!");
