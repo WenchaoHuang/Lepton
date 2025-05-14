@@ -21,20 +21,6 @@ namespace Lepton
 	};
 
 	/*********************************************************************
-	*******************    CommandPoolUsageBehavior    *******************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying usage behavior for a command pool.
-	 */
-	enum class CommandPoolUsageBehavior : VkFlags
-	{
-		eTransient				= VK_COMMAND_POOL_CREATE_TRANSIENT_BIT,
-		eProtected				= VK_COMMAND_POOL_CREATE_PROTECTED_BIT,
-		eResetCommandBuffer		= VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
-	};
-
-	/*********************************************************************
 	**********************    CommandBufferUsage    **********************
 	*********************************************************************/
 

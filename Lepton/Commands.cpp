@@ -17,12 +17,12 @@ CommandQueue::CommandQueue(uint32_t familyIndex, vk::QueueFlags eCapabilities, f
 }
 
 
-CommandPool * CommandQueue::CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors)
+CommandPool * CommandQueue::CreateCommandPool(vk::CommandPoolCreateFlags eUsageBehaviors)
 {
 	VkCommandPoolCreateInfo			CreateInfo = {};
 	CreateInfo.sType				= VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	CreateInfo.pNext				= nullptr;
-	CreateInfo.flags				= eUsageBehaviors;
+	CreateInfo.flags				= VkFlags(eUsageBehaviors);
 	CreateInfo.queueFamilyIndex		= m_FamilyIndex;
 
 	VkCommandPool hCommandPool = VK_NULL_HANDLE;
@@ -65,7 +65,7 @@ CommandQueue::~CommandQueue() noexcept
 /*************************************************************************
 ***************************    CommandPool    ****************************
 *************************************************************************/
-CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, Flags<CommandPoolUsageBehavior> eUsageBehaviors)
+CommandPool::CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, vk::CommandPoolCreateFlags eUsageBehaviors)
 	: m_hDevice(hDevice), m_hQueue(hQueue), m_hCommandPool(hCommnadPool), m_eUsageBehaviors(eUsageBehaviors)
 {
 

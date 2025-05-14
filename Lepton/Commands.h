@@ -114,7 +114,7 @@ namespace Lepton
 		bool Has(vk::QueueFlagBits eCapabilities) const { return bool(m_eCapabilities & eCapabilities); }
 
 		//!	@brief	Create a new command pool object.
-		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
+		CommandPool * CreateCommandPool(vk::CommandPoolCreateFlags eUsageBehaviors = vk::CommandPoolCreateFlagBits::eResetCommandBuffer);
 
 		//!	@brief	Destroy a command pool object.
 		Result DestroyCommandPool(CommandPool * pCommandPool);
@@ -148,7 +148,7 @@ namespace Lepton
 	private:
 
 		//!	@brief	Create command pool object.
-		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, Flags<CommandPoolUsageBehavior> eUsageBehaviors);
+		CommandPool(VkDevice hDevice, VkQueue hQueue, VkCommandPool hCommnadPool, vk::CommandPoolCreateFlags eUsageBehaviors);
 
 		//!	@brief	Destroy command pool object.
 		~CommandPool() noexcept;
@@ -169,15 +169,15 @@ namespace Lepton
 
 	private:
 
-		const VkQueue								m_hQueue;
+		const VkQueue							m_hQueue;
 
-		const VkDevice								m_hDevice;
+		const VkDevice							m_hDevice;
 
-		const VkCommandPool							m_hCommandPool;
+		const VkCommandPool						m_hCommandPool;
 
-		std::set<CommandBuffer*>					m_pCommandBuffers;
+		std::set<CommandBuffer*>				m_pCommandBuffers;
 		
-		const Flags<CommandPoolUsageBehavior>		m_eUsageBehaviors;
+		const vk::CommandPoolCreateFlags		m_eUsageBehaviors;
 	};
 
 	/*********************************************************************
