@@ -100,16 +100,16 @@ namespace Lepton
 		 */
 		struct RasterizationStateInfo
 		{
-			CullMode		cullMode					= CullMode::eNone;
-			vk::FrontFace	frontFace					= vk::FrontFace::eCounterClockwise;
-			PolygonMode		polygonMode					= PolygonMode::eFill;
-			vk::Bool32		depthBiasEnable				= false;
-			vk::Bool32		depthClampEnable			= false;
-			vk::Bool32		rasterizerDiscardEnable		= false;
-			float			depthBiasConstantFactor		= 0.0f;
-			float			depthBiasSlopeFactor		= 0.0f;
-			float			depthBiasClamp				= 0.0f;
-			float			lineWidth					= 1.0f;
+			vk::CullModeFlagBits		cullMode					= vk::CullModeFlagBits::eNone;
+			vk::FrontFace				frontFace					= vk::FrontFace::eCounterClockwise;
+			PolygonMode					polygonMode					= PolygonMode::eFill;
+			vk::Bool32					depthBiasEnable				= false;
+			vk::Bool32					depthClampEnable			= false;
+			vk::Bool32					rasterizerDiscardEnable		= false;
+			float						depthBiasConstantFactor		= 0.0f;
+			float						depthBiasSlopeFactor		= 0.0f;
+			float						depthBiasClamp				= 0.0f;
+			float						lineWidth					= 1.0f;
 		};
 
 		/*****************************************************************
