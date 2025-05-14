@@ -8,23 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*************************    BorderColor    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify border color used for texture lookups.
-	 */
-	enum class BorderColor
-	{
-		eIntOpaqueWhite				= VK_BORDER_COLOR_INT_OPAQUE_WHITE,
-		eIntOpaqueBlack				= VK_BORDER_COLOR_INT_OPAQUE_BLACK,
-		eFloatOpaqueWhite			= VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE,
-		eFloatOpaqueBlack			= VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK,
-		eIntTransparentBlack		= VK_BORDER_COLOR_INT_TRANSPARENT_BLACK,
-		eFloatTransparentBlack		= VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK,
-	};
-
-	/*********************************************************************
 	***********************    AttachmentLoadOp    ***********************
 	*********************************************************************/
 

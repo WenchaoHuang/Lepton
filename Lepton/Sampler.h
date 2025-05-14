@@ -23,7 +23,7 @@ namespace Lepton
 		vk::SamplerAddressMode		addressModeU				= vk::SamplerAddressMode::eRepeat;
 		vk::SamplerAddressMode		addressModeV				= vk::SamplerAddressMode::eRepeat;
 		vk::SamplerAddressMode		addressModeW				= vk::SamplerAddressMode::eRepeat;
-		BorderColor					borderColor					= BorderColor::eFloatTransparentBlack;
+		vk::BorderColor				borderColor					= vk::BorderColor::eFloatTransparentBlack;
 		vk::Bool32					unnormalizedCoordinates		= false;
 		vk::Bool32					anisotropyEnable			= false;
 		vk::Bool32					compareEnable				= false;
