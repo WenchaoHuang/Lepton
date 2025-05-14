@@ -121,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AccelerationStructureNV.h" />
-    <ClInclude Include="ArrayProxy.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="ComputePipeline.h" />

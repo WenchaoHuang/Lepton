@@ -44,7 +44,7 @@ namespace Lepton
 		bool IsValid() const { return m_hInstance != VK_NULL_HANDLE; }
 
 		//!	@brief	Create a new instance object.
-		Result Create(ArrayProxy<const char*> pExtensions = nullptr, ArrayProxy<const char*> pLayers = nullptr);
+		Result Create(vk::ArrayProxy<const char*> pExtensions = nullptr, vk::ArrayProxy<const char*> pLayers = nullptr);
 
 		//!	@brief	Return array of physical devices.
 		const std::vector<PhysicalDevice*> & GetPhysicalDevices() const { return m_pPhysicalDevices; }

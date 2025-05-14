@@ -45,7 +45,7 @@ namespace Lepton
 		const std::vector<DescriptorSetLayout> & GetDescriptorSetLayouts() const { return m_spUniqueHandle->m_DescriptorSetLayouts; }
 
 		//!	@brief	Create a new pipeline layout.
-		Result Create(VkDevice hDevice, ArrayProxy<DescriptorSetLayout> pDescriptorSetLayouts = nullptr, ArrayProxy<PushConstantRange> pPushConstantRanges = nullptr);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<DescriptorSetLayout> pDescriptorSetLayouts = nullptr, vk::ArrayProxy<PushConstantRange> pPushConstantRanges = nullptr);
 
 		//!	@brief	Convert to VkPipelineLayout.
 		operator VkPipelineLayout() const { return m_spUniqueHandle != nullptr ? m_spUniqueHandle->m_hPipelineLayout : VK_NULL_HANDLE; }

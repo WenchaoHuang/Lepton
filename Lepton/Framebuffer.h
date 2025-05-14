@@ -106,8 +106,8 @@ namespace Lepton
 		bool IsValid() const { return m_spUniqueHandle != nullptr; }
 
 		//!	@brief	Create a new render pass object.
-		Result Create(VkDevice hDevice, ArrayProxy<AttachmentDescription> attachmentDescriptions,
-					  ArrayProxy<SubpassDescription> subpassDescriptions, ArrayProxy<SubpassDependency> subpassDependencies);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<AttachmentDescription> attachmentDescriptions,
+					  vk::ArrayProxy<SubpassDescription> subpassDescriptions, vk::ArrayProxy<SubpassDependency> subpassDependencies);
 
 		//!	@brief	Return VkDevice handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
@@ -166,7 +166,7 @@ namespace Lepton
 		RenderPass GetRenderPass() const { return m_spUniqueHandle->m_RenderPass; }
 
 		//!	@brief	Create a new framebuffer object.
-		Result Create(RenderPass renderPass, ArrayProxy<VkImageView> attachments, VkExtent2D extent);
+		Result Create(RenderPass renderPass, vk::ArrayProxy<VkImageView> attachments, VkExtent2D extent);
 
 		//!	@brief	Convert to VkFramebuffer.
 		operator VkFramebuffer() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hFramebuffer : VK_NULL_HANDLE; }

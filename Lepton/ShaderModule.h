@@ -29,7 +29,7 @@ namespace Lepton
 		Result Create(VkDevice hDevice, const char * pShaderPath, vk::ShaderStageFlagBits eStage);
 
 		//!	@brief	Create a new shader module.
-		Result Create(VkDevice hDevice, ArrayProxy<uint32_t> pCode, vk::ShaderStageFlagBits eStage);
+		Result Create(VkDevice hDevice, vk::ArrayProxy<uint32_t> pCode, vk::ShaderStageFlagBits eStage);
 
 		//!	@brief	Return device handle.
 		VkDevice GetDeviceHandle() const { return (m_spUniqueHandle != nullptr) ? m_spUniqueHandle->m_hDevice : VK_NULL_HANDLE; }
