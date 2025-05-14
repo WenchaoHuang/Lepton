@@ -56,7 +56,7 @@ Result PhysicalDevice::DestroyLogicalDevice(LogicalDevice * pLogicalDevice)
 }
 
 
-VkFormatProperties PhysicalDevice::GetFormatProperties(Format eFormat) const
+VkFormatProperties PhysicalDevice::GetFormatProperties(vk::Format eFormat) const
 {
 	VkFormatProperties FormatProperties = {};
 

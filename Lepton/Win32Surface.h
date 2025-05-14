@@ -16,7 +16,7 @@ namespace Lepton
 	 */
 	struct SurfaceFormat
 	{
-		Format					format			= Format::eUndefined;
+		vk::Format				format			= vk::Format::eUndefined;
 		vk::ColorSpaceKHR		colorSpace		= vk::ColorSpaceKHR::eSrgbNonlinear;
 	};
 

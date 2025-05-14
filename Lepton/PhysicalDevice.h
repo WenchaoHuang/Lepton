@@ -79,7 +79,7 @@ namespace Lepton
 		uint32_t GetComputeQueueFamilyIndex() const;
 
 		//!	@brief	Return the format properties.
-		VkFormatProperties GetFormatProperties(Format eFormat) const;
+		VkFormatProperties GetFormatProperties(vk::Format eFormat) const;
 
 		//!	@brief	Destroy a existed logical device.
 		Result DestroyLogicalDevice(LogicalDevice * pLogicalDevice);

@@ -28,7 +28,7 @@ UniqueHandle::UniqueHandle(DeviceLocalMemory deviceMemory, VkImage hImage, VkIma
 
 template<VkImageType eImageType, VkImageViewType eViewType>
 Result BaseImage<eImageType, eViewType>::Create(const LogicalDevice * pLogicalDevice,
-												Format eFormat, VkExtent3D extent,
+												vk::Format eFormat, VkExtent3D extent,
 												uint32_t mipLevels, uint32_t arrayLayers,
 												vk::SampleCountFlagBits eSamples, vk::ImageUsageFlags eUsages,
 												vk::Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags)

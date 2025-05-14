@@ -16,7 +16,7 @@ namespace Lepton
 	 */
 	struct ImageParam
 	{
-		Format						format			= Format::eUndefined;
+		vk::Format					format			= vk::Format::eUndefined;
 		VkExtent3D					extent			= { 0, 0, 0 };
 		uint32_t					mipLevels		= 1;
 		uint32_t					arrayLayers		= 1;
@@ -55,7 +55,7 @@ namespace Lepton
 	protected:
 
 		//!	@brief	Create a new image object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D extent, uint32_t mipLevels, uint32_t arrayLayers,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, VkExtent3D extent, uint32_t mipLevels, uint32_t arrayLayers,
 					  vk::SampleCountFlagBits eSamples, vk::ImageUsageFlags eUsages, vk::Flags<ImageAspect> eAspects, VkImageCreateFlags eCreateFlags = 0);
 
 	private:
@@ -99,7 +99,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image 1D object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, uint32_t width, uint32_t mipLevels,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, 1, vk::SampleCountFlagBits::e1, usageFlags, eAspects);
@@ -119,7 +119,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image 1D array object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, uint32_t width, uint32_t mipLevels, uint32_t arrayLayers,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, uint32_t width, uint32_t mipLevels, uint32_t arrayLayers,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { width, 1, 1 }, mipLevels, arrayLayers, vk::SampleCountFlagBits::e1, usageFlags, eAspects);
@@ -139,7 +139,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, vk::SampleCountFlagBits eSamples,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, VkExtent2D extent, uint32_t mipLevels, vk::SampleCountFlagBits eSamples,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 1, eSamples, usageFlags, eAspects);
@@ -159,7 +159,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image 2D object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers, vk::SampleCountFlagBits eSamples,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers, vk::SampleCountFlagBits eSamples,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, arrayLayers, eSamples, usageFlags, eAspects);
@@ -179,7 +179,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image cube object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, VkExtent2D extent, uint32_t mipLevels,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 },  mipLevels, 6, vk::SampleCountFlagBits::e1,
@@ -200,7 +200,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image cube array object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, VkExtent2D extent, uint32_t mipLevels, uint32_t arrayLayers,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, { extent.width, extent.height, 1 }, mipLevels, 6 * arrayLayers, vk::SampleCountFlagBits::e1,
@@ -221,7 +221,7 @@ namespace Lepton
 	public:
 
 		//!	@brief	Create a new image 3D object.
-		Result Create(const LogicalDevice * pLogicalDevice, Format eFormat, VkExtent3D Extent3D, uint32_t mipLevels,
+		Result Create(const LogicalDevice * pLogicalDevice, vk::Format eFormat, VkExtent3D Extent3D, uint32_t mipLevels,
 					  vk::ImageUsageFlags usageFlags, vk::Flags<ImageAspect> eAspects)
 		{
 			return BaseImage::Create(pLogicalDevice, eFormat, Extent3D, mipLevels, 1, vk::SampleCountFlagBits::e1, usageFlags, eAspects);

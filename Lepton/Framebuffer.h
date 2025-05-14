@@ -55,7 +55,7 @@ namespace Lepton
 	struct AttachmentDescription
 	{
 		const VkFlags					flags				= 0;
-		Format							format				= Format::eUndefined;
+		vk::Format						format				= vk::Format::eUndefined;
 		vk::SampleCountFlagBits			samples				= vk::SampleCountFlagBits::e1;
 		AttachmentLoadOp				loadOp				= AttachmentLoadOp::eClear;
 		AttachmentStoreOp				storeOp				= AttachmentStoreOp::eStore;

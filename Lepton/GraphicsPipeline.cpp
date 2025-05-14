@@ -18,7 +18,7 @@ GraphicsPipelineParam::GraphicsPipelineParam() : inputAssemblyState(PrimitiveTop
 }
 
 
-void GraphicsPipelineParam::VertexInputStateInfo::SetLocation(uint32_t Location, uint32_t Binding, Format eFormat, uint32_t Offset)
+void GraphicsPipelineParam::VertexInputStateInfo::SetLocation(uint32_t Location, uint32_t Binding, vk::Format eFormat, uint32_t Offset)
 {
 	for (size_t i = 0; i < attributeDescriptions.size(); i++)
 	{

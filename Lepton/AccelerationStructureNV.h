@@ -48,7 +48,7 @@ namespace Lepton
 		VkDeviceSize				vertexOffset		= 0;
 		uint32_t					vertexCount			= 0;
 		VkDeviceSize				vertexStride		= 0;
-		Format						vertexFormat		= Format::eRGBA32Sfloat;
+		vk::Format					vertexFormat		= vk::Format::eR32G32B32A32Sfloat;
 		VkBuffer					indexData			= VK_NULL_HANDLE;
 		VkDeviceSize				indexOffset			= 0;
 		uint32_t					indexCount			= 0;
