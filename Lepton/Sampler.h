@@ -16,8 +16,8 @@ namespace Lepton
 	 */
 	struct SamplerParam
 	{
-		Filter				magFilter					= Filter::eNearest;
-		Filter				minFilter					= Filter::eNearest;
+		vk::Filter			magFilter					= vk::Filter::eNearest;
+		vk::Filter			minFilter					= vk::Filter::eNearest;
 		vk::CompareOp		compareOp					= vk::CompareOp::eNever;
 		MipmapMode			mipmapMode					= MipmapMode::eNearest;
 		AddressMode			addressModeU				= AddressMode::eRepeat;

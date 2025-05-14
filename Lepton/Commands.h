@@ -350,7 +350,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Copy regions of an image, potentially performing format conversion.
-		void CmdBlitImage(VkImage hSrcImage, vk::ImageLayout eSrcImageLayout, VkImage hDstImage, vk::ImageLayout eDstImageLayout, ArrayProxy<ImageBlit> pRegions, Filter eFilter)
+		void CmdBlitImage(VkImage hSrcImage, vk::ImageLayout eSrcImageLayout, VkImage hDstImage, vk::ImageLayout eDstImageLayout, ArrayProxy<ImageBlit> pRegions, vk::Filter eFilter)
 		{
 			vkCmdBlitImage(m_hCommandBuffer, hSrcImage, static_cast<VkImageLayout>(eSrcImageLayout), hDstImage, static_cast<VkImageLayout>(eDstImageLayout), pRegions.size(), reinterpret_cast<const VkImageBlit*>(pRegions.data()), static_cast<VkFilter>(eFilter));
 		}
