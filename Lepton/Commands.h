@@ -208,9 +208,9 @@ namespace Lepton
 		Result EndRecord() { return LAVA_RESULT_CAST(vkEndCommandBuffer(m_hCommandBuffer)); }
 
 		//!	@brief	Start recording command buffer.
-		Result BeginRecord(Flags<CommandBufferUsage> eUsages = 0)
+		Result BeginRecord(vk::CommandBufferUsageFlags eUsages = vk::CommandBufferUsageFlagBits(0))
 		{
-			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, eUsages, nullptr };
+			VkCommandBufferBeginInfo BeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, nullptr, (VkFlags)eUsages, nullptr };
 
 			return LAVA_RESULT_CAST(vkBeginCommandBuffer(m_hCommandBuffer, &BeginInfo));
 		}

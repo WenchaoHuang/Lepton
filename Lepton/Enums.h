@@ -8,20 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	**********************    CommandBufferUsage    **********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask specifying usage behavior for command buffer.
-	 */
-	enum class CommandBufferUsage : VkFlags
-	{
-		eOneTimeSubmit			= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
-		eSimultaneousUse		= VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT,
-		eRenderPassContinue		= VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT,
-	};
-
-	/*********************************************************************
 	**************************    ColorSpace    **************************
 	*********************************************************************/
 
