@@ -38,7 +38,7 @@ void GraphicsPipelineParam::VertexInputStateInfo::SetLocation(uint32_t Location,
 }
 
 
-void GraphicsPipelineParam::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, VertexInputRate eInputRate)
+void GraphicsPipelineParam::VertexInputStateInfo::SetBinding(uint32_t Binding, uint32_t Stride, vk::VertexInputRate eInputRate)
 {
 	for (size_t i = 0; i < bindingDescriptions.size(); i++)
 	{

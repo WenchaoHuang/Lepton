@@ -181,7 +181,7 @@ namespace Lepton
 			void SetLocation(uint32_t location, uint32_t binding, Format eFormat, uint32_t offset);
 
 			//!	@brief	Specify vertex input binding.
-			void SetBinding(uint32_t binding, uint32_t stride, VertexInputRate eInputRate = VertexInputRate::eVertex);
+			void SetBinding(uint32_t binding, uint32_t stride, vk::VertexInputRate eInputRate = vk::VertexInputRate::eVertex);
 
 		private:
 

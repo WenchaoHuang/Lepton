@@ -8,34 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	************************    ColorComponent    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Bitmask controlling which components are written to the framebuffer.
-	 */
-	enum class ColorComponent : VkFlags
-	{
-		eR		= VK_COLOR_COMPONENT_R_BIT,
-		eB		= VK_COLOR_COMPONENT_B_BIT,
-		eG		= VK_COLOR_COMPONENT_G_BIT,
-		eA		= VK_COLOR_COMPONENT_A_BIT,
-	};
-
-	/*********************************************************************
-	***********************    VertexInputRate    ************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify rate at which vertex attributes are pulled from buffers.
-	 */
-	enum class VertexInputRate
-	{
-		eVertex			= VK_VERTEX_INPUT_RATE_VERTEX,
-		eInstance		= VK_VERTEX_INPUT_RATE_INSTANCE,
-	};
-
-	/*********************************************************************
 	**************************    FrontFace    ***************************
 	*********************************************************************/
 
