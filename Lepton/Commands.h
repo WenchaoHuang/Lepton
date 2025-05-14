@@ -88,7 +88,7 @@ namespace Lepton
 	private:
 
 		//!	@brief	Create command queue object.
-		CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilities, float priority);
+		CommandQueue(uint32_t familyIndex, vk::QueueFlags eCapabilities, float priority);
 
 		//!	@brief	Destroy command queue object.
 		~CommandQueue() noexcept;
@@ -111,7 +111,7 @@ namespace Lepton
 		bool IsReady() const { return m_hQueue != VK_NULL_HANDLE; }
 
 		//!	@brief	If this queue has the specify capability.
-		bool Has(QueueCapability eCapabilities) const { return (m_eCapabilities & eCapabilities) != 0; }
+		bool Has(vk::QueueFlagBits eCapabilities) const { return bool(m_eCapabilities & eCapabilities); }
 
 		//!	@brief	Create a new command pool object.
 		CommandPool * CreateCommandPool(Flags<CommandPoolUsageBehavior> eUsageBehaviors = CommandPoolUsageBehavior::eResetCommandBuffer);
@@ -131,7 +131,7 @@ namespace Lepton
 
 		std::set<CommandPool*>				m_pCommandPools;
 
-		const Flags<QueueCapability>		m_eCapabilities;
+		const vk::QueueFlags				m_eCapabilities;
 	};
 
 	/*********************************************************************

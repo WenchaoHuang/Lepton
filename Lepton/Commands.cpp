@@ -10,7 +10,7 @@ using namespace Lepton;
 /*************************************************************************
 ***************************    CommandQueue    ***************************
 *************************************************************************/
-CommandQueue::CommandQueue(uint32_t familyIndex, Flags<QueueCapability> eCapabilities, float priority)
+CommandQueue::CommandQueue(uint32_t familyIndex, vk::QueueFlags eCapabilities, float priority)
 	: m_hDevice(VK_NULL_HANDLE), m_hQueue(VK_NULL_HANDLE), m_FamilyIndex(familyIndex), m_eCapabilities(eCapabilities), m_Priority(priority)
 {
 
