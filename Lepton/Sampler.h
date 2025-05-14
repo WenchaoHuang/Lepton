@@ -18,7 +18,7 @@ namespace Lepton
 	{
 		Filter				magFilter					= Filter::eNearest;
 		Filter				minFilter					= Filter::eNearest;
-		CompareOp			compareOp					= CompareOp::eNever;
+		vk::CompareOp		compareOp					= vk::CompareOp::eNever;
 		MipmapMode			mipmapMode					= MipmapMode::eNearest;
 		AddressMode			addressModeU				= AddressMode::eRepeat;
 		AddressMode			addressModeV				= AddressMode::eRepeat;

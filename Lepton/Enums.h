@@ -8,25 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	**************************    CompareOp    ***************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Stencil comparison function.
-	 */
-	enum class CompareOp
-	{
-		eLess				= VK_COMPARE_OP_LESS,
-		eEqual				= VK_COMPARE_OP_EQUAL,
-		eNever				= VK_COMPARE_OP_NEVER,
-		eAlways				= VK_COMPARE_OP_ALWAYS,
-		eGreater			= VK_COMPARE_OP_GREATER,
-		eNotEqual			= VK_COMPARE_OP_NOT_EQUAL,
-		eLessOrEqual		= VK_COMPARE_OP_LESS_OR_EQUAL,
-		eGreaterOrEqual		= VK_COMPARE_OP_GREATER_OR_EQUAL,
-	};
-
-	/*********************************************************************
 	**************************    StencilOp    ***************************
 	*********************************************************************/
 

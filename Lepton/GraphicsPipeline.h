@@ -62,13 +62,13 @@ namespace Lepton
 		 */
 		struct StencilOpState
 		{
-			StencilOp		failOp			= StencilOp::eKeep;
-			StencilOp		passOp			= StencilOp::eKeep;
-			StencilOp		depthFailOp		= StencilOp::eKeep;
-			CompareOp		compareOp		= CompareOp::eNever;
-			uint32_t		compareMask		= 0;
-			uint32_t		writeMask		= 0;
-			uint32_t		reference		= 0;
+			StencilOp			failOp			= StencilOp::eKeep;
+			StencilOp			passOp			= StencilOp::eKeep;
+			StencilOp			depthFailOp		= StencilOp::eKeep;
+			vk::CompareOp		compareOp		= vk::CompareOp::eNever;
+			uint32_t			compareMask		= 0;
+			uint32_t			writeMask		= 0;
+			uint32_t			reference		= 0;
 		};
 
 		/*****************************************************************
@@ -84,7 +84,7 @@ namespace Lepton
 			vk::Bool32			depthWriteEnable			= false;
 			vk::Bool32			depthBoundsTestEnable		= false;
 			vk::Bool32			stencilTestEnable			= false;
-			CompareOp			depthCompareOp				= CompareOp::eNever;
+			vk::CompareOp		depthCompareOp				= vk::CompareOp::eNever;
 			StencilOpState		front						= {};
 			StencilOpState		back						= {};
 			float				minDepthBounds				= 0.0f;
