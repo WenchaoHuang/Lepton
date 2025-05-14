@@ -140,10 +140,10 @@ namespace Lepton
 			vk::Bool32						blendEnable				= true;
 			BlendFactor						srcColorBlendFactor		= BlendFactor::eSrcAlpha;
 			BlendFactor						dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
-			BlendOp							colorBlendOp			= BlendOp::eAdd;
+			vk::BlendOp						colorBlendOp			= vk::BlendOp::eAdd;
 			BlendFactor						srcAlphaBlendFactor		= BlendFactor::eZero;
 			BlendFactor						dstAlphaBlendFactor		= BlendFactor::eZero;
-			BlendOp							alphaBlendOp			= BlendOp::eAdd;
+			vk::BlendOp						alphaBlendOp			= vk::BlendOp::eAdd;
 			vk::ColorComponentFlags			colorWriteMask			= vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 		};
 		
