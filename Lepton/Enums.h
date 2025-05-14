@@ -7,19 +7,6 @@
 
 namespace Lepton
 {
-	/*********************************************************************
-	**********************    PipelineBindPoint    ***********************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Specify the bind point of a pipeline object to a command buffer.
-	 */
-	enum class PipelineBindPoint
-	{
-		eCompute			= VK_PIPELINE_BIND_POINT_COMPUTE,
-		eGraphics			= VK_PIPELINE_BIND_POINT_GRAPHICS,
-		eRayTracing			= VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR,
-	};
 
 	/*********************************************************************
 	***********************    MemoryDependency    ***********************

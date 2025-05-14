@@ -356,7 +356,7 @@ namespace Lepton
 		}
 
 		//!	@brief	Binds descriptor sets to a command buffer.
-		void CmdBindDescriptorSets(PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<VkDescriptorSet> pDescriptorSets)
+		void CmdBindDescriptorSets(vk::PipelineBindPoint ePipelineBindPoint, VkPipelineLayout hPipelineLayout, ArrayProxy<VkDescriptorSet> pDescriptorSets)
 		{
 			vkCmdBindDescriptorSets(m_hCommandBuffer, static_cast<VkPipelineBindPoint>(ePipelineBindPoint), hPipelineLayout, 0, pDescriptorSets.size(), pDescriptorSets.data(), 0, nullptr);
 		}
