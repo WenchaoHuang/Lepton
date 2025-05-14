@@ -8,36 +8,6 @@
 namespace Lepton
 {
 	/*********************************************************************
-	*************************    BlendFactor    **************************
-	*********************************************************************/
-
-	/**
-	 *	@brief		Framebuffer blending factors.
-	 */
-	enum class BlendFactor
-	{
-		eOne						= VK_BLEND_FACTOR_ONE,
-		eZero						= VK_BLEND_FACTOR_ZERO,
-		eSrcColor					= VK_BLEND_FACTOR_SRC_COLOR,
-		eDstColor					= VK_BLEND_FACTOR_DST_COLOR,
-		eSrcAlpha					= VK_BLEND_FACTOR_SRC_ALPHA,
-		eDstAlpha					= VK_BLEND_FACTOR_DST_ALPHA,
-		eSrc1Color					= VK_BLEND_FACTOR_SRC1_COLOR,
-		eSrc1Alpha					= VK_BLEND_FACTOR_SRC1_ALPHA,
-		eConstantColor				= VK_BLEND_FACTOR_CONSTANT_COLOR,
-		eConstantAlpha				= VK_BLEND_FACTOR_CONSTANT_ALPHA,
-		eSrcAlphaSaturate			= VK_BLEND_FACTOR_SRC_ALPHA_SATURATE,
-		eOneMinusSrcColor			= VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR,
-		eOneMinusDstColor			= VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR,
-		eOneMinusSrcAlpha			= VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
-		eOneMinusDstAlpha			= VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA,
-		eOneMinusSrc1Color			= VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR,
-		eOneMinusSrc1Alpha			= VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA,
-		eOneMinusConstantColor		= VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR,
-		eOneMinusConstantAlpha		= VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA,
-	};
-
-	/*********************************************************************
 	*************************    DynamicState    *************************
 	*********************************************************************/
 

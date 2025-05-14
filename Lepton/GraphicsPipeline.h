@@ -138,11 +138,11 @@ namespace Lepton
 		struct ColorBlendAttachmentState
 		{
 			vk::Bool32						blendEnable				= true;
-			BlendFactor						srcColorBlendFactor		= BlendFactor::eSrcAlpha;
-			BlendFactor						dstColorBlendFactor		= BlendFactor::eOneMinusSrcAlpha;
+			vk::BlendFactor					srcColorBlendFactor		= vk::BlendFactor::eSrcAlpha;
+			vk::BlendFactor					dstColorBlendFactor		= vk::BlendFactor::eOneMinusSrcAlpha;
 			vk::BlendOp						colorBlendOp			= vk::BlendOp::eAdd;
-			BlendFactor						srcAlphaBlendFactor		= BlendFactor::eZero;
-			BlendFactor						dstAlphaBlendFactor		= BlendFactor::eZero;
+			vk::BlendFactor					srcAlphaBlendFactor		= vk::BlendFactor::eZero;
+			vk::BlendFactor					dstAlphaBlendFactor		= vk::BlendFactor::eZero;
 			vk::BlendOp						alphaBlendOp			= vk::BlendOp::eAdd;
 			vk::ColorComponentFlags			colorWriteMask			= vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 		};
